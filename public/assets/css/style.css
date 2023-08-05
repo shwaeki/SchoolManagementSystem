@@ -1,0 +1,21 @@
+li.menu.link a {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    font-size: 14px;
+    color: #e0e6ed;
+    font-weight: 500;
+    border-left: 1px solid #515365;
+    margin-left: 30px;
+    padding: 0 0 5px 30px;
+}
+
+
+@media (max-width: 991px) {
+    li.menu.link a {
+        padding: 14px 17px 14px 17px;
+        border-left: 0;
+        margin-left: 0;
+    }
+}
