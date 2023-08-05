@@ -1,7 +1,6 @@
 @extends('layouts.auth')
 
 @section('content')
-
     <div class="container mx-auto align-self-center">
         <form method="POST" action="{{ route('login') }}">
             @csrf
@@ -61,7 +60,7 @@
 
                                 <div class="col-12">
                                     <div class="mb-4">
-                                        <button type="submit" class="btn btn-secondary w-100">تسجيل الدخول</button>
+                                        <button type="submit" class="btn btn-primary w-100">تسجيل الدخول</button>
                                     </div>
                                 </div>
                                 @if (Route::has('password.request'))
@@ -81,5 +80,4 @@
             </div>
         </form>
     </div>
-
 @endsection
