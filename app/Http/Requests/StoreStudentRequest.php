@@ -11,7 +11,7 @@ class StoreStudentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,18 @@ class StoreStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'identification' => 'required|integer|digits:9|unique:students',
+            'name' => 'required|string|max:225',
+            'birth_date' => 'required|date|max:225',
+            'address' => 'required|string|max:225',
+            'mother_name' => 'required|string|max:225',
+            'mother_phone' => 'required|integer|digits:10',
+            'father_name' => 'required|string|max:255',
+            'father_phone' => 'required|integer|digits:10',
+            'sex' => 'required|string',
+            'family_status' => 'required|string',
+            'custody' => 'required|string',
+            'notes' => 'nullable|string',
         ];
     }
 }

@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->string('name');
             $table->string('identification', 11);
             $table->date('birth_date');
-            $table->string('status');
-            $table->string('family_status');
+            $table->string('status')->nullable();
+            $table->string('family_status')->default('unspecified');
             $table->string('mother_name')->nullable();
             $table->string('mother_phone')->nullable();
             $table->string('father_name')->nullable();
