@@ -166,7 +166,7 @@ body.dark .layout-px-spacing {
 }
 body.dark .widget.box .widget-header {
   background: #0e1726;
-  padding: 0px 8px 0px;
+  padding: 5px 8px 5px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   border: none;

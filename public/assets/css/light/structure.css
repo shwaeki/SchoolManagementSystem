@@ -160,7 +160,7 @@ body.enable-secondaryNav .layout-top-spacing {
 
 .widget.box .widget-header {
   background: #fff;
-  padding: 0px 8px 0px;
+  padding: 5px 8px 5px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   border: 1px solid #e0e6ed;

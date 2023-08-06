@@ -25,27 +25,38 @@
           rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 
-    <link href="{{ asset("assets/bootstrap/css/bootstrap.rtl.min.css") }}" rel="stylesheet" type="text/css"/>
 
-    <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/plugins/src/font-icons/fontawesome/css/fontawesome.css")  }}" rel="stylesheet" type="text/css"/>
+
+
+    <link href="{{ asset("assets/bootstrap/css/bootstrap.rtl.min.css") }}" rel="stylesheet" type="text/css"/>
 
 
     <link href="{{ asset("assets/css/style.css")  }}" rel="stylesheet" type="text/css"/>
 
 
     <link href="{{ asset("assets/css/light/main.css")  }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset("assets/plugins/css/light/perfect-scrollbar/perfect-scrollbar.css")  }}" rel="stylesheet"
-          type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/light/perfect-scrollbar/perfect-scrollbar.css")  }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset("assets/css/light/structure.css")  }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset("assets/css/light/elements/alert.css")  }}" rel="stylesheet" type="text/css"/>
 
 
     <link href="{{ asset("assets/css/dark/main.css")  }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset("assets/plugins/css/dark/perfect-scrollbar/perfect-scrollbar.css")  }}" rel="stylesheet"
-          type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/dark/perfect-scrollbar/perfect-scrollbar.css")  }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset("assets/css/dark/structure.css")  }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset("assets/css/dark/elements/alert.css")  }}" rel="stylesheet" type="text/css"/>
 
+
+    <link href="{{ asset("assets/plugins/src/table/datatable/datatables.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/light/table/datatable/dt-global_style.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/dark/table/datatable/dt-global_style.css")  }}" rel="stylesheet" type="text/css"/>
+
+
+    <link href="{{ asset("assets/plugins/src/sweetalerts2/sweetalerts2.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/light/sweetalerts2/custom-sweetalert.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/dark/sweetalerts2/custom-sweetalert.css")  }}" rel="stylesheet" type="text/css"/>
+
+    @stack('styles')
 
     <style>
         body.dark .layout-px-spacing, .layout-px-spacing {
@@ -579,22 +590,52 @@
 </div>
 <!-- END MAIN CONTAINER -->
 
+
+<form method="post" id="delete-form" style="display: none;">
+    @csrf
+    @method('DELETE')
+</form>
+
 <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+
+<script src="{{ asset("assets/plugins/src/global/vendors.min.js") }}"></script>
 <script src="{{ asset("assets/bootstrap/js/bootstrap.bundle.min.js") }}"></script>
 <script src="{{ asset("assets/plugins/src/perfect-scrollbar/perfect-scrollbar.min.js") }}"></script>
 <script src="{{ asset("assets/plugins/src/mousetrap/mousetrap.min.js") }}"></script>
 <script src="{{ asset("assets/plugins/src/waves/waves.min.js") }}"></script>
+<script src="{{ asset("assets/plugins/src/sweetalerts2/sweetalerts2.min.js") }}"></script>
+<script src="{{ asset("assets/plugins/src/table/datatable/datatables.js") }}"></script>
+
 <script src="{{ asset("assets/loader.js")  }}"></script>
 <script src="{{ asset("assets/app.js")}}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+
 @stack('scripts')
 
 <script>
     $(document).on("input", ".only-integer", function () {
         this.value = this.value.replace(/\D/g, '');
     });
+
+    $('input[required], select[required],textarea[required]').parent('div').find('label').addClass("required");
+
+    function deleteItem(e) {
+        Swal.fire({
+            title: 'هل انت متأكد؟',
+            text: "لن تستطيع استرجاع البانات!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'نعم',
+            cancelButtonText: 'الغاء'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let url = $(e).data('item');
+                $('#delete-form').attr('action', url).submit();
+            }
+        })
+    }
 </script>
 
 </body>

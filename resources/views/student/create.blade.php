@@ -9,7 +9,7 @@
                 </div>
             </div>
         </div>
-        <div class="widget-content widget-content-area">
+        <div class="widget-content widget-content-area-normal">
             <form action="{{ route('students.store') }}" method="POST">
                 @csrf
                 <div class="row">
@@ -52,11 +52,49 @@
 
                     <div class="col-12 col-md-6">
                         <div class="mb-3">
-                            <label for="address" class="form-label">عنوان الطالب </label>
+                            <label for="birth_place" class="form-label">مكان الولادة  </label>
+                            <input type="text" id="birth_place" name="birth_place"
+                                   class="form-control @error('birth_place') is-invalid @enderror"
+                                   value="{{old('birth_place')}}" >
+                            @error('birth_place')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 col-md-4">
+                        <div class="mb-3">
+                            <label for="address" class="form-label">العنوان  </label>
                             <input type="text" id="address" name="address"
                                    class="form-control @error('address') is-invalid @enderror"
                                    value="{{old('address')}}" required>
                             @error('address')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 col-md-4">
+                        <div class="mb-3">
+                            <label for="address_street" class="form-label"> الشارع </label>
+                            <input type="text" id="address_street" name="address_street"
+                                   class="form-control @error('address_street') is-invalid @enderror"
+                                   value="{{old('address_street')}}">
+                            @error('address_street')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <div class="mb-3">
+                            <label for="address_house_no" class="form-label"> رقم البيت </label>
+                            <input type="text" id="address_house_no" name="address_house_no"
+                                   class="form-control @error('address_house_no') is-invalid @enderror"
+                                   value="{{old('address_house_no')}}">
+                            @error('address_house_no')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>
@@ -113,14 +151,14 @@
                     </div>
                     <div class="col-6 col-md-3">
                         <div class="mb-3">
-                            <label for="sex" class="form-label">  الجنس  </label>
-                            <select class="form-select @error('sex') is-invalid @enderror"
-                                    id="sex" name="sex" required>
+                            <label for="gender" class="form-label">  الجنس  </label>
+                            <select class="form-select @error('gender') is-invalid @enderror"
+                                    id="gender" name="gender" required>
                                 <option selected disabled value="">اختر ...</option>
-                                <option {{old('sex') == 'male' ? 'selected' : '' }} value="male">ذكر</option>
-                                <option {{old('sex') == 'female' ? 'selected' : '' }} value="female">انثى</option>
+                                <option {{old('gender') == 'male' ? 'selected' : '' }} value="male">ذكر</option>
+                                <option {{old('gender') == 'female' ? 'selected' : '' }} value="female">انثى</option>
                             </select>
-                            @error('sex')
+                            @error('gender')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>

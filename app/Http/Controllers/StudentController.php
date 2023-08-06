@@ -35,7 +35,11 @@ class StudentController extends Controller
 
     public function show(Student $student)
     {
-        //
+        $data = [
+            "student" => $student,
+        ];
+        Session::put('fileManagerConfig', "Student_" . $student->id);
+        return view('student.show', $data);
     }
 
 
@@ -62,7 +66,7 @@ class StudentController extends Controller
     {
         $student->delete();
 
-        Session::flash('message', 'Student has been deleted successfully!');
+        Session::flash('message', 'تم حذف الطالب بنجاح!');
         return redirect()->route('students.index');
     }
 }

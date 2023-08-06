@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('identification', 11);
             $table->date('birth_date');
+            $table->string('birth_place')->nullable();
             $table->string('status')->nullable();
             $table->string('family_status')->default('unspecified');
             $table->string('mother_name')->nullable();
@@ -22,8 +23,10 @@ return new class extends Migration {
             $table->string('father_name')->nullable();
             $table->string('father_phone')->nullable();
             $table->enum('custody', ['mother', 'father','unspecified'])->default('unspecified');
-            $table->enum('sex', ['male', 'female'])->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable();
             $table->string('address')->nullable();
+            $table->string('address_street')->nullable();
+            $table->string('address_house_no')->nullable();
             $table->text('notes')->nullable();
             $table->foreignId('added_by')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->softDeletes();

@@ -22,15 +22,18 @@ class StoreStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'identification' => 'required|integer|digits:9|unique:students',
+            'identification' => 'required|string|digits:9|regex:/^[0-9]+$/|unique:students',
             'name' => 'required|string|max:225',
             'birth_date' => 'required|date|max:225',
+            'birth_place' => 'nullable|string|max:225',
             'address' => 'required|string|max:225',
+            'address_street' => 'nullable|string|max:225',
+            'address_house_no' => 'nullable|string|max:225',
             'mother_name' => 'required|string|max:225',
-            'mother_phone' => 'required|integer|digits:10',
+            'mother_phone' => 'required|string|digits:10|regex:/^[0-9]+$/',
             'father_name' => 'required|string|max:255',
-            'father_phone' => 'required|integer|digits:10',
-            'sex' => 'required|string',
+            'father_phone' => 'required|string|digits:10|regex:/^[0-9]+$/',
+            'gender' => 'required|string',
             'family_status' => 'required|string',
             'custody' => 'required|string',
             'notes' => 'nullable|string',

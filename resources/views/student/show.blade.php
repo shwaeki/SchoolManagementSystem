@@ -1,0 +1,275 @@
+@extends('layouts.app')
+
+@push('styles')
+    <link href="{{ asset("assets/css/light/users/account-setting.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/css/dark/users/account-setting.css")  }}" rel="stylesheet" type="text/css"/>
+
+    <link href="{{ asset("assets/css/light/components/tabs.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/css/dark/components/tabs.css")  }}" rel="stylesheet" type="text/css"/>
+
+    <style>
+
+        iframe {
+            width: 100%;
+            height: 700px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 0 2rem 0 rgb(136 152 170 / 15%);
+            border-radius: 0.375rem;
+        }
+    </style>
+@endpush
+
+@section('content')
+
+    <div class="account-settings-container layout-top-spacing">
+
+        <div class="account-content">
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <h2> معلومات الطالب - {{$student->name}}</h2>
+
+                    <ul class="nav nav-pills" id="animateLine" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="student-info-tab" data-bs-toggle="tab"
+                                    href="#student-info" role="tab" aria-controls="student-info" aria-selected="true">
+                                <i class="fas fa-info-circle"></i>
+                                البيانات الشخصية
+                            </button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="student-files-tab" data-bs-toggle="tab" href="#student-files"
+                                    role="tab" aria-controls="student-files" aria-selected="false" tabindex="-1">
+                                <i class="fas fa-folder-open"></i>
+                                ملفات الطالب
+                            </button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="student-classes-tab" data-bs-toggle="tab"
+                                    href="#student-classes" role="tab" aria-controls="student-classes"
+                                    aria-selected="false" tabindex="-1">
+                                <i class="fas fa-graduation-cap"></i>
+                                السنوات الدراسية
+                            </button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="student-log-tab" data-bs-toggle="tab" href="#student-log"
+                                    role="tab" aria-controls="student-log" aria-selected="false" tabindex="-1">
+                                <i class="fas fa-history"></i>
+                                سجل الطالب
+                            </button>
+                        </li>
+
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tab-content" id="animateLineContent-4">
+                <div class="tab-pane fade show active" id="student-info" role="tabpanel"
+                     aria-labelledby="student-info-tab">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                            <form class="section general-info">
+                                <div class="info">
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <h6> البيانات الشخصية </h6>
+                                        </div>
+                                        <div class="col-3 text-end">
+                                            <a href="{{route('students.edit',['student'=>$student])}}"
+                                               class="btn btn-primary"> تعديل </a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <div class="mb-3">
+                                                <label for="name" class="form-label">الاسم</label>
+                                                <input type="text" id="name" class="form-control"
+                                                       value="{{$student->name}}" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <div class="mb-3">
+                                                <label for="identification" class="form-label">رقم الهوية</label>
+                                                <input type="text" id="identification" class="form-control"
+                                                       value="{{$student->identification}}" disabled>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <div class="mb-3">
+                                                <label for="birth_date" class="form-label">تاريخ الميلاد </label>
+                                                <input type="text" id="birth_date" class="form-control"
+                                                       value="{{$student->birth_date}}" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <div class="mb-3">
+                                                <label for="birth_place" class="form-label">مكان الولادة </label>
+                                                <input type="text" id="birth_place" class="form-control"
+                                                       value="{{$student->birth_place}}" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4">
+                                            <div class="mb-3">
+                                                <label for="address" class="form-label"> العنوان </label>
+                                                <input type="text" id="address" class="form-control"
+                                                       value="{{$student->address}}" disabled>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-12 col-md-4">
+                                            <div class="mb-3">
+                                                <label for="address_street" class="form-label"> الشارع </label>
+                                                <input type="text" id="address" class="form-control"
+                                                       value="{{$student->address_street}}" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4">
+                                            <div class="mb-3">
+                                                <label for="address_house_no" class="form-label"> رقم البيت </label>
+                                                <input type="text" id="address" class="form-control"
+                                                       value="{{$student->address_house_no}}" disabled>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-6 col-md-3">
+                                            <div class="mb-3">
+                                                <label for="mother_name" class="form-label"> اسم الام </label>
+                                                <input type="text" id="address" class="form-control"
+                                                       value="{{$student->mother_name}}" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-3">
+                                            <div class="mb-3">
+                                                <label for="mother_phone" class="form-label"> رقم هاتف الام </label>
+                                                <input type="text" id="address" class="form-control"
+                                                       value="{{$student->mother_phone}}" disabled>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-6 col-md-3">
+                                            <div class="mb-3">
+                                                <label for="father_name" class="form-label"> اسم الاب </label>
+                                                <input type="text" id="address" class="form-control"
+                                                       value="{{$student->father_name}}" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-3">
+                                            <div class="mb-3">
+                                                <label for="father_phone" class="form-label"> رقم هاتف الاب </label>
+                                                <input type="text" id="father_phone" class="form-control"
+                                                       value="{{$student->father_phone}}" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="mb-3">
+                                                <label for="gender" class="form-label"> الجنس </label>
+                                                <input type="text" id="gender" class="form-control"
+                                                       value="{{trans('options.'.$student->gender)  }}" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-3">
+                                            <div class="mb-3">
+                                                <label for="family_status" class="form-label"> الحالة الاجتماعية
+                                                    للعائلة </label>
+                                                <input type="text" id="family_status" class="form-control"
+                                                       value="{{trans('options.'.$student->family_status)}}" disabled>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-6 col-md-3">
+                                            <div class="mb-3">
+                                                <label for="custody" class="form-label"> حضانة الطالب </label>
+                                                <input type="text" id="gender" class="form-control"
+                                                       value="{{trans('options.'.$student->custody)}}" disabled>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-12">
+                                            <div class="mb-3">
+                                                <label for="notes" class="form-label"> ملاحظات اضافية </label>
+                                                <textarea id="notes" class="form-control" rows="3"
+                                                          disabled>{{ $student->notes }}</textarea>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="tab-pane fade " id="student-files" role="tabpanel" aria-labelledby="student-files-tab">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                            <form class="section general-info">
+                                <div class="info">
+                                    <h6> ملفات خاصبة بالطالب </h6>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <iframe src="/filemanager"></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="tab-pane fade " id="student-classes" role="tabpanel" aria-labelledby="student-classes-tab">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                            <form class="section general-info">
+                                <div class="info">
+                                    <h6> السنوات الدراسية </h6>
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="tab-pane fade " id="student-log" role="tabpanel" aria-labelledby="student-log-tab">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                            <form class="section general-info">
+                                <div class="info">
+                                    <h6> سجل الطالب </h6>
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+@endsection

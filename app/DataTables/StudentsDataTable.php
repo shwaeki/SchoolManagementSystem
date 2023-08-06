@@ -25,8 +25,15 @@ class StudentsDataTable extends DataTable
                     <a href="' . route('students.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
                     <button class="btn btn-light-danger text-danger" onclick="deleteItem(this)"
                     data-item="' . route('students.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
-            })->setRowId('id')
-            ->rawColumns(['Settings']);
+            })
+            ->editColumn('gender', function ($query) {
+                if ($query->gender === 'female')
+                    return '<span class="badge badge-light-danger">انثى</span>';
+                else
+                    return '<span class="badge badge-light-info">ذكر</span>';
+            })
+            ->setRowId('id')
+            ->rawColumns(['Settings', 'gender']);
 
     }
 
@@ -68,7 +75,7 @@ class StudentsDataTable extends DataTable
                 'identification' => ['title' => 'رقم الهوية'],
                 'mother_phone' => ['title' => 'رفم هاتف الام'],
                 'father_phone' => ['title' => 'رقم هاتف الاب'],
-                'sex' => ['title' => 'الجنس '],
+                'gender' => ['title' => 'الجنس '],
                 'status' => ['title' => 'الحالة '],
                 'Settings' => ['title' => 'خيارات'],
             ];

@@ -2,11 +2,17 @@
 
 @section('content')
 
+
+
     <div class="statbox widget box box-shadow">
         <div class="widget-header">
             <div class="row">
-                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                <div class="col-8">
                     <h4> قائمة الطلاب</h4>
+                </div>
+
+                <div class="col-4 text-end align-self-center">
+                    <a href="{{route('students.create')}}" class="btn btn-primary"> اضافة </a>
                 </div>
             </div>
         </div>
