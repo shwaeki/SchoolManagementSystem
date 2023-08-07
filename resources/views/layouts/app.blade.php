@@ -348,7 +348,10 @@
                     <ul class="dropdown-menu submenu list-unstyled dropdown-menu-end" id="apps"
                         data-bs-parent="#accordionExample">
                         <li>
-                            <a href="./app-calendar.html"> Calendar </a>
+                            <a href="{{route('teachers.index')}}"> قائمة المعلمين </a>
+                        </li>
+                        <li>
+                            <a href="{{route('teachers.create')}}"> اضافة </a>
                         </li>
                     </ul>
                 </li>

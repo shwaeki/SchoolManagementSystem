@@ -11,7 +11,7 @@ class StoreTeacherRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class StoreTeacherRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'identification' => 'required|string|digits:9|regex:/^[0-9]+$/|unique:teachers',
+            'name' => 'required|string|max:225',
+            'birth_date' => 'required|date|max:225',
+            'address' => 'required|string|max:225',
+            'phone_1' => 'required|string|digits:10|regex:/^[0-9]+$/',
+            'phone_2' => 'nullable|string|digits:10|regex:/^[0-9]+$/',
+            'gender' => 'required|string',
+            'status' => 'required|string',
+            'notes' => 'nullable|string',
         ];
     }
 }

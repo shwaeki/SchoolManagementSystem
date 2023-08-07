@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('identification',11);
-            $table->date('birth_date');
-            $table->string('status');
+            $table->date('birth_date')->nullable();
+            $table->string('status')->default('persistent');
             $table->string('phone_1');
             $table->string('phone_2')->nullable();
             $table->string('address')->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable();
             $table->foreignId('school_class_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('added_by')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->softDeletes();

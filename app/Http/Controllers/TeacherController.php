@@ -2,65 +2,71 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Teacher;
+use App\DataTables\TeachersDataTable;
 use App\Http\Requests\StoreTeacherRequest;
 use App\Http\Requests\UpdateTeacherRequest;
+use App\Models\Teacher;
+use Illuminate\Support\Facades\Session;
 
 class TeacherController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function index(TeachersDataTable $dataTable)
     {
-        //
+        return $dataTable->render('teacher.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('teacher.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(StoreTeacherRequest $request)
     {
-        //
+        //   dd(request()->all());
+
+        Teacher::create(request()->all());
+
+        Session::flash('message', 'تم اضافة المعلم بنجاح.');
+        return redirect()->route('teachers.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Teacher $teacher)
     {
-        //
+        $data = [
+            "teacher" => $teacher,
+        ];
+        Session::put('fileManagerConfig', "Teacher_" . $teacher->id);
+        return view('teacher.show', $data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(Teacher $teacher)
     {
-        //
+        $data = [
+            "teacher" => $teacher,
+        ];
+
+        return view('teacher.edit', $data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(UpdateTeacherRequest $request, Teacher $teacher)
     {
-        //
+
+        $teacher->update(request()->all());
+        Session::flash('message', 'تم تعديل معلومات المعلم بنجاح.');
+        return redirect()->route('teachers.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Teacher $teacher)
     {
-        //
+        $teacher->delete();
+
+        Session::flash('message', 'تم حذف المعلم بنجاح!');
+        return redirect()->route('teachers.index');
     }
 }
