@@ -77,7 +77,7 @@ class StudentsDataTable extends DataTable
                 'father_phone' => ['title' => 'رقم هاتف الاب'],
                 'gender' => ['title' => 'الجنس '],
                 'status' => ['title' => 'الحالة '],
-                'Settings' => ['title' => 'خيارات'],
+                'Settings' => ['title' => 'خيارات', 'orderable' => false],
             ];
     }
 

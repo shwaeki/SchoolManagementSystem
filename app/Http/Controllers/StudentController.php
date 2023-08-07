@@ -24,10 +24,8 @@ class StudentController extends Controller
 
     public function store(StoreStudentRequest $request)
     {
-        //   dd(request()->all());
-
-        Student::create(request()->all());
-
+        $data = request()->all() + ['added_by' => auth()->id()];
+        Student::create($data);
         Session::flash('message', 'تم اضافة الطالب بنجاح.');
         return redirect()->route('students.index');
     }

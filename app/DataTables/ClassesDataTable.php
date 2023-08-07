@@ -3,12 +3,12 @@
 namespace App\DataTables;
 
 
-use App\Models\Teacher;
+use App\Models\SchoolClass;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Services\DataTable;
 
-class TeachersDataTable extends DataTable
+class ClassesDataTable extends DataTable
 {
 
     public function dataTable($query)
@@ -17,20 +17,17 @@ class TeachersDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('Settings', function ($query) {
-                return '<a href="' . route('teachers.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>
-                    <a href="' . route('teachers.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
+                return '<a href="' . route('school-classes.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>
+                    <a href="' . route('school-classes.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
                     <button class="btn btn-light-danger text-danger" onclick="deleteItem(this)"
-                    data-item="' . route('teachers.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
-            })->editColumn('gender', function ($query) {
-                if ($query->gender === 'female')
-                    return '<span class="badge badge-light-danger">انثى</span>';
-                else
-                    return '<span class="badge badge-light-info">ذكر</span>';
-            })->editColumn('status', function ($query) {
-                return trans('options.' . $query->status);
+                    data-item="' . route('school-classes.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
+            })->editColumn('code', function ($query) {
+                    return '<span class="badge badge-light-info">'.$query->code.'</span>';
+            })->editColumn('supervisor', function ($query) {
+                    return $query?->supervisorTeacher?->name;
             })
             ->setRowId('id')
-            ->rawColumns(['Settings', 'gender']);
+            ->rawColumns(['Settings', 'code']);
 
     }
 
@@ -38,7 +35,7 @@ class TeachersDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(Teacher $model): QueryBuilder
+    public function query(SchoolClass $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -49,7 +46,7 @@ class TeachersDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('teachers-table')
+            ->setTableId('school-class-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom("<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>
@@ -69,12 +66,11 @@ class TeachersDataTable extends DataTable
         return
             [
                 'name' => ['title' => 'الاسم '],
-                'identification' => ['title' => 'رقم الهوية'],
-                'phone_1' => ['title' => 'رفم الهاتف '],
-                'birth_date' => ['title' => 'تاريخ الميلاد'],
-                'gender' => ['title' => 'الجنس '],
-                'star_work_date' => ['title' => 'تاريخ بدأ العمل '],
-                'status' => ['title' => 'الحالة '],
+                'code' => ['title' => 'الكود'],
+                'capacity' => ['title' => 'الطاقة الاستيعابة'],
+                'alphabetical_name' => ['title' => 'الكود الابجدي'],
+//                'supervisor ' => ['title' => 'المعلم المشرف'],
+                'address' => ['title' => 'العنوان'],
                 'Settings' => ['title' => 'خيارات', 'orderable' => false],
             ];
     }
@@ -85,6 +81,6 @@ class TeachersDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Teachers_' . date('YmdHis');
+        return 'SchoolClass_' . date('YmdHis');
     }
 }

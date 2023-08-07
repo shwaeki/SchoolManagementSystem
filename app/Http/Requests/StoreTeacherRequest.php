@@ -25,6 +25,8 @@ class StoreTeacherRequest extends FormRequest
             'identification' => 'required|string|digits:9|regex:/^[0-9]+$/|unique:teachers',
             'name' => 'required|string|max:225',
             'birth_date' => 'required|date|max:225',
+            'star_work_date' => 'nullable|date|max:225',
+            'email' => 'nullable|email|max:225',
             'address' => 'required|string|max:225',
             'phone_1' => 'required|string|digits:10|regex:/^[0-9]+$/',
             'phone_2' => 'nullable|string|digits:10|regex:/^[0-9]+$/',

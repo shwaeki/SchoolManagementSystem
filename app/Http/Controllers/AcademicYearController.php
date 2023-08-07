@@ -2,65 +2,74 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\AcademicYearDataTable;
 use App\Models\academicYear;
-use App\Http\Requests\StoreacademicYearRequest;
-use App\Http\Requests\UpdateacademicYearRequest;
+use App\Http\Requests\StoreAcademicYearRequest;
+use App\Http\Requests\UpdateAcademicYearRequest;
+use Illuminate\Support\Facades\Session;
+
 
 class AcademicYearController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function index(AcademicYearDataTable $dataTable)
     {
-        //
+        return $dataTable->render('academicYear.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
-        //
+
+        return view('academicYear.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreacademicYearRequest $request)
+
+    public function store(StoreAcademicYearRequest $request)
     {
-        //
+        $data = request()->all() + ['added_by' => auth()->id()];
+        AcademicYear::create($data);
+        Session::flash('message', 'تم اضافة معلم جديد بنجاح.');
+
+        return redirect()->route('academic-years.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(academicYear $academicYear)
+
+    public function show(AcademicYear $academicYear)
     {
-        //
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(academicYear $academicYear)
+
+    public function edit(AcademicYear $academicYear)
     {
-        //
+        $data = [
+            "academicYear" => $academicYear,
+        ];
+
+        return view('academicYear.edit', $data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateacademicYearRequest $request, academicYear $academicYear)
+
+    public function update(UpdateAcademicYearRequest $request, AcademicYear $academicYear)
     {
-        //
+
+        if (request('status') === "0") {
+            return back()->withErrors(['status' => ['يجب ان يكون هناك سنة دراسية واحدة على الاقل فعالة.']]);
+        }
+
+        AcademicYear::where('status', true)->update(['status' => false]);
+
+        $academicYear->update(request()->all());
+        Session::flash('message', 'تم تعديل معلومات السنة الدراسية بنجاح.');
+        return redirect()->route('academic-years.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(academicYear $academicYear)
+
+    public function destroy(AcademicYear $academicYear)
     {
-        //
+        $academicYear->delete();
+        Session::flash('message', 'تم حذف السنة الدراسية بنجاح!');
+        return redirect()->route('academic-years.index');
     }
 }

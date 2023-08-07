@@ -27,41 +27,33 @@
         <div class="account-content">
             <div class="row mb-3">
                 <div class="col-md-12">
-                    <h2> معلومات الطالب - {{$student->name}}</h2>
+                    <h2> معلومات المعلم - {{$teacher->name}}</h2>
 
                     <ul class="nav nav-pills" id="animateLine" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="student-info-tab" data-bs-toggle="tab"
-                                    href="#student-info" role="tab" aria-controls="student-info" aria-selected="true">
+                            <button class="nav-link active" id="teacher-info-tab" data-bs-toggle="tab"
+                                    href="#teacher-info" role="tab" aria-controls="teacher-info" aria-selected="true">
                                 <i class="fas fa-info-circle"></i>
                                 البيانات الشخصية
                             </button>
                         </li>
 
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="student-files-tab" data-bs-toggle="tab" href="#student-files"
-                                    role="tab" aria-controls="student-files" aria-selected="false" tabindex="-1">
+                            <button class="nav-link" id="teacher-files-tab" data-bs-toggle="tab" href="#teacher-files"
+                                    role="tab" aria-controls="teacher-files" aria-selected="false" tabindex="-1">
                                 <i class="fas fa-folder-open"></i>
-                                ملفات الطالب
+                                ملفات المعلم
                             </button>
                         </li>
 
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="student-classes-tab" data-bs-toggle="tab"
-                                    href="#student-classes" role="tab" aria-controls="student-classes"
-                                    aria-selected="false" tabindex="-1">
-                                <i class="fas fa-graduation-cap"></i>
-                                السنوات الدراسية
-                            </button>
-                        </li>
 
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="student-log-tab" data-bs-toggle="tab" href="#student-log"
-                                    role="tab" aria-controls="student-log" aria-selected="false" tabindex="-1">
+{{--                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="teacher-log-tab" data-bs-toggle="tab" href="#teacher-log"
+                                    role="tab" aria-controls="teacher-log" aria-selected="false" tabindex="-1">
                                 <i class="fas fa-history"></i>
                                 سجل الطالب
                             </button>
-                        </li>
+                        </li>--}}
 
 
                     </ul>
@@ -69,8 +61,8 @@
             </div>
 
             <div class="tab-content" id="animateLineContent-4">
-                <div class="tab-pane fade show active" id="student-info" role="tabpanel"
-                     aria-labelledby="student-info-tab">
+                <div class="tab-pane fade show active" id="teacher-info" role="tabpanel"
+                     aria-labelledby="teacher-info-tab">
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
                             <form class="section general-info">
@@ -80,7 +72,7 @@
                                             <h6> البيانات الشخصية </h6>
                                         </div>
                                         <div class="col-3 text-end">
-                                            <a href="{{route('students.edit',['student'=>$student])}}"
+                                            <a href="{{route('teachers.edit',['teacher'=>$teacher])}}"
                                                class="btn btn-primary"> تعديل </a>
                                         </div>
                                     </div>
@@ -89,7 +81,7 @@
                                             <div class="mb-3">
                                                 <label for="name" class="form-label">الاسم</label>
                                                 <input type="text" id="name" class="form-control"
-                                                       value="{{$student->name}}" disabled>
+                                                       value="{{$teacher->name}}" disabled>
                                             </div>
                                         </div>
 
@@ -97,7 +89,7 @@
                                             <div class="mb-3">
                                                 <label for="identification" class="form-label">رقم الهوية</label>
                                                 <input type="text" id="identification" class="form-control"
-                                                       value="{{$student->identification}}" disabled>
+                                                       value="{{$teacher->identification}}" disabled>
 
                                             </div>
                                         </div>
@@ -106,99 +98,84 @@
                                             <div class="mb-3">
                                                 <label for="birth_date" class="form-label">تاريخ الميلاد </label>
                                                 <input type="text" id="birth_date" class="form-control"
-                                                       value="{{$student->birth_date}}" disabled>
+                                                       value="{{$teacher->birth_date}}" disabled>
                                             </div>
                                         </div>
 
                                         <div class="col-12 col-md-6">
                                             <div class="mb-3">
-                                                <label for="birth_place" class="form-label">مكان الولادة </label>
-                                                <input type="text" id="birth_place" class="form-control"
-                                                       value="{{$student->birth_place}}" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-md-4">
-                                            <div class="mb-3">
                                                 <label for="address" class="form-label"> العنوان </label>
                                                 <input type="text" id="address" class="form-control"
-                                                       value="{{$student->address}}" disabled>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-12 col-md-4">
-                                            <div class="mb-3">
-                                                <label for="address_street" class="form-label"> الشارع </label>
-                                                <input type="text" id="address" class="form-control"
-                                                       value="{{$student->address_street}}" disabled>
+                                                       value="{{$teacher->address}}" disabled>
                                             </div>
                                         </div>
 
                                         <div class="col-12 col-md-4">
                                             <div class="mb-3">
-                                                <label for="address_house_no" class="form-label"> رقم البيت </label>
-                                                <input type="text" id="address" class="form-control"
-                                                       value="{{$student->address_house_no}}" disabled>
+                                                <label for="email" class="form-label"> البريد الاكتروني  </label>
+                                                <input type="text" id="email" class="form-control"
+                                                       value="{{$teacher->email}}" disabled>
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="mb-3">
+                                                <label for="phone_1" class="form-label"> رقم الهاتف  </label>
+                                                <input type="text" id="phone_1" class="form-control"
+                                                       value="{{$teacher->phone_1}}" disabled>
+                                            </div>
+                                        </div>
+
+
+                                  <div class="col-6 col-md-4">
+                                            <div class="mb-3">
+                                                <label for="phone_1" class="form-label"> رقم هاتف احتياطي  </label>
+                                                <input type="text" id="phone_2" class="form-control"
+                                                       value="{{$teacher->phone_2}}" disabled>
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <div class="col-6 col-md-3">
+                                            <div class="mb-3">
+                                                <label for="star_work_date" class="form-label">تاريخ بدك العمل </label>
+                                                <input type="text" id="star_work_date" class="form-control"
+                                                       value="{{$teacher->star_work_date}}" disabled>
                                             </div>
                                         </div>
 
 
                                         <div class="col-6 col-md-3">
                                             <div class="mb-3">
-                                                <label for="mother_name" class="form-label"> اسم الام </label>
-                                                <input type="text" id="address" class="form-control"
-                                                       value="{{$student->mother_name}}" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-6 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="mother_phone" class="form-label"> رقم هاتف الام </label>
-                                                <input type="text" id="address" class="form-control"
-                                                       value="{{$student->mother_phone}}" disabled>
+                                                <label for="gender" class="form-label">  فصل المدرس </label>
+                                                <input type="text" id="gender" class="form-control"
+                                                       value="{{$teacher?->schoolClass?->name }}" disabled>
                                             </div>
                                         </div>
 
 
-                                        <div class="col-6 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="father_name" class="form-label"> اسم الاب </label>
-                                                <input type="text" id="address" class="form-control"
-                                                       value="{{$student->father_name}}" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-6 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="father_phone" class="form-label"> رقم هاتف الاب </label>
-                                                <input type="text" id="father_phone" class="form-control"
-                                                       value="{{$student->father_phone}}" disabled>
-                                            </div>
-                                        </div>
                                         <div class="col-6 col-md-3">
                                             <div class="mb-3">
                                                 <label for="gender" class="form-label"> الجنس </label>
                                                 <input type="text" id="gender" class="form-control"
-                                                       value="{{trans('options.'.$student->gender)  }}" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-6 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="family_status" class="form-label"> الحالة الاجتماعية
-                                                    للعائلة </label>
-                                                <input type="text" id="family_status" class="form-control"
-                                                       value="{{trans('options.'.$student->family_status)}}" disabled>
+                                                       value="{{trans('options.'.$teacher->gender)  }}" disabled>
                                             </div>
                                         </div>
 
 
+
                                         <div class="col-6 col-md-3">
                                             <div class="mb-3">
-                                                <label for="custody" class="form-label"> حضانة الطالب </label>
-                                                <input type="text" id="gender" class="form-control"
-                                                       value="{{trans('options.'.$student->custody)}}" disabled>
+                                                <label for="status" class="form-label"> حالة المعلم </label>
+                                                <input type="text" id="status" class="form-control"
+                                                       value="{{trans('options.'.$teacher->status)}}" disabled>
                                             </div>
                                         </div>
 
@@ -207,7 +184,7 @@
                                             <div class="mb-3">
                                                 <label for="notes" class="form-label"> ملاحظات اضافية </label>
                                                 <textarea id="notes" class="form-control" rows="3"
-                                                          disabled>{{ $student->notes }}</textarea>
+                                                          disabled>{{ $teacher->notes }}</textarea>
                                             </div>
                                         </div>
 
@@ -221,12 +198,12 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade " id="student-files" role="tabpanel" aria-labelledby="student-files-tab">
+                <div class="tab-pane fade " id="teacher-files" role="tabpanel" aria-labelledby="teacher-files-tab">
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
                             <form class="section general-info">
                                 <div class="info">
-                                    <h6> ملفات خاصبة بالطالب </h6>
+                                    <h6> ملفات خاصبة بالمعلم </h6>
                                     <div class="row">
                                         <div class="col-12">
                                             <iframe src="/filemanager"></iframe>
@@ -239,20 +216,9 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade " id="student-classes" role="tabpanel" aria-labelledby="student-classes-tab">
-                    <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
-                            <form class="section general-info">
-                                <div class="info">
-                                    <h6> السنوات الدراسية </h6>
 
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="tab-pane fade " id="student-log" role="tabpanel" aria-labelledby="student-log-tab">
+{{--
+                <div class="tab-pane fade " id="teacher-log" role="tabpanel" aria-labelledby="teacher-log-tab">
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
                             <form class="section general-info">
@@ -265,6 +231,7 @@
 
                     </div>
                 </div>
+--}}
 
             </div>
 

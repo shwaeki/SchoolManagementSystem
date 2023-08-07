@@ -2,65 +2,70 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\ClassesDataTable;
 use App\Models\SchoolClass;
 use App\Http\Requests\StoreSchoolClassRequest;
 use App\Http\Requests\UpdateSchoolClassRequest;
+use App\Models\Teacher;
+use Illuminate\Support\Facades\Session;
 
 class SchoolClassController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function index(ClassesDataTable $dataTable)
     {
-        //
+        return $dataTable->render('classes.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $data = [
+            "teachers" => Teacher::all(),
+        ];
+
+        return view('classes.create', $data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(StoreSchoolClassRequest $request)
     {
-        //
+        $data = request()->all() + ['added_by' => auth()->id()];
+        SchoolClass::create($data);
+        Session::flash('message', 'تم اضافة فصل التعليمي جديد بنجاح.');
+        return redirect()->route('school-classes.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(SchoolClass $schoolClass)
     {
-        //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(SchoolClass $schoolClass)
     {
-        //
+
+        $data = [
+            "class" => $schoolClass,
+            "teachers" => Teacher::all(),
+        ];
+
+        return view('classes.edit', $data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(UpdateSchoolClassRequest $request, SchoolClass $schoolClass)
     {
-        //
+        $schoolClass->update(request()->all());
+        Session::flash('message', 'تم تعديل معلومات الفصل التعليمي بنجاح.');
+        return redirect()->route('school-classes.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(SchoolClass $schoolClass)
     {
-        //
+        $schoolClass->delete();
+        Session::flash('message', 'تم حذف الفصل التعليمي بنجاح!');
+        return redirect()->route('school-classes.index');
     }
+
 }

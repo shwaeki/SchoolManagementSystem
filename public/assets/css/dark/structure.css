@@ -1089,12 +1089,11 @@ body.dark #sidebar ul.menu-categories li.menu ul.submenu > li.active a:hover:bef
 body.dark #sidebar ul.menu-categories ul.submenu {
   position: absolute;
   background: #060818;
-  max-width: 188px;
-  width: 100%;
+  max-width: 250px;
   padding: 10px 0;
   box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
   border: 1px solid rgb(13, 16, 41);
-  width: 188px;
+  width: auto;
   overflow: initial;
 }
 body.dark #sidebar ul.menu-categories ul.submenu > li {

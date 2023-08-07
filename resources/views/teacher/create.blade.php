@@ -63,7 +63,20 @@
                     </div>
 
 
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-4">
+                        <div class="mb-3">
+                            <label for="email" class="form-label"> البريد الاكتروني </label>
+                            <input type="email" id="email" name="email"
+                                   class="form-control @error('email') is-invalid @enderror"
+                                   value="{{old('email')}}" required>
+                            @error('email')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 col-md-4">
                         <div class="mb-3">
                             <label for="phone_1" class="form-label"> رقم الهاتف </label>
                             <input type="text" id="phone_1" name="phone_1"
@@ -76,13 +89,45 @@
                     </div>
 
 
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-4">
                         <div class="mb-3">
                             <label for="phone_2" class="form-label"> رقم هاتف احتياطي </label>
                             <input type="text" id="phone_2" name="phone_2"
-                                   class="form-control only-integer @error('phone_1') is-invalid @enderror"
+                                   class="form-control only-integer @error('phone_2') is-invalid @enderror"
                                    value="{{old('phone_2')}}">
                             @error('phone_2')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 col-md-3">
+                        <div class="mb-3">
+                            <label for="star_work_date" class="form-label">تاريخ بدك العمل </label>
+                            <input type="date" id="star_work_date" name="star_work_date"
+                                   class="form-control  @error('star_work_date') is-invalid @enderror"
+                                   value="{{old('star_work_date')}}" required>
+                            @error('star_work_date')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <div class="mb-3">
+                            <label for="school_class_id" class="form-label"> فصل المدرس </label>
+                            <select class="form-select @error('school_class_id') is-invalid @enderror"
+                                    id="school_class_id" name="school_class_id">
+                                <option selected disabled value="">اختر ...</option>
+                                @foreach($schoolClasses as $class)
+                                    <option
+                                        {{old('school_class_id') == $class->name ? 'selected' : '' }} value="{{$class->id}}">
+                                        {{$class->name}}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('school_class_id')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>
@@ -105,14 +150,29 @@
                     </div>
 
 
-
                     <div class="col-6 col-md-3">
                         <div class="mb-3">
                             <label for="status" class="form-label"> حالة المعلم </label>
                             <select class="form-select @error('status') is-invalid @enderror"
                                     id="status" name="status" required>
                                 <option selected disabled value="">اختر ...</option>
-                                <option {{old('status') == 'persistent' ? 'selected' : '' }} value="persistent"> مستمر
+                                <option {{old('status') == 'persistent' ? 'selected' : '' }} value="persistent">
+                                    مستمر
+                                </option>
+                                <option {{old('status') == 'maternity_leave' ? 'selected' : '' }} value="maternity_leave">
+                                    اجازة ولادة
+                                </option>
+                                <option {{old('status') == 'unpaid_vacation' ? 'selected' : '' }} value="unpaid_vacation">
+                                    اجازة بدون راتب
+                                </option>
+                                <option {{old('status') == 'sick_leave' ? 'selected' : '' }} value="sick_leave">
+                                    اجازة مرضية
+                                </option>
+                                <option {{old('status') == 'substitute_teacher' ? 'selected' : '' }} value="substitute_teacher">
+                                    معلم بديل
+                                </option>
+                                <option {{old('status') == 'quit_working' ? 'selected' : '' }} value="quit_working">
+                                    ترك العمل
                                 </option>
 
                             </select>

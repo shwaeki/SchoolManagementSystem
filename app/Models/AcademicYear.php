@@ -12,6 +12,11 @@ class AcademicYear extends Model
 {
     use HasFactory, SoftDeletes;
 
+
+    protected $casts = [
+        'status' => 'boolean',
+    ];
+
     protected $guarded = [];
     public function addedBy(): belongsTo
     {

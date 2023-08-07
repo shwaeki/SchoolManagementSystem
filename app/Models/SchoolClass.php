@@ -23,9 +23,9 @@ class SchoolClass extends Model
         return $this->hasMany(StudentClass::class);
     }
 
-    public function supervisorTeacher(): hasMany
+    public function supervisorTeacher(): belongsTo
     {
-        return $this->hasMany(Teacher::class, 'supervisor');
+        return $this->belongsTo(Teacher::class, 'supervisor');
     }
 
     public function teachers(): hasMany

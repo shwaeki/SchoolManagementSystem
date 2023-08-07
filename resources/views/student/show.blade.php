@@ -176,6 +176,8 @@
                                                        value="{{$student->father_phone}}" disabled>
                                             </div>
                                         </div>
+
+
                                         <div class="col-6 col-md-3">
                                             <div class="mb-3">
                                                 <label for="gender" class="form-label"> الجنس </label>
