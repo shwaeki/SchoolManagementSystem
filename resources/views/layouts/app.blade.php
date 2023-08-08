@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
 
 
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
@@ -26,7 +25,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 
 
-    <link href="{{ asset("assets/plugins/src/font-icons/fontawesome/css/fontawesome.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/plugins/src/font-icons/fontawesome/css/fontawesome.css")  }}" rel="stylesheet"
+          type="text/css"/>
 
 
     <link href="{{ asset("assets/bootstrap/css/bootstrap.rtl.min.css") }}" rel="stylesheet" type="text/css"/>
@@ -36,25 +36,33 @@
 
 
     <link href="{{ asset("assets/css/light/main.css")  }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset("assets/plugins/css/light/perfect-scrollbar/perfect-scrollbar.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/light/perfect-scrollbar/perfect-scrollbar.css")  }}" rel="stylesheet"
+          type="text/css"/>
     <link href="{{ asset("assets/css/light/structure.css")  }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset("assets/css/light/elements/alert.css")  }}" rel="stylesheet" type="text/css"/>
 
 
     <link href="{{ asset("assets/css/dark/main.css")  }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset("assets/plugins/css/dark/perfect-scrollbar/perfect-scrollbar.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/dark/perfect-scrollbar/perfect-scrollbar.css")  }}" rel="stylesheet"
+          type="text/css"/>
     <link href="{{ asset("assets/css/dark/structure.css")  }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset("assets/css/dark/elements/alert.css")  }}" rel="stylesheet" type="text/css"/>
 
 
     <link href="{{ asset("assets/plugins/src/table/datatable/datatables.css")  }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset("assets/plugins/css/light/table/datatable/dt-global_style.css")  }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset("assets/plugins/css/dark/table/datatable/dt-global_style.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/light/table/datatable/dt-global_style.css")  }}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/dark/table/datatable/dt-global_style.css")  }}" rel="stylesheet"
+          type="text/css"/>
 
 
     <link href="{{ asset("assets/plugins/src/sweetalerts2/sweetalerts2.css")  }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset("assets/plugins/css/light/sweetalerts2/custom-sweetalert.css")  }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset("assets/plugins/css/dark/sweetalerts2/custom-sweetalert.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/light/sweetalerts2/custom-sweetalert.css")  }}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/dark/sweetalerts2/custom-sweetalert.css")  }}" rel="stylesheet"
+          type="text/css"/>
+
+    @livewireStyles
 
     @stack('styles')
 
@@ -67,7 +75,7 @@
 </head>
 <body class="layout-boxed">
 
-<!-- BEGIN LOADER -->
+
 <div id="load_screen">
     <div class="loader">
         <div class="loader-content">
@@ -75,9 +83,8 @@
         </div>
     </div>
 </div>
-<!--  END LOADER -->
 
-<!--  BEGIN NAVBAR  -->
+
 <div class="header-container container-xxl">
     <header class="header navbar navbar-expand-sm expand-header">
 
@@ -102,28 +109,24 @@
             </li>
         </ul>
 
-        <div class="search-animated toggle-search">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                 class="feather feather-search">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <form class="form-inline search-full form-inline search" role="search">
-                <div class="search-bar">
-                    <input type="text" class="form-control search-form-control  ml-lg-auto" placeholder="بحث ...">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                         class="feather feather-x search-close">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </div>
-            </form>
-            <span class="badge badge-secondary">Ctrl + /</span>
-        </div>
+        <livewire:search/>
 
         <ul class="navbar-item flex-row ms-lg-auto ms-0 action-area">
+
+            <li class="nav-item dropdown year-dropdown">
+                <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="year-dropdown"
+                   data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ $activeAcademicYear->name}}
+                </a>
+                <div class="dropdown-menu position-absolute" aria-labelledby="year-dropdown">
+                    @foreach($academicYears as $year)
+                        <a class="dropdown-item d-flex" href="{{route('academic-year.select',['year'=> $year->id])}}">
+                            <span class="align-self-center">{{$year->name}}</span>
+                        </a>
+                    @endforeach
+
+                </div>
+            </li>
 
             <li class="nav-item dropdown language-dropdown">
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="language-dropdown"
@@ -136,13 +139,6 @@
                         <img src="{{ asset("assets/img/flags/ar.svg") }}" class="flag-width" alt="flag">
                         <span class="align-self-center">&nbsp;العربية</span>
                     </a>
-
-                    {{--
-                                        <a class="dropdown-item d-flex" href="javascript:void(0);">
-                                            <img src="{{ asset("assets/img/flags/tr.svg") }}" class="flag-width" alt="flag">
-                                            <span class="align-self-center">&nbsp;Arabic</span>
-                                        </a>
-                    --}}
 
                 </div>
             </li>
@@ -192,7 +188,7 @@
                         </div>
                     </div>
                     <div class="dropdown-item">
-                        <a href="#">
+                        <a href="{{route('profile.edit')}}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                  stroke-linejoin="round" class="feather feather-user">
@@ -228,15 +224,14 @@
         </ul>
     </header>
 </div>
-<!--  END NAVBAR  -->
 
-<!--  BEGIN MAIN CONTAINER  -->
+
 <div class="main-container " id="container">
 
     <div class="overlay"></div>
     <div class="search-overlay"></div>
 
-    <!--  BEGIN SIDEBAR  -->
+
     <div class="sidebar-wrapper sidebar-theme">
 
         <nav id="sidebar">
@@ -310,13 +305,13 @@
                     <ul class="dropdown-menu submenu list-unstyled dropdown-menu-end" id="apps"
                         data-bs-parent="#accordionExample">
                         <li>
-                            <a href="{{route('users.index')}}">  مستخدمي النظام </a>
+                            <a href="{{route('users.index')}}"> مستخدمي النظام </a>
                         </li>
                         <li>
                             <a href="{{route('roles.create')}}"> قائمة الادوار </a>
                         </li>
                         <li>
-                            <a href="{{route('users.create')}}">  مستخدم جديد  </a>
+                            <a href="{{route('users.create')}}"> مستخدم جديد </a>
                         </li>
                     </ul>
                 </li>
@@ -422,7 +417,7 @@
                     <ul class="dropdown-menu submenu list-unstyled dropdown-menu-end" id="components"
                         data-bs-parent="#accordionExample">
                         <li>
-                            <a href="{{route('academic-years.index')}}"> السنوات الدراسية  </a>
+                            <a href="{{route('academic-years.index')}}"> السنوات الدراسية </a>
                         </li>
                         <li>
                             <a href="{{route('academic-years.create')}}"> اضافة </a>
@@ -451,7 +446,7 @@
                     <ul class="dropdown-menu submenu list-unstyled dropdown-menu-end" id="elements"
                         data-bs-parent="#accordionExample">
                         <li>
-                            <a href="{{route('school-classes.index')}}"> قائمة الفصول التعليمية  </a>
+                            <a href="{{route('school-classes.index')}}"> قائمة الفصول التعليمية </a>
                         </li>
                         <li>
                             <a href="{{route('school-classes.create')}}"> اضافة </a>
@@ -459,21 +454,14 @@
                     </ul>
                 </li>
 
-
             </ul>
-
         </nav>
-
     </div>
-    <!--  END SIDEBAR  -->
 
-    <!--  BEGIN CONTENT AREA  -->
+
     <div id="content" class="main-content">
         <div class="layout-px-spacing">
-
             <div class="middle-content container-xxl p-0">
-
-                <!--  BEGIN BREADCRUMBS  -->
                 <div class="secondary-nav">
                     <div class="breadcrumbs-container" data-page-heading="Analytics">
                         <header class="header navbar navbar-expand-sm">
@@ -598,9 +586,8 @@
                         </header>
                     </div>
                 </div>
-                <!--  END BREADCRUMBS  -->
 
-                <!-- CONTENT AREA -->
+
                 <div class="row layout-top-spacing">
 
                     <div class="col-12">
@@ -626,19 +613,51 @@
                             </div>
                         @endif
 
+                        @if ($adminActiveAcademicYear->id != $activeAcademicYear->id)
+                            <div class="alert alert-dismissible alert-icon-left alert-light-warning fade mb-4 show"
+                                 role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <svg xmlns="http://www.w3.org/2000/svg" data-bs-dismiss="alert" width="24"
+                                         height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                         class="feather feather-x close">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-alert-triangle">
+                                    <path
+                                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12" y2="17"></line>
+                                </svg>
+                                انت تتصفح سنة دراسية غير مفعلة! يمكنك الاطلاع على البيانات لكن لا يمكن أصافة أو تعديل اي
+                                من
+                                البيانات التي تخص السنة الدراسية.
+                                <a href="{{route('academic-year.select',['year'=> $adminActiveAcademicYear->id])}}"
+                                   class="alert-link">اضغط هنا للانتقال إلى السنة الدراسية الحالية.</a>.
+                            </div>
+                        @endif
+
+                        @error('ActiveAcademicYear')
+                        <div class="alert alert-light--danger" role="alert">
+                            انت تتصفح سنة دراسية غير مفعلة! لا يمكن تعديل أو أصافة بيانات في الوقت الحالي.
+                        </div>
+                        @enderror
 
                         @yield('content')
                     </div>
 
                 </div>
-                <!-- CONTENT AREA -->
+
 
             </div>
         </div>
     </div>
-    <!--  END CONTENT AREA  -->
+
 </div>
-<!-- END MAIN CONTAINER -->
 
 
 <form method="post" id="delete-form" style="display: none;">
@@ -646,8 +665,7 @@
     @method('DELETE')
 </form>
 
-<!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
-
+@livewireScripts
 <script src="{{ asset("assets/plugins/src/global/vendors.min.js") }}"></script>
 <script src="{{ asset("assets/bootstrap/js/bootstrap.bundle.min.js") }}"></script>
 <script src="{{ asset("assets/plugins/src/perfect-scrollbar/perfect-scrollbar.min.js") }}"></script>
@@ -663,6 +681,50 @@
 @stack('scripts')
 
 <script>
+    var $activeIndex = -1;
+    $("#search").focus(function () {
+        window.livewire.emit('changeStatus', true);
+        $activeIndex = -1;
+    });
+
+    $("#search").focusout(function () {
+        window.livewire.emit('changeStatus', false);
+        $activeIndex = -1;
+    });
+
+
+    $('#search').on('keydown', function (e) {
+        if (e.which === 40) {
+            $activeIndex++;
+            if ($(".search-item[data-search='" + $activeIndex + "']").length > 0) {
+                $(".search-item").removeClass('highlight');
+                $(".search-item[data-search='" + $activeIndex + "']").addClass('highlight');
+            }
+        } else if (e.which === 38) { // ArrowUp
+            if ($activeIndex > 0) {
+                $activeIndex--;
+                $(".search-item").removeClass('highlight');
+                $(".search-item[data-search='" + $activeIndex + "']").addClass('highlight');
+            }
+        } else if (e.which === 13) { // Enter
+            if ($(".search-item[data-search='" + $activeIndex + "']").length > 0) {
+                $(".search-item[data-search='" + $activeIndex + "']").get(0).click();
+            }
+        } else {
+            $activeIndex = -1;
+        }
+
+        if ($(".search-item[data-search='" + $activeIndex + "']").length > 0) {
+            $(".search-item[data-search='" + $activeIndex + "']")[0].scrollIntoView({
+                behavior: 'instant',
+                block: 'nearest'
+            });
+        }
+
+        console.log($activeIndex);
+    });
+
+
     $(document).on("input", ".only-integer", function () {
         this.value = this.value.replace(/\D/g, '');
     });

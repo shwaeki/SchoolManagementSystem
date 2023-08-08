@@ -13,9 +13,6 @@ var App = function () {
         class: {
             navbar: document.querySelector(".navbar"),
             overlay: document.querySelector('.overlay'),
-            search: document.querySelector('.toggle-search'),
-            searchOverlay: document.querySelector('.search-overlay'),
-            searchForm: document.querySelector('.search-form-control'),
             mainContainer: document.querySelector('.main-container'),
             mainHeader: document.querySelector('.header.navbar')
         }
@@ -149,32 +146,7 @@ var App = function () {
                 Dom.main.classList.remove('sidebar-noneoverflow');
             });
         },
-        search: function () {
 
-            if (Dom.class.search) {
-
-                Dom.class.search.addEventListener('click', function (event) {
-                    this.classList.add('show-search');
-                    Dom.class.searchOverlay.classList.add('show');
-                    document.querySelector('body').classList.add('search-active');
-                });
-
-                Dom.class.searchOverlay.addEventListener('click', function (event) {
-                    this.classList.remove('show');
-                    Dom.class.search.classList.remove('show-search');
-                    document.querySelector('body').classList.remove('search-active');
-                });
-
-                document.querySelector('.search-close').addEventListener('click', function (event) {
-                    event.stopPropagation();
-                    Dom.class.searchOverlay.classList.remove('show');
-                    Dom.class.search.classList.remove('show-search');
-                    document.querySelector('body').classList.remove('search-active');
-                    document.querySelector('.search-form-control').value = ''
-                });
-            }
-
-        },
         themeToggle: function (layoutName) {
 
             var togglethemeEl = document.querySelector('.theme-toggle');
@@ -287,19 +259,7 @@ var App = function () {
 
             });
         },
-        searchKeyBind: function () {
 
-            if (Dom.class.search) {
-                Mousetrap.bind('ctrl+/', function () {
-                    document.body.classList.add('search-active');
-                    Dom.class.search.classList.add('show-search');
-                    Dom.class.searchOverlay.classList.add('show');
-                    Dom.class.searchForm.focus();
-                    return false;
-                });
-            }
-
-        },
         bsTooltip: function () {
             var bsTooltip = document.querySelectorAll('.bs-tooltip')
             for (let index = 0; index < bsTooltip.length; index++) {
@@ -830,7 +790,6 @@ var App = function () {
     return {
         init: function (Layout) {
             toggleFunction.overlay();
-            toggleFunction.search();
             toggleFunction.themeToggle(Layout);
 
             /*
@@ -853,7 +812,6 @@ var App = function () {
             inBuiltfunctionality.mainCatActivateScroll();
             inBuiltfunctionality.notificationScroll();
             inBuiltfunctionality.preventScrollBody();
-            inBuiltfunctionality.searchKeyBind();
             inBuiltfunctionality.bsTooltip();
             inBuiltfunctionality.bsPopover();
             inBuiltfunctionality.onCheckandChangeSidebarActiveClass();

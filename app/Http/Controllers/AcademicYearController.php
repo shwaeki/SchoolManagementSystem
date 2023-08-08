@@ -6,6 +6,7 @@ use App\DataTables\AcademicYearDataTable;
 use App\Models\academicYear;
 use App\Http\Requests\StoreAcademicYearRequest;
 use App\Http\Requests\UpdateAcademicYearRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 
@@ -71,5 +72,12 @@ class AcademicYearController extends Controller
         $academicYear->delete();
         Session::flash('message', 'تم حذف السنة الدراسية بنجاح!');
         return redirect()->route('academic-years.index');
+    }
+
+    public function selectAcademicYear(Request $request)
+    {
+        $year = AcademicYear::findOrFail(request('year'));
+        Session::put('activeAcademicYear', $year);
+        return redirect()->route('home');
     }
 }

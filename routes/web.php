@@ -18,12 +18,17 @@ Auth::routes();
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
-    Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
-    Route::resource('academic-years', AcademicYearController::class);
     Route::resource('school-classes', SchoolClassController::class);
     Route::resource('students', StudentController::class);
     Route::resource('teachers', TeacherController::class);
     Route::resource('student-classes', StudentClassController::class);
 
+
+    Route::get('profile', [UserController::class, 'profile'])->name('profile.edit');
+    Route::put('profile', [UserController::class, 'profileUpdate'])->name('profile.update');
+    Route::resource('users', UserController::class);
+
+    Route::get('academic-year/select', [AcademicYearController::class, 'selectAcademicYear'])->name('academic-year.select');
+    Route::resource('academic-years', AcademicYearController::class);
 });

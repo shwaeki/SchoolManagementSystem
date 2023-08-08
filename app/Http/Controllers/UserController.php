@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\UsersDataTable;
+use App\Http\Requests\UpdateUserProfile;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -80,4 +81,28 @@ class UserController extends Controller
         Session::flash('message', 'تم حذف المستحدم بنجاح.');
         return redirect()->route('users.index');
     }
+
+
+    public function profile( )
+    {
+
+        $data = [
+            'user' => auth()->user(),
+        ];
+
+        return view('users.profile', $data);
+    }
+
+    public function profileUpdate(UpdateUserProfile $request)
+    {
+       $userData = $request->except(['password']);
+        /*
+         if ($request->password && $request->password !== '') {
+             $userData['password'] = parse_url($request->profile_photo, PHP_URL_PATH);
+         }*/
+        auth()->user()->update($userData);
+        Session::flash('message', 'تم تعديل البيانات الشخصية بنجاح.');
+        return redirect()->route('profile.edit');
+    }
+
 }
