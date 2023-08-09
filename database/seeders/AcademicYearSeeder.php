@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\AcademicYear;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,15 @@ class AcademicYearSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+
+        $currentYear = date('Y');
+        $previousYear = $currentYear - 1;
+
+        AcademicYear::factory()->create([
+            'name' => $previousYear.'/'.$currentYear,
+            'start_date' => $currentYear.'-09-01',
+            'end_date' => $previousYear.'-09-01',
+            'status' => true
+        ]);
     }
 }

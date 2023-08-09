@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OtpController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\StudentClassController;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+/*Route::middleware(['auth','otp.verify'])->group(function () {*/
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -31,4 +33,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('academic-year/select', [AcademicYearController::class, 'selectAcademicYear'])->name('academic-year.select');
     Route::resource('academic-years', AcademicYearController::class);
+});
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('otp', [OtpController::class, 'index'])->name('otp.index');
+    Route::post('otp/verification', [OtpController::class, 'verification'])->name('otp.verification');
+    Route::get('otp/reset', [OtpController::class, 'resend'])->name('otp.resend');
 });

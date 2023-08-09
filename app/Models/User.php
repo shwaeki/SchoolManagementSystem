@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -59,5 +60,21 @@ class User extends Authenticatable
     public function teachers(): HasMany
     {
         return $this->hasMany(Teacher::class);
+    }
+
+    public function generateCode()
+    {
+        $code = rand(1000, 9999);
+
+        Otp::updateOrCreate(
+            [ 'user_id' => auth()->user()->id ],
+            [ 'code' => $code ]
+        );
+
+        $receiverNumber = auth()->user()->phone;
+        $message = "2FA login code is ". $code;
+        //Send SMS
+
+
     }
 }
