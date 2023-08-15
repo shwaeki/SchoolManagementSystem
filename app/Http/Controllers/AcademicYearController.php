@@ -29,6 +29,10 @@ class AcademicYearController extends Controller
     public function store(StoreAcademicYearRequest $request)
     {
         $data = request()->all() + ['added_by' => auth()->id()];
+        if (request('status') === "1") {
+            AcademicYear::where('status', true)->update(['status' => false]);
+        }
+
         AcademicYear::create($data);
         Session::flash('message', 'تم اضافة معلم جديد بنجاح.');
 

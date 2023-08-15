@@ -6,6 +6,8 @@ use App\Models\Student;
 use App\Models\StudentClass;
 use App\Http\Requests\StoreStudentClassRequest;
 use App\Http\Requests\UpdateStudentClassRequest;
+use App\Models\YearClass;
+use Illuminate\Support\Facades\Session;
 
 class StudentClassController extends Controller
 {
@@ -25,7 +27,21 @@ class StudentClassController extends Controller
 
     public function store(StoreStudentClassRequest $request)
     {
-        //
+        $yearClass = YearClass::findOrFail(request('year_class_id'));
+        $students = request('students');
+        foreach ($students as $student){
+            $data = [
+                'student_id' => $student,
+                'teacher_id' => $yearClass->supervisor,
+                'year_class_id' => $yearClass->id,
+                'added_by' => auth()->id(),
+            ];
+            StudentClass::create($data);
+        }
+
+
+        Session::flash('message', 'تم اضافة الطلاب الى الفصل التعليمي بنجاح.');
+        return redirect()->back();
     }
 
 

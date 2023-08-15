@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\ClassesDataTable;
+use App\Models\AcademicYear;
 use App\Models\SchoolClass;
 use App\Http\Requests\StoreSchoolClassRequest;
 use App\Http\Requests\UpdateSchoolClassRequest;
+use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\Session;
 
@@ -38,6 +40,20 @@ class SchoolClassController extends Controller
 
     public function show(SchoolClass $schoolClass)
     {
+        $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
+
+        $current_year_class = $schoolClass->yearClasses()->where('academic_year_id',$adminActiveAcademicYear->id)->get()->first();
+        $data = [
+            "class" => $schoolClass,
+            "class_years" => $schoolClass->yearClasses,
+            "current_year_class" => $current_year_class,
+            "teachers" => Teacher::all(),
+            "students" => Student::all(),
+        ];
+        if ($current_year_class !=null){
+            $data['class_year_students'] = $current_year_class->students;
+        }
+        return view('classes.show', $data);
     }
 
 

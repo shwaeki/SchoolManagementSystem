@@ -81,6 +81,7 @@
 
 
 
+{{--
                     <div class="col-6 col-md-3">
                         <div class="mb-3">
                             <label for="supervisor" class="form-label">  المعلم المشرف </label>
@@ -99,6 +100,7 @@
                             @enderror
                         </div>
                     </div>
+--}}
 
 
                     <div class="col-12 col-md-3">

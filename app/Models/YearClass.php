@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SchoolClass extends Model
+class YearClass extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -18,20 +18,25 @@ class SchoolClass extends Model
         return $this->belongsTo(User::class,'added_by');
     }
 
-/*    public function studentClasses(): hasMany
+
+    public function schoolClass(): belongsTo
+    {
+        return $this->belongsTo(SchoolClass::class);
+    }
+
+    public function students(): hasMany
     {
         return $this->hasMany(StudentClass::class);
-    }*/
-
-    public function yearClasses(): hasMany
-    {
-        return $this->hasMany(YearClass::class);
     }
 
-    public function teachers(): hasMany
+    public function academicYear(): belongsTo
     {
-        return $this->hasMany(Teacher::class);
+        return $this->belongsTo(AcademicYear::class);
     }
 
+    public function supervisorTeacher(): belongsTo
+    {
+        return $this->belongsTo(Teacher::class, 'supervisor');
+    }
 
 }

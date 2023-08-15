@@ -28,7 +28,12 @@ class StudentClass extends Model
         return $this->belongsTo(Teacher::class);
     }
 
-    public function schoolClass(): belongsTo
+    public function yearClass(): belongsTo
+    {
+        return $this->belongsTo(YearClass::class);
+    }
+
+/*    public function schoolClass(): belongsTo
     {
         return $this->belongsTo(SchoolClass::class);
     }
@@ -36,6 +41,6 @@ class StudentClass extends Model
     public function academicYear(): belongsTo
     {
         return $this->belongsTo(AcademicYear::class);
-    }
+    }*/
 
 }

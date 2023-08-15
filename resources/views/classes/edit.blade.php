@@ -80,7 +80,7 @@
                     </div>
 
 
-                    <div class="col-6 col-md-3">
+{{--                    <div class="col-6 col-md-3">
                         <div class="mb-3">
                             <label for="supervisor" class="form-label">  المعلم المشرف </label>
                             <select class="form-select @error('school_class_id') is-invalid @enderror"
@@ -97,7 +97,7 @@
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>
-                    </div>
+                    </div>--}}
 
 
                     <div class="col-12 col-md-3">
