@@ -230,6 +230,8 @@ return [
         'address_street'        => 'الشارع',
         'address_house_no'      => 'رقم البيت',
         'supervisor'            => 'المدرس المشرف',
+        'updated_at'            => 'تاريخ التحديث',
+        'created_at'            => 'تاريخ الانشاء',
         'slug'                  => '',
     ],
 

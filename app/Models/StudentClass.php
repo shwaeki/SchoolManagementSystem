@@ -15,7 +15,7 @@ class StudentClass extends Model
     protected $guarded = [];
     public function addedBy(): belongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'added_by');
     }
 
     public function student(): belongsTo

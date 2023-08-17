@@ -10,11 +10,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Activitylog\Traits\CausesActivity;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles, CausesActivity;
 
 
     protected $fillable = [
@@ -67,12 +68,12 @@ class User extends Authenticatable
         $code = rand(1000, 9999);
 
         Otp::updateOrCreate(
-            [ 'user_id' => auth()->user()->id ],
-            [ 'code' => $code ]
+            ['user_id' => auth()->user()->id],
+            ['code' => $code]
         );
 
         $receiverNumber = auth()->user()->phone;
-        $message = "2FA login code is ". $code;
+        $message = "2FA login code is " . $code;
         //Send SMS
 
 

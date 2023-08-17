@@ -35,7 +35,10 @@ class StudentController extends Controller
     {
         $data = [
             "student" => $student,
+            "student_logs" => $student->activities,
+            "student_classes" => $student->studentClasses,
         ];
+
         Session::put('fileManagerConfig', "Student_" . $student->id);
         return view('student.show', $data);
     }
@@ -53,7 +56,6 @@ class StudentController extends Controller
 
     public function update(UpdateStudentRequest $request, Student $student)
     {
-
         $student->update(request()->all());
         Session::flash('message', 'تم تعديل معلومات الطالب بنجاح.');
         return redirect()->route('students.index');

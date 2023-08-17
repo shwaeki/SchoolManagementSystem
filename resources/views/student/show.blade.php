@@ -248,6 +248,34 @@
                                 <div class="info">
                                     <h6> السنوات الدراسية </h6>
 
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">الفصل</th>
+                                                <th scope="col">السنة الدراسية</th>
+                                                <th scope="col">المدرس</th>
+                                                <th scope="col">اضيف بواسطة</th>
+                                                <th scope="col">تاريخ الاضافة</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @php($i = 0)
+                                            @foreach($student_classes as $class)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{$class->yearClass->schoolClass->name}}</td>
+                                                    <td>{{$class->yearClass->academicYear->name}}</td>
+                                                    <td>{{$class->teacher->name}}</td>
+                                                    <td>{{$class->addedBy->name}}</td>
+                                                    <td>{{$class->created_at->format('d/m/Y')}}</td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
                                 </div>
                             </form>
                         </div>
@@ -260,6 +288,50 @@
                             <form class="section general-info">
                                 <div class="info">
                                     <h6> سجل الطالب </h6>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">الحقل</th>
+                                                <th scope="col">القيمة القديمة</th>
+                                                <th scope="col">القيمة الجديدة</th>
+                                                <th scope="col">المستخدم</th>
+                                                <th scope="col">تاريخ التعديل</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @php($i = 0)
+                                            @foreach($student_logs as $logs)
+                                                @if($logs->event == 'updated')
+                                                    @foreach($logs->properties['attributes'] as $key=>$log)
+                                                        @php($i++)
+                                                        <tr>
+                                                            <td>{{ $i }}</td>
+                                                            <td>{{ trans('validation.attributes.'.$key) }}</td>
+
+                                                            @if (trans()->has('options.'.$logs->properties['old'][$key]))
+                                                                <td>{{ trans('options.'.$logs->properties['old'][$key])  }}</td>
+                                                            @else
+                                                                <td>{{ $logs->properties['old'][$key]  }}</td>
+                                                            @endif
+
+                                                            @if (trans()->has('options.'.$log))
+                                                                <td>{{ trans('options.'.$log)  }}</td>
+                                                            @else
+                                                                <td>{{ $log  }}</td>
+                                                            @endif
+
+                                                            <td>{{$logs->causer->name}}</td>
+                                                            <td>{{$logs->created_at->format('d/m/Y')}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
 
                                 </div>
                             </form>
