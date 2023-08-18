@@ -29,6 +29,34 @@
                 <div class="col-md-12">
                     <h2> معلومات الطالب - {{$student->name}}</h2>
 
+
+                    @if($current_student_class == null)
+                        <div class="alert alert-dismissible alert-icon-left alert-light-warning fade mb-4 show"
+                             role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                <svg xmlns="http://www.w3.org/2000/svg" data-bs-dismiss="alert" width="24"
+                                     height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                     class="feather feather-x close">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="feather feather-alert-triangle">
+                                <path
+                                    d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12" y2="17"></line>
+                            </svg>
+                            لا يوجد فصل دراسي مسجل لهذه السنة {{$adminActiveAcademicYear->name}} .
+                            <a href="#classYearModal" data-bs-toggle="modal"
+                               class="alert-link">اضغط هنا لاضافة الفصل الى السنة الدراسية الحالية.</a>.
+                        </div>
+                    @endif
+
+
                     <ul class="nav nav-pills" id="animateLine" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="student-info-tab" data-bs-toggle="tab"
@@ -219,6 +247,61 @@
                                 </div>
                             </form>
                         </div>
+
+                        @if($current_student_class != null)
+                            <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                                <div class="section general-info">
+                                    <div class="info">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <h6> بيانات الفصل الدراسي لسنة
+                                                    - {{$current_student_class->yearClass->academicYear->name}} </h6>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12 col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="name" class="form-label">الفصل الدراسي </label>
+                                                    <input type="text" id="name" class="form-control"
+                                                           value="{{$current_student_class->yearClass->schoolClass->name}}" disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="name" class="form-label">السنة الدراسية</label>
+                                                    <input type="text" id="name" class="form-control"
+                                                           value="{{$current_student_class->yearClass->academicYear->name}}" disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="name" class="form-label">المدرس المشرف</label>
+                                                    <input type="text" id="name" class="form-control"
+                                                           value="{{$current_student_class->teacher->name}}"
+                                                           disabled>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="col-12 col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="name" class="form-label">اضيف بواسطة</label>
+                                                    <input type="text" id="name" class="form-control"
+                                                           value="{{$current_student_class->addedBy->name}}" disabled>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
 
                     </div>
                 </div>

@@ -106,7 +106,7 @@
 
                     <div class="col-12 col-md-3">
                         <div class="mb-3">
-                            <label for="star_work_date" class="form-label">تاريخ بدك العمل </label>
+                            <label for="star_work_date" class="form-label">تاريخ بدأ العمل </label>
                             <input type="date" id="star_work_date" name="star_work_date"
                                    class="form-control  @error('star_work_date') is-invalid @enderror"
                                    value="{{old('star_work_date',$teacher->star_work_date)}}" required>

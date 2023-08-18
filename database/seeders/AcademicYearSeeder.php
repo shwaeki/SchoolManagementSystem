@@ -19,8 +19,8 @@ class AcademicYearSeeder extends Seeder
 
         AcademicYear::factory()->create([
             'name' => $previousYear.'/'.$currentYear,
-            'start_date' => $currentYear.'-09-01',
-            'end_date' => $previousYear.'-09-01',
+            'end_date' => $currentYear.'-09-01',
+            'start_date' => $previousYear.'-09-01',
             'status' => true
         ]);
     }

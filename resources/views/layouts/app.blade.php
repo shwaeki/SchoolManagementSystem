@@ -171,7 +171,7 @@
                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <div class="avatar-container">
                         <div class="avatar avatar-sm avatar-indicators avatar-online">
-                            <img alt="avatar" src="{{ asset("assets/img/profile-30.png") }}" class="rounded-circle">
+                            <img alt="avatar" src="https://ui-avatars.com/api/?bold=true&name={{ Auth::user()->name }}" class="rounded-circle">
                         </div>
                     </div>
                 </a>

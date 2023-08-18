@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\StudentsDataTable;
+use App\Models\AcademicYear;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use App\Models\Teacher;
 use Illuminate\Support\Facades\Session;
 
 class StudentController extends Controller
@@ -33,10 +35,16 @@ class StudentController extends Controller
 
     public function show(Student $student)
     {
+
+
+        $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
+        $current_student_class = $student->studentClasses()->where('year_class_id',$adminActiveAcademicYear->id)->get()->first();
+
         $data = [
             "student" => $student,
             "student_logs" => $student->activities,
             "student_classes" => $student->studentClasses,
+            "current_student_class" => $current_student_class,
         ];
 
         Session::put('fileManagerConfig', "Student_" . $student->id);

@@ -145,7 +145,7 @@
 
                                         <div class="col-6 col-md-3">
                                             <div class="mb-3">
-                                                <label for="star_work_date" class="form-label">تاريخ بدك العمل </label>
+                                                <label for="star_work_date" class="form-label">تاريخ بدأ العمل </label>
                                                 <input type="text" id="star_work_date" class="form-control"
                                                        value="{{$teacher->star_work_date}}" disabled>
                                             </div>

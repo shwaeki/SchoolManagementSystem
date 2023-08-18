@@ -24,7 +24,7 @@ class UpdateSchoolClassRequest extends FormRequest
         return [
             'name' => 'required|string|max:225',
             'code' => 'required|string|max:225',
-            'phone' => 'nullable|string|digits:10|regex:/^[0-9]+$/',
+            'phone' => 'nullable|string|digits_between:9,10|regex:/^[0-9]+$/',
             'address' => 'nullable|string|max:225',
             'alphabetical_name' => 'nullable|max:2',
             'student_start_age' => 'nullable|numeric',
