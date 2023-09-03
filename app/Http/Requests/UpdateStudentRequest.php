@@ -37,6 +37,14 @@ class UpdateStudentRequest extends FormRequest
             'family_status' => 'required|string',
             'custody' => 'required|string',
             'notes' => 'nullable|string',
+
+            'mother_id' => 'nullable|string|digits:9|regex:/^[0-9]+$/',
+            'father_id' => 'nullable|string|digits:9|regex:/^[0-9]+$/',
+
+            'postal_code' => 'nullable|integer',
+            'family_members' => 'nullable|integer',
+            'zipcode' => 'nullable|integer',
+
         ];
     }
 }

@@ -22,7 +22,8 @@ class StoreStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'identification' => 'required|string|digits:9|regex:/^[0-9]+$/|unique:students',
+            'identification' => 'nullable|string|digits:9|regex:/^[0-9]+$/|unique:students',
+
             'name' => 'required|string|max:225',
             'birth_date' => 'required|date|max:225',
             'birth_place' => 'nullable|string|max:225',
@@ -37,6 +38,16 @@ class StoreStudentRequest extends FormRequest
             'family_status' => 'required|string',
             'custody' => 'required|string',
             'notes' => 'nullable|string',
+
+            'personal_photo' => 'nullable|max:2048',
+            'birth_certificate' => 'nullable|max:2048',
+
+            'mother_id' => 'nullable|string|digits:9|regex:/^[0-9]+$/',
+            'father_id' => 'nullable|string|digits:9|regex:/^[0-9]+$/',
+
+            'postal_code' => 'nullable|integer',
+            'family_members' => 'nullable|integer',
+            'zipcode' => 'nullable|integer',
         ];
     }
 }

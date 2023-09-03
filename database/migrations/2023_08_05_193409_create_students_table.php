@@ -13,20 +13,27 @@ return new class extends Migration {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('identification', 11);
+            $table->string('identification', 11)->nullable();
+            $table->text('personal_photo')->nullable();//new
+            $table->text('birth_certificate')->nullable();//new
             $table->date('birth_date');
             $table->string('birth_place')->nullable();
             $table->string('status')->nullable();
-            $table->string('family_status')->default('unspecified');
+            $table->string('family_status')->defaut('unspecified');
             $table->string('mother_name')->nullable();
             $table->string('mother_phone')->nullable();
+            $table->string('mother_id', 11)->nullable();//new
             $table->string('father_name')->nullable();
             $table->string('father_phone')->nullable();
+            $table->string('father_id', 11)->nullable();//new
             $table->enum('custody', ['mother', 'father','unspecified'])->default('unspecified');
             $table->enum('gender', ['male', 'female'])->nullable();
             $table->string('address')->nullable();
             $table->string('address_street')->nullable();
             $table->string('address_house_no')->nullable();
+            $table->string('zipcode')->nullable();//new
+            $table->string('postal_code')->nullable();//new
+            $table->string('family_members')->nullable();//new
             $table->text('notes')->nullable();
             $table->foreignId('added_by')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->softDeletes();

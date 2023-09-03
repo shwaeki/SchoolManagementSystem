@@ -33,6 +33,12 @@ class StoreTeacherRequest extends FormRequest
             'gender' => 'required|string',
             'status' => 'required|string',
             'notes' => 'nullable|string',
+
+            'id_photo' => 'nullable|max:2048',
+            'job_type' => 'required|string',
+            'bank_name' => 'nullable|string',
+            'bank_branch' => 'nullable|string',
+            'bank_account' => 'nullable|integer',
         ];
     }
 }

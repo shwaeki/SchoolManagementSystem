@@ -64,8 +64,45 @@
                         </div>
                     </div>
 
+                    <div class="col-12 col-md-4">
+                        <div class="mb-3">
+                            <label for="bank_name" class="form-label"> اسم البنك </label>
+                            <input type="text" id="bank_name" name="bank_name"
+                                   class="form-control  @error('bank_name') is-invalid @enderror"
+                                   value="{{old('bank_name',$teacher->bank_name)}}">
+                            @error('bank_name')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
 
                     <div class="col-12 col-md-4">
+                        <div class="mb-3">
+                            <label for="bank_branch" class="form-label"> فرع البنك </label>
+                            <input type="text" id="bank_branch" name="bank_branch"
+                                   class="form-control  @error('bank_branch') is-invalid @enderror"
+                                   value="{{old('bank_branch',$teacher->bank_branch)}}">
+                            @error('bank_branch')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 col-md-4">
+                        <div class="mb-3">
+                            <label for="bank_account" class="form-label"> رقم الحساب </label>
+                            <input type="text" id="bank_account" name="bank_account"
+                                   class="form-control  @error('bank_account') is-invalid @enderror"
+                                   value="{{old('bank_account',$teacher->bank_account)}}">
+                            @error('bank_account')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 col-md-3">
                         <div class="mb-3">
                             <label for="email" class="form-label"> البريد الاكتروني </label>
                             <input type="email" id="email" name="email"
@@ -78,7 +115,7 @@
                     </div>
 
 
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-3">
                         <div class="mb-3">
                             <label for="phone_1" class="form-label"> رقم الهاتف </label>
                             <input type="text" id="phone_1" name="phone_1"
@@ -91,7 +128,7 @@
                     </div>
 
 
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-3">
                         <div class="mb-3">
                             <label for="phone_2" class="form-label"> رقم هاتف احتياطي </label>
                             <input type="text" id="phone_2" name="phone_2"
@@ -142,8 +179,13 @@
                             <select class="form-select @error('gender') is-invalid @enderror"
                                     id="gender" name="gender" required>
                                 <option selected disabled value="">اختر ...</option>
-                                <option {{old('gender',$teacher->gender) == 'male' ? 'selected' : '' }} value="male">ذكر</option>
-                                <option {{old('gender',$teacher->gender) == 'female' ? 'selected' : '' }} value="female">انثى</option>
+                                <option {{old('gender',$teacher->gender) == 'male' ? 'selected' : '' }} value="male">
+                                    ذكر
+                                </option>
+                                <option
+                                    {{old('gender',$teacher->gender) == 'female' ? 'selected' : '' }} value="female">
+                                    انثى
+                                </option>
                             </select>
                             @error('gender')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -151,6 +193,26 @@
                         </div>
                     </div>
 
+                    <div class="col-6 col-md-3">
+                        <div class="mb-3">
+                            <label for="job_type" class="form-label"> نوع الوظيفة </label>
+                            <select class="form-select @error('job_type') is-invalid @enderror"
+                                    id="job_type" name="job_type" required>
+                                <option selected disabled value="">اختر ...</option>
+                                <option
+                                    {{old('job_type',$teacher->job_type) == 'fullJob' ? 'selected' : '' }} value="fullJob">
+                                    وظيفة كاملة
+                                </option>
+                                <option
+                                    {{old('job_type',$teacher->job_type) == 'partTime' ? 'selected' : '' }} value="partTime">
+                                    وظيفة جزئية
+                                </option>
+                            </select>
+                            @error('job_type')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
 
                     <div class="col-6 col-md-3">
                         <div class="mb-3">
@@ -158,22 +220,28 @@
                             <select class="form-select @error('status') is-invalid @enderror"
                                     id="status" name="status" required>
                                 <option selected disabled value="">اختر ...</option>
-                                <option {{old('status',$teacher->status) == 'persistent' ? 'selected' : '' }} value="persistent">
+                                <option
+                                    {{old('status',$teacher->status) == 'persistent' ? 'selected' : '' }} value="persistent">
                                     مستمر
                                 </option>
-                                <option {{old('status',$teacher->status) == 'maternity_leave' ? 'selected' : '' }} value="maternity_leave">
+                                <option
+                                    {{old('status',$teacher->status) == 'maternity_leave' ? 'selected' : '' }} value="maternity_leave">
                                     اجازة ولادة
                                 </option>
-                                <option {{old('status',$teacher->status) == 'unpaid_vacation' ? 'selected' : '' }} value="unpaid_vacation">
+                                <option
+                                    {{old('status',$teacher->status) == 'unpaid_vacation' ? 'selected' : '' }} value="unpaid_vacation">
                                     اجازة بدون راتب
                                 </option>
-                                <option {{old('status',$teacher->status) == 'sick_leave' ? 'selected' : '' }} value="sick_leave">
+                                <option
+                                    {{old('status',$teacher->status) == 'sick_leave' ? 'selected' : '' }} value="sick_leave">
                                     اجازة مرضية
                                 </option>
-                                <option {{old('status',$teacher->status) == 'substitute_teacher' ? 'selected' : '' }} value="substitute_teacher">
+                                <option
+                                    {{old('status',$teacher->status) == 'substitute_teacher' ? 'selected' : '' }} value="substitute_teacher">
                                     معلم بديل
                                 </option>
-                                <option {{old('status',$teacher->status) == 'quit_working' ? 'selected' : '' }} value="quit_working">
+                                <option
+                                    {{old('status',$teacher->status) == 'quit_working' ? 'selected' : '' }} value="quit_working">
                                     ترك العمل
                                 </option>
 
@@ -197,6 +265,16 @@
                         </div>
                     </div>
 
+
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="1" name="work_afternoon"
+                                       @if(old('work_afternoon',$teacher->work_afternoon ) == "1") checked @endif id="work_afternoon">
+                                <label class="form-check-label" for="work_afternoon">يعمل/تعمل بعد الظهيرة ؟</label>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
 

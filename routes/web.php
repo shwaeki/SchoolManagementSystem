@@ -18,11 +18,12 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 /*Route::middleware(['auth','otp.verify'])->group(function () {*/
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','check.year'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
     Route::resource('roles', RoleController::class);
     Route::resource('school-classes', SchoolClassController::class);
+    Route::get('students/report', [StudentController::class, 'report'])->name('students.report');
     Route::resource('students', StudentController::class);
     Route::resource('teachers', TeacherController::class);
     Route::resource('student-classes', StudentClassController::class);

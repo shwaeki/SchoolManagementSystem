@@ -50,7 +50,7 @@
                                 <line x1="12" y1="9" x2="12" y2="13"></line>
                                 <line x1="12" y1="17" x2="12" y2="17"></line>
                             </svg>
-                           الطالب غير مسجل لهذه السنة  {{$adminActiveAcademicYear->name}} .
+                            الطالب غير مسجل لهذه السنة {{$adminActiveAcademicYear->name}} .
 
                         </div>
                     @endif
@@ -100,7 +100,7 @@
                      aria-labelledby="student-info-tab">
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
-                            <form class="section general-info">
+                            <div class="section general-info">
                                 <div class="info">
                                     <div class="row">
                                         <div class="col-9">
@@ -129,7 +129,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12 col-md-3">
                                             <div class="mb-3">
                                                 <label for="birth_date" class="form-label">تاريخ الميلاد </label>
                                                 <input type="text" id="birth_date" class="form-control"
@@ -137,7 +137,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12 col-md-3">
                                             <div class="mb-3">
                                                 <label for="birth_place" class="form-label">مكان الولادة </label>
                                                 <input type="text" id="birth_place" class="form-control"
@@ -145,7 +145,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-3">
                                             <div class="mb-3">
                                                 <label for="address" class="form-label"> العنوان </label>
                                                 <input type="text" id="address" class="form-control"
@@ -154,7 +154,7 @@
                                         </div>
 
 
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-3">
                                             <div class="mb-3">
                                                 <label for="address_street" class="form-label"> الشارع </label>
                                                 <input type="text" id="address" class="form-control"
@@ -162,7 +162,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-3">
                                             <div class="mb-3">
                                                 <label for="address_house_no" class="form-label"> رقم البيت </label>
                                                 <input type="text" id="address" class="form-control"
@@ -170,37 +170,11 @@
                                             </div>
                                         </div>
 
-
-                                        <div class="col-6 col-md-3">
+                                        <div class="col-12 col-md-3">
                                             <div class="mb-3">
-                                                <label for="mother_name" class="form-label"> اسم الام </label>
-                                                <input type="text" id="address" class="form-control"
-                                                       value="{{$student->mother_name}}" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-6 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="mother_phone" class="form-label"> رقم هاتف الام </label>
-                                                <input type="text" id="address" class="form-control"
-                                                       value="{{$student->mother_phone}}" disabled>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-6 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="father_name" class="form-label"> اسم الاب </label>
-                                                <input type="text" id="address" class="form-control"
-                                                       value="{{$student->father_name}}" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-6 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="father_phone" class="form-label"> رقم هاتف الاب </label>
-                                                <input type="text" id="father_phone" class="form-control"
-                                                       value="{{$student->father_phone}}" disabled>
+                                                <label for="zipcode" class="form-label"> الرمز البريدي (Zip)  </label>
+                                                <input type="text" id="zipcode" class="form-control"
+                                                       value="{{$student->zipcode}}" disabled>
                                             </div>
                                         </div>
 
@@ -213,21 +187,12 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-6 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="family_status" class="form-label"> الحالة الاجتماعية
-                                                    للعائلة </label>
-                                                <input type="text" id="family_status" class="form-control"
-                                                       value="{{trans('options.'.$student->family_status)}}" disabled>
-                                            </div>
-                                        </div>
 
-
-                                        <div class="col-6 col-md-3">
+                                        <div class="col-12 col-md-3">
                                             <div class="mb-3">
-                                                <label for="custody" class="form-label"> حضانة الطالب </label>
-                                                <input type="text" id="gender" class="form-control"
-                                                       value="{{trans('options.'.$student->custody)}}" disabled>
+                                                <label for="postal_code" class="form-label">رقم صندوق البريد </label>
+                                                <input type="text" id="postal_code" class="form-control"
+                                                       value="{{$student->postal_code}}" disabled>
                                             </div>
                                         </div>
 
@@ -244,7 +209,103 @@
                                     </div>
 
                                 </div>
-                            </form>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                            <div class="section general-info">
+                                <div class="info">
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <h6> معلومات العائلة</h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="mb-3">
+                                                <label for="mother_name" class="form-label"> اسم الام </label>
+                                                <input type="text" id="mother_name" class="form-control"
+                                                       value="{{$student->mother_name}}" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="mb-3">
+                                                <label for="mother_phone" class="form-label"> رقم هاتف الام </label>
+                                                <input type="text" id="mother_phone" class="form-control"
+                                                       value="{{$student->mother_phone}}" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="mb-3">
+                                                <label for="mother_id" class="form-label"> رقم هوية الام </label>
+                                                <input type="text" id="mother_id" class="form-control"
+                                                       value="{{$student->mother_id}}" disabled>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="mb-3">
+                                                <label for="father_name" class="form-label"> اسم الاب </label>
+                                                <input type="text" id="father_name" class="form-control"
+                                                       value="{{$student->father_name}}" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="mb-3">
+                                                <label for="father_phone" class="form-label"> رقم هاتف الاب </label>
+                                                <input type="text" id="father_phone" class="form-control"
+                                                       value="{{$student->father_phone}}" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="mb-3">
+                                                <label for="father_id" class="form-label"> رقم هوية الاب </label>
+                                                <input type="text" id="father_id" class="form-control"
+                                                       value="{{$student->father_id}}" disabled>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="mb-3">
+                                                <label for="family_status" class="form-label"> الحالة الاجتماعية
+                                                    للعائلة </label>
+                                                <input type="text" id="family_status" class="form-control"
+                                                       value="{{trans('options.'.$student->family_status)}}" disabled>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="mb-3">
+                                                <label for="custody" class="form-label"> حضانة الطالب </label>
+                                                <input type="text" id="gender" class="form-control"
+                                                       value="{{trans('options.'.$student->custody)}}" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-4">
+                                            <div class="mb-3">
+                                                <label for="family_members" class="form-label"> عدد افراد
+                                                    العائلة </label>
+                                                <input type="text" id="family_members" class="form-control"
+                                                       value="{{$student->family_members}}" disabled>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
                         </div>
 
                         @if($current_student_class != null)
@@ -263,7 +324,8 @@
                                                 <div class="mb-3">
                                                     <label for="name" class="form-label">الفصل الدراسي </label>
                                                     <input type="text" id="name" class="form-control"
-                                                           value="{{$current_student_class->yearClass->schoolClass->name}}" disabled>
+                                                           value="{{$current_student_class->yearClass->schoolClass->name}}"
+                                                           disabled>
                                                 </div>
                                             </div>
 
@@ -271,7 +333,8 @@
                                                 <div class="mb-3">
                                                     <label for="name" class="form-label">السنة الدراسية</label>
                                                     <input type="text" id="name" class="form-control"
-                                                           value="{{$current_student_class->yearClass->academicYear->name}}" disabled>
+                                                           value="{{$current_student_class->yearClass->academicYear->name}}"
+                                                           disabled>
                                                 </div>
                                             </div>
 
@@ -283,7 +346,6 @@
                                                            disabled>
                                                 </div>
                                             </div>
-
 
 
                                             <div class="col-12 col-md-3">

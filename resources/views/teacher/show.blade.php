@@ -47,13 +47,13 @@
                         </li>
 
 
-{{--                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="teacher-log-tab" data-bs-toggle="tab" href="#teacher-log"
-                                    role="tab" aria-controls="teacher-log" aria-selected="false" tabindex="-1">
-                                <i class="fas fa-history"></i>
-                                سجل الطالب
-                            </button>
-                        </li>--}}
+                        {{--                        <li class="nav-item" role="presentation">
+                                                    <button class="nav-link" id="teacher-log-tab" data-bs-toggle="tab" href="#teacher-log"
+                                                            role="tab" aria-controls="teacher-log" aria-selected="false" tabindex="-1">
+                                                        <i class="fas fa-history"></i>
+                                                        سجل الطالب
+                                                    </button>
+                                                </li>--}}
 
 
                     </ul>
@@ -112,35 +112,54 @@
 
                                         <div class="col-12 col-md-4">
                                             <div class="mb-3">
-                                                <label for="email" class="form-label"> البريد الاكتروني  </label>
-                                                <input type="text" id="email" class="form-control"
-                                                       value="{{$teacher->email}}" disabled>
+                                                <label for="bank_name" class="form-label"> اسم البنك </label>
+                                                <input type="text" id="bank_name" class="form-control"
+                                                       value="{{$teacher->bank_name}}" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4">
+                                            <div class="mb-3">
+                                                <label for="bank_branch" class="form-label"> فرع البنك </label>
+                                                <input type="text" id="bank_branch" class="form-control"
+                                                       value="{{$teacher->bank_branch}}" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4">
+                                            <div class="mb-3">
+                                                <label for="address" class="form-label"> رقم الحساب </label>
+                                                <input type="text" id="address" class="form-control"
+                                                       value="{{$teacher->address}}" disabled>
                                             </div>
                                         </div>
 
 
-
-
-
-
-                                        <div class="col-6 col-md-4">
+                                        <div class="col-12 col-md-3">
                                             <div class="mb-3">
-                                                <label for="phone_1" class="form-label"> رقم الهاتف  </label>
+                                                <label for="bank_account" class="form-label"> البريد الاكتروني </label>
+                                                <input type="text" id="bank_account" class="form-control"
+                                                       value="{{$teacher->bank_account}}" disabled>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-6 col-md-3">
+                                            <div class="mb-3">
+                                                <label for="phone_1" class="form-label"> رقم الهاتف </label>
                                                 <input type="text" id="phone_1" class="form-control"
                                                        value="{{$teacher->phone_1}}" disabled>
                                             </div>
                                         </div>
 
 
-                                  <div class="col-6 col-md-4">
+                                        <div class="col-6 col-md-3">
                                             <div class="mb-3">
-                                                <label for="phone_1" class="form-label"> رقم هاتف احتياطي  </label>
+                                                <label for="phone_1" class="form-label"> رقم هاتف احتياطي </label>
                                                 <input type="text" id="phone_2" class="form-control"
                                                        value="{{$teacher->phone_2}}" disabled>
                                             </div>
                                         </div>
-
-
 
 
                                         <div class="col-6 col-md-3">
@@ -154,7 +173,7 @@
 
                                         <div class="col-6 col-md-3">
                                             <div class="mb-3">
-                                                <label for="gender" class="form-label">  فصل المدرس </label>
+                                                <label for="gender" class="form-label"> فصل المدرس </label>
                                                 <input type="text" id="gender" class="form-control"
                                                        value="{{$teacher?->schoolClass?->name }}" disabled>
                                             </div>
@@ -170,12 +189,28 @@
                                         </div>
 
 
+                                        <div class="col-6 col-md-3">
+                                            <div class="mb-3">
+                                                <label for="status" class="form-label">نوع الوظيفة </label>
+                                                <input type="text" id="status" class="form-control"
+                                                       value="{{trans('options.'.$teacher->job_type)}}" disabled>
+                                            </div>
+                                        </div>
 
                                         <div class="col-6 col-md-3">
                                             <div class="mb-3">
                                                 <label for="status" class="form-label"> حالة المعلم </label>
                                                 <input type="text" id="status" class="form-control"
                                                        value="{{trans('options.'.$teacher->status)}}" disabled>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-6 col-md-3">
+                                            <div class="mb-3">
+                                                <label for="status" class="form-label"> يعمل/تعمل بعد الظهيرة ؟ </label>
+                                                <input type="text" id="status" class="form-control"
+                                                       value="{{$teacher->work_afternoon ? 'نعم' : 'لا'}}" disabled>
                                             </div>
                                         </div>
 
@@ -217,21 +252,21 @@
                 </div>
 
 
-{{--
-                <div class="tab-pane fade " id="teacher-log" role="tabpanel" aria-labelledby="teacher-log-tab">
-                    <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
-                            <form class="section general-info">
-                                <div class="info">
-                                    <h6> سجل الطالب </h6>
+                {{--
+                                <div class="tab-pane fade " id="teacher-log" role="tabpanel" aria-labelledby="teacher-log-tab">
+                                    <div class="row">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                                            <form class="section general-info">
+                                                <div class="info">
+                                                    <h6> سجل الطالب </h6>
 
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
                                 </div>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
---}}
+                --}}
 
             </div>
 

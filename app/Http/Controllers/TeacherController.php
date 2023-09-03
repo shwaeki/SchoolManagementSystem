@@ -29,10 +29,24 @@ class TeacherController extends Controller
 
     public function store(StoreTeacherRequest $request)
     {
-        $data = request()->all() + ['added_by' => auth()->id()];
-        Teacher::create($data);
-        Session::flash('message', 'تم اضافة معلم جديد بنجاح.');
+        $addedData = [
+            'added_by' => auth()->id(),
+            'work_afternoon' => request()->has('work_afternoon') ? 1 : 0,
+        ];
 
+
+        $data = request()->all() + $addedData;
+
+        $teacher = Teacher::create($data);
+
+        if ($request->hasFile('id_photo')) {
+            $extension = $request->file('id_photo')->getClientOriginalExtension();
+            $fileNameToStore = " صورة الهوية" . '.' . $extension;
+            $request->file('id_photo')->storeAs("public/files/Teacher_" . $teacher->id, $fileNameToStore);
+        }
+
+
+        Session::flash('message', 'تم اضافة معلم جديد بنجاح.');
         return redirect()->route('teachers.index');
     }
 
@@ -61,9 +75,16 @@ class TeacherController extends Controller
 
     public function update(UpdateTeacherRequest $request, Teacher $teacher)
     {
-        $teacher->update(request()->all());
+
+        $addedData = [
+            'work_afternoon' => request()->has('work_afternoon') ? 1 : 0,
+        ];
+
+        $data = request()->all() + $addedData;
+
+        $teacher->update($data);
         Session::flash('message', 'تم تعديل معلومات المعلم بنجاح.');
-        return redirect()->route('teachers.index');
+        return redirect()->route('teachers.show', $teacher);
     }
 
 

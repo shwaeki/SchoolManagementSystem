@@ -7,6 +7,7 @@ use App\Models\AcademicYear;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use Carbon\Carbon;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\Session;
 
@@ -24,10 +25,29 @@ class StudentController extends Controller
     }
 
 
+    public function report()
+    {
+        return view('student.report');
+    }
+
+
     public function store(StoreStudentRequest $request)
     {
         $data = request()->all() + ['added_by' => auth()->id()];
-        Student::create($data);
+        $student = Student::create($data);
+
+        if ($request->hasFile('personal_photo')) {
+            $extension = $request->file('personal_photo')->getClientOriginalExtension();
+            $fileNameToStore = "الصورة الشخصية" . '.' . $extension;
+            $request->file('personal_photo')->storeAs("public/files/Student_". $student->id, $fileNameToStore);
+        }
+
+        if ($request->hasFile('birth_certificate')) {
+            $extension = $request->file('birth_certificate')->getClientOriginalExtension();
+            $fileNameToStore = "شهادة الميلاد " . '.' . $extension;
+            $request->file('birth_certificate')->storeAs("public/files/Student_". $student->id, $fileNameToStore);
+        }
+
         Session::flash('message', 'تم اضافة الطالب بنجاح.');
         return redirect()->route('students.index');
     }
@@ -66,7 +86,7 @@ class StudentController extends Controller
     {
         $student->update(request()->all());
         Session::flash('message', 'تم تعديل معلومات الطالب بنجاح.');
-        return redirect()->route('students.index');
+        return redirect()->route('students.show',$student);
     }
 
 

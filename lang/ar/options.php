@@ -14,6 +14,8 @@ return [
     'sick_leave' => 'اجازة مرضية',
     'substitute_teacher' => 'معلم بديل',
     'quit_working' => ' ترك العمل',
+    'fullJob' => 'وظيفة كاملة',
+    'partTime' => 'وظيفة جزئية',
 ];
 
 

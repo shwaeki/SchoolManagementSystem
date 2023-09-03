@@ -23,6 +23,14 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('email')->nullable();
             $table->enum('gender', ['male', 'female'])->nullable();
+
+            $table->enum('job_type', ['fullJob', 'partTime'])->nullable(); //new
+            $table->boolean('work_afternoon')->default(false); //new
+            $table->string('bank_name')->nullable(); //new
+            $table->string('bank_branch')->nullable(); //new
+            $table->string('bank_account')->nullable(); //new
+            $table->text('id_photo')->nullable(); //new
+
             $table->text('notes')->nullable();
             $table->foreignId('school_class_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('added_by')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('cascade');
