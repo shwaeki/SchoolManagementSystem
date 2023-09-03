@@ -50,9 +50,8 @@
                                 <line x1="12" y1="9" x2="12" y2="13"></line>
                                 <line x1="12" y1="17" x2="12" y2="17"></line>
                             </svg>
-                            لا يوجد فصل دراسي مسجل لهذه السنة {{$adminActiveAcademicYear->name}} .
-                            <a href="#classYearModal" data-bs-toggle="modal"
-                               class="alert-link">اضغط هنا لاضافة الفصل الى السنة الدراسية الحالية.</a>.
+                           الطالب غير مسجل لهذه السنة  {{$adminActiveAcademicYear->name}} .
+
                         </div>
                     @endif
 

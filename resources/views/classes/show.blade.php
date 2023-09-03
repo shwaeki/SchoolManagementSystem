@@ -365,7 +365,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p>قائمة الطلاب الغير مسجلين في السنة الحالبة.</p>
+                           <p>قائمة الطلاب .</p>
 
 
                             <div class="table-responsive">

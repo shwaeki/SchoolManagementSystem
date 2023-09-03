@@ -105,7 +105,7 @@
                 </a>
             </li>
             <li class="nav-item theme-text">
-                <a href="{{route('home')}}" class="nav-link"> ادارة المدارس </a>
+                <a href="{{route('home')}}" class="nav-link"> رياض المجد </a>
             </li>
         </ul>
 

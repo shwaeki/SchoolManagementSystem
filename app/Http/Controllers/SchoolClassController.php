@@ -9,6 +9,8 @@ use App\Http\Requests\StoreSchoolClassRequest;
 use App\Http\Requests\UpdateSchoolClassRequest;
 use App\Models\Student;
 use App\Models\Teacher;
+use Dflydev\DotAccessData\Data;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class SchoolClassController extends Controller
@@ -42,15 +44,28 @@ class SchoolClassController extends Controller
     {
         $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
 
-        $current_year_class = $schoolClass->yearClasses()->where('academic_year_id',$adminActiveAcademicYear->id)->get()->first();
+        $current_year_class = $schoolClass->yearClasses()->where('academic_year_id', $adminActiveAcademicYear->id)->get()->first();
+
+        $all_students = [];
+
+        if ($current_year_class != null) {
+            $all_students = DB::table('student_classes')
+                ->select('student_id')
+                ->join('year_classes', 'year_classes.id', '=', 'student_classes.year_class_id')
+                ->where('academic_year_id', '=', $current_year_class->id)
+                ->where('school_class_id', '=', $schoolClass->id)
+                ->get()->pluck('student_id')->toArray();
+        }
+
         $data = [
             "class" => $schoolClass,
             "class_years" => $schoolClass->yearClasses,
             "current_year_class" => $current_year_class,
             "teachers" => Teacher::all(),
-            "students" => Student::all(),
+            "students" => Student::whereNotIn('id', $all_students)->get(),
         ];
-        if ($current_year_class !=null){
+
+        if ($current_year_class != null) {
             $data['class_year_students'] = $current_year_class->students;
         }
         return view('classes.show', $data);
