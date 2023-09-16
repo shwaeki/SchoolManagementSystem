@@ -7,9 +7,11 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\StudentClassController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentReportController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\YearClassController;
+use App\Models\StudentReport;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +30,7 @@ Route::middleware(['auth','check.year'])->group(function () {
     Route::resource('teachers', TeacherController::class);
     Route::resource('student-classes', StudentClassController::class);
     Route::resource('year-classes', YearClassController::class);
-
+    Route::resource('student-reports', StudentReportController::class);
 
     Route::get('profile', [UserController::class, 'profile'])->name('profile.edit');
     Route::put('profile', [UserController::class, 'profileUpdate'])->name('profile.update');

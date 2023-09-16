@@ -7,6 +7,7 @@ use App\Models\AcademicYear;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use App\Models\StudentReport;
 use Carbon\Carbon;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\Session;
@@ -64,6 +65,7 @@ class StudentController extends Controller
             "student" => $student,
             "student_logs" => $student->activities,
             "student_classes" => $student->studentClasses,
+            "student_reports" => StudentReport::all(),
             "current_student_class" => $current_student_class,
         ];
 

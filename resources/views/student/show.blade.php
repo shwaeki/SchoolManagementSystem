@@ -90,6 +90,15 @@
                             </button>
                         </li>
 
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="student-reports-tab" data-bs-toggle="tab"
+                                    href="#student-reports"
+                                    role="tab" aria-controls="student-reports" aria-selected="false" tabindex="-1">
+                                <i class="fas fa-file-alt"></i>
+                                التقارير
+                            </button>
+                        </li>
+
 
                     </ul>
                 </div>
@@ -172,7 +181,7 @@
 
                                         <div class="col-12 col-md-3">
                                             <div class="mb-3">
-                                                <label for="zipcode" class="form-label"> الرمز البريدي (Zip)  </label>
+                                                <label for="zipcode" class="form-label"> الرمز البريدي (Zip) </label>
                                                 <input type="text" id="zipcode" class="form-control"
                                                        value="{{$student->zipcode}}" disabled>
                                             </div>
@@ -366,7 +375,6 @@
 
                     </div>
                 </div>
-
                 <div class="tab-pane fade " id="student-files" role="tabpanel" aria-labelledby="student-files-tab">
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
@@ -384,7 +392,6 @@
 
                     </div>
                 </div>
-
                 <div class="tab-pane fade " id="student-classes" role="tabpanel" aria-labelledby="student-classes-tab">
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
@@ -483,11 +490,133 @@
 
                     </div>
                 </div>
+                <div class="tab-pane fade " id="student-reports" role="tabpanel" aria-labelledby="student-reports-tab">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                            <form class="section general-info">
+                                <div class="info">
 
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <h6> التقارير </h6>
+                                        </div>
+                                        <div class="col-3 text-end">
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#reportModal">
+                                                اضافة تقرير جديد
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">الاسم</th>
+                                                <th scope="col">اضيف بواسطة</th>
+                                                <th scope="col">خيارات</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($student_reports as $report)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{$report->name}}</td>
+                                                    <td>{{$report->addedBy->name}}</td>
+                                                    <td>
+                                                        <a target="_blank" href="{{route('student-reports.show',['student_report'=>$report, 'student'=> $student])}}" type="button" class="btn btn-delete">
+                                                            تصدير
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
         </div>
 
     </div>
 
+
+    <div class="modal fade" id="reportModal">
+        <div class="modal-dialog  modal-dialog-centered  modal-xl">
+            <div class="modal-content">
+                <form action="{{route('student-reports.store')}}" method="post">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"> اضافة تقرير جديد</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">اسم التقرير</label>
+                            <input type="text" id="name" name="name" class="form-control"
+                                   value="{{old('name')}}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">عنوان التقرير</label>
+                            <input type="text" id="subject" name="subject" class="form-control"
+                                   value="{{old('subject')}}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="contentText" class="form-label">محتوى التقرير</label>
+                            <div class="mb-2">
+                                <button type="button" data-name="[name]" class="btn btn-delete add_dynamic">
+                                    اسم الطالب
+                                </button>
+                                <button type="button" data-name="[identification]" class="btn btn-delete add_dynamic">
+                                    رقم الهوية
+                                </button>
+                                <button type="button" data-name="[birthDate]" class="btn btn-delete add_dynamic">
+                                    تاريخ الميلاد
+                                </button>
+                            </div>
+                            <textarea id="contentText" name="content" class="form-control"
+                                      rows="8" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-delete" data-bs-dismiss="modal">اغلاق</button>
+                        <button type="submit" class="btn btn-primary">حفظ</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
+
+@push('scripts')
+    <script>
+
+        $(".add_dynamic").click(function () {
+            var content = $("#contentText")
+            var field = $(this).attr("data-name");
+
+            var selectedText = getSelectedText("#contentText");
+            if (selectedText === "") {
+                console.log(1);
+                content.val(content.val() + " " + field);
+            } else {
+                console.log(2);
+                content.val(content.val().replace(selectedText, field + " "));
+            }
+
+        });
+
+        function getSelectedText(selector) {
+            return $(selector).val().substring($(selector)[0].selectionStart, $(selector)[0].selectionEnd);
+        }
+
+    </script>
+@endpush
