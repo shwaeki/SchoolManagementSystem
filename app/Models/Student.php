@@ -45,4 +45,10 @@ class Student extends Model
             ->logOnlyDirty();
 
     }
+
+    public function SchoolClasses(): hasManyThrough
+    {
+        return $this->hasManyThrough(StudentClass::class,SchoolClass::class, );
+    }
+
 }

@@ -5,11 +5,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use App\Models\StudentReport;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use PDF;
 class StudentReportController extends Controller
 {
+
+
+    public function create()
+    {
+        return view('student.report.create');
+    }
+
     public function store(Request $request)
     {
         $data = request()->all() + ['added_by' => auth()->id()];
@@ -31,19 +39,7 @@ class StudentReportController extends Controller
         ];
 
 
-        //   if($request->has('download')){
-
-       // $html = view('student.report', $data)->toArabicHTML();
-
-        $pdf = PDF::loadView('student.report', $data);
-        $wimg = public_path('assets/img/report.jpg');
-        $pdf->getMpdf()->SetWatermarkImage($wimg, 0.4, 'D', 'F');
-
-        return $pdf->stream('report2.pdf');
-
-        //    }
-
-        return view('student.report', $data);
+        return view('student.report.show', $data);
     }
 
 

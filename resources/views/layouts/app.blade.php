@@ -340,6 +340,9 @@
                         <li>
                             <a href="{{route('students.create')}}"> اضافة </a>
                         </li>
+                        <li>
+                            <a href="{{route('student-reports.create')}}"> أصافة تقرير </a>
+                        </li>
                     </ul>
                 </li>
 
