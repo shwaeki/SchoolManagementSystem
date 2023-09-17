@@ -46,7 +46,7 @@
                             <input type="date" id="birth_date" name="birth_date"
                                    class="form-control  @error('birth_date') is-invalid @enderror"
                                    value="{{old('birth_date')}}"
-                                   min="{{ date("Y") + 3 }}-01-01" max="{{ date("Y") + 5 }}-12-31" required>
+                                   min="{{ date("Y") - 5 }}-01-01" max="{{ date("Y")  }}-12-31" required>
                             @error('birth_date')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
