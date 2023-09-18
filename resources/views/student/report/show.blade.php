@@ -8,12 +8,15 @@
     <link href="{{ asset("assets/bootstrap/css/bootstrap.rtl.min.css") }}" rel="stylesheet" type="text/css"/>
 
     <style>
+
         body {
-            background: url({{ URL::asset('assets/img/report.jpg') }}) no-repeat center center;
-            background-size: contain;
-            position: relative;
             font-family: Arial, Helvetica, sans-serif;
             font-size: 20px;
+        }
+
+        .content {
+            background: url(http://127.0.0.1:8000/assets/img/report.jpg) repeat top center;
+            background-size: contain;
         }
 
         html, body {
@@ -22,8 +25,8 @@
         }
 
         @page {
-            size: A4;
-            margin: 15mm 0 15mm 0;
+            size: A4 portrait;
+            margin: 20mm;
         }
 
         html {
@@ -40,22 +43,19 @@
     </style>
 </head>
 <body>
-<div>
-    <div style="position: absolute;top:20%;right: 50%;transform: translateX(50%);">
-        <div><h1>{{$studentReport->subject}}</h1></div>
+<div class="content">
+    <div class="text-center" style="padding-top: 60mm;">
+        <h1 class="">{{$studentReport->subject}}</h1>
     </div>
-
-    <div style="position: absolute; top:30%;right: 50%;transform: translateX(50%);width: 80%;text-align: center">
-        <div><p>{!! $content !!}</p></div>
-    </div>
+    <div class="text-center"><p>{!! $content !!}</p></div>
 </div>
 
 <script src="{{ asset("assets/bootstrap/js/bootstrap.bundle.min.js") }}"></script>
 <script>
-    window.onload = function () {
-        window.print();
-        setTimeout(window.close, 0);
-    }
+    /*    window.onload = function () {
+            window.print();
+            setTimeout(window.close, 0);
+        }*/
 </script>
 </body>
 
