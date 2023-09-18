@@ -15,7 +15,7 @@
         }
 
         .content {
-            background: url(http://127.0.0.1:8000/assets/img/report.jpg) repeat top center;
+            background: url({{ URL::asset('assets/img/report.jpg') }}) repeat top center;
             background-size: contain;
         }
 
