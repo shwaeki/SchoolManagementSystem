@@ -275,7 +275,7 @@
                                     <div class="info">
                                         <div class="row">
                                             <div class="col-9">
-                                                <h6> قائمة الطلاب</h6>
+                                                <h6 class="mb-0"> قائمة الطلاب</h6>
                                             </div>
                                             <div class="col-3 text-end">
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -286,9 +286,10 @@
                                         </div>
 
                                         <div class="table-responsive">
-                                            <table class="table table-hover table-striped table-bordered">
+                                            <table class="table table-hover table-striped table-bordered dataTableCustomTitleConfig">
                                                 <thead>
                                                 <tr>
+                                                    <th scope="col">#</th>
                                                     <th scope="col">الاسم</th>
                                                     <th scope="col">رقم الهوية</th>
                                                     <th scope="col">عنوان السكن</th>
@@ -301,9 +302,10 @@
 
                                                 @foreach($class_year_students as $data)
                                                     <tr>
-                                                        <td>{{$data->student->name}}</td>
-                                                        <td>{{$data->student->identification}}</td>
-                                                        <td>{{$data->student->address}}</td>
+                                                        <td>{{$data->id}} </td>
+                                                        <td>  {{$data->student?->name}}</td>
+                                                        <td>{{$data->student?->identification}}</td>
+                                                        <td>{{$data->student?->address}}</td>
                                                         <td>
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                                  viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -315,7 +317,7 @@
                                                                 <line x1="8" y1="2" x2="8" y2="6"></line>
                                                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                                                             </svg>
-                                                            <span class="table-inner-text">{{$data->student->birth_date}}</span>
+                                                            <span class="table-inner-text">{{$data->student?->birth_date}}</span>
                                                         </td>
                                                         <td>
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -485,3 +487,34 @@
     </div>
 
 @endsection
+
+@push("scripts")
+    <script>
+
+        $('.dataTableCustomTitleConfig').DataTable({
+            "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'B><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
+                "<'table-responsive'tr>" +
+                "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+            "language": {"url": "{{asset('assets/datatable_arabic.json')}}"},
+
+            buttons: [
+
+                {
+                    extend: 'excel',
+                    messageTop:  'طلاب روضة - {{$class->name}} - المعلمة : {{$current_year_class?->supervisorTeacher?->name}} : رقم الروضة : {{$class->code}}',
+                    
+                },
+
+                {
+                    extend: 'print',
+                    messageTop: function () {
+                        return 'طلاب روضة - {{$class->name}} - المعلمة : {{$current_year_class?->supervisorTeacher?->name}} : رقم الروضة : {{$class->code}}';
+                    },
+                    messageBottom: null
+                }
+            ],
+            "pageLength": 25
+        });
+
+    </script>
+@endpush

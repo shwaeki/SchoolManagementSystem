@@ -25,7 +25,14 @@ class Student extends Model
 
     public function studentClasses(): hasMany
     {
-        return $this->hasMany(StudentClass::class);
+       // return $this->hasMany(StudentClass::class);
+
+        return $this->hasMany(StudentClass::class)
+            ->whereHas('yearClass', function ($query) {
+                $query->whereHas('schoolClass', function ($query) {
+                    $query->whereNull('deleted_at');
+                });
+            });
     }
 
 

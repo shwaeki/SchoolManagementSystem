@@ -50,10 +50,15 @@
 
 
     <link href="{{ asset("assets/plugins/src/table/datatable/datatables.css")  }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset("assets/plugins/css/light/table/datatable/dt-global_style.css")  }}" rel="stylesheet"
-          type="text/css"/>
-    <link href="{{ asset("assets/plugins/css/dark/table/datatable/dt-global_style.css")  }}" rel="stylesheet"
-          type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/light/table/datatable/dt-global_style.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/light/table/datatable/custom_dt_miscellaneous.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/light/table/datatable/custom_dt_custom.css")  }}" rel="stylesheet" type="text/css"/>
+    
+    <link href="{{ asset("assets/plugins/css/dark/table/datatable/dt-global_style.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/dark/table/datatable/custom_dt_miscellaneous.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/dark/table/datatable/custom_dt_custom.css")  }}" rel="stylesheet" type="text/css"/>
+
+    <link href="{{ asset("assets/plugins/src/jquery-ui/jquery-ui.min.css")  }}" rel="stylesheet" type="text/css"/>
 
 
     <link href="{{ asset("assets/plugins/src/sweetalerts2/sweetalerts2.css")  }}" rel="stylesheet" type="text/css"/>
@@ -678,13 +683,31 @@
 <script src="{{ asset("assets/plugins/src/waves/waves.min.js") }}"></script>
 <script src="{{ asset("assets/plugins/src/sweetalerts2/sweetalerts2.min.js") }}"></script>
 <script src="{{ asset("assets/plugins/src/table/datatable/datatables.js") }}"></script>
+<script src="{{ asset("assets/plugins/src/table/datatable/button-ext/dataTables.buttons.min.js") }}"></script>
+<script src="{{ asset("assets/plugins/src/table/datatable/button-ext/buttons.html5.min.js") }}"></script>
+<script src="{{ asset("assets/plugins/src/table/datatable/button-ext/buttons.print.min.js") }}"></script>
+<script src="{{ asset("assets/plugins/src/table/datatable/button-ext/jszip.min.js") }}"></script>
+<script src="{{ asset("assets/plugins/src/jquery-ui/jquery-ui.min.js")  }}"></script>
 
 <script src="{{ asset("assets/js/custom.js")  }}"></script>
 <script src="{{ asset("assets/loader.js")  }}"></script>
 <script src="{{ asset("assets/app.js")}}"></script>
 
 @stack('scripts')
+<script>
 
+    $('.dataTableConfig').DataTable({
+        "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'B><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
+            "<'table-responsive'tr>" +
+            "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+        "language": {"url": "{{asset('assets/datatable_arabic.json')}}"},
+
+        'buttons' : ["excel", 'print'],
+        
+        "pageLength": 25
+    });
+
+</script>
 
 
 </body>

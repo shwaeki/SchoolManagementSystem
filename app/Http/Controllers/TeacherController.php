@@ -37,6 +37,14 @@ class TeacherController extends Controller
 
         $data = request()->all() + $addedData;
 
+        $date1 = str_replace('/', '-', request('birth_date'));
+        $data['birth_date'] = date('Y-m-d',strtotime($date1));
+
+        $date2 = str_replace('/', '-', request('star_work_date'));
+        $data['star_work_date'] = date('Y-m-d',strtotime($date2));
+
+
+
         $teacher = Teacher::create($data);
 
         if ($request->hasFile('id_photo')) {
@@ -81,6 +89,13 @@ class TeacherController extends Controller
         ];
 
         $data = request()->all() + $addedData;
+
+        $date1 = str_replace('/', '-', request('birth_date'));
+        $data['birth_date'] = date('Y-m-d',strtotime($date1));
+
+        $date2 = str_replace('/', '-', request('star_work_date'));
+        $data['star_work_date'] = date('Y-m-d',strtotime($date2));
+
 
         $teacher->update($data);
         Session::flash('message', 'تم تعديل معلومات المعلم بنجاح.');

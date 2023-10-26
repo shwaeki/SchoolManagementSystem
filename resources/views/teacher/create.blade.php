@@ -41,9 +41,10 @@
                     <div class="col-12 col-md-3">
                         <div class="mb-3">
                             <label for="birth_date" class="form-label">تاريخ الميلاد </label>
-                            <input type="date" id="birth_date" name="birth_date"
+                            <input type="text" id="birth_date" name="birth_date"
                                    class="form-control  @error('birth_date') is-invalid @enderror"
-                                   value="{{old('birth_date')}}" required>
+                                   value="{{date('d/m/Y', strtotime(old('birth_date')))}}" required>
+
                             @error('birth_date')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
@@ -103,7 +104,7 @@
 
                     <div class="col-12 col-md-4">
                         <div class="mb-3">
-                            <label for="bank_account" class="form-label"> رقم الحساب  </label>
+                            <label for="bank_account" class="form-label"> رقم الحساب </label>
                             <input type="text" id="bank_account" name="bank_account"
                                    class="form-control  @error('bank_account') is-invalid @enderror"
                                    value="{{old('bank_account')}}">
@@ -155,9 +156,9 @@
                     <div class="col-12 col-md-3">
                         <div class="mb-3">
                             <label for="star_work_date" class="form-label">تاريخ بدأ العمل </label>
-                            <input type="date" id="star_work_date" name="star_work_date"
+                            <input type="text" id="star_work_date" name="star_work_date"
                                    class="form-control  @error('star_work_date') is-invalid @enderror"
-                                   value="{{old('star_work_date')}}" required>
+                                   value="{{date('d/m/Y', strtotime(old('star_work_date')))}}"  required>
                             @error('star_work_date')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
@@ -172,7 +173,7 @@
                                 <option selected disabled value="">اختر ...</option>
                                 @foreach($schoolClasses as $class)
                                     <option
-                                        {{old('school_class_id') == $class->name ? 'selected' : '' }} value="{{$class->id}}">
+                                            {{old('school_class_id') == $class->name ? 'selected' : '' }} value="{{$class->id}}">
                                         {{$class->name}}
                                     </option>
                                 @endforeach
@@ -200,16 +201,18 @@
                     </div>
 
 
-
-
                     <div class="col-6 col-md-3">
                         <div class="mb-3">
                             <label for="job_type" class="form-label"> نوع الوظيفة </label>
                             <select class="form-select @error('job_type') is-invalid @enderror"
                                     id="job_type" name="job_type" required>
                                 <option selected disabled value="">اختر ...</option>
-                                <option {{old('job_type') == 'fullJob' ? 'selected' : '' }} value="fullJob">وظيفة كاملة</option>
-                                <option {{old('job_type') == 'partTime' ? 'selected' : '' }} value="partTime">وظيفة جزئية</option>
+                                <option {{old('job_type') == 'fullJob' ? 'selected' : '' }} value="fullJob">وظيفة
+                                    كاملة
+                                </option>
+                                <option {{old('job_type') == 'partTime' ? 'selected' : '' }} value="partTime">وظيفة
+                                    جزئية
+                                </option>
                             </select>
                             @error('job_type')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -283,3 +286,10 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $( "#birth_date" ).datepicker({dateFormat: 'dd/mm/yy',});
+        $( "#star_work_date" ).datepicker({dateFormat: 'dd/mm/yy',});
+    </script>
+@endpush

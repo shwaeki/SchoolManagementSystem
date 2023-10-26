@@ -43,10 +43,10 @@
                     <div class="col-12 col-md-3">
                         <div class="mb-3">
                             <label for="birth_date" class="form-label">تاريخ الميلاد </label>
-                            <input type="date" id="birth_date" name="birth_date"
+                            <input type="text" id="birth_date" name="birth_date"
                                    class="form-control  @error('birth_date') is-invalid @enderror"
-                                   value="{{old('birth_date')}}"
-                                   min="{{ date("Y") - 5 }}-01-01" max="{{ date("Y")  }}-12-31" required>
+                                   value="{{date('d/m/Y', strtotime(old('birth_date')))}}"
+                                {{--   min="{{ date("Y") - 5 }}-01-01" max="{{ date("Y")  }}-12-31"--}} required>
                             @error('birth_date')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
@@ -324,3 +324,11 @@
         <button type="submit" class="btn btn-primary ml-3">اضافة</button>
     </form>
 @endsection
+
+@push('scripts')
+    <script>
+        $( "#birth_date" ).datepicker({
+            dateFormat: 'dd/mm/yy',
+        });
+    </script>
+@endpush

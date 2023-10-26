@@ -18,14 +18,21 @@ body.dark .toggle-list {
 }
 
 /* HTML 5 */
+
+body.dark .dt-buttons {
+  margin-right: 10px;
+}
+
 body.dark .dt-buttons .dt-button {
   color: #fff !important;
   background-color: #4361ee !important;
   border-color: #4361ee;
   margin-bottom: 5px;
   margin-left: 5px;
+  border-radius: 5px;
+  border: 0;
+  padding: 5px 15px;
 }
-
 /* Multiple Tables */
 body.dark #DataTables_Table_1_wrapper {
   margin-top: 70px;

@@ -67,6 +67,7 @@ class SchoolClassController extends Controller
 
         if ($current_year_class != null) {
             $data['class_year_students'] = $current_year_class->students;
+          //  dd($current_year_class->students);
         }
         return view('classes.show', $data);
     }

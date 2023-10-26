@@ -34,19 +34,25 @@ class StudentController extends Controller
 
     public function store(StoreStudentRequest $request)
     {
-        $data = request()->all() + ['added_by' => auth()->id()];
+
+        $all_data = request()->all();
+
+        $date = str_replace('/', '-', request('birth_date'));
+        $all_data['birth_date'] = date('Y-m-d',strtotime($date));
+
+        $data = $all_data + ['added_by' => auth()->id()];
         $student = Student::create($data);
 
         if ($request->hasFile('personal_photo')) {
             $extension = $request->file('personal_photo')->getClientOriginalExtension();
             $fileNameToStore = "الصورة الشخصية" . '.' . $extension;
-            $request->file('personal_photo')->storeAs("public/files/Student_". $student->id, $fileNameToStore);
+            $request->file('personal_photo')->storeAs("public/files/Student_" . $student->id, $fileNameToStore);
         }
 
         if ($request->hasFile('birth_certificate')) {
             $extension = $request->file('birth_certificate')->getClientOriginalExtension();
             $fileNameToStore = "شهادة الميلاد " . '.' . $extension;
-            $request->file('birth_certificate')->storeAs("public/files/Student_". $student->id, $fileNameToStore);
+            $request->file('birth_certificate')->storeAs("public/files/Student_" . $student->id, $fileNameToStore);
         }
 
         Session::flash('message', 'تم اضافة الطالب بنجاح.');
@@ -59,7 +65,12 @@ class StudentController extends Controller
 
 
         $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
-        $current_student_class = $student->studentClasses()->where('year_class_id',$adminActiveAcademicYear->id)->get()->first();
+
+        $current_student_class = $student->studentClasses()->whereHas('yearClass', function ($query) use ($adminActiveAcademicYear) {
+            $query->where('academic_year_id',$adminActiveAcademicYear->id);
+        })->get()->first();
+
+
 
         $data = [
             "student" => $student,
@@ -86,9 +97,14 @@ class StudentController extends Controller
 
     public function update(UpdateStudentRequest $request, Student $student)
     {
-        $student->update(request()->all());
+        $all_data = request()->all();
+        $date = str_replace('/', '-', request('birth_date'));
+        $all_data['birth_date'] = date('Y-m-d',strtotime($date));
+
+
+        $student->update($all_data);
         Session::flash('message', 'تم تعديل معلومات الطالب بنجاح.');
-        return redirect()->route('students.show',$student);
+        return redirect()->route('students.show', $student);
     }
 
 

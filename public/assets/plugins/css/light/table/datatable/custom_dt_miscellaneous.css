@@ -19,14 +19,21 @@
 }
 
 /* HTML 5 */
+
+.dt-buttons {
+  margin-right: 10px;
+}
+
 .dt-buttons .dt-button {
   color: #fff !important;
   background-color: #4361ee !important;
   border-color: #4361ee;
   margin-bottom: 5px;
   margin-left: 5px;
+  border-radius: 5px;
+  border: 0;
+  padding: 5px 15px;
 }
-
 /* Multiple Tables */
 #DataTables_Table_1_wrapper {
   margin-top: 70px;

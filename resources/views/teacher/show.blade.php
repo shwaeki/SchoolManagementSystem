@@ -128,18 +128,18 @@
 
                                         <div class="col-12 col-md-4">
                                             <div class="mb-3">
-                                                <label for="address" class="form-label"> رقم الحساب </label>
-                                                <input type="text" id="address" class="form-control"
-                                                       value="{{$teacher->address}}" disabled>
+                                                <label for="bank_account" class="form-label"> رقم الحساب </label>
+                                                <input type="text" id="bank_account" class="form-control"
+                                                       value="{{$teacher->bank_account}}" disabled>
                                             </div>
                                         </div>
 
 
                                         <div class="col-12 col-md-3">
                                             <div class="mb-3">
-                                                <label for="bank_account" class="form-label"> البريد الاكتروني </label>
-                                                <input type="text" id="bank_account" class="form-control"
-                                                       value="{{$teacher->bank_account}}" disabled>
+                                                <label for="email" class="form-label"> البريد الاكتروني </label>
+                                                <input type="text" id="email" class="form-control"
+                                                       value="{{$teacher->email}}" disabled>
                                             </div>
                                         </div>
 

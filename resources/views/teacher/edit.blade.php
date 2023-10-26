@@ -42,9 +42,9 @@
                     <div class="col-12 col-md-6">
                         <div class="mb-3">
                             <label for="birth_date" class="form-label">تاريخ الميلاد </label>
-                            <input type="date" id="birth_date" name="birth_date"
+                            <input type="text" id="birth_date" name="birth_date"
                                    class="form-control  @error('birth_date') is-invalid @enderror"
-                                   value="{{old('birth_date',$teacher->birth_date)}}" required>
+                                   value="{{ date('d/m/Y', strtotime(old('birth_date',$teacher->birth_date))) }}" required>
                             @error('birth_date')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
@@ -144,9 +144,9 @@
                     <div class="col-12 col-md-3">
                         <div class="mb-3">
                             <label for="star_work_date" class="form-label">تاريخ بدأ العمل </label>
-                            <input type="date" id="star_work_date" name="star_work_date"
+                            <input type="text" id="star_work_date" name="star_work_date"
                                    class="form-control  @error('star_work_date') is-invalid @enderror"
-                                   value="{{old('star_work_date',$teacher->star_work_date)}}" required>
+                                   value="{{ date('d/m/Y', strtotime(old('star_work_date',$teacher->star_work_date))) }}"  required>
                             @error('star_work_date')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
@@ -284,3 +284,10 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $( "#birth_date" ).datepicker({dateFormat: 'dd/mm/yy',});
+        $( "#star_work_date" ).datepicker({dateFormat: 'dd/mm/yy',});
+    </script>
+@endpush

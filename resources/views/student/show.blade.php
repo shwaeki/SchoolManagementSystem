@@ -142,7 +142,7 @@
                                             <div class="mb-3">
                                                 <label for="birth_date" class="form-label">تاريخ الميلاد </label>
                                                 <input type="text" id="birth_date" class="form-control"
-                                                       value="{{$student->birth_date}}" disabled>
+                                                       value="{{ date('d/m/Y', strtotime($student->birth_date))}}" disabled>
                                             </div>
                                         </div>
 
@@ -416,8 +416,8 @@
                                             @foreach($student_classes as $class)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
-                                                    <td>{{$class->yearClass->schoolClass->name}}</td>
-                                                    <td>{{$class->yearClass->academicYear->name}}</td>
+                                                    <td>{{$class->yearClass?->schoolClass?->name}}</td>
+                                                    <td>{{$class->yearClass?->academicYear?->name}}</td>
                                                     <td>{{$class->teacher->name}}</td>
                                                     <td>{{$class->addedBy->name}}</td>
                                                     <td>{{$class->created_at->format('d/m/Y')}}</td>

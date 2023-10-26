@@ -24,7 +24,7 @@ class UpdateStudentRequest extends FormRequest
         return [
             'identification' => 'required|string|digits:9|regex:/^[0-9]+$/|unique:students,identification,' . $this->student->id,
             'name' => 'required|string|max:225',
-            'birth_date' => 'required|date|max:225',
+            'birth_date' => 'required|date_format:d/m/Y|max:225',
             'birth_place' => 'nullable|string|max:225',
             'address' => 'required|string|max:225',
             'address_street' => 'nullable|string|max:225',

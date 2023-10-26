@@ -24,8 +24,8 @@ class StoreTeacherRequest extends FormRequest
         return [
             'identification' => 'required|string|digits:9|regex:/^[0-9]+$/|unique:teachers',
             'name' => 'required|string|max:225',
-            'birth_date' => 'required|date|max:225',
-            'star_work_date' => 'nullable|date|max:225',
+            'birth_date' => 'required|date_format:d/m/Y|max:225',
+            'star_work_date' => 'nullable|date_format:d/m/Y|max:225',
             'email' => 'nullable|email|max:225',
             'address' => 'required|string|max:225',
             'phone_1' => 'required|string|digits:10|regex:/^[0-9]+$/',
@@ -38,7 +38,7 @@ class StoreTeacherRequest extends FormRequest
             'job_type' => 'required|string',
             'bank_name' => 'nullable|string',
             'bank_branch' => 'nullable|string',
-            'bank_account' => 'nullable|integer',
+            'bank_account' => 'nullable|string',
         ];
     }
 }
