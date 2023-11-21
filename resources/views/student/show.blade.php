@@ -395,7 +395,7 @@
                 <div class="tab-pane fade " id="student-classes" role="tabpanel" aria-labelledby="student-classes-tab">
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
-                            <form class="section general-info">
+                            <div class="section general-info">
                                 <div class="info">
                                     <h6> السنوات الدراسية </h6>
 
@@ -409,6 +409,7 @@
                                                 <th scope="col">المدرس</th>
                                                 <th scope="col">اضيف بواسطة</th>
                                                 <th scope="col">تاريخ الاضافة</th>
+                                                <th scope="col">خيارات</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -421,6 +422,10 @@
                                                     <td>{{$class->teacher->name}}</td>
                                                     <td>{{$class->addedBy->name}}</td>
                                                     <td>{{$class->created_at->format('d/m/Y')}}</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-light-danger text-danger" onclick="deleteItem(this)"
+                                                                data-item="{{route('student-classes.destroy', $class)}}"><i class="far fa-trash-alt"></i></button>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                             </tbody>
@@ -428,7 +433,7 @@
                                     </div>
 
                                 </div>
-                            </form>
+                            </div>
                         </div>
 
                     </div>

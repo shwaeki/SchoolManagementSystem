@@ -65,6 +65,9 @@ class StudentClassController extends Controller
 
     public function destroy(StudentClass $studentClass)
     {
+        $studentClass->delete();
 
+        Session::flash('message', 'تم حذف الطالب من الفصل الدراسي  بنجاح!');
+        return redirect()->back();
     }
 }

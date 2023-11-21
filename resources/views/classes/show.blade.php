@@ -247,6 +247,7 @@
                                                 <th scope="col">المدرس المشرف</th>
                                                 <th scope="col">عدد الطلاب</th>
                                                 <th scope="col">اضيف بواسطة</th>
+
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -296,6 +297,7 @@
                                                     <th scope="col">تاريخ الميلاد</th>
                                                     <th scope="col">تاريخ الاضافة </th>
                                                     <th scope="col"> اضيف بواسطة </th>
+                                                    <th scope="col">خيارات</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -333,6 +335,10 @@
                                                             <span class="table-inner-text">{{$data->created_at->format('Y-m-d')}}</span>
                                                         </td>
                                                         <td>{{$data->addedBy?->name}}</td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-light-danger text-danger" onclick="deleteItem(this)"
+                                                                    data-item="{{route('student-classes.destroy', $data)}}"><i class="far fa-trash-alt"></i></button>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
@@ -351,7 +357,7 @@
 
     @if($current_year_class != null)
         <div class="modal fade" id="classStudentModal">
-            <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
                 <form action="{{route('student-classes.store')}}" method="POST">
                     @csrf
 
@@ -371,14 +377,14 @@
 
 
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered">
+                                <table class="table table-striped table-bordered dataTableConfigNoData">
                                     <thead>
                                     <tr>
                                         <th class="checkbox-area" scope="col">
-                                            <div class="form-check form-check-primary">
+                 {{--                           <div class="form-check form-check-primary">
                                                 <input class="form-check-input" id="checkbox_parent_all"
                                                        type="checkbox">
-                                            </div>
+                                            </div>--}}
                                         </th>
                                         <th scope="col">الاسم</th>
                                         <th scope="col">رقم الهوية</th>
@@ -491,6 +497,7 @@
 @push("scripts")
     <script>
 
+
         $('.dataTableCustomTitleConfig').DataTable({
             "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'B><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
                 "<'table-responsive'tr>" +
@@ -502,7 +509,7 @@
                 {
                     extend: 'excel',
                     messageTop:  'طلاب روضة - {{$class->name}} - المعلمة : {{$current_year_class?->supervisorTeacher?->name}} : رقم الروضة : {{$class->code}}',
-                    
+
                 },
 
                 {
