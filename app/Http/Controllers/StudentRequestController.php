@@ -17,7 +17,7 @@ class StudentRequestController extends Controller
 {
     public function index(StudentsRequestDataTable $dataTable)
     {
-        return $dataTable->render('StudentRequest.index');
+        return $dataTable->render('studentRequest.index');
     }
 
 
