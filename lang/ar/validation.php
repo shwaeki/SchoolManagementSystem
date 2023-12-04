@@ -236,6 +236,8 @@ return [
         'supervisor'            => 'المدرس المشرف',
         'updated_at'            => 'تاريخ التحديث',
         'created_at'            => 'تاريخ الانشاء',
+        'personal_photo'        => 'الصورة شخصية',
+        'birth_certificate'     => 'شهادة الملاد',
         'slug'                  => '',
     ],
 

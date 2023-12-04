@@ -16,7 +16,8 @@
     <link href="{{ asset("assets/css/dark/loader.css")  }}" rel="stylesheet" type="text/css"/>
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900;1000&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900;1000&display=swap"
+          rel="stylesheet">
 
     <link href="{{ asset("assets/bootstrap/css/bootstrap.rtl.min.css") }}" rel="stylesheet" type="text/css"/>
 
@@ -33,6 +34,7 @@
     <link href="{{ asset("assets/css/dark/structure.css")  }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset("assets/css/dark/elements/alert.css")  }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset("assets/css/dark/authentication/auth-boxed.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/plugins/src/jquery-ui/jquery-ui.min.css")  }}" rel="stylesheet" type="text/css"/>
 
 
 </head>
@@ -53,6 +55,10 @@
 </div>
 
 <script src="{{ asset("assets/bootstrap/js/bootstrap.bundle.min.js") }}"></script>
+<script src="{{ asset("assets/plugins/src/global/vendors.min.js") }}"></script>
+<script src="{{ asset("assets/plugins/src/jquery-ui/jquery-ui.min.js")  }}"></script>
 <script src="{{ asset("assets/loader.js")  }}"></script>
+<script src="{{ asset("assets/js/custom.js")  }}"></script>
+@stack('scripts')
 </body>
 </html>

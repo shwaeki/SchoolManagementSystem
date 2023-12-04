@@ -348,6 +348,9 @@
                         <li>
                             <a href="{{route('student-reports.create')}}"> أصافة تقرير </a>
                         </li>
+                        <li>
+                            <a href="{{route('students-request.index')}}"> طلبات الطلاب </a>
+                        </li>
                     </ul>
                 </li>
 
