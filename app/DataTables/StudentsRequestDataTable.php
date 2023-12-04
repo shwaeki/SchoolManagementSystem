@@ -33,6 +33,9 @@ class StudentsRequestDataTable extends DataTable
                 else
                     return '<span class="badge badge-light-info">ذكر</span>';
             })
+            ->editColumn('created_at', function ($query) {
+                return $query->created_at->format('d/m/Y');
+            })
             ->setRowId('id')
             ->rawColumns(['Settings', 'gender']);
 

@@ -28,7 +28,7 @@ class StudentRequestController extends Controller
             "studentRequest" => $students_request,
         ];
         Session::put('fileManagerConfig', "StudentRequest_" . $students_request->id);
-        return view('StudentRequest.show', $data);
+        return view('studentRequest.show', $data);
     }
 
 
@@ -38,7 +38,7 @@ class StudentRequestController extends Controller
             "studentRequest" => $students_request,
         ];
 
-        return view('StudentRequest.edit', $data);
+        return view('studentRequest.edit', $data);
     }
 
 
