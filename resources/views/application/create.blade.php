@@ -12,7 +12,9 @@
                         <form action="{{ route('application.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-md-12 mb-3">
+                                <div class="col-md-12 mb-3 text-center">
+                                    <img src="{{ asset("assets/img/logo.png") }}" width="180px">
+                                    
                                     <h2 class="text-center"> طلب التسجيل لطالب جديد </h2>
                                     <p class="text-center mb-3">روضات المجد </p>
                                 </div>
