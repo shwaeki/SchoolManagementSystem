@@ -139,14 +139,15 @@
                                 </div>
 
 
-                                <div class="col-12">
+                                <div class="col-12 col-md-3">
                                     <div class="mb-3">
-                                        <label for="notes" class="form-label"> ملاحظات اضافية </label>
-                                        <textarea id="notes" class="form-control" rows="3"
-                                                  disabled>{{ $studentRequest->notes }}</textarea>
+                                        <label for="old_school" class="form-label"> الروضة السابقة </label>
+                                        <input type="text" id="old_school" class="form-control"
+                                               value="{{$studentRequest->old_school}}" disabled>
                                     </div>
                                 </div>
-
+                                
+          
 
                             </div>
 

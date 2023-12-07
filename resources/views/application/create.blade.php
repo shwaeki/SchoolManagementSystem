@@ -165,6 +165,19 @@
                                         @enderror
                                     </div>
                                 </div>
+                                
+                                 <div class="col-12 col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" id="old_school" name="old_school"
+                                               class="form-control @error('old_school') is-invalid @enderror"
+                                               value="{{old('old_school')}}"  placeholder="" required>
+                                        <label for="old_school" class="form-label">الروضة السابقة </label>
+                                        @error('old_school')
+                                        <span class="invalid-feedback"
+                                              role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror
+                                    </div>
+                                </div>
 
                             </div>
 

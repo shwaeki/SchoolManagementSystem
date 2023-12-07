@@ -68,7 +68,7 @@ class StudentRequestController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $data = Arr::except($all_data, ['id', 'created_at', 'updated_at']);
+        $data = Arr::except($all_data, ['id', 'created_at', 'updated_at', 'old_school']);
         $data['added_by'] = auth()->id();
 
         $student = Student::create($data);

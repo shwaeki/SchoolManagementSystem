@@ -35,6 +35,7 @@ return new class extends Migration
             $table->string('zipcode')->nullable();
             $table->string('postal_code')->nullable();
             $table->string('family_members')->nullable();
+            $table->string('old_school')->nullable();
             $table->text('notes')->nullable();
             $table->softDeletes();
             $table->timestamps();
