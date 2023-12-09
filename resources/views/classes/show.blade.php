@@ -176,10 +176,14 @@
                                                 <h6> بيانات الفصل الدراسي لسنة
                                                     - {{$current_year_class->academicYear->name}} </h6>
                                             </div>
+                                            <div class="col-3 text-end">
+                                                <a href="#editCertificateModal" data-bs-toggle="modal"
+                                                   class="btn btn-primary">تعديل نوع الشهادة</a>.
+                                            </div>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-12 col-md-3">
+                                            <div class="col-12 col-md-4">
                                                 <div class="mb-3">
                                                     <label for="name" class="form-label">السنة الدراسية</label>
                                                     <input type="text" id="name" class="form-control"
@@ -187,7 +191,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-12 col-md-3">
+                                            <div class="col-12 col-md-4">
                                                 <div class="mb-3">
                                                     <label for="name" class="form-label">المدرس المشرف</label>
                                                     <input type="text" id="name" class="form-control"
@@ -196,7 +200,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-12 col-md-3">
+                                            <div class="col-12 col-md-4">
                                                 <div class="mb-3">
                                                     <label for="name" class="form-label">عدد الطلاب</label>
                                                     <input type="text" id="name" class="form-control"
@@ -204,11 +208,19 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-12 col-md-3">
+                                            <div class="col-12 col-md-4">
                                                 <div class="mb-3">
                                                     <label for="name" class="form-label">اضيف بواسطة</label>
                                                     <input type="text" id="name" class="form-control"
                                                            value="{{$current_year_class->addedBy->name}}" disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-4">
+                                                <div class="mb-3">
+                                                    <label for="name" class="form-label">نوع الشهادة</label>
+                                                    <input type="text" id="name" class="form-control"
+                                                           value="{{$current_year_class->certificate?->name}}" disabled>
                                                 </div>
                                             </div>
 
@@ -231,12 +243,7 @@
                                         <div class="col-9">
                                             <h6> السنوات السابقة</h6>
                                         </div>
-                                        {{--                                        <div class="col-3 text-end">
-                                                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                                                            data-bs-target="#classYearModal">
-                                                                                        اضافة
-                                                                                    </button>
-                                                                                </div>--}}
+
                                     </div>
 
                                     <div class="table-responsive">
@@ -287,7 +294,8 @@
                                         </div>
 
                                         <div class="table-responsive">
-                                            <table class="table table-hover table-striped table-bordered dataTableCustomTitleConfig">
+                                            <table
+                                                class="table table-hover table-striped table-bordered dataTableCustomTitleConfig">
                                                 <thead>
                                                 <tr>
                                                     <th scope="col">#</th>
@@ -295,8 +303,8 @@
                                                     <th scope="col">رقم الهوية</th>
                                                     <th scope="col">عنوان السكن</th>
                                                     <th scope="col">تاريخ الميلاد</th>
-                                                    <th scope="col">تاريخ الاضافة </th>
-                                                    <th scope="col"> اضيف بواسطة </th>
+                                                    <th scope="col">تاريخ الاضافة</th>
+                                                    <th scope="col"> اضيف بواسطة</th>
                                                     <th scope="col">خيارات</th>
                                                 </tr>
                                                 </thead>
@@ -305,39 +313,57 @@
                                                 @foreach($class_year_students as $data)
                                                     <tr>
                                                         <td>{{$data->id}} </td>
-                                                        <td>  {{$data->student?->name}}</td>
+                                                        <td> {{$data->student?->name}}</td>
                                                         <td>{{$data->student?->identification}}</td>
                                                         <td>{{$data->student?->address}}</td>
                                                         <td>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                 height="24"
                                                                  viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                                  stroke-width="2"
                                                                  stroke-linecap="round" stroke-linejoin="round"
                                                                  class="feather feather-calendar">
-                                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                                <rect x="3" y="4" width="18" height="18" rx="2"
+                                                                      ry="2"></rect>
                                                                 <line x1="16" y1="2" x2="16" y2="6"></line>
                                                                 <line x1="8" y1="2" x2="8" y2="6"></line>
                                                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                                                             </svg>
-                                                            <span class="table-inner-text">{{$data->student?->birth_date}}</span>
+                                                            <span
+                                                                class="table-inner-text">{{$data->student?->birth_date}}</span>
                                                         </td>
                                                         <td>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                 height="24"
                                                                  viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                                  stroke-width="2"
                                                                  stroke-linecap="round" stroke-linejoin="round"
                                                                  class="feather feather-calendar">
-                                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                                <rect x="3" y="4" width="18" height="18" rx="2"
+                                                                      ry="2"></rect>
                                                                 <line x1="16" y1="2" x2="16" y2="6"></line>
                                                                 <line x1="8" y1="2" x2="8" y2="6"></line>
                                                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                                                             </svg>
-                                                            <span class="table-inner-text">{{$data->created_at->format('Y-m-d')}}</span>
+                                                            <span
+                                                                class="table-inner-text">{{$data->created_at->format('Y-m-d')}}</span>
                                                         </td>
                                                         <td>{{$data->addedBy?->name}}</td>
                                                         <td>
-                                                            <button type="button" class="btn btn-light-danger text-danger" onclick="deleteItem(this)"
-                                                                    data-item="{{route('student-classes.destroy', $data)}}"><i class="far fa-trash-alt"></i></button>
+                                                            <button type="button"
+                                                                    class="btn btn-light-danger text-danger"
+                                                                    onclick="deleteItem(this)"
+                                                                    data-item="{{route('student-classes.destroy', $data)}}">
+                                                                <i class="far fa-trash-alt"></i>
+                                                            </button>
+                                                            <button type="button"
+                                                                    data-student_class_year-id="{{$data->id}}"
+                                                                    class="btn btn-light-warning text-warning  editStudentCertification">
+                                                                <i class="fas fa-certificate"></i>
+                                                            </button>
+                                                            <a href="#" class="btn btn-light-primary text-primary">
+                                                                <i class="fas fa-certificate"></i>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -351,6 +377,76 @@
                     </div>
                 @endif
             </div>
+        </div>
+    </div>
+    <div class="modal fade" id="classYearModal">
+        <div class="modal-dialog" role="document">
+            <form action="{{route('year-classes.store')}}" method="POST">
+                @csrf
+
+                <input type="hidden" name="school_class_id" value="{{$class->id}}">
+                <input type="hidden" name="academic_year_id" value="{{$adminActiveAcademicYear->id}}">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">تسجل في السنة الحالية</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            X
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">الفصل الدراسي</label>
+                            <input type="text" id="name" class="form-control"
+                                   value="{{$class->name}}" disabled>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label"> السنة الدراسية</label>
+                            <input type="text" id="name" class="form-control"
+                                   value="{{$adminActiveAcademicYear->name}}" disabled>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="supervisor" class="form-label"> المعلم المشرف </label>
+                            <select class="form-select"
+                                    id="supervisor" name="supervisor" required>
+                                <option selected disabled value="">اختر ...</option>
+                                @foreach($teachers as $teacher)
+                                    <option
+                                        {{old('supervisor') == $teacher->name ? 'selected' : '' }} value="{{$teacher->id}}">
+                                        {{$teacher->name}}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="certificate_id" class="form-label"> الشهادة </label>
+                            <select class="form-select"
+                                    id="certificate_id" name="certificate_id">
+                                <option selected disabled value="">اختر ...</option>
+                                @foreach($certificates as $certificate)
+                                    <option
+                                        {{old('certificate_id') == $certificate->name ? 'selected' : '' }} value="{{$certificate->id}}">
+                                        {{$certificate->name}}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
+                            <i class="flaticon-cancel-12"></i> اغلاق
+                        </button>
+                        <button type="submit" class="btn btn-primary">حفظ</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -373,7 +469,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                           <p>قائمة الطلاب .</p>
+                            <p>قائمة الطلاب .</p>
 
 
                             <div class="table-responsive">
@@ -381,10 +477,6 @@
                                     <thead>
                                     <tr>
                                         <th class="checkbox-area" scope="col">
-                 {{--                           <div class="form-check form-check-primary">
-                                                <input class="form-check-input" id="checkbox_parent_all"
-                                                       type="checkbox">
-                                            </div>--}}
                                         </th>
                                         <th scope="col">الاسم</th>
                                         <th scope="col">رقم الهوية</th>
@@ -434,69 +526,160 @@
                 </form>
             </div>
         </div>
-    @endif
 
-    <div class="modal fade" id="classYearModal">
-        <div class="modal-dialog" role="document">
-            <form action="{{route('year-classes.store')}}" method="POST">
-                @csrf
+        <div class="modal fade" id="studentCertificateModal" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-xl">
+                <form action="{{route('student-marks.store')}}" method="POST">
+                    @csrf
 
-                <input type="hidden" name="school_class_id" value="{{$class->id}}">
-                <input type="hidden" name="academic_year_id" value="{{$adminActiveAcademicYear->id}}">
-
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">تسجل في السنة الحالية</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            X
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">الفصل الدراسي</label>
-                            <input type="text" id="name" class="form-control"
-                                   value="{{$class->name}}" disabled>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">اضافة مجال جديد</h5>
                         </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
 
-                        <div class="mb-3">
-                            <label for="name" class="form-label"> السنة الدراسية</label>
-                            <input type="text" id="name" class="form-control"
-                                   value="{{$adminActiveAcademicYear->name}}" disabled>
+
+                                <input type="hidden" name="student_class_year" id="student_class_year" value="">
+                                <input type="hidden" name="year_class" value="{{$current_year_class->id}}">
+
+                                <table class="table table-sm table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">المجال</th>
+                                        <th scope="col">علامة الفصل الاول</th>
+                                        <th scope="col">علامة الفصل الثاني</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($certificate->fields as $field)
+                                        <tr class="table-primary">
+                                            <td><strong>{{ $field->field_name }}</strong></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        @if(count($field->categories) > 0)
+                                            @foreach($field->mainCategories as $category)
+                                                <tr class="{{count($category->subcategories) > 0 ? 'table-warning' : ''}}">
+                                                    <td>{{ $category->name }}</td>
+                                                    <td>
+                                                        <select class="form-select form-select-sm"
+                                                                name="marks[first_semester][{{ $category->id }}]">
+                                                            <option value="" selected>اختر العلامة</option>
+                                                            <option value="Always">دائماً</option>
+                                                            <option value="Sometimes">أحياناً</option>
+                                                            <option value="Rarely">نادراً</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-select form-select-sm"
+                                                                name="marks[second_semester][{{ $category->id }}]">
+                                                            <option value="" selected>اختر العلامة</option>
+                                                            <option value="Always">دائماً</option>
+                                                            <option value="Sometimes">أحياناً</option>
+                                                            <option value="Rarely">نادراً</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                @if($category->subcategories->isNotEmpty())
+                                                    @foreach($category->subcategories as $subcategory)
+                                                        <tr>
+                                                            <td>{{ $subcategory->name }}</td>
+                                                            <td>
+                                                                <select class="form-select form-select-sm"
+                                                                        name="marks[first_semester][{{ $subcategory->id }}]">
+                                                                    <option value="" selected>اختر العلامة</option>
+                                                                    <option value="Always">دائماً</option>
+                                                                    <option value="Sometimes">أحياناً</option>
+                                                                    <option value="Rarely">نادراً</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-select form-select-sm"
+                                                                        name="marks[second_semester][{{ $subcategory->id }}]">
+                                                                    <option value="" selected>اختر العلامة</option>
+                                                                    <option value="Always">دائماً</option>
+                                                                    <option value="Sometimes">أحياناً</option>
+                                                                    <option value="Rarely">نادراً</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    @endforeach
+                                    </tbody>
+                                </table>
+
+
+                            </div>
                         </div>
-
-
-                        <div class="mb-3">
-                            <label for="supervisor" class="form-label"> المعلم المشرف </label>
-                            <select class="form-select"
-                                    id="supervisor" name="supervisor" required>
-                                <option selected disabled value="">اختر ...</option>
-                                @foreach($teachers as $teacher)
-                                    <option
-                                        {{old('supervisor') == $teacher->name ? 'selected' : '' }} value="{{$teacher->id}}">
-                                        {{$teacher->name}}
-                                    </option>
-                                @endforeach
-                            </select>
-
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-delete" data-bs-dismiss="modal">اغلاق</button>
+                            <button type="submit" class="btn btn-primary">حفظ</button>
                         </div>
-
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
-                            <i class="flaticon-cancel-12"></i> اغلاق
-                        </button>
-                        <button type="submit" class="btn btn-primary">حفظ</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
 
+        <div class="modal fade" id="editCertificateModal">
+            <div class="modal-dialog" role="document">
+                <form action="{{route('year-classes.update',$current_year_class)}}" method="POST">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">تعديل نوع الشهادة </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                X
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">الفصل الدراسي</label>
+                                <input type="text" id="name" class="form-control"
+                                       value="{{$class->name}}" disabled>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="certificate_id" class="form-label"> الشهادة </label>
+                                <select class="form-select"
+                                        id="certificate_id" name="certificate_id">
+                                    <option selected disabled value="">اختر ...</option>
+                                    @foreach($certificates as $certificate)
+                                        <option
+                                            {{old('certificate_id') == $certificate->name ? 'selected' : '' }} value="{{$certificate->id}}">
+                                            {{$certificate->name}}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
+                                <i class="flaticon-cancel-12"></i> اغلاق
+                            </button>
+                            <button type="submit" class="btn btn-primary">حفظ</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endif
 @endsection
 
 @push("scripts")
     <script>
-
+        $('.editStudentCertification').on('click', function () {
+            var studentId = $(this).data('student_class_year-id');
+            $('#student_class_year').val(studentId);
+            $("#studentCertificateModal").modal('show');
+        });
 
         $('.dataTableCustomTitleConfig').DataTable({
             "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'B><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
@@ -508,7 +691,7 @@
 
                 {
                     extend: 'excel',
-                    messageTop:  'طلاب روضة - {{$class->name}} - المعلمة : {{$current_year_class?->supervisorTeacher?->name}} : رقم الروضة : {{$class->code}}',
+                    messageTop: 'طلاب روضة - {{$class->name}} - المعلمة : {{$current_year_class?->supervisorTeacher?->name}} : رقم الروضة : {{$class->code}}',
 
                 },
 

@@ -13,9 +13,10 @@ class StudentClass extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = [];
+
     public function addedBy(): belongsTo
     {
-        return $this->belongsTo(User::class,'added_by');
+        return $this->belongsTo(User::class, 'added_by');
     }
 
     public function student(): belongsTo
@@ -33,17 +34,20 @@ class StudentClass extends Model
         return $this->belongsTo(YearClass::class);
     }
 
-
-
-
-/*    public function schoolClass(): belongsTo
+    public function marks()
     {
-        return $this->belongsTo(SchoolClass::class);
+        return $this->hasMany(StudentMark::class);
     }
 
-    public function academicYear(): belongsTo
-    {
-        return $this->belongsTo(AcademicYear::class);
-    }*/
+
+    /*    public function schoolClass(): belongsTo
+        {
+            return $this->belongsTo(SchoolClass::class);
+        }
+
+        public function academicYear(): belongsTo
+        {
+            return $this->belongsTo(AcademicYear::class);
+        }*/
 
 }

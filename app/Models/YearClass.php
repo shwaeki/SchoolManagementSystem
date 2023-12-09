@@ -39,4 +39,10 @@ class YearClass extends Model
         return $this->belongsTo(Teacher::class, 'supervisor');
     }
 
+
+    public function certificate(): belongsTo
+    {
+        return $this->belongsTo(Certificate::class);
+    }
+
 }

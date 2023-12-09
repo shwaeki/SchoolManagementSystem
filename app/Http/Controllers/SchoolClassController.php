@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DataTables\ClassesDataTable;
 use App\Models\AcademicYear;
+use App\Models\Certificate;
 use App\Models\SchoolClass;
 use App\Http\Requests\StoreSchoolClassRequest;
 use App\Http\Requests\UpdateSchoolClassRequest;
@@ -62,12 +63,13 @@ class SchoolClassController extends Controller
             "class_years" => $schoolClass->yearClasses,
             "current_year_class" => $current_year_class,
             "teachers" => Teacher::all(),
+            "certificates" => Certificate::all(),
             "students" => Student::whereNotIn('id', $all_students)->get(),
         ];
 
         if ($current_year_class != null) {
             $data['class_year_students'] = $current_year_class->students;
-          //  dd($current_year_class->students);
+            $data['certificate'] = $current_year_class->certificate;
         }
         return view('classes.show', $data);
     }

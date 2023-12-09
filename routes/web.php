@@ -2,12 +2,16 @@
 
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\CertificateCategoryController;
+use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\CertificateFieldController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OtpController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\StudentClassController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentMarkController;
 use App\Http\Controllers\StudentReportController;
 use App\Http\Controllers\StudentRequestController;
 use App\Http\Controllers\TeacherController;
@@ -38,6 +42,12 @@ Route::middleware(['auth','check.year'])->group(function () {
     Route::resource('student-classes', StudentClassController::class);
     Route::resource('year-classes', YearClassController::class);
     Route::resource('student-reports', StudentReportController::class);
+
+
+    Route::resource('certificates', CertificateController::class);
+    Route::resource('certificate-fields', CertificateFieldController::class);
+    Route::resource('certificate-categories', CertificateCategoryController::class);
+    Route::resource('student-marks', StudentMarkController::class);
 
     Route::get('profile', [UserController::class, 'profile'])->name('profile.edit');
     Route::put('profile', [UserController::class, 'profileUpdate'])->name('profile.update');

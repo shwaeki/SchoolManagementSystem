@@ -7,6 +7,7 @@ use App\Models\YearClass;
 use App\Http\Requests\StoreYearClassRequest;
 use App\Http\Requests\UpdateYearClassRequest;
 use Illuminate\Support\Facades\Session;
+use function Psy\debug;
 
 class YearClassController extends Controller
 {
@@ -58,7 +59,10 @@ class YearClassController extends Controller
      */
     public function update(UpdateYearClassRequest $request, YearClass $yearClass)
     {
-        //
+
+        $yearClass->update(request()->all());
+        Session::flash('message', 'تم تعديل معلومات الفصل التعليمي بنجاح.');
+        return redirect()->back();
     }
 
     /**
