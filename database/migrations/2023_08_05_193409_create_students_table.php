@@ -14,8 +14,6 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('identification', 11)->nullable();
-            $table->text('personal_photo')->nullable();//new
-            $table->text('birth_certificate')->nullable();//new
             $table->date('birth_date');
             $table->string('birth_place')->nullable();
             $table->string('status')->nullable();

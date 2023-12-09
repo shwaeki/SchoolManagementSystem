@@ -146,8 +146,16 @@
                                                value="{{$studentRequest->old_school}}" disabled>
                                     </div>
                                 </div>
-                                
-          
+
+                                <div class="col-12 col-md-3">
+                                    <div class="mb-3">
+                                        <label for="school_class_id" class="form-label"> الروضة المراج التسجيبل بها </label>
+                                        <input type="text" id="school_class_id" class="form-control"
+                                               value="{{$studentRequest->schoolClass->name}} - {{$studentRequest->schoolClass->address}}" disabled>
+                                    </div>
+                                </div>
+
+
 
                             </div>
 

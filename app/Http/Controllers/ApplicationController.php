@@ -4,13 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStudentRequestRequest;
 use App\Models\SchoolClass;
-use App\Models\Student;
 use App\Models\StudentRequest;
 use App\Notifications\NewStudentRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
+
 
 class ApplicationController extends Controller
 {
@@ -48,6 +47,8 @@ class ApplicationController extends Controller
 
         $date = str_replace('/', '-', request('birth_date'));
         $data['birth_date'] = date('Y-m-d', strtotime($date));
+
+        $data = Arr::except($data, ['personal_photo', 'birth_certificate']);
         $studentRequest = StudentRequest::create($data);
 
         if ($request->hasFile('personal_photo')) {
