@@ -37,6 +37,7 @@ class StoreStudentRequestRequest extends FormRequest
             'family_status' => 'required|string',
             'custody' => 'required|string',
             'old_school' => 'required|string',
+            'school_class_id' => 'required',
 
             'personal_photo' => 'required|max:2048',
             'birth_certificate' => 'required|max:2048',

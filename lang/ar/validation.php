@@ -238,6 +238,7 @@ return [
         'created_at'            => 'تاريخ الانشاء',
         'personal_photo'        => 'الصورة شخصية',
         'birth_certificate'     => 'شهادة الملاد',
+        'school_class_id'       => 'الروضة',
         'slug'                  => '',
     ],
 

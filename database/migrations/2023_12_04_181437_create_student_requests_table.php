@@ -37,6 +37,7 @@ return new class extends Migration
             $table->string('family_members')->nullable();
             $table->string('old_school')->nullable();
             $table->text('notes')->nullable();
+            $table->foreignId('school_class_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });

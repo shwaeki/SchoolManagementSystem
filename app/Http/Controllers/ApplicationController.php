@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStudentRequestRequest;
+use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Models\StudentRequest;
 use App\Notifications\NewStudentRequest;
@@ -18,7 +19,10 @@ class ApplicationController extends Controller
      */
     public function index()
     {
-        return view('application.create');
+        $data = [
+            'schools' => SchoolClass::all(),
+        ];
+        return view('application.create',$data);
     }
 
     /**
@@ -58,7 +62,7 @@ class ApplicationController extends Controller
             $request->file('birth_certificate')->storeAs("public/files/StudentRequest_" . $studentRequest->id, $fileNameToStore);
         }
 
-        Notification::route('mail',  ['riadalm2011@gmail.com', 'shwaeki98@gmail.com','suppwithyou@gmail.com'])->notify(new NewStudentRequest($studentRequest));
+        Notification::route('mail', ['riadalm2011@gmail.com', 'shwaeki98@gmail.com', 'suppwithyou@gmail.com'])->notify(new NewStudentRequest($studentRequest));
 
         return redirect()->route("application.message");
     }
