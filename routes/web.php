@@ -34,6 +34,7 @@ Route::middleware(['auth','check.year'])->group(function () {
 
     Route::resource('roles', RoleController::class);
     Route::resource('school-classes', SchoolClassController::class);
+    Route::get('students/marks/{student}', [StudentController::class, 'showMarks'])->name('students.marks');
     Route::get('students/report', [StudentController::class, 'report'])->name('students.report');
     Route::resource('students', StudentController::class);
     Route::put('students-request/accept/{students_request}', [StudentRequestController::class, 'accept'])->name('students-request.accept');

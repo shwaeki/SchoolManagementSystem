@@ -7,6 +7,7 @@ use App\Models\AcademicYear;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use App\Models\StudentMark;
 use App\Models\StudentReport;
 use Carbon\Carbon;
 use App\Models\Teacher;
@@ -114,5 +115,29 @@ class StudentController extends Controller
 
         Session::flash('message', 'تم حذف الطالب بنجاح!');
         return redirect()->route('students.index');
+    }
+
+    public function showMarks(Student $student)
+    {
+        $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
+
+        $current_student_class = $student->studentClasses()->whereHas('yearClass', function ($query) use ($adminActiveAcademicYear) {
+            $query->where('academic_year_id',$adminActiveAcademicYear->id);
+        })->get()->first();
+
+
+        $marks = StudentMark::where('student_class_id', $current_student_class->id)->get();
+
+        $organizedMarks = [];
+        foreach ($marks as $mark) {
+            $organizedMarks[$mark->semester][$mark->certificate_category_id] = $mark;
+        }
+
+        $data = [
+            "marks" => $organizedMarks,
+            "certificate" => $current_student_class->yearClass->certificate,
+        ];
+
+        return view('student.marks', $data);
     }
 }

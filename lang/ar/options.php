@@ -16,6 +16,7 @@ return [
     'quit_working' => ' ترك العمل',
     'fullJob' => 'وظيفة كاملة',
     'partTime' => 'وظيفة جزئية',
+    'Always' => 'دائماً',
+    'Sometimes' => 'أحياناً',
+    'Rarely' => 'نادراً',
 ];
-
-
