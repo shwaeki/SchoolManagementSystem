@@ -3,29 +3,40 @@
 @push('styles')
     <style>
 
-        .student-name {
+        .student-info {
             position: absolute;
-            left: 13%;
-            top: 61%;
-            font-size: 24px;
-            color: black;
+            left: 38%;
+            top: 68.4%;
             font-weight: bold;
             z-index: 1;
+            line-height: 32px;
+        }
+
+        .student-info p {
+            font-size: 22px;
+            color: black;
         }
 
         .main-page {
             position: relative;
         }
 
+        .table:not(.dataTable).table-bordered > tbody > tr:last-child td:last-child {
+            border-bottom-left-radius: 0;
+        }
+
+        .table:not(.dataTable).table-bordered > tbody > tr:last-child td:first-child {
+            border-bottom-right-radius: 0;
+        }
 
         @media print {
             .layout-top-spacing {
-                margin-top: 0px !important;
+                margin-top: 0 !important;
             }
 
             html, body {
-                height: 210mm;
-                width: 297mm;
+                width: 210mm;
+                height: 297mm;
             }
 
             body {
@@ -42,7 +53,7 @@
             }
 
             #content {
-                margin-top: 0px;
+                margin-top: 0;
             }
 
             .col-12 {
@@ -63,15 +74,15 @@
                 height: 100vh;
             }
 
-            .student-name {
-
+            .student-info p {
                 font-size: 16px;
+                line-height: 21px;
             }
         }
 
         @page {
-            size: A4 landscape;
-            margin: 0 !important;
+            size: A4 portrait;
+            margin: 0mm !important;
         }
 
 
@@ -81,26 +92,31 @@
 @section('content')
     <div class="content position-relative">
         <div class="main-page">
-            <p class="student-name">  {{ $studentClass->student->name }}</p>
-            <img src="https://i.ibb.co/R0nN8bd/Picture1.jpg" class="w-100" alt="image">
+            <div class="student-info">
+
+                <p class="mb-0">  {{ $studentClass->student->name }}</p>
+                <p class="mb-0">  {{ $certificate->age }}</p>
+                <p class="mb-0">  {{ $certificate->class }}</p>
+            </div>
+            <img src="{{ asset('assets/img/certificate_bg.jpg') }}" class="w-100" alt="image">
         </div>
 
-        <div class="bg-white p-3">
+        <div class="bg-white">
             <table class="table table-sm table-bordered ">
                 <thead>
                 <tr>
-                    <th class="fw-bold" scope="col">المجال و مخرجات التعلم</th>
-                    <th class="text-center fw-bold" scope="col" colspan="3">علامة الفصل الاول</th>
-                    <th class="text-center fw-bold" scope="col" colspan="3">علامة الفصل الثاني</th>
+                    <th class="fw-bold rounded-0" scope="col">المجال و مخرجات التعلم</th>
+                    <th class="text-center fw-bold rounded-0" scope="col" colspan="3">علامة الفصل الاول</th>
+                    <th class="text-center fw-bold rounded-0" scope="col" colspan="3">علامة الفصل الثاني</th>
                 </tr>
                 <tr>
-                    <th class="text-center fw-bold" scope="col"></th>
-                    <th class="text-center fw-bold" scope="col">دائماً</th>
-                    <th class="text-center fw-bold" scope="col">أحياناً</th>
-                    <th class="text-center fw-bold" scope="col">نادراً</th>
-                    <th class="text-center fw-bold" scope="col">دائماً</th>
-                    <th class="text-center fw-bold" scope="col">أحياناً</th>
-                    <th class="text-center fw-bold" scope="col">نادرا</th>
+                    <th class="text-center fw-bold rounded-0" scope="col"></th>
+                    <th class="text-center fw-bold rounded-0" scope="col">دائماً</th>
+                    <th class="text-center fw-bold rounded-0" scope="col">أحياناً</th>
+                    <th class="text-center fw-bold rounded-0" scope="col">نادراً</th>
+                    <th class="text-center fw-bold rounded-0" scope="col">دائماً</th>
+                    <th class="text-center fw-bold rounded-0" scope="col">أحياناً</th>
+                    <th class="text-center fw-bold rounded-0" scope="col">نادرا</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -189,17 +205,17 @@
                 </tbody>
             </table>
 
-            <div class="row px-3">
+            <div class="row px-3" style="page-break-before:always">
                 <div class="col-12">
-                    <div class="mb-3 h4 mt-3">
-                        <p>ملاحظات مربية الفصل الدراسي الاول</p>
-                        <p>{{$studentCertificate->first_notes}}</p>
+                    <div class="mb-3 mt-3">
+                        <p class="fs-4 fw-bold text-black">ملاحظات مربية الفصل الدراسي الاول</p>
+                        <p class="fs-5">{{$studentCertificate->first_notes}}</p>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="mb-3 h4 mt-3">
-                        <p>ملاحظات مربية الفصل الدراسي الثاني</p>
-                        <p>   {{$studentCertificate->second_notes}}</p>
+                        <p class="fs-4 fw-bold text-black">ملاحظات مربية الفصل الدراسي الثاني</p>
+                        <p class="fs-5">   {{$studentCertificate->second_notes}}</p>
                     </div>
                 </div>
 
@@ -221,3 +237,10 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script type="text/javascript">
+        window.onafterprint = window.close;
+        window.print();
+    </script>
+@endpush

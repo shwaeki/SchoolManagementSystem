@@ -27,6 +27,30 @@
                         </div>
                     </div>
 
+                    <div class="col-12 col-md-6">
+                        <div class="mb-3">
+                            <label for="age" class="form-label">عمر الطلاب</label>
+                            <input type="text" id="age" name="age"
+                                   class="form-control @error('name') is-invalid @enderror"
+                                   value="{{old('age',$certificate->age)}}" required>
+                            @error('age')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <div class="mb-3">
+                            <label for="class" class="form-label">صف الطلاب</label>
+                            <input type="text" id="class" name="class"
+                                   class="form-control @error('class') is-invalid @enderror"
+                                   value="{{old('class',$certificate->class)}}" required>
+                            @error('class')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
                 </div>
 
                 <button type="submit" class="btn btn-primary ml-3">تعديل</button>
