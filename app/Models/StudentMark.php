@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class StudentMark extends Model
 {
     use HasFactory;
-
     protected $guarded = [];
 
     public function category()
@@ -16,8 +15,9 @@ class StudentMark extends Model
         return $this->belongsTo(CertificateCategory::class, 'certificate_category_id');
     }
 
-    public function studentClass()
+
+    public function studentCertificate()
     {
-        return $this->belongsTo(StudentClass::class, 'student_class_id');
+        return $this->belongsTo(StudentCertificate::class, 'student_certificate_id');
     }
 }

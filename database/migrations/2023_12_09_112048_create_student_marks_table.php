@@ -12,9 +12,9 @@ return new class extends Migration {
     {
         Schema::create('student_marks', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('student_certificate_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('certificate_category_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('student_class_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('mark');
+            $table->string('mark')->nullable();
             $table->enum('semester', ['first', 'second']);
             $table->timestamps();
         });

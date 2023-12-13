@@ -7,6 +7,8 @@ use App\Models\AcademicYear;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use App\Models\StudentCertificate;
+use App\Models\StudentClass;
 use App\Models\StudentMark;
 use App\Models\StudentReport;
 use Carbon\Carbon;
@@ -117,16 +119,11 @@ class StudentController extends Controller
         return redirect()->route('students.index');
     }
 
-    public function showMarks(Student $student)
+    public function showMarks(StudentClass $studentClass)
     {
-        $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
 
-        $current_student_class = $student->studentClasses()->whereHas('yearClass', function ($query) use ($adminActiveAcademicYear) {
-            $query->where('academic_year_id',$adminActiveAcademicYear->id);
-        })->get()->first();
-
-
-        $marks = StudentMark::where('student_class_id', $current_student_class->id)->get();
+        $studentCertificate = StudentCertificate::where('student_class_id', $studentClass->id)->first();
+        $marks = $studentCertificate?->marks ?? [];
 
         $organizedMarks = [];
         foreach ($marks as $mark) {
@@ -134,10 +131,28 @@ class StudentController extends Controller
         }
 
         $data = [
+            "studentCertificate" => $studentCertificate,
             "marks" => $organizedMarks,
-            "certificate" => $current_student_class->yearClass->certificate,
+            "studentClass" => $studentClass,
+            "certificate" => $studentClass->yearClass->certificate,
         ];
 
         return view('student.marks', $data);
+    }
+
+
+    public function getStudentMarks(StudentClass $studentClass)
+    {
+
+        $studentCertificate = StudentCertificate::where('student_class_id', $studentClass->id)->first();
+        $marks = $studentCertificate?->marks ?? [];
+
+        $organizedMarks = [];
+        foreach ($marks as $mark) {
+            $organizedMarks[$mark->semester][$mark->certificate_category_id] = $mark;
+        }
+
+            return response()->json(['result'=> true, 'studentCertificate' => $studentCertificate, 'marks' => $organizedMarks ]);
+
     }
 }

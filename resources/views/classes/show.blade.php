@@ -356,14 +356,18 @@
                                                                     data-item="{{route('student-classes.destroy', $data)}}">
                                                                 <i class="far fa-trash-alt"></i>
                                                             </button>
-                                                            <button type="button"
-                                                                    data-student_class_year-id="{{$data->id}}"
-                                                                    class="btn btn-light-warning text-warning  editStudentCertification">
-                                                                <i class="fas fa-certificate"></i>
-                                                            </button>
-                                                            <a href="#" class="btn btn-light-primary text-primary">
-                                                                <i class="fas fa-certificate"></i>
-                                                            </a>
+                                                            @if($current_year_class->certificate)
+                                                                <button type="button"
+                                                                        data-student_class_year-id="{{$data->id}}"
+                                                                        class="btn btn-light-warning text-warning  editStudentCertification">
+                                                                    <i class="fas fa-certificate"></i>
+                                                                </button>
+                                                                <a href="{{route('students.marks',$data->id)}}"
+                                                                   target="_blank"
+                                                                   class="btn btn-light-primary text-primary">
+                                                                    <i class="fas fa-certificate"></i>
+                                                                </a>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -527,102 +531,119 @@
             </div>
         </div>
 
-        <div class="modal fade" id="studentCertificateModal" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-xl">
-                <form action="{{route('student-marks.store')}}" method="POST">
-                    @csrf
+        @if($current_year_class->certificate)
+            <div class="modal fade" id="studentCertificateModal" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-xl">
+                    <form action="{{route('student-marks.store')}}" method="POST">
+                        @csrf
 
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">اضافة مجال جديد</h5>
-                        </div>
-                        <div class="modal-body">
-                            <div class="table-responsive">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">اضافة مجال جديد</h5>
+                            </div>
+                            <div class="modal-body">
+                                <div class="table-responsive">
 
 
-                                <input type="hidden" name="student_class_year" id="student_class_year" value="">
-                                <input type="hidden" name="year_class" value="{{$current_year_class->id}}">
+                                    <input type="hidden" name="student_class_year" id="student_class_year" value="">
+                                    <input type="hidden" name="year_class" value="{{$current_year_class->id}}">
 
-                                <table class="table table-sm table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">المجال</th>
-                                        <th scope="col">علامة الفصل الاول</th>
-                                        <th scope="col">علامة الفصل الثاني</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($certificate->fields as $field)
-                                        <tr class="table-primary">
-                                            <td><strong>{{ $field->field_name }}</strong></td>
-                                            <td></td>
-                                            <td></td>
+                                    <table class="table table-sm table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">المجال</th>
+                                            <th scope="col">علامة الفصل الاول</th>
+                                            <th scope="col">علامة الفصل الثاني</th>
                                         </tr>
-                                        @if(count($field->categories) > 0)
-                                            @foreach($field->mainCategories as $category)
-                                                <tr class="{{count($category->subcategories) > 0 ? 'table-warning' : ''}}">
-                                                    <td>{{ $category->name }}</td>
-                                                    <td>
-                                                        <select class="form-select form-select-sm"
-                                                                name="marks[first_semester][{{ $category->id }}]">
-                                                            <option value="" selected>اختر العلامة</option>
-                                                            <option value="Always">دائماً</option>
-                                                            <option value="Sometimes">أحياناً</option>
-                                                            <option value="Rarely">نادراً</option>
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <select class="form-select form-select-sm"
-                                                                name="marks[second_semester][{{ $category->id }}]">
-                                                            <option value="" selected>اختر العلامة</option>
-                                                            <option value="Always">دائماً</option>
-                                                            <option value="Sometimes">أحياناً</option>
-                                                            <option value="Rarely">نادراً</option>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                                @if($category->subcategories->isNotEmpty())
-                                                    @foreach($category->subcategories as $subcategory)
-                                                        <tr>
-                                                            <td>{{ $subcategory->name }}</td>
-                                                            <td>
-                                                                <select class="form-select form-select-sm"
-                                                                        name="marks[first_semester][{{ $subcategory->id }}]">
-                                                                    <option value="" selected>اختر العلامة</option>
-                                                                    <option value="Always">دائماً</option>
-                                                                    <option value="Sometimes">أحياناً</option>
-                                                                    <option value="Rarely">نادراً</option>
-                                                                </select>
-                                                            </td>
-                                                            <td>
-                                                                <select class="form-select form-select-sm"
-                                                                        name="marks[second_semester][{{ $subcategory->id }}]">
-                                                                    <option value="" selected>اختر العلامة</option>
-                                                                    <option value="Always">دائماً</option>
-                                                                    <option value="Sometimes">أحياناً</option>
-                                                                    <option value="Rarely">نادراً</option>
-                                                                </select>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                @endif
-                                            @endforeach
-                                        @endif
-                                    @endforeach
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($current_year_class->certificate?->fields as $field)
+                                            <tr class="table-primary">
+                                                <td><strong>{{ $field->field_name }}</strong></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            @if(count($field->categories) > 0)
+                                                @foreach($field->mainCategories as $category)
+                                                    <tr class="{{count($category->subcategories) > 0 ? 'table-warning' : ''}}">
+                                                        <td>{{ $category->name }}</td>
+                                                        <td>
+                                                            <select class="form-select form-select-sm"
+                                                                    name="marks[first_semester][{{ $category->id }}]">
+                                                                <option value="" selected>اختر العلامة</option>
+                                                                <option value="Always">دائماً</option>
+                                                                <option value="Sometimes">أحياناً</option>
+                                                                <option value="Rarely">نادراً</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select class="form-select form-select-sm"
+                                                                    name="marks[second_semester][{{ $category->id }}]">
+                                                                <option value="" selected>اختر العلامة</option>
+                                                                <option value="Always">دائماً</option>
+                                                                <option value="Sometimes">أحياناً</option>
+                                                                <option value="Rarely">نادراً</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    @if($category->subcategories->isNotEmpty())
+                                                        @foreach($category->subcategories as $subcategory)
+                                                            <tr>
+                                                                <td>{{ $subcategory->name }}</td>
+                                                                <td>
+                                                                    <select class="form-select form-select-sm"
+                                                                            name="marks[first_semester][{{ $subcategory->id }}]">
+                                                                        <option value="" selected>اختر العلامة</option>
+                                                                        <option value="Always">دائماً</option>
+                                                                        <option value="Sometimes">أحياناً</option>
+                                                                        <option value="Rarely">نادراً</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <select class="form-select form-select-sm"
+                                                                            name="marks[second_semester][{{ $subcategory->id }}]">
+                                                                        <option value="" selected>اختر العلامة</option>
+                                                                        <option value="Always">دائماً</option>
+                                                                        <option value="Sometimes">أحياناً</option>
+                                                                        <option value="Rarely">نادراً</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        @endforeach
+                                        </tbody>
+                                    </table>
 
 
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label for="first_notes" class="form-label">ملاحظات مربية الفصل الدراسي الاول</label>
+                                            <textarea class="form-control" id="first_notes" name="first_notes" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label for="second_notes" class="form-label">ملاحظات مربية الفصل الدراسي الثاني</label>
+                                            <textarea class="form-control" id="second_notes" name="second_notes" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-delete" data-bs-dismiss="modal">اغلاق</button>
+                                <button type="submit" class="btn btn-primary">حفظ</button>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-delete" data-bs-dismiss="modal">اغلاق</button>
-                            <button type="submit" class="btn btn-primary">حفظ</button>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
+        @endif
 
         <div class="modal fade" id="editCertificateModal">
             <div class="modal-dialog" role="document">
@@ -678,8 +699,47 @@
         $('.editStudentCertification').on('click', function () {
             var studentId = $(this).data('student_class_year-id');
             $('#student_class_year').val(studentId);
-            $("#studentCertificateModal").modal('show');
+
+            var url = '{{ route("students.ajax.marks", ":studentId") }}';
+            url = url.replace(':studentId', studentId);
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: 'json',
+                success: function (response) {
+                    $('select[name="marks"]').val("");
+                    $('#first_notes').val("");
+                    $('#second_notes').val("");
+
+                    if (response.marks && response.marks && response.marks.first) {
+                        $.each(response.marks.first, function (key, value) {
+                            $('select[name="marks[first_semester][' + key + ']"]').val(value.mark);
+                        });
+                    }
+
+                    if (response.marks && response.marks && response.marks.second) {
+                        $.each(response.marks.second, function (key, value) {
+                            $('select[name="marks[second_semester][' + key + ']"]').val(value.mark);
+                        });
+                    }
+
+                    if (response.studentCertificate){
+                        if (response.studentCertificate.first_notes){
+                            $('#first_notes').val(response.studentCertificate.first_notes);
+                        }
+                        if (response.studentCertificate.second_notes){
+                            $('#second_notes').val(response.studentCertificate.second_notes);
+                        }
+
+
+                    }
+                    $("#studentCertificateModal").modal('show');
+                },
+
+            });
         });
+
 
         $('.dataTableCustomTitleConfig').DataTable({
             "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'B><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\StudentCertificate;
 use App\Models\StudentMark;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class StudentMarkController extends Controller
@@ -30,30 +32,38 @@ class StudentMarkController extends Controller
     public function store(Request $request)
     {
         // dd(\request()->all());
+        DB::transaction(function () {
+            $marks = request('marks');
+            $student_class_year = request('student_class_year');
+            $first_notes = request('first_notes');
+            $second_notes = request('second_notes');
 
-        $marks = request('marks');
-        $student_class_year = request('student_class_year');
-
-
-        foreach ($marks['first_semester'] as $id => $mark) {
-            StudentMark::updateOrCreate(
-                [
-                    'certificate_category_id' => $id,
-                    'student_class_id' => $student_class_year,
-                    'semester' => 'first',
-                ],[ "mark" => $mark]
+            $studentCertificate = StudentCertificate::updateOrCreate(
+                ['student_class_id' => $student_class_year,], ["first_notes" => $first_notes, "second_notes" => $second_notes]
             );
-        }
 
-        foreach ($marks['second_semester'] as $id => $mark) {
-            StudentMark::updateOrCreate(
-                [
-                    'certificate_category_id' => $id,
-                    'student_class_id' => $student_class_year,
-                    'semester' => 'second',
-                ],[ "mark" => $mark]
-            );
-        }
+            foreach ($marks['first_semester'] as $id => $mark) {
+                StudentMark::updateOrCreate(
+                    [
+                        'student_certificate_id' => $studentCertificate->id,
+                        'certificate_category_id' => $id,
+                        'semester' => 'first',
+                    ], ["mark" => $mark]
+                );
+            }
+
+            foreach ($marks['second_semester'] as $id => $mark) {
+                StudentMark::updateOrCreate(
+                    [
+                        'student_certificate_id' => $studentCertificate->id,
+                        'certificate_category_id' => $id,
+                        'semester' => 'second',
+                    ], ["mark" => $mark]
+                );
+            }
+
+        });
+
         Session::flash('message', 'تم تعديل شهادة الطالب بنجاح.');
 
         return redirect()->back();
