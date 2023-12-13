@@ -2,14 +2,33 @@
 
 @push('styles')
     <style>
+        html{
+            height: 100%;
+        }
+
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transform-origin: 0 0;
+            opacity: 0.2;
+        }
+
+        .watermark img {
+            height: 430px;
+            width: 430px;
+        }
 
         .student-info {
             position: absolute;
-            left: 38%;
             top: 68.4%;
+            width: 100%;
+            text-align: center;
+            padding-right: 150px;
             font-weight: bold;
             z-index: 1;
-            line-height: 32px;
+            line-height: 40px;
         }
 
         .student-info p {
@@ -29,6 +48,10 @@
             border-bottom-right-radius: 0;
         }
 
+        body {
+            background-color: white;
+
+        }
         @media print {
             .layout-top-spacing {
                 margin-top: 0 !important;
@@ -39,10 +62,7 @@
                 height: 297mm;
             }
 
-            body {
-                background-color: white;
 
-            }
 
             .sidebar-wrapper {
                 display: none;
@@ -78,6 +98,8 @@
                 font-size: 16px;
                 line-height: 21px;
             }
+
+
         }
 
         @page {
@@ -90,7 +112,12 @@
 @endpush
 
 @section('content')
+    <div class="watermark">
+        <img src="{{ asset('assets/img/watermark.png') }}" alt="watermark">
+    </div>
+
     <div class="content position-relative">
+
         <div class="main-page">
             <div class="student-info">
 
@@ -101,7 +128,7 @@
             <img src="{{ asset('assets/img/certificate_bg.jpg') }}" class="w-100" alt="image">
         </div>
 
-        <div class="bg-white">
+        <div >
             <table class="table table-sm table-bordered ">
                 <thead>
                 <tr>
@@ -240,7 +267,7 @@
 
 @push('scripts')
     <script type="text/javascript">
-        window.onafterprint = window.close;
-        window.print();
+    //    window.onafterprint = window.close;
+     //   window.print();
     </script>
 @endpush
