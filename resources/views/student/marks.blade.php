@@ -22,18 +22,22 @@
 
         .student-info {
             position: absolute;
-            top: 68.4%;
+            top: 71.2%;
             width: 100%;
             text-align: center;
             padding-right: 150px;
             font-weight: bold;
             z-index: 1;
-            line-height: 40px;
+            line-height: 57px;
         }
 
         .student-info p {
-            font-size: 22px;
+            font-size: 20px;
             color: black;
+        }
+
+        .student-info .student-name {
+            margin-right: 150px;
         }
 
         .main-page {
@@ -95,8 +99,12 @@
             }
 
             .student-info p {
-                font-size: 16px;
-                line-height: 21px;
+                font-size: 12px;
+                line-height: 30px;
+            }
+
+            .student-info .student-name {
+                margin-right: 25px;
             }
 
 
@@ -121,14 +129,14 @@
         <div class="main-page">
             <div class="student-info">
 
-                <p class="mb-0">  {{ $studentClass->student->name }}</p>
+                <p class="mb-0 student-name">  {{ $studentClass->student->name }}</p>
                 <p class="mb-0">  {{ $certificate->age }}</p>
                 <p class="mb-0">  {{ $certificate->class }}</p>
             </div>
             <img src="{{ asset('assets/img/certificate_bg.jpg') }}" class="w-100" alt="image">
         </div>
 
-        <div >
+        <div>
             <table class="table table-sm table-bordered ">
                 <thead>
                 <tr>
