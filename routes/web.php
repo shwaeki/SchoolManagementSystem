@@ -21,7 +21,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
-
 Auth::routes();
 
 Route::get('application/message', [ApplicationController::class, 'message'])->name('application.message');
@@ -29,7 +28,7 @@ Route::get('application/message', [ApplicationController::class, 'message'])->na
 Route::resource('application', ApplicationController::class);
 
 
-Route::middleware(['auth:web,teacher','check.year'])->group(function () {
+Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
     Route::resource('roles', RoleController::class);
@@ -47,6 +46,7 @@ Route::middleware(['auth:web,teacher','check.year'])->group(function () {
 
 
     Route::resource('certificates', CertificateController::class);
+    Route::get('certificate-fields/categories', [CertificateFieldController::class, 'getCategories'])->name('certificate-fields.categories');
     Route::resource('certificate-fields', CertificateFieldController::class);
     Route::resource('certificate-categories', CertificateCategoryController::class);
     Route::resource('student-marks', StudentMarkController::class);
@@ -58,7 +58,6 @@ Route::middleware(['auth:web,teacher','check.year'])->group(function () {
     Route::get('academic-year/select', [AcademicYearController::class, 'selectAcademicYear'])->name('academic-year.select');
     Route::resource('academic-years', AcademicYearController::class);
 });
-
 
 
 Route::middleware(['auth'])->group(function () {

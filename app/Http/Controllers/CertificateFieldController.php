@@ -70,4 +70,17 @@ class CertificateFieldController extends Controller
     {
         //
     }
+
+    public function getCategories()
+    {
+        $field_id = request('field_id');
+        if (!$field_id) {
+            return response()->json(['result' => false]);
+        }
+
+        $field = CertificateField::findOrFail($field_id);
+        $fieldMainCategories = $field->mainCategories;
+
+        return response()->json(['result' => true, 'data' => $fieldMainCategories]);
+    }
 }

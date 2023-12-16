@@ -121,9 +121,8 @@
                                                         <tr class="table-primary">
                                                             <td><strong>{{ $field->field_name }}</strong></td>
                                                             <td>
-                                                                <button type="button" class="btn btn-primary"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#categoriesModalField{{ $field->id }}">
+                                                                <button type="button" class="btn btn-primary add-field"
+                                                                        data-field-id="{{ $field->id }}">
                                                                     <i class="far fa-plus"></i>
                                                                 </button>
                                                             </td>
@@ -139,17 +138,17 @@
                                                                                     {{ $category->name }}
                                                                                     <div>
                                                                                         @if($category->subcategories->isEmpty())
-                                                                                            <button
-                                                                                                class="btn btn-dismiss"
-                                                                                                onclick="deleteItem(this)"
-                                                                                                data-item="{{route('certificate-categories.destroy', $category)}}">
+                                                                                            <button type="button"
+                                                                                                    class="btn btn-dismiss"
+                                                                                                    onclick="deleteItem(this)"
+                                                                                                    data-item="{{route('certificate-categories.destroy', $category)}}">
                                                                                                 <i class="far fa-times-circle text-danger"></i>
                                                                                             </button>
                                                                                         @endif
-                                                                                        <button
-                                                                                            class="btn btn-dismiss edit-category"
-                                                                                            data-id="{{ $category->id }}"
-                                                                                            data-name="{{ $category->name }}">
+                                                                                        <button type="button"
+                                                                                                class="btn btn-dismiss edit-category"
+                                                                                                data-id="{{ $category->id }}"
+                                                                                                data-name="{{ $category->name }}">
                                                                                             <i class="fas fa-pen text-warning"></i>
                                                                                         </button>
 
@@ -164,12 +163,14 @@
                                                                                                     {{ $subcategory->name }}
                                                                                                     <div>
                                                                                                         <button
+                                                                                                            type="button"
                                                                                                             class="btn btn-dismiss"
                                                                                                             onclick="deleteItem(this)"
                                                                                                             data-item="{{route('certificate-categories.destroy', $subcategory)}}">
                                                                                                             <i class="far fa-times-circle text-danger"></i>
                                                                                                         </button>
                                                                                                         <button
+                                                                                                            type="button"
                                                                                                             class="btn btn-dismiss edit-category"
                                                                                                             data-id="{{ $subcategory->id }}"
                                                                                                             data-name="{{ $subcategory->name }}">
@@ -239,39 +240,46 @@
         </div>
     </div>
 
-    @foreach($certificate->fields as $field)
-        <div class="modal fade" id="categoriesModalField{{$field->id}}">
-            <div class="modal-dialog">
-                <form action="{{route('certificate-categories.store')}}" method="POST">
-                    @csrf
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">اضافة مجال جديد</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <input type="hidden" name="certificate_field_id" value="{{$field->id}}">
-                            <div class="mb-3">
-                                <label for="field_name" class="form-label">اسم التصنيف</label>
-                                <input type="text" id="field_name" name="name"
-                                       class="form-control @error('name') is-invalid @enderror"
-                                       value="{{old('name')}}" required>
-                                @error('name')
-                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                @enderror
-                            </div>
 
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-delete" data-bs-dismiss="modal">اغلاق</button>
-                            <button type="submit" class="btn btn-primary">اضافة</button>
-                        </div>
+    <div class="modal fade" id="categoriesModalField">
+        <div class="modal-dialog">
+            <form action="{{route('certificate-categories.store')}}" method="POST">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">اضافة فئة جديدة</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </form>
-            </div>
-        </div>
-    @endforeach
+                    <div class="modal-body">
+                        <input type="hidden" name="certificate_field_id"
+                               id="certificate_field_id" value="" required>
+                        <div class="mb-3">
+                            <label for="field_name" class="form-label">اسم التصنيف</label>
+                            <input type="text" id="field_name" name="name"
+                                   class="form-control @error('name') is-invalid @enderror"
+                                   value="{{old('name')}}" required>
+                            @error('name')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
 
+                        <div class="mb-3">
+                            <label for="parent_id" class="form-label">التصنيف الاب</label>
+                            <select name="parent_id" id="parent_id" class="form-select">
+                                <option value="" selected>غير محدد</option>
+
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-delete" data-bs-dismiss="modal">اغلاق</button>
+                        <button type="submit" class="btn btn-primary">اضافة</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <div class="modal fade" id="editCategoryModal">
         <div class="modal-dialog">
@@ -307,6 +315,33 @@
 
 @push('scripts')
     <script>
+        $('.add-field').on('click', function () {
+            var field_id = $(this).data('field-id');
+            $('#certificate_field_id').val(field_id);
+
+            $.ajax({
+                url: '{{route('certificate-fields.categories')}}',
+                type: 'GET',
+                dataType: 'json',
+                data: {field_id: field_id},
+                success: function (response) {
+                    if (response.result == true) {
+                        var parentDropdown = $('#parent_id');
+                        parentDropdown.empty();
+                        parentDropdown.append('<option value="" selected>غير محدد</option>');
+
+                        $.each(response.data, function (index, category) {
+                            parentDropdown.append('<option value="' + category.id + '">' + category.name + '</option>');
+                        });
+
+                        $('#categoriesModalField').modal('show');
+                    }
+                },
+            });
+
+
+        });
+
         $('.edit-category').on('click', function () {
             var category_id = $(this).data('id');
             var category_name = $(this).data('name');
