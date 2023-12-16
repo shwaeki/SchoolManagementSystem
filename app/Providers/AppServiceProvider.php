@@ -29,11 +29,15 @@ class AppServiceProvider extends ServiceProvider
         });
 
         view()->composer('*', function ($view) {
-            $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
+            $academicYears = AcademicYear::all();
+            $adminActiveAcademicYear = $academicYears->where('status', true)->first();
             $activeAcademicYear = Session::get('activeAcademicYear');
-            $view->with('academicYears', AcademicYear::all());
-            $view->with('adminActiveAcademicYear', $adminActiveAcademicYear);
-            $view->with('activeAcademicYear', $activeAcademicYear);
+
+            $view->with([
+                'academicYears' => $academicYears,
+                'adminActiveAcademicYear' => $adminActiveAcademicYear,
+                'activeAcademicYear' => $activeAcademicYear,
+            ]);
         });
 
     }

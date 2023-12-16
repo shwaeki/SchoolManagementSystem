@@ -69,8 +69,10 @@ class SchoolClassController extends Controller
         ];
 
         if ($current_year_class != null) {
-            $data['class_year_students'] = $current_year_class->students;
-            $data['certificate'] = $current_year_class->certificate;
+
+
+            $data['class_year_students'] = $current_year_class->students()->with('student','addedBy')->get();
+            $data['certificate'] = $current_year_class->certificate/*()->with(['fields.mainCategories','fields.categories.subcategories'])->get()*/;
         }
         return view('classes.show', $data);
     }
