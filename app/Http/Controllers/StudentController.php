@@ -68,9 +68,10 @@ class StudentController extends Controller
 
 
         $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
+        $activeAcademicYear = Session::get('activeAcademicYear');
 
-        $current_student_class = $student->studentClasses()->whereHas('yearClass', function ($query) use ($adminActiveAcademicYear) {
-            $query->where('academic_year_id',$adminActiveAcademicYear->id);
+        $current_student_class = $student->studentClasses()->whereHas('yearClass', function ($query) use ($activeAcademicYear) {
+            $query->where('academic_year_id',$activeAcademicYear->id);
         })->get()->first();
 
 

@@ -81,6 +81,12 @@
         body.dark .layout-px-spacing, .layout-px-spacing {
             min-height: calc(100vh - 155px) !important;
         }
+
+/*        @media (max-width: 767px) {
+            .header-container .navbar.navbar-expand-sm .search-animated #search {
+                display: none;
+            }
+        }*/
     </style>
 
 </head>
@@ -111,8 +117,8 @@
 
         <ul class="navbar-item theme-brand flex-row  text-center">
             <li class="nav-item theme-logo">
-                <a href="#" class="d-none">
-                    <img src="{{ asset("assets/img/logo2.svg") }}" class="navbar-logo" alt="logo">
+                <a href="{{route('home')}}" class="d-none">
+                    <img src="{{ asset("assets/img/logo.png") }}" class="navbar-logo" alt="logo">
                 </a>
             </li>
             <li class="nav-item theme-text">
@@ -122,9 +128,20 @@
 
         <livewire:search/>
 
+        {{--        <div class="search-animated toggle-search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <form class="form-inline search-full form-inline search" role="search">
+                        <div class="search-bar">
+                            <input type="text" class="form-control search-form-control  ml-lg-auto" placeholder="Search...">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x search-close"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </div>
+                    </form>
+                    <span class="badge badge-secondary">Ctrl + /</span>
+                </div>--}}
+
         <ul class="navbar-item flex-row ms-lg-auto ms-0 action-area">
 
-            <li class="nav-item dropdown year-dropdown">
+            <li class="nav-item dropdown year-dropdown ms-2">
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="year-dropdown"
                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {{ $activeAcademicYear->name}}
@@ -139,7 +156,7 @@
                 </div>
             </li>
 
-            <li class="nav-item dropdown language-dropdown">
+            <li class="nav-item dropdown language-dropdown d-none d-sm-block">
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="language-dropdown"
                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img src="{{ asset("assets/img/flags/ar.svg") }}" class="flag-width" alt="flag">
@@ -251,8 +268,8 @@
             <div class="navbar-nav theme-brand flex-row  text-center">
                 <div class="nav-logo">
                     <div class="nav-item theme-logo">
-                        <a href="#" class="d-none">
-                            <img src="{{ asset("assets/img/logo.svg") }}" class="navbar-logo" alt="logo">
+                        <a href="{{route('home')}}" class="d-none">
+                            <img src="{{ asset("assets/img/logo.png") }}" class="navbar-logo" alt="logo">
                         </a>
                     </div>
                     <div class="nav-item theme-text">
@@ -710,13 +727,13 @@
                                     <line x1="12" y1="9" x2="12" y2="13"></line>
                                     <line x1="12" y1="17" x2="12" y2="17"></line>
                                 </svg>
-                                انت تتصفح سنة دراسية غير مفعلة! يمكنك الاطلاع على البيانات لكن لا يمكن أصافة أو تعديل اي
-                                من
-                                البيانات التي تخص السنة الدراسية.
+                                انت تتصفح سنة دراسية غير مفعلة!
                                 <a href="{{route('academic-year.select',['year'=> $adminActiveAcademicYear->id])}}"
                                    class="alert-link">اضغط هنا للانتقال إلى السنة الدراسية الحالية.</a>.
                             </div>
                         @endif
+
+                        @stack('warnings')
 
                         @error('ActiveAcademicYear')
                         <div class="alert alert-light--danger" role="alert">
@@ -761,36 +778,6 @@
 <script src="{{ asset("assets/app.js")}}"></script>
 
 @stack('scripts')
-<script>
-
-    $('.dataTableConfigNoData').DataTable({
-        "dom": "<'dt--top-section'<'row'<'col-12 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
-            "<'table-responsive'tr>" +
-            "<'dt--bottom-section text-center'<'dt--pages-count  mb-sm-0 mb-3'><'dt--pagination'p>>",
-        "language": {"url": "{{asset('assets/datatable_arabic.json')}}"},
-        'buttons': [],
-        "pageLength": 20
-    }).on('init', function () {
-        $('*[type="search"]').css({'width': '100%',});
-        $('.dataTables_filter').css({'width': '100%',});
-        $('label').css({'width': '100%',});
-        $('.dataTables_wrapper').css({'margin-top': '1em', 'width': '100%'});
-    });
-
-
-    $('.dataTableConfig').DataTable({
-        "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'B><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
-            "<'table-responsive'tr>" +
-            "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
-        "language": {"url": "{{asset('assets/datatable_arabic.json')}}"},
-
-        'buttons': ["excel", 'print'],
-
-        "pageLength": 25
-    });
-
-</script>
-
 
 </body>
 </html>

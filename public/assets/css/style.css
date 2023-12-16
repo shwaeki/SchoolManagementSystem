@@ -31,7 +31,7 @@ li.menu.link a {
 }
 
 
-body.dark  .widget-content-area-normal {
+body.dark .widget-content-area-normal {
     padding: 20px;
     position: relative;
     background-color: #0e1726;
@@ -46,4 +46,30 @@ body.dark  .widget-content-area-normal {
     font-weight: bold;
     color: red;
     padding-left: 3px;
+}
+
+.navbar .navbar-item .nav-item.dropdown.year-dropdown .dropdown-menu {
+    min-width: 7rem;
+    left: -8px !important;
+    right: auto !important;
+}
+
+.search-result {
+    z-index: 999999;
+    max-height: 300px;
+    width: 370px;
+    overflow: auto;
+    margin-top: 5px;
+    position: absolute;
+    padding: 1rem;
+    background-color: white;
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+}
+
+@media (max-width: 767px) {
+    .search-result {
+        right: 0;
+        width: 100%;
+        margin-top: 24px;
+    }
 }

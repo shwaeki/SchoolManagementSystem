@@ -82,6 +82,6 @@ class AcademicYearController extends Controller
     {
         $year = AcademicYear::findOrFail(request('year'));
         Session::put('activeAcademicYear', $year);
-        return redirect()->route('home');
+        return redirect()->back();
     }
 }

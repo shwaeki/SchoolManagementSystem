@@ -1618,13 +1618,13 @@ body.alt-menu #content {
     transition: top 200ms;
     top: -25px;
   }
-  .header-container .navbar.navbar-expand-sm .search-animated form.form-inline input {
+  .header-container .navbar.navbar-expand-sm .search-animated .form-inline input {
     display: none;
   }
   .header-container .navbar.navbar-expand-sm .search-animated .badge {
     display: none;
   }
-  .header-container .navbar.navbar-expand-sm .search-animated.show-search form {
+  .header-container .navbar.navbar-expand-sm .search-animated.show-search .form-inline {
     position: fixed;
     top: 0;
     background: #060818;
@@ -1638,10 +1638,10 @@ body.alt-menu #content {
     opacity: 1;
     transition: opacity 200ms, top 200ms;
   }
-  .header-container .navbar.navbar-expand-sm .search-animated.show-search form.form-inline .search-bar {
+  .header-container .navbar.navbar-expand-sm .search-animated.show-search .form-inline .search-bar {
     width: 100%;
   }
-  .header-container .navbar.navbar-expand-sm .search-animated.show-search form.form-inline .search-bar input {
+  .header-container .navbar.navbar-expand-sm .search-animated.show-search .form-inline .search-bar input {
     display: block;
     width: 100%;
     height: 100%;
@@ -1649,7 +1649,7 @@ body.alt-menu #content {
     padding-right: 24px;
     border: none;
   }
-  .header-container .navbar.navbar-expand-sm .search-animated.show-search form.form-inline .search-bar .search-close {
+  .header-container .navbar.navbar-expand-sm .search-animated.show-search .form-inline .search-bar .search-close {
     display: block;
     left: 10px;
     top: 22px;

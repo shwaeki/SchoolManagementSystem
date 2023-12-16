@@ -1,6 +1,5 @@
-{{--<div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">--}}
-<div class="">
-    <div class="search-animated toggle-search">
+<div class="ms-auto">
+    <div class="search-animated toggle-search" wire:ignore>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
              class="feather feather-search">
@@ -19,19 +18,18 @@
                        wire:model="query"
                        wire:keydown.tab="resetAll"
                        wire:keydown.escape="resetAll">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x search-close"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+
             </div>
         </div>
+        <span class="badge badge-secondary">Ctrl + /</span>
 
     </div>
 
 
     @if(!empty($query) && $searchStatus && strlen($query) >= 3  )
         <div
-            class="bg-white list-group p-3 position-absolute shadow"
-            style="z-index: 999999; max-height: 300px; width: 370px; overflow: auto;margin-top: 5px;">
-{{--            <div wire:loading class="text-center p-3">
-                <p><i class="fas fa-spinner fa-spin"></i> يبحث ... </p>
-            </div>--}}
+            class="bg-white list-group p-3 position-absolute shadow search-result">
             @php($loopIndex = 0)
 
             <div class="list-group">

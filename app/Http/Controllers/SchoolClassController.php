@@ -43,9 +43,10 @@ class SchoolClassController extends Controller
 
     public function show(SchoolClass $schoolClass)
     {
-        $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
+        $activeAcademicYear = Session::get('activeAcademicYear');
+     //   $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
 
-        $current_year_class = $schoolClass->yearClasses()->where('academic_year_id', $adminActiveAcademicYear->id)->get()->first();
+        $current_year_class = $schoolClass->yearClasses()->where('academic_year_id', $activeAcademicYear->id)->get()->first();
 
         $all_students = [];
 

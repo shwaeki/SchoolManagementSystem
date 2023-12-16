@@ -19,6 +19,7 @@
                     <h2> معلومات الفصل الدراسي - {{$class->name}}</h2>
 
                     @if($current_year_class == null)
+                        @push('warnings')
                         <div class="alert alert-dismissible alert-icon-left alert-light-warning fade mb-4 show"
                              role="alert">
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
@@ -42,6 +43,7 @@
                             <a href="#classYearModal" data-bs-toggle="modal"
                                class="alert-link">اضغط هنا لاضافة الفصل الى السنة الدراسية الحالية.</a>.
                         </div>
+                        @endpush
                     @endif
 
                     <ul class="nav nav-pills" id="animateLine" role="tablist">
@@ -389,7 +391,7 @@
                 @csrf
 
                 <input type="hidden" name="school_class_id" value="{{$class->id}}">
-                <input type="hidden" name="academic_year_id" value="{{$adminActiveAcademicYear->id}}">
+                <input type="hidden" name="academic_year_id" value="{{$activeAcademicYear->id}}">
 
                 <div class="modal-content">
                     <div class="modal-header">
@@ -408,7 +410,7 @@
                         <div class="mb-3">
                             <label for="name" class="form-label"> السنة الدراسية</label>
                             <input type="text" id="name" class="form-control"
-                                   value="{{$adminActiveAcademicYear->name}}" disabled>
+                                   value="{{$activeAcademicYear->name}}" disabled>
                         </div>
 
 
@@ -463,7 +465,7 @@
 
                     <input type="hidden" name="school_class_id" value="{{$class->id}}">
                     <input type="hidden" name="year_class_id" value="{{$current_year_class->id}}">
-                    <input type="hidden" name="academic_year_id" value="{{$adminActiveAcademicYear->id}}">
+                    <input type="hidden" name="academic_year_id" value="{{$activeAcademicYear->id}}">
 
                     <div class="modal-content">
                         <div class="modal-header">
