@@ -16,7 +16,7 @@
         <div class="account-content">
             <div class="row mb-3">
                 <div class="col-md-12">
-                    <h2> معلومات الفصل الدراسي - {{$class->name}}</h2>
+                    <h2 class="mb-3"> معلومات الفصل الدراسي - {{$class->name}}</h2>
 
                     @if($current_year_class == null)
                         @push('warnings')

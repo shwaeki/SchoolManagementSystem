@@ -80,7 +80,7 @@ class TeachersDataTable extends DataTable
             [
                 'name' => ['title' => 'الاسم '],
                 'identification' => ['title' => 'رقم الهوية'],
-                'phone_1' => ['title' => 'رفم الهاتف '],
+                'phone' => ['title' => 'رفم الهاتف '],
                 'birth_date' => ['title' => 'تاريخ الميلاد'],
                 'gender' => ['title' => 'الجنس '],
                 'star_work_date' => ['title' => 'تاريخ بدأ العمل '],

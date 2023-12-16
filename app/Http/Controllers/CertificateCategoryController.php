@@ -38,7 +38,6 @@ class CertificateCategoryController extends Controller
 
         CertificateCategory::create(request()->all());
         Session::flash('message', 'تم اضافة  بنجاح.');
-
         return redirect()->back();
     }
 
@@ -61,9 +60,16 @@ class CertificateCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCertificateCategoryRequest $request, CertificateCategory $certificateCategory)
+    public function update(Request $request, CertificateCategory $certificateCategory)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+
+        $certificateCategory->update(['name' => request('name')]);
+        Session::flash('message', 'تم التحديث  بنجاح.');
+        return redirect()->back();
     }
 
     /**
@@ -71,6 +77,8 @@ class CertificateCategoryController extends Controller
      */
     public function destroy(CertificateCategory $certificateCategory)
     {
-        //
+        $certificateCategory->delete();
+        Session::flash('message', 'تم الحذف  بنجاح.');
+        return redirect()->back();
     }
 }

@@ -31,15 +31,15 @@ checkall('checkbox_parent_all', 'checkbox_child');
 */
 
 function multiCheck(tb_var) {
-    tb_var.on("change", ".chk-parent", function() {
-        var e=$(this).closest("table").find("td:first-child .child-chk"), a=$(this).is(":checked");
-        $(e).each(function() {
-            a?($(this).prop("checked", !0), $(this).closest("tr").addClass("active")): ($(this).prop("checked", !1), $(this).closest("tr").removeClass("active"))
+    tb_var.on("change", ".chk-parent", function () {
+        var e = $(this).closest("table").find("td:first-child .child-chk"), a = $(this).is(":checked");
+        $(e).each(function () {
+            a ? ($(this).prop("checked", !0), $(this).closest("tr").addClass("active")) : ($(this).prop("checked", !1), $(this).closest("tr").removeClass("active"))
         })
     }),
-    tb_var.on("change", "tbody tr .new-control", function() {
-        $(this).parents("tr").toggleClass("active")
-    })
+        tb_var.on("change", "tbody tr .new-control", function () {
+            $(this).parents("tr").toggleClass("active")
+        })
 }
 
 
@@ -116,7 +116,7 @@ $('.dataTableConfigNoData').DataTable({
     "dom": "<'dt--top-section'<'row'<'col-12 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
         "<'table-responsive'tr>" +
         "<'dt--bottom-section text-center'<'dt--pages-count  mb-sm-0 mb-3'><'dt--pagination'p>>",
-    "language": {"url": "{{asset('assets/datatable_arabic.json')}}"},
+    "language": {"url": "../assets/datatable_arabic.json"},
     'buttons': [],
     "pageLength": 20
 }).on('init', function () {
@@ -131,9 +131,38 @@ $('.dataTableConfig').DataTable({
     "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'B><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
         "<'table-responsive'tr>" +
         "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
-    "language": {"url": "{{asset('assets/datatable_arabic.json')}}"},
+    "language": {"url": "../assets/datatable_arabic.json"},
 
     'buttons': ["excel", 'print'],
 
     "pageLength": 25
 });
+
+
+$('button[data-bs-toggle="tab"]').on('click', function (e) {
+    e.preventDefault();
+    window.location.hash = $(this).attr('href');
+    localStorage.setItem('selectedTabHash', $(this).attr('href'));
+    localStorage.setItem('currentPageUrl', $("#current_url").val());
+});
+
+
+var hash = window.location.hash;
+if (hash) {
+    var tab = $('.nav-pills button[href="' + hash + '"]');
+    if (tab.length > 0) {
+        new bootstrap.Tab(tab[0]).show();
+    }
+} else {
+    var savedHash = localStorage.getItem('selectedTabHash');
+    var currentPageUrl = localStorage.getItem('currentPageUrl');
+    /*    console.log("CURRENT : " + $("#current_url").val());
+        console.log("OLD : " + currentPageUrl + " Hash: " + savedHash);*/
+    if (savedHash && currentPageUrl ==  $("#current_url").val()) {
+        var tab = $('.nav-pills button[href="' + savedHash + '"]');
+        if (tab.length > 0) {
+            new bootstrap.Tab(tab[0]).show();
+            window.location.hash = savedHash;
+        }
+    }
+}

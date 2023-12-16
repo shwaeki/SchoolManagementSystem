@@ -191,7 +191,7 @@
                                         </div>
 
 
-                                        <div class="col-6 col-md-3">
+                                        <div class="col-12 col-md-3">
                                             <div class="mb-3">
                                                 <label for="gender" class="form-label"> الجنس </label>
                                                 <input type="text" id="gender" class="form-control"
@@ -236,7 +236,7 @@
                                     <div class="row">
 
 
-                                        <div class="col-6 col-md-4">
+                                        <div class="col-12 col-sm-6 col-md-4">
                                             <div class="mb-3">
                                                 <label for="mother_name" class="form-label"> اسم الام </label>
                                                 <input type="text" id="mother_name" class="form-control"
@@ -244,7 +244,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-6 col-md-4">
+                                        <div class="col-12 col-sm-6 col-md-4">
                                             <div class="mb-3">
                                                 <label for="mother_phone" class="form-label"> رقم هاتف الام </label>
                                                 <input type="text" id="mother_phone" class="form-control"
@@ -252,7 +252,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-6 col-md-4">
+                                        <div class="col-12 col-sm-6 col-md-4">
                                             <div class="mb-3">
                                                 <label for="mother_id" class="form-label"> رقم هوية الام </label>
                                                 <input type="text" id="mother_id" class="form-control"
@@ -261,7 +261,7 @@
                                         </div>
 
 
-                                        <div class="col-6 col-md-4">
+                                        <div class="col-12 col-sm-6 col-md-4">
                                             <div class="mb-3">
                                                 <label for="father_name" class="form-label"> اسم الاب </label>
                                                 <input type="text" id="father_name" class="form-control"
@@ -269,7 +269,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-6 col-md-4">
+                                        <div class="col-12 col-sm-6 col-md-4">
                                             <div class="mb-3">
                                                 <label for="father_phone" class="form-label"> رقم هاتف الاب </label>
                                                 <input type="text" id="father_phone" class="form-control"
@@ -277,7 +277,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-6 col-md-4">
+                                        <div class="col-12 col-sm-6 col-md-4">
                                             <div class="mb-3">
                                                 <label for="father_id" class="form-label"> رقم هوية الاب </label>
                                                 <input type="text" id="father_id" class="form-control"
@@ -286,7 +286,7 @@
                                         </div>
 
 
-                                        <div class="col-6 col-md-4">
+                                        <div class="col-12 col-sm-6 col-md-4">
                                             <div class="mb-3">
                                                 <label for="family_status" class="form-label"> الحالة الاجتماعية
                                                     للعائلة </label>
@@ -296,7 +296,7 @@
                                         </div>
 
 
-                                        <div class="col-6 col-md-4">
+                                        <div class="col-12 col-sm-6 col-md-4">
                                             <div class="mb-3">
                                                 <label for="custody" class="form-label"> حضانة الطالب </label>
                                                 <input type="text" id="gender" class="form-control"
@@ -304,7 +304,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-6 col-md-4">
+                                        <div class="col-12 col-sm-6 col-md-4">
                                             <div class="mb-3">
                                                 <label for="family_members" class="form-label"> عدد افراد
                                                     العائلة </label>

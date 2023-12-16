@@ -27,7 +27,7 @@
         <div class="account-content">
             <div class="row mb-3">
                 <div class="col-md-12">
-                    <h2> معلومات المعلم - {{$teacher->name}}</h2>
+                    <h2 class="mb-3"> معلومات المعلم - {{$teacher->name}}</h2>
 
                     <ul class="nav nav-pills" id="animateLine" role="tablist">
                         <li class="nav-item" role="presentation">

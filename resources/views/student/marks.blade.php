@@ -98,6 +98,21 @@
                 height: 100vh;
             }
 
+            .last-page {
+                page-break-before: always;
+                width: 100vw;
+                height: 100vh;
+                position: relative;
+            }
+
+            .last-page img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+            }
+
             .student-info p {
                 font-size: 12px;
                 line-height: 30px;
@@ -240,35 +255,39 @@
                 </tbody>
             </table>
 
-            <div class="row px-3" style="page-break-before:always">
+            <div class="row px-3 g-0" style="page-break-before:avoid">
                 <div class="col-12">
                     <div class="mb-3 mt-3">
-                        <p class="fs-4 fw-bold text-black">ملاحظات مربية الفصل الدراسي الاول</p>
-                        <p class="fs-5">{{$studentCertificate->first_notes ?? ''}}</p>
+                        <p class="fs-5 fw-bold text-black">ملاحظات مربية الفصل الدراسي الاول</p>
+                        <p class="fs-6">{{$studentCertificate->first_notes ?? ''}}</p>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="mb-3 h4 mt-3">
-                        <p class="fs-4 fw-bold text-black">ملاحظات مربية الفصل الدراسي الثاني</p>
-                        <p class="fs-5">   {{$studentCertificate->second_notes ?? ''}}</p>
+                        <p class="fs-5 fw-bold text-black">ملاحظات مربية الفصل الدراسي الثاني</p>
+                        <p class="fs-6">   {{$studentCertificate->second_notes ?? ''}}</p>
                     </div>
                 </div>
 
                 <div class="col-12 border-bottom my-4"></div>
                 <div class="col-4 text-center">
-                    <p class="h5">توقيع المربية</p>
+                    <p class="h6">توقيع المربية</p>
                 </div>
                 <div class="col-4 text-center">
-                    <p class="h5">توقيع الأهل </p>
+                    <p class="h6">توقيع الأهل </p>
                 </div>
                 <div class="col-4 text-center">
-                    <p class="h5"> الادارة العامة لرياض المجد الأهلية
+                    <p class="h6"> الادارة العامة لرياض المجد الأهلية
                         <br>أ.يسري رياض العيساوي
                     </p>
                 </div>
             </div>
 
 
+        </div>
+
+        <div class="last-page">
+            <img src="{{ asset('assets/img/certificate_last_page.jpg') }}" class="w-100" alt="image">
         </div>
     </div>
 @endsection

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('certificate_field_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('parent_id')->nullable()->constrained('certificate_categories');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

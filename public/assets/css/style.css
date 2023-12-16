@@ -72,4 +72,31 @@ body.dark .widget-content-area-normal {
         width: 100%;
         margin-top: 24px;
     }
+
+
+    .nav.nav-pills .nav-item {
+        width: 50%;
+    }
+
+    .nav.nav-pills .nav-item button {
+        width: 100%;
+        text-align: right;
+    }
+}
+
+
+.form-control:disabled:not(.flatpickr-input) {
+    background-color: #fafafa  !important;
+    border: 0;
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+}
+
+
+.nav.nav-pills {
+    background: #ffffff !important;
+}
+
+.nav.nav-pills li.nav-item button.nav-link.active {
+    background-color: #5b73e8 !important;
+    color: white !important;
 }
