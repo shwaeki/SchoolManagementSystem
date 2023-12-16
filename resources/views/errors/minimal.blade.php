@@ -64,7 +64,7 @@
 
 
 <div class="container-fluid error-content">
-    <div class="bg-white p-4 rounded shadow">
+    <div class="bg-white px-5 py-3 rounded shadow">
         <img src="{{ asset('assets/img/logo.png') }}" alt="cork-admin-404" class="error-img">
 
         <h1 class="error-number mt-3">@yield('code')</h1>
