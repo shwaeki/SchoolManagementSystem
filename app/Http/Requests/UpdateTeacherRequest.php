@@ -28,7 +28,7 @@ class UpdateTeacherRequest extends FormRequest
             'star_work_date' => 'nullable|date_format:d/m/Y|max:225',
             'email' => 'nullable|email|max:225',
             'address' => 'required|string|max:225',
-            'phone_1' => 'required|string|digits:10|regex:/^[0-9]+$/',
+            'phone' => 'required|string|digits:10|regex:/^[0-9]+$/',
             'phone_2' => 'nullable|string|digits:10|regex:/^[0-9]+$/',
             'gender' => 'required|string',
             'status' => 'required|string',

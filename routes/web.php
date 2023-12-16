@@ -28,8 +28,8 @@ Route::get('application/message', [ApplicationController::class, 'message'])->na
 
 Route::resource('application', ApplicationController::class);
 
-/*Route::middleware(['auth','otp.verify'])->group(function () {*/
-Route::middleware(['auth','check.year'])->group(function () {
+
+Route::middleware(['auth:web,teacher','check.year'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
     Route::resource('roles', RoleController::class);

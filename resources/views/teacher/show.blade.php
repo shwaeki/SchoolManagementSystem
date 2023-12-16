@@ -146,16 +146,16 @@
 
                                         <div class="col-6 col-md-3">
                                             <div class="mb-3">
-                                                <label for="phone_1" class="form-label"> رقم الهاتف </label>
-                                                <input type="text" id="phone_1" class="form-control"
-                                                       value="{{$teacher->phone_1}}" disabled>
+                                                <label for="phone" class="form-label"> رقم الهاتف </label>
+                                                <input type="text" id="phone" class="form-control"
+                                                       value="{{$teacher->phone}}" disabled>
                                             </div>
                                         </div>
 
 
                                         <div class="col-6 col-md-3">
                                             <div class="mb-3">
-                                                <label for="phone_1" class="form-label"> رقم هاتف احتياطي </label>
+                                                <label for="phone_2" class="form-label"> رقم هاتف احتياطي </label>
                                                 <input type="text" id="phone_2" class="form-control"
                                                        value="{{$teacher->phone_2}}" disabled>
                                             </div>

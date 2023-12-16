@@ -48,7 +48,7 @@ class Search extends Component
             $teachers = Teacher::where(function ($q) {
                 $q->where('name', 'LIKE', '%' . $this->query . '%');
                 $q->orWhere('identification', 'LIKE', '%' . $this->query . '%');
-                $q->orWhere('phone_1', 'LIKE', '%' . $this->query . '%');
+                $q->orWhere('phone', 'LIKE', '%' . $this->query . '%');
                 $q->orWhere('phone_2', 'LIKE', '%' . $this->query . '%');
             })->get()->toArray();
 

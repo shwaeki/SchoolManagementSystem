@@ -129,11 +129,11 @@
 
                     <div class="col-12 col-md-3">
                         <div class="mb-3">
-                            <label for="phone_1" class="form-label"> رقم الهاتف </label>
-                            <input type="text" id="phone_1" name="phone_1"
-                                   class="form-control only-integer @error('phone_1') is-invalid @enderror"
-                                   value="{{old('phone_1')}}" required>
-                            @error('phone_1')
+                            <label for="phone" class="form-label"> رقم الهاتف </label>
+                            <input type="text" id="phone" name="phone"
+                                   class="form-control only-integer @error('phone') is-invalid @enderror"
+                                   value="{{old('phone')}}" required>
+                            @error('phone')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>
