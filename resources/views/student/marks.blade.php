@@ -236,13 +236,13 @@
                 <div class="col-12">
                     <div class="mb-3 mt-3">
                         <p class="fs-4 fw-bold text-black">ملاحظات مربية الفصل الدراسي الاول</p>
-                        <p class="fs-5">{{$studentCertificate->first_notes}}</p>
+                        <p class="fs-5">{{$studentCertificate->first_notes ?? ''}}</p>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="mb-3 h4 mt-3">
                         <p class="fs-4 fw-bold text-black">ملاحظات مربية الفصل الدراسي الثاني</p>
-                        <p class="fs-5">   {{$studentCertificate->second_notes}}</p>
+                        <p class="fs-5">   {{$studentCertificate->second_notes ?? ''}}</p>
                     </div>
                 </div>
 
@@ -267,7 +267,7 @@
 
 @push('scripts')
     <script type="text/javascript">
-    //    window.onafterprint = window.close;
-     //   window.print();
+        window.onafterprint = window.close;
+        window.print();
     </script>
 @endpush
