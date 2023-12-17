@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
-Auth::routes();
+Auth::routes(['reset' => false]);
 
 Route::get('application/message', [ApplicationController::class, 'message'])->name('application.message');
 
@@ -31,32 +31,51 @@ Route::resource('application', ApplicationController::class);
 Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
-    Route::resource('roles', RoleController::class);
-    Route::resource('school-classes', SchoolClassController::class);
+    Route::resource('school-classes', SchoolClassController::class)->only(['show']);
+    Route::resource('student-classes', StudentClassController::class)->only(['store','destroy']);
+    Route::resource('student-marks', StudentMarkController::class)->only(['store']);
+
+
     Route::get('students/ajax/marks/{studentClass}', [StudentController::class, 'getStudentMarks'])->name('students.ajax.marks');
     Route::get('students/marks/{studentClass}', [StudentController::class, 'showMarks'])->name('students.marks');
     Route::get('students/report', [StudentController::class, 'report'])->name('students.report');
-    Route::resource('students', StudentController::class);
-    Route::put('students-request/accept/{students_request}', [StudentRequestController::class, 'accept'])->name('students-request.accept');
-    Route::resource('students-request', StudentRequestController::class);
-    Route::resource('teachers', TeacherController::class);
-    Route::resource('student-classes', StudentClassController::class);
-    Route::resource('year-classes', YearClassController::class);
-    Route::resource('student-reports', StudentReportController::class);
 
-
-    Route::resource('certificates', CertificateController::class);
-    Route::get('certificate-fields/categories', [CertificateFieldController::class, 'getCategories'])->name('certificate-fields.categories');
-    Route::resource('certificate-fields', CertificateFieldController::class);
-    Route::resource('certificate-categories', CertificateCategoryController::class);
-    Route::resource('student-marks', StudentMarkController::class);
 
     Route::get('profile', [UserController::class, 'profile'])->name('profile.edit');
     Route::put('profile', [UserController::class, 'profileUpdate'])->name('profile.update');
-    Route::resource('users', UserController::class);
+    Route::put('profile/change-password', [UserController::class, 'passwordUpdate'])->name('profile.password');
 
     Route::get('academic-year/select', [AcademicYearController::class, 'selectAcademicYear'])->name('academic-year.select');
-    Route::resource('academic-years', AcademicYearController::class);
+
+    Route::middleware(['auth:web', 'check.year'])->group(function () {
+        Route::resource('roles', RoleController::class);
+        Route::resource('school-classes', SchoolClassController::class)->except(['show']);
+        Route::resource('student-classes', StudentClassController::class)->except(['store','destroy']);
+        Route::resource('student-marks', StudentMarkController::class)->except(['store']);
+
+
+        Route::resource('students', StudentController::class);
+
+        Route::put('students-request/accept/{students_request}', [StudentRequestController::class, 'accept'])->name('students-request.accept');
+        Route::resource('students-request', StudentRequestController::class);
+
+        Route::put('teachers/change-password/{teacher}', [TeacherController::class, 'passwordUpdate'])->name('teachers.password');
+        Route::resource('teachers', TeacherController::class);
+
+        Route::resource('year-classes', YearClassController::class);
+        Route::resource('student-reports', StudentReportController::class);
+
+
+        Route::resource('certificates', CertificateController::class);
+        Route::get('certificate-fields/categories', [CertificateFieldController::class, 'getCategories'])->name('certificate-fields.categories');
+        Route::resource('certificate-fields', CertificateFieldController::class);
+        Route::resource('certificate-categories', CertificateCategoryController::class);
+
+
+        Route::resource('users', UserController::class);
+
+        Route::resource('academic-years', AcademicYearController::class);
+    });
 });
 
 

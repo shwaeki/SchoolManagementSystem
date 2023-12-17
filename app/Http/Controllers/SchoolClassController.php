@@ -44,10 +44,9 @@ class SchoolClassController extends Controller
     public function show(SchoolClass $schoolClass)
     {
         $activeAcademicYear = Session::get('activeAcademicYear');
-     //   $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
+        //   $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
 
         $current_year_class = $schoolClass->yearClasses()->where('academic_year_id', $activeAcademicYear->id)->get()->first();
-
         $all_students = [];
 
         if ($current_year_class != null) {
@@ -71,8 +70,11 @@ class SchoolClassController extends Controller
         if ($current_year_class != null) {
 
 
-            $data['class_year_students'] = $current_year_class->students()->with('student','addedBy')->get();
-            $data['certificate'] = $current_year_class->certificate/*()->with(['fields.mainCategories','fields.categories.subcategories'])->get()*/;
+            $data['class_year_students'] = $current_year_class->students()->whereHas('student', function ($query) {
+                $query->whereNull('deleted_at');
+            })->with('student', 'addedBy')->get();
+
+            $data['certificate'] = $current_year_class->certificate;
         }
         return view('classes.show', $data);
     }

@@ -1,6 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+
     <div class="statbox widget box box-shadow">
         <div class="widget-header">
             <div class="row">
@@ -165,6 +177,7 @@
                         </div>
                     </div>
 
+{{--
                     <div class="col-6 col-md-3">
                         <div class="mb-3">
                             <label for="school_class_id" class="form-label"> فصل المدرس </label>
@@ -183,6 +196,7 @@
                             @enderror
                         </div>
                     </div>
+--}}
 
 
                     <div class="col-6 col-md-3">
@@ -248,6 +262,17 @@
 
                             </select>
                             @error('status')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-3">
+                        <div class="mb-3">
+                            <label for="password" class="form-label"> كلمة المرور  </label>
+                            <input type="password" id="password" name="password" value="{{old('password')}}"
+                                   class="form-control @error('password') is-invalid @enderror" required>
+                            @error('password')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>

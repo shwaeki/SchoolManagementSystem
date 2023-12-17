@@ -32,6 +32,7 @@ class StoreTeacherRequest extends FormRequest
             'phone_2' => 'nullable|string|digits:10|regex:/^[0-9]+$/',
             'gender' => 'required|string',
             'status' => 'required|string',
+            'password' => 'required|string',
             'notes' => 'nullable|string',
 
             'id_photo' => 'nullable|max:2048',

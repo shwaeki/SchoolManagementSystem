@@ -239,6 +239,8 @@ return [
         'personal_photo'        => 'الصورة شخصية',
         'birth_certificate'     => 'شهادة الملاد',
         'school_class_id'       => 'الروضة',
+        'new_password'          => 'كلمة المرور الجديدة',
+        'new_confirm_password'  => ' تاكيد كلمة المرور الجديدة',
         'slug'                  => '',
     ],
 

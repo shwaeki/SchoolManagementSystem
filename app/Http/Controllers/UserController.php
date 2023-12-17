@@ -7,7 +7,10 @@ use App\Http\Requests\UpdateUserProfile;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Rules\MatchOldPassword;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Role;
 
@@ -83,7 +86,7 @@ class UserController extends Controller
     }
 
 
-    public function profile( )
+    public function profile()
     {
 
         $data = [
@@ -95,13 +98,25 @@ class UserController extends Controller
 
     public function profileUpdate(UpdateUserProfile $request)
     {
-       $userData = $request->except(['password']);
-        /*
-         if ($request->password && $request->password !== '') {
-             $userData['password'] = parse_url($request->profile_photo, PHP_URL_PATH);
-         }*/
+        $userData = $request->except(['password']);
         auth()->user()->update($userData);
         Session::flash('message', 'تم تعديل البيانات الشخصية بنجاح.');
+        return redirect()->route('profile.edit');
+    }
+
+    public function passwordUpdate(Request $request)
+    {
+
+
+        $request->validate([
+            'current_password' => ['required', new MatchOldPassword],
+            'new_password' => ['required'],
+            'new_confirm_password' => ['same:new_password'],
+        ]);
+
+
+        auth()->user()->update(['password'=> Hash::make($request->new_password)]);
+        Session::flash('message', 'تم تعديل كلمة المرور  بنجاح.');
         return redirect()->route('profile.edit');
     }
 

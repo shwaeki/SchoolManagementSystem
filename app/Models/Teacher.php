@@ -32,6 +32,10 @@ class Teacher extends Authenticatable
     {
         return $this->hasMany(SchoolClass::class, 'supervisor');
     }
+    public function supervisorYearClasses(): hasMany
+    {
+        return $this->hasMany(YearClass::class, 'supervisor');
+    }
 
 
     public function schoolClass(): belongsTo

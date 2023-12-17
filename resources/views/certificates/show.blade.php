@@ -139,14 +139,14 @@
                                                                                     <div>
                                                                                         @if($category->subcategories->isEmpty())
                                                                                             <button type="button"
-                                                                                                    class="btn btn-dismiss"
+                                                                                                    class="btn btn-dismiss btn-rounded mb-1"
                                                                                                     onclick="deleteItem(this)"
                                                                                                     data-item="{{route('certificate-categories.destroy', $category)}}">
                                                                                                 <i class="far fa-times-circle text-danger"></i>
                                                                                             </button>
                                                                                         @endif
                                                                                         <button type="button"
-                                                                                                class="btn btn-dismiss edit-category"
+                                                                                                class="btn btn-dismiss edit-category btn-rounded mb-1"
                                                                                                 data-id="{{ $category->id }}"
                                                                                                 data-name="{{ $category->name }}">
                                                                                             <i class="fas fa-pen text-warning"></i>
@@ -164,14 +164,14 @@
                                                                                                     <div>
                                                                                                         <button
                                                                                                             type="button"
-                                                                                                            class="btn btn-dismiss"
+                                                                                                            class="btn btn-dismiss btn-rounded mb-1"
                                                                                                             onclick="deleteItem(this)"
                                                                                                             data-item="{{route('certificate-categories.destroy', $subcategory)}}">
                                                                                                             <i class="far fa-times-circle text-danger"></i>
                                                                                                         </button>
                                                                                                         <button
                                                                                                             type="button"
-                                                                                                            class="btn btn-dismiss edit-category"
+                                                                                                            class="btn btn-dismiss btn-rounded mb-1 edit-category"
                                                                                                             data-id="{{ $subcategory->id }}"
                                                                                                             data-name="{{ $subcategory->name }}">
                                                                                                             <i class="fas fa-pen text-warning"></i>

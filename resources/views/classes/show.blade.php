@@ -20,29 +20,29 @@
 
                     @if($current_year_class == null)
                         @push('warnings')
-                        <div class="alert alert-dismissible alert-icon-left alert-light-warning fade mb-4 show"
-                             role="alert">
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                <svg xmlns="http://www.w3.org/2000/svg" data-bs-dismiss="alert" width="24"
-                                     height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                     class="feather feather-x close">
-                                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                            <div class="alert alert-dismissible alert-icon-left alert-light-warning fade mb-4 show"
+                                 role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <svg xmlns="http://www.w3.org/2000/svg" data-bs-dismiss="alert" width="24"
+                                         height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                         class="feather feather-x close">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-alert-triangle">
+                                    <path
+                                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12" y2="17"></line>
                                 </svg>
-                            </button>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                 stroke-linejoin="round" class="feather feather-alert-triangle">
-                                <path
-                                    d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                                <line x1="12" y1="9" x2="12" y2="13"></line>
-                                <line x1="12" y1="17" x2="12" y2="17"></line>
-                            </svg>
-                            لا يوجد فصل دراسي مسجل لهذه السنة {{$adminActiveAcademicYear->name}} .
-                            <a href="#classYearModal" data-bs-toggle="modal"
-                               class="alert-link">اضغط هنا لاضافة الفصل الى السنة الدراسية الحالية.</a>.
-                        </div>
+                                لا يوجد فصل دراسي مسجل لهذه السنة {{$adminActiveAcademicYear->name}} .
+                                <a href="#classYearModal" data-bs-toggle="modal"
+                                   class="alert-link">اضغط هنا لاضافة الفصل الى السنة الدراسية الحالية.</a>.
+                            </div>
                         @endpush
                     @endif
 
@@ -89,10 +89,12 @@
                                         <div class="col-9">
                                             <h6> بيانات الفصل الدراسي </h6>
                                         </div>
-                                        <div class="col-3 text-end">
-                                            <a href="{{route('school-classes.edit',$class)}}"
-                                               class="btn btn-primary"> تعديل </a>
-                                        </div>
+                                        @auth("web")
+                                            <div class="col-3 text-end">
+                                                <a href="{{route('school-classes.edit',$class)}}"
+                                                   class="btn btn-primary"> تعديل </a>
+                                            </div>
+                                        @endauth
                                     </div>
 
                                     <div class="row">
@@ -178,10 +180,12 @@
                                                 <h6> بيانات الفصل الدراسي لسنة
                                                     - {{$current_year_class->academicYear->name}} </h6>
                                             </div>
-                                            <div class="col-3 text-end">
-                                                <a href="#editCertificateModal" data-bs-toggle="modal"
-                                                   class="btn btn-primary">تعديل نوع الشهادة</a>.
-                                            </div>
+                                            @auth("web")
+                                                <div class="col-3 text-end">
+                                                    <a href="#editCertificateModal" data-bs-toggle="modal"
+                                                       class="btn btn-primary">تعديل نوع الشهادة</a>.
+                                                </div>
+                                            @endauth
                                         </div>
 
                                         <div class="row">
@@ -625,14 +629,18 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="mb-3">
-                                            <label for="first_notes" class="form-label">ملاحظات مربية الفصل الدراسي الاول</label>
-                                            <textarea class="form-control" id="first_notes" name="first_notes" rows="3"></textarea>
+                                            <label for="first_notes" class="form-label">ملاحظات مربية الفصل الدراسي
+                                                الاول</label>
+                                            <textarea class="form-control" id="first_notes" name="first_notes"
+                                                      rows="3"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="mb-3">
-                                            <label for="second_notes" class="form-label">ملاحظات مربية الفصل الدراسي الثاني</label>
-                                            <textarea class="form-control" id="second_notes" name="second_notes" rows="3"></textarea>
+                                            <label for="second_notes" class="form-label">ملاحظات مربية الفصل الدراسي
+                                                الثاني</label>
+                                            <textarea class="form-control" id="second_notes" name="second_notes"
+                                                      rows="3"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -726,11 +734,11 @@
                         });
                     }
 
-                    if (response.studentCertificate){
-                        if (response.studentCertificate.first_notes){
+                    if (response.studentCertificate) {
+                        if (response.studentCertificate.first_notes) {
                             $('#first_notes').val(response.studentCertificate.first_notes);
                         }
-                        if (response.studentCertificate.second_notes){
+                        if (response.studentCertificate.second_notes) {
                             $('#second_notes').val(response.studentCertificate.second_notes);
                         }
 

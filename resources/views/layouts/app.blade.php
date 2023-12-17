@@ -32,9 +32,6 @@
     <link href="{{ asset("assets/bootstrap/css/bootstrap.rtl.min.css") }}" rel="stylesheet" type="text/css"/>
 
 
-    <link href="{{ asset("assets/css/style.css")  }}" rel="stylesheet" type="text/css"/>
-
-
     <link href="{{ asset("assets/css/light/main.css")  }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset("assets/plugins/css/light/perfect-scrollbar/perfect-scrollbar.css")  }}" rel="stylesheet"
           type="text/css"/>
@@ -73,6 +70,8 @@
     <link href="{{ asset("assets/plugins/css/dark/sweetalerts2/custom-sweetalert.css")  }}" rel="stylesheet"
           type="text/css"/>
 
+    <link href="{{ asset("assets/css/style.css")  }}" rel="stylesheet" type="text/css"/>
+
     @livewireStyles
 
     @stack('styles')
@@ -82,11 +81,6 @@
             min-height: calc(100vh - 155px) !important;
         }
 
-/*        @media (max-width: 767px) {
-            .header-container .navbar.navbar-expand-sm .search-animated #search {
-                display: none;
-            }
-        }*/
     </style>
 
 </head>
@@ -126,19 +120,9 @@
                 <a href="{{route('home')}}" class="nav-link"> رياض المجد </a>
             </li>
         </ul>
-
-        <livewire:search/>
-
-        {{--        <div class="search-animated toggle-search">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <form class="form-inline search-full form-inline search" role="search">
-                        <div class="search-bar">
-                            <input type="text" class="form-control search-form-control  ml-lg-auto" placeholder="Search...">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x search-close"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                        </div>
-                    </form>
-                    <span class="badge badge-secondary">Ctrl + /</span>
-                </div>--}}
+        @auth("web")
+            <livewire:search/>
+        @endauth
 
         <ul class="navbar-item flex-row ms-lg-auto ms-0 action-area">
 
@@ -333,56 +317,10 @@
                             </li>
                         </ul>
                     </li>
-                @endauth
-
-                <li class="menu">
-                    <a href="#apps" data-bs-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">
-                        <div class="">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                 stroke-linejoin="round" class="feather feather-cpu">
-                                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                <rect x="9" y="9" width="6" height="6"></rect>
-                                <line x1="9" y1="1" x2="9" y2="4"></line>
-                                <line x1="15" y1="1" x2="15" y2="4"></line>
-                                <line x1="9" y1="20" x2="9" y2="23"></line>
-                                <line x1="15" y1="20" x2="15" y2="23"></line>
-                                <line x1="20" y1="9" x2="23" y2="9"></line>
-                                <line x1="20" y1="14" x2="23" y2="14"></line>
-                                <line x1="1" y1="9" x2="4" y2="9"></line>
-                                <line x1="1" y1="14" x2="4" y2="14"></line>
-                            </svg>
-                            <span>الطلاب</span>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                 stroke-linejoin="round" class="feather feather-chevron-right">
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
-                        </div>
-                    </a>
-                    <ul class="dropdown-menu submenu list-unstyled dropdown-menu-end" id="apps"
-                        data-bs-parent="#accordionExample">
-                        <li>
-                            <a href="{{route('students.index')}}"> قائمة الطلاب </a>
-                        </li>
-                        <li>
-                            <a href="{{route('students.create')}}"> اضافة </a>
-                        </li>
-                        <li>
-                            <a href="{{route('student-reports.create')}}"> أصافة تقرير </a>
-                        </li>
-                        <li>
-                            <a href="{{route('students-request.index')}}"> طلبات الطلاب </a>
-                        </li>
-                    </ul>
-                </li>
 
 
-                @auth("teacher")
-                    <li class="menu link active">
-                        <a href="/">
+                    <li class="menu">
+                        <a href="#apps" data-bs-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -398,10 +336,63 @@
                                     <line x1="1" y1="9" x2="4" y2="9"></line>
                                     <line x1="1" y1="14" x2="4" y2="14"></line>
                                 </svg>
-                                <span>فصلي الدراسي</span>
+                                <span>الطلاب</span>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-chevron-right">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
                             </div>
                         </a>
+                        <ul class="dropdown-menu submenu list-unstyled dropdown-menu-end" id="apps"
+                            data-bs-parent="#accordionExample">
+                            <li>
+                                <a href="{{route('students.index')}}"> قائمة الطلاب </a>
+                            </li>
+                            <li>
+                                <a href="{{route('students.create')}}"> اضافة </a>
+                            </li>
+                            <li>
+                                <a href="{{route('student-reports.create')}}"> أصافة تقرير </a>
+                            </li>
+                            <li>
+                                <a href="{{route('students-request.index')}}"> طلبات الطلاب </a>
+                            </li>
+                        </ul>
                     </li>
+                @endauth
+
+                @auth("teacher")
+
+                    @foreach(auth()->user()->supervisorYearClasses()->where('academic_year_id',$activeAcademicYear->id)->get() ?? [] as $yearClass)
+                        @if($yearClass->schoolClass)
+
+                            <li class="menu link active">
+                                <a href="{{route('school-classes.show', $yearClass->schoolClass)  }}">
+                                    <div class="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                             viewBox="0 0 24 24"
+                                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                             stroke-linejoin="round" class="feather feather-cpu">
+                                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                            <rect x="9" y="9" width="6" height="6"></rect>
+                                            <line x1="9" y1="1" x2="9" y2="4"></line>
+                                            <line x1="15" y1="1" x2="15" y2="4"></line>
+                                            <line x1="9" y1="20" x2="9" y2="23"></line>
+                                            <line x1="15" y1="20" x2="15" y2="23"></line>
+                                            <line x1="20" y1="9" x2="23" y2="9"></line>
+                                            <line x1="20" y1="14" x2="23" y2="14"></line>
+                                            <line x1="1" y1="9" x2="4" y2="9"></line>
+                                            <line x1="1" y1="14" x2="4" y2="14"></line>
+                                        </svg>
+                                        <span>{{$yearClass->schoolClass?->name}}</span>
+                                    </div>
+                                </a>
+                            </li>
+                        @endif
+                    @endforeach
                 @endauth
 
                 @auth("web")
@@ -707,6 +698,28 @@
                                 {{ session('message') }}
                             </div>
                         @endif
+
+{{--                        @auth("teacher")
+                            <div class="alert alert-icon-left alert-light-success alert-dismissible fade show mb-4"
+                                 role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <svg xmlns="http://www.w3.org/2000/svg" data-bs-dismiss="alert" width="24"
+                                         height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                         class="feather feather-x close">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-bell">
+                                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                </svg>
+                                لا يوجد فصول دراسية تتبع لك !
+                            </div>
+                        @endauth--}}
 
                         @if ($adminActiveAcademicYear->id != $activeAcademicYear->id)
                             <div class="alert alert-dismissible alert-icon-left alert-light-warning fade mb-4 show"

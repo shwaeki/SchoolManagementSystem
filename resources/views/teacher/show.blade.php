@@ -170,6 +170,7 @@
                                             </div>
                                         </div>
 
+{{--
 
                                         <div class="col-6 col-md-3">
                                             <div class="mb-3">
@@ -178,6 +179,7 @@
                                                        value="{{$teacher?->schoolClass?->name }}" disabled>
                                             </div>
                                         </div>
+--}}
 
 
                                         <div class="col-6 col-md-3">

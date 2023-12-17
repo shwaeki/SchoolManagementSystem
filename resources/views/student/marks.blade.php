@@ -122,7 +122,6 @@
                 margin-right: 25px;
             }
 
-
         }
 
         @page {

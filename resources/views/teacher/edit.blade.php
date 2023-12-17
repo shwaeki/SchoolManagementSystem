@@ -153,7 +153,7 @@
                         </div>
                     </div>
 
-                    <div class="col-6 col-md-3">
+{{--                    <div class="col-6 col-md-3">
                         <div class="mb-3">
                             <label for="school_class_id" class="form-label"> فصل المدرس </label>
                             <select class="form-select @error('school_class_id') is-invalid @enderror"
@@ -170,7 +170,7 @@
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>
-                    </div>
+                    </div>--}}
 
 
                     <div class="col-6 col-md-3">
@@ -283,6 +283,55 @@
 
         </div>
     </div>
+
+    <div class="statbox widget box box-shadow mt-3">
+        <div class="widget-header">
+            <div class="row">
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                    <h4>تعديل كلمة المرور </h4>
+                </div>
+            </div>
+        </div>
+        <div class="widget-content widget-content-area-normal">
+            <form action="{{route('teachers.password',$teacher)}}" method="POST">
+                @method('PUT')
+                @csrf
+                <div class="row">
+
+                    <div class="col-12 col-md-6">
+                        <div class="mb-3">
+                            <label for="new_password" class="form-label"> كلمة المرور الجديدة </label>
+                            <input type="password" id="new_password" name="new_password"
+                                   class="form-control @error('new_password') is-invalid @enderror" required>
+                            @error('new_password')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <div class="mb-3">
+                            <label for="new_confirm_password" class="form-label"> تاكيد كلمة المرور الجديدة </label>
+                            <input type="password" id="new_confirm_password" name="new_confirm_password"
+                                   class="form-control @error('new_confirm_password') is-invalid @enderror" required>
+                            @error('new_confirm_password')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                <button type="submit" class="btn btn-primary ml-3">تعديل</button>
+
+            </form>
+
+
+        </div>
+    </div>
+
 @endsection
 
 @push('scripts')

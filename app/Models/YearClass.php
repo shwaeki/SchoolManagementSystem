@@ -19,7 +19,7 @@ class YearClass extends Model
     }
 
 
-    public function schoolClass(): belongsTo
+    public function schoolClass()
     {
         return $this->belongsTo(SchoolClass::class);
     }

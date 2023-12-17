@@ -7,6 +7,9 @@ use App\Http\Requests\StoreTeacherRequest;
 use App\Http\Requests\UpdateTeacherRequest;
 use App\Models\SchoolClass;
 use App\Models\Teacher;
+use App\Rules\MatchOldPassword;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class TeacherController extends Controller
@@ -38,13 +41,12 @@ class TeacherController extends Controller
         $data = request()->all() + $addedData;
 
         $date1 = str_replace('/', '-', request('birth_date'));
-        $data['birth_date'] = date('Y-m-d',strtotime($date1));
+        $data['birth_date'] = date('Y-m-d', strtotime($date1));
 
         $date2 = str_replace('/', '-', request('star_work_date'));
-        $data['star_work_date'] = date('Y-m-d',strtotime($date2));
+        $data['star_work_date'] = date('Y-m-d', strtotime($date2));
 
-
-
+        $data['password'] = Hash::make(request('password'));
         $teacher = Teacher::create($data);
 
         if ($request->hasFile('id_photo')) {
@@ -91,10 +93,10 @@ class TeacherController extends Controller
         $data = request()->all() + $addedData;
 
         $date1 = str_replace('/', '-', request('birth_date'));
-        $data['birth_date'] = date('Y-m-d',strtotime($date1));
+        $data['birth_date'] = date('Y-m-d', strtotime($date1));
 
         $date2 = str_replace('/', '-', request('star_work_date'));
-        $data['star_work_date'] = date('Y-m-d',strtotime($date2));
+        $data['star_work_date'] = date('Y-m-d', strtotime($date2));
 
 
         $teacher->update($data);
@@ -108,5 +110,19 @@ class TeacherController extends Controller
         $teacher->delete();
         Session::flash('message', 'تم حذف المعلم بنجاح!');
         return redirect()->route('teachers.index');
+    }
+
+    public function passwordUpdate(Request $request, Teacher $teacher)
+    {
+
+        $request->validate([
+            'new_password' => ['required'],
+            'new_confirm_password' => ['same:new_password'],
+        ]);
+
+
+        $teacher->update(['password' => Hash::make($request->new_password)]);
+        Session::flash('message', 'تم تعديل كلمة المرور  بنجاح.');
+        return redirect()->route('teachers.show', $teacher);
     }
 }

@@ -85,8 +85,12 @@ body.dark .widget-content-area-normal {
 }
 
 
+body.dark .form-control:disabled:not(.flatpickr-input) {
+    background-color: #3b3f5c !important;
+}
+
 .form-control:disabled:not(.flatpickr-input) {
-    background-color: #fafafa  !important;
+    background-color: #fafafa !important;
     border: 0;
     box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
 }
@@ -96,7 +100,25 @@ body.dark .widget-content-area-normal {
     background: #ffffff !important;
 }
 
+body.dark .nav.nav-pills {
+    background: #1b2e4b !important;
+}
+
+.table .btn-dismiss {
+    border-color: #eaeaea !important;
+}
+
+body.dark .table .btn-dismiss {
+    background-color: #4b4b4b !important;
+    border-color: #4b4b4b !important;
+}
+
+
 .nav.nav-pills li.nav-item button.nav-link.active {
     background-color: #5b73e8 !important;
     color: white !important;
+}
+
+.navbar .search-animated .badge {
+    background-color: #3b3f5c !important;
 }

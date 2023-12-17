@@ -111,33 +111,33 @@ function deleteItem(e) {
     })
 }
 
+if (jQuery().dataTable) {
+    $('.dataTableConfigNoData').DataTable({
+        "dom": "<'dt--top-section'<'row'<'col-12 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
+            "<'table-responsive'tr>" +
+            "<'dt--bottom-section text-center'<'dt--pages-count  mb-sm-0 mb-3'><'dt--pagination'p>>",
+        "language": {"url": "../assets/datatable_arabic.json"},
+        'buttons': [],
+        "pageLength": 20
+    }).on('init', function () {
+        $('*[type="search"]').css({'width': '100%',});
+        $('.dataTables_filter').css({'width': '100%',});
+        $('label').css({'width': '100%',});
+        $('.dataTables_wrapper').css({'margin-top': '1em', 'width': '100%'});
+    });
 
-$('.dataTableConfigNoData').DataTable({
-    "dom": "<'dt--top-section'<'row'<'col-12 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
-        "<'table-responsive'tr>" +
-        "<'dt--bottom-section text-center'<'dt--pages-count  mb-sm-0 mb-3'><'dt--pagination'p>>",
-    "language": {"url": "../assets/datatable_arabic.json"},
-    'buttons': [],
-    "pageLength": 20
-}).on('init', function () {
-    $('*[type="search"]').css({'width': '100%',});
-    $('.dataTables_filter').css({'width': '100%',});
-    $('label').css({'width': '100%',});
-    $('.dataTables_wrapper').css({'margin-top': '1em', 'width': '100%'});
-});
 
+    $('.dataTableConfig').DataTable({
+        "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'B><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
+            "<'table-responsive'tr>" +
+            "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+        "language": {"url": "../assets/datatable_arabic.json"},
 
-$('.dataTableConfig').DataTable({
-    "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'B><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
-        "<'table-responsive'tr>" +
-        "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
-    "language": {"url": "../assets/datatable_arabic.json"},
+        'buttons': ["excel", 'print'],
 
-    'buttons': ["excel", 'print'],
-
-    "pageLength": 25
-});
-
+        "pageLength": 25
+    });
+}
 
 $('button[data-bs-toggle="tab"]').on('click', function (e) {
     e.preventDefault();
@@ -158,7 +158,7 @@ if (hash) {
     var currentPageUrl = localStorage.getItem('currentPageUrl');
     /*    console.log("CURRENT : " + $("#current_url").val());
         console.log("OLD : " + currentPageUrl + " Hash: " + savedHash);*/
-    if (savedHash && currentPageUrl ==  $("#current_url").val()) {
+    if (savedHash && currentPageUrl == $("#current_url").val()) {
         var tab = $('.nav-pills button[href="' + savedHash + '"]');
         if (tab.length > 0) {
             new bootstrap.Tab(tab[0]).show();
