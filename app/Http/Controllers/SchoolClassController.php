@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateSchoolClassRequest;
 use App\Models\Student;
 use App\Models\Teacher;
 use Dflydev\DotAccessData\Data;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -48,6 +49,12 @@ class SchoolClassController extends Controller
 
         $current_year_class = $schoolClass->yearClasses()->where('academic_year_id', $activeAcademicYear->id)->get()->first();
         $all_students = [];
+
+        if (Auth::guard('teacher')->check()) {
+            if ($current_year_class?->supervisor != auth()->id()){
+                return redirect()->route('home');
+            }
+        }
 
         if ($current_year_class != null) {
             $all_students = DB::table('student_classes')

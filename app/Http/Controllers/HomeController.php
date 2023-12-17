@@ -14,6 +14,18 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('home');
+        $data = [];
+        if (Auth::guard('teacher')->check()) {
+
+            $activeAcademicYear = Session::get('activeAcademicYear');
+
+            $data['teacherClasses'] =  auth()->user()->supervisorYearClasses()->with('schoolClass')
+                ->whereHas('schoolClass', function ($query) {
+                    $query->whereNull('deleted_at');
+                })
+                ->where('academic_year_id', $activeAcademicYear->id)
+                ->get();
+        }
+        return view('home', $data);
     }
 }
