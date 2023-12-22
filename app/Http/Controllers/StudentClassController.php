@@ -12,6 +12,14 @@ use Illuminate\Support\Facades\Session;
 class StudentClassController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware('auth:web,teacher')->only(['store','destroy']);
+        $this->middleware('auth:web')->except(['store','destroy']);
+    }
+
     public function index()
     {
 

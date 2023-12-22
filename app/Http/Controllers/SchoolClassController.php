@@ -18,6 +18,15 @@ use Illuminate\Support\Facades\Session;
 class SchoolClassController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware('auth:web,teacher')->only(['show']);
+        $this->middleware('auth:web')->except(['show']);
+    }
+
+
     public function index(ClassesDataTable $dataTable)
     {
         return $dataTable->render('classes.index');

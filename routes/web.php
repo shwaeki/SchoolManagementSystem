@@ -31,9 +31,9 @@ Route::resource('application', ApplicationController::class);
 Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
-    Route::resource('school-classes', SchoolClassController::class)->only(['show']);
-    Route::resource('student-classes', StudentClassController::class)->only(['store','destroy']);
-    Route::resource('student-marks', StudentMarkController::class)->only(['store']);
+    Route::resource('school-classes', SchoolClassController::class);
+    Route::resource('student-classes', StudentClassController::class);
+    Route::resource('student-marks', StudentMarkController::class);
 
 
     Route::get('students/ajax/marks/{studentClass}', [StudentController::class, 'getStudentMarks'])->name('students.ajax.marks');
@@ -49,10 +49,6 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
 
     Route::middleware(['auth:web', 'check.year'])->group(function () {
         Route::resource('roles', RoleController::class);
-        Route::resource('school-classes', SchoolClassController::class)->except(['show']);
-        Route::resource('student-classes', StudentClassController::class)->except(['store','destroy']);
-        Route::resource('student-marks', StudentMarkController::class)->except(['store']);
-
 
         Route::resource('students', StudentController::class);
 

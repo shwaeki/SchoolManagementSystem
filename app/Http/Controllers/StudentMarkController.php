@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Session;
 
 class StudentMarkController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware('auth:web,teacher')->only(['store']);
+        $this->middleware('auth:web')->except(['store']);
+    }
     /**
      * Display a listing of the resource.
      */
