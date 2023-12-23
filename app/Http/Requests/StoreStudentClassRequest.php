@@ -22,7 +22,7 @@ class StoreStudentClassRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'students' => 'required|min:1'
         ];
     }
 }

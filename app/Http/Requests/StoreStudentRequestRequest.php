@@ -28,7 +28,7 @@ class StoreStudentRequestRequest extends FormRequest
             'birth_place' => 'required|string|max:225',
             'address' => 'required|string|max:225',
             'address_street' => 'required|string|max:225',
-            'address_house_no' => 'required|string|max:225',
+            'address_house_no' => 'nullable|string|max:225',
             'mother_name' => 'required|string|max:225',
             'mother_phone' => 'required|string|digits:10|regex:/^[0-9]+$/',
             'father_name' => 'required|string|max:255',
@@ -47,7 +47,7 @@ class StoreStudentRequestRequest extends FormRequest
 
             'postal_code' => 'required|integer',
             'family_members' => 'required|integer',
-            'zipcode' => 'required|integer',
+            'zipcode' => 'nullable|integer',
         ];
     }
 }

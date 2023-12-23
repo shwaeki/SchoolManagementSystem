@@ -37,6 +37,7 @@ class StudentClassController extends Controller
     {
         $yearClass = YearClass::findOrFail(request('year_class_id'));
         $students = request('students');
+
         foreach ($students as $student){
             $data = [
                 'student_id' => $student,

@@ -464,7 +464,7 @@
     @if($current_year_class != null)
         <div class="modal fade" id="classStudentModal">
             <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
-                <form action="{{route('student-classes.store')}}" method="POST">
+                <form action="{{route('student-classes.store')}}" method="POST" id="addStudentsForm">
                     @csrf
 
                     <input type="hidden" name="school_class_id" value="{{$class->id}}">
@@ -706,6 +706,26 @@
 
 @push("scripts")
     <script>
+
+        $("#addStudentsForm").on('submit', function(e){
+            var table = $('.dataTableConfigNoData').DataTable();
+
+            var $form = $(this);
+            console.log("true");
+            table.$('input[type="checkbox"]').each(function(){
+                if(!$.contains(document, this)){
+                    if(this.checked){
+                        $form.append(
+                            $('<input>')
+                                .attr('type', 'hidden')
+                                .attr('name', this.name)
+                                .val(this.value)
+                        );
+                    }
+                }
+            });
+        });
+
         $('.editStudentCertification').on('click', function () {
             var studentId = $(this).data('student_class_year-id');
             $('#student_class_year').val(studentId);

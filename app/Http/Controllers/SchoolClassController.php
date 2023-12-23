@@ -67,9 +67,9 @@ class SchoolClassController extends Controller
 
         if ($current_year_class != null) {
             $all_students = DB::table('student_classes')
-                ->select('student_id')
+                ->select(['student_id'])
                 ->join('year_classes', 'year_classes.id', '=', 'student_classes.year_class_id')
-                ->where('academic_year_id', '=', $current_year_class->id)
+                ->where('academic_year_id', '=', $current_year_class->academic_year_id)
                 ->where('school_class_id', '=', $schoolClass->id)
                 ->get()->pluck('student_id')->toArray();
         }

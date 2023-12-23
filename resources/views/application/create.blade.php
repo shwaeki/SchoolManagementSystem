@@ -110,7 +110,7 @@
                                     <div class="form-floating mb-3">
                                         <input type="text" id="address_house_no" name="address_house_no"
                                                class="form-control @error('address_house_no') is-invalid @enderror"
-                                               value="{{old('address_house_no')}}" placeholder="" required>
+                                               value="{{old('address_house_no')}}" placeholder="">
                                         <label for="address_house_no" class="form-label"> رقم البيت </label>
                                         @error('address_house_no')
                                         <span class="invalid-feedback"
@@ -124,7 +124,7 @@
                                     <div class="form-floating mb-3">
                                         <input type="text" id="zipcode" name="zipcode"
                                                class="form-control @error('zipcode') is-invalid @enderror"
-                                               value="{{old('zipcode')}}" placeholder="" required>
+                                               value="{{old('zipcode')}}" placeholder="">
                                         <label for="zipcode" class="form-label"> الرمز البريدي (Zip) </label>
                                         @error('zipcode')
                                         <span class="invalid-feedback"
