@@ -184,7 +184,7 @@
                                             @auth("web")
                                                 <div class="col-3 text-end">
                                                     <a href="#editCertificateModal" data-bs-toggle="modal"
-                                                       class="btn btn-primary">تعديل نوع الشهادة</a>.
+                                                       class="btn btn-primary">تعديل </a>.
                                                 </div>
                                             @endauth
                                         </div>
@@ -674,7 +674,7 @@
 
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">تعديل نوع الشهادة </h5>
+                                <h5 class="modal-title">تعديل بيانات الفصل الدراسي السنوية  </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                     X
                                 </button>
@@ -684,6 +684,23 @@
                                     <label for="name" class="form-label">الفصل الدراسي</label>
                                     <input type="text" id="name" class="form-control"
                                            value="{{$class->name}}" disabled>
+                                </div>
+
+
+                                <div class="mb-3">
+                                    <label for="supervisor" class="form-label"> المعلم المشرف </label>
+                                    <select class="form-select"
+                                            id="supervisor" name="supervisor" required>
+                                        <option selected disabled value="">اختر ...</option>
+                                        @foreach($teachers as $teacher)
+                                            <option
+                                                {{old('supervisor', $current_year_class->supervisor) == $teacher->id ? 'selected' : '' }}
+                                                value="{{$teacher->id}}">
+                                                {{$teacher->name}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
                                 </div>
 
                                 <div class="mb-3">
