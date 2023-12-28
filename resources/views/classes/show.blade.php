@@ -709,7 +709,7 @@
                                         <option selected disabled value="">اختر ...</option>
                                         @foreach($certificates as $certificate)
                                             <option
-                                                {{old('certificate_id', $current_year_class->certificate_id) == $certificate->name ? 'selected' : '' }} value="{{$certificate->id}}">
+                                                {{old('certificate_id', $current_year_class->certificate_id) == $certificate->id ? 'selected' : '' }} value="{{$certificate->id}}">
                                                 {{$certificate->name}}
                                             </option>
                                         @endforeach
