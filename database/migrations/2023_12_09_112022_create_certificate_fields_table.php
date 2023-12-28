@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('certificate_fields', function (Blueprint $table) {
             $table->id();
             $table->string('field_name');
+            $table->integer('field_order')->default(10);
             $table->foreignId('certificate_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });

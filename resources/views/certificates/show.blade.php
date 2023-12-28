@@ -119,11 +119,17 @@
                                                     <tbody>
                                                     @foreach($certificate->fields as $field)
                                                         <tr class="table-primary">
-                                                            <td><strong>{{ $field->field_name }}</strong></td>
+                                                            <td><strong>{{ $field->field_name }} {{ $field->field_order }}</strong></td>
                                                             <td>
                                                                 <button type="button" class="btn btn-primary add-field"
                                                                         data-field-id="{{ $field->id }}">
                                                                     <i class="far fa-plus"></i>
+                                                                </button>
+                                                                <button type="button" class="btn btn-warning edit-field"
+                                                                        data-field-id="{{ $field->id }}"
+                                                                        data-field-name="{{ $field->field_name }}"
+                                                                        data-field-order="{{ $field->field_order }}">
+                                                                    <i class="far fa-edit"></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -240,6 +246,47 @@
         </div>
     </div>
 
+    <div class="modal fade" id="fieldEditModal">
+        <div class="modal-dialog">
+            <form action="" method="POST">
+                @method('PUT')
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">تعديل بيانات المجال</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="field_id" id="field_id" value="">
+                        <div class="mb-3">
+                            <label for="field_name" class="form-label">الاسم</label>
+                            <input type="text" id="field_name" name="field_name"
+                                   class="form-control @error('field_name') is-invalid @enderror"
+                                   value="{{old('field_name')}}" required>
+                            @error('field_name')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="field_order" class="form-label">الترتيب </label>
+                            <input type="text" id="field_order" name="field_order"
+                                   class="form-control only-integer @error('field_order') is-invalid @enderror"
+                                   value="{{old('field_order')}}" required>
+                            @error('field_order')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-delete" data-bs-dismiss="modal">اغلاق</button>
+                        <button type="submit" class="btn btn-primary">تعديل</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
     <div class="modal fade" id="categoriesModalField">
         <div class="modal-dialog">
@@ -315,6 +362,7 @@
 
 @push('scripts')
     <script>
+
         $('.add-field').on('click', function () {
             var field_id = $(this).data('field-id');
             $('#certificate_field_id').val(field_id);
@@ -339,6 +387,24 @@
                 },
             });
 
+        });
+
+
+        $('.edit-field').on('click', function () {
+            var field_id = $(this).data('field-id');
+            var field_name = $(this).data('field-name');
+            var field_order = $(this).data('field-order');
+            $('#fieldEditModal #field_id').val(field_id);
+            $('#fieldEditModal #field_name').val(field_name);
+            $('#fieldEditModal #field_order').val(field_order);
+
+
+            var formAction = "{{ route('certificate-fields.update', -1) }}";
+            formAction = formAction.replace('-1', field_id);
+            $('#fieldEditModal form').attr('action', formAction);
+
+
+            $('#fieldEditModal').modal('show');
 
         });
 

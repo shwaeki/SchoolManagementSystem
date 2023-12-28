@@ -58,9 +58,17 @@ class CertificateFieldController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCertificateFieldRequest $request, CertificateField $certificateField)
+    public function update(Request $request, CertificateField $certificateField)
     {
-        //
+        $request->validate([
+            'field_name' => 'required|string|max:255',
+            'field_order' => 'required|integer',
+        ]);
+
+
+        $certificateField->update(['field_name' => request('field_name'), 'field_order' => request('field_order')]);
+        Session::flash('message', 'تم التحديث  بنجاح.');
+        return redirect()->back();
     }
 
     /**

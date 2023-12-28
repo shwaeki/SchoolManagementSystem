@@ -12,6 +12,6 @@ class Certificate extends Model
 
     public function fields()
     {
-        return $this->hasMany(CertificateField::class);
+        return $this->hasMany(CertificateField::class)->orderBy('field_order','ASC');
     }
 }
