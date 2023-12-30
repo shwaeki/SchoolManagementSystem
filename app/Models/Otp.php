@@ -12,7 +12,8 @@ class Otp extends Model
 
     protected $fillable = [
         'code',
-        'user_id',
+        'phone',
+        'student_id',
     ];
 
 
@@ -20,8 +21,8 @@ class Otp extends Model
         'code',
     ];
 
-    public function user(): belongsTo
+    public function student(): belongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Student::class);
     }
 }

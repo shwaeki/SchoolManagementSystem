@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\AcademicYearManager;
+use App\Http\Middleware\OtpStudent;
 use App\Http\Middleware\OtpVerify;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -68,6 +69,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'otp.verify' => OtpVerify::class,
+        'otp.student' => OtpStudent::class,
         'check.year' =>  AcademicYearManager::class,
     ];
 }

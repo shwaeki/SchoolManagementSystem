@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Session;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Student extends Model
+class Student extends Authenticatable
 {
     use HasFactory, SoftDeletes, LogsActivity;
 
@@ -25,8 +27,6 @@ class Student extends Model
 
     public function studentClasses(): hasMany
     {
-       // return $this->hasMany(StudentClass::class);
-
         return $this->hasMany(StudentClass::class)
             ->whereHas('yearClass', function ($query) {
                 $query->whereHas('schoolClass', function ($query) {
@@ -42,8 +42,6 @@ class Student extends Model
     }
 
 
-
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -55,7 +53,23 @@ class Student extends Model
 
     public function SchoolClasses(): hasManyThrough
     {
-        return $this->hasManyThrough(StudentClass::class,SchoolClass::class, );
+        return $this->hasManyThrough(StudentClass::class, SchoolClass::class,);
     }
 
+
+    public function generateCode()
+    {
+        $code = rand(1000, 9999);
+
+        Otp::updateOrCreate(
+            ['student_id' => $this->id],
+            ['phone' => session('otpVerifyPhone'),'code' => $code],
+        );
+
+        $receiverNumber = $this->father_phone;
+        $message = "2FA login code is " . $code;
+        //Send SMS
+
+
+    }
 }

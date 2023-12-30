@@ -63,19 +63,4 @@ class User extends Authenticatable
         return $this->hasMany(Teacher::class);
     }
 
-    public function generateCode()
-    {
-        $code = rand(1000, 9999);
-
-        Otp::updateOrCreate(
-            ['user_id' => auth()->user()->id],
-            ['code' => $code]
-        );
-
-        $receiverNumber = auth()->user()->phone;
-        $message = "2FA login code is " . $code;
-        //Send SMS
-
-
-    }
 }

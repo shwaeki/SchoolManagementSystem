@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response;
 
-class OtpVerify
+class OtpStudent
 {
     /**
      * Handle an incoming request.
@@ -18,9 +18,10 @@ class OtpVerify
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Session::has('otpVerify')) {
-            return redirect()->route('parents.otp');
+        if (!Session::has('otpVerifyID') || !Session::has('otpVerifyPhone')) {
+            return redirect()->route('parents.login');
         }
+
         return $next($request);
     }
 }

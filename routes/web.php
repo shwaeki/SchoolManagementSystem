@@ -7,6 +7,7 @@ use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CertificateFieldController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OtpController;
+use App\Http\Controllers\ParentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\StudentClassController;
@@ -75,8 +76,19 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
 });
 
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('otp', [OtpController::class, 'index'])->name('otp.index');
-    Route::post('otp/verification', [OtpController::class, 'verification'])->name('otp.verification');
-    Route::get('otp/reset', [OtpController::class, 'resend'])->name('otp.resend');
+Route::prefix('parents')->group(function () {
+    Route::get('/login', [ParentController::class, 'login'])->name('parents.login');
+    Route::post('/login', [ParentController::class, 'loginCheck'])->name('parents.loginCheck');
+    Route::middleware(['otp.student'])->group(function () {
+
+        Route::get('otp', [ParentController::class, 'otp'])->name('parents.otp');
+        Route::post('otp/verification', [ParentController::class, 'verification'])->name('otp.verification');
+        Route::get('otp/reset', [ParentController::class, 'resend'])->name('otp.resend');
+        Route::get('otp/cancel', [ParentController::class, 'cancel'])->name('otp.cancel');
+
+        Route::middleware(['auth:parent', 'otp.verify'])->group(function () {
+            Route::get('/', [ParentController::class, 'index'])->name('parents.index');
+        });
+    });
 });
+
