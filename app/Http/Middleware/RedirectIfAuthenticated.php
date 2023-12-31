@@ -19,6 +19,9 @@ class RedirectIfAuthenticated
     {
         $guards = empty($guards) ? [null] : $guards;
 
+        if (Auth::guard('parent')->check()) {
+            return redirect()->route('parents.index');
+        }
 
         if (Auth::guard('web')->check() || Auth::guard('teacher')->check()) {
             return redirect(RouteServiceProvider::HOME);

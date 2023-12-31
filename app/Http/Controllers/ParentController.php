@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AcademicYear;
 use App\Models\OTP;
 use App\Http\Requests\CheckOTPRequest;
 use App\Models\Student;
+use App\Models\StudentCertificate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
@@ -14,7 +16,37 @@ class ParentController extends Controller
 
     public function index()
     {
-        return view('parents.home');
+
+        $student = Student::findOrFail(auth('parent')->id());
+        $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
+
+        $current_student_class = $student->studentClasses()->whereHas('yearClass', function ($query) use ($adminActiveAcademicYear) {
+            $query->where('academic_year_id', $adminActiveAcademicYear->id);
+        })->get()->first();
+
+        $studentCertificate = null;
+        $organizedMarks = [];
+
+        if ($current_student_class != null) {
+            $studentCertificate = StudentCertificate::where('student_class_id', $current_student_class->id)->first();
+            $marks = $studentCertificate?->marks ?? [];
+
+            $organizedMarks = [];
+            foreach ($marks as $mark) {
+                $organizedMarks[$mark->semester][$mark->certificate_category_id] = $mark;
+            }
+        }
+
+        $data = [
+            "studentCertificate" => $studentCertificate,
+            "marks" => $organizedMarks,
+            "studentClass" => $current_student_class,
+            "certificate" => $current_student_class?->yearClass->certificate,
+            "current_student_class" => $current_student_class,
+        ];
+
+
+        return view('parents.home', $data);
     }
 
     public function login()
