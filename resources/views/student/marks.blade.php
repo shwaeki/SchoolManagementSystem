@@ -2,7 +2,7 @@
 
 @push('styles')
     <style>
-        html{
+        html {
             height: 100%;
         }
 
@@ -22,22 +22,30 @@
 
         .student-info {
             position: absolute;
-            top: 71.2%;
+            top: 49.7%;
             width: 100%;
             text-align: center;
-            padding-right: 150px;
             font-weight: bold;
             z-index: 1;
-            line-height: 57px;
-        }
-
-        .student-info p {
-            font-size: 20px;
-            color: black;
         }
 
         .student-info .student-name {
-            margin-right: 150px;
+            font-size: 40px;
+            color: #1f3761;
+            text-align: right;
+            margin-right: 34%;
+        }
+
+        .student-info .certificate-class {
+            margin-top: 2%;
+            font-size: 60px;
+            color: #1f3761;
+        }
+
+        .student-info .year {
+            font-size: 70px;
+            margin-top: 20.6%;
+            color: black;
         }
 
         .main-page {
@@ -56,6 +64,7 @@
             background-color: white;
 
         }
+
         @media print {
             .layout-top-spacing {
                 margin-top: 0 !important;
@@ -65,7 +74,6 @@
                 width: 210mm;
                 height: 297mm;
             }
-
 
 
             .sidebar-wrapper {
@@ -113,20 +121,27 @@
                 height: 100vh;
             }
 
-            .student-info p {
-                font-size: 12px;
-                line-height: 30px;
+            .student-info .student-name {
+                font-size: 25px;
+                color: #1f3761;
             }
 
-            .student-info .student-name {
-                margin-right: 25px;
+            .student-info .certificate-class {
+                margin-top: 2%;
+                font-size: 40px;
+            }
+
+            .student-info .year {
+                font-size: 40px;
+                margin-top: 17.6%;
+                color: black;
             }
 
         }
 
         @page {
             size: A4 portrait;
-            margin: 0mm !important;
+            margin: 0 !important;
         }
 
 
@@ -142,10 +157,9 @@
 
         <div class="main-page">
             <div class="student-info">
-
                 <p class="mb-0 student-name">  {{ $studentClass->student->name }}</p>
-                <p class="mb-0">  {{ $certificate->age }}</p>
-                <p class="mb-0">  {{ $certificate->class }}</p>
+                <p class="mb-0 certificate-class">  {{ $certificate->class }}</p>
+                <p class="mb-0 year">  {{ $adminActiveAcademicYear->name }}</p>
             </div>
             <img src="{{ asset('assets/img/certificate_bg.jpg') }}" class="w-100" alt="image">
         </div>
@@ -257,13 +271,13 @@
             <div class="row px-3 g-0" style="page-break-before:avoid">
                 <div class="col-12">
                     <div class="mb-3 mt-3">
-                        <p class="fs-5 fw-bold text-black">ملاحظات مربية الفصل الدراسي الاول</p>
+                        <p class="fs-6 fw-bold text-black">ملاحظات مربية الفصل الدراسي الاول</p>
                         <p class="fs-6">{{$studentCertificate->first_notes ?? ''}}</p>
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="mb-3 h4 mt-3">
-                        <p class="fs-5 fw-bold text-black">ملاحظات مربية الفصل الدراسي الثاني</p>
+                    <div class="mb-3 h4 mt-5">
+                        <p class="fs-6 fw-bold text-black">ملاحظات مربية الفصل الدراسي الثاني</p>
                         <p class="fs-6">   {{$studentCertificate->second_notes ?? ''}}</p>
                     </div>
                 </div>
@@ -292,8 +306,8 @@
 @endsection
 
 @push('scripts')
-    <script type="text/javascript">
-        window.onafterprint = window.close;
-        window.print();
-    </script>
+    {{--    <script type="text/javascript">
+            window.onafterprint = window.close;
+            window.print();
+        </script>--}}
 @endpush
