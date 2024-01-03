@@ -268,16 +268,16 @@
                 </tbody>
             </table>
 
-            <div class="row px-3 g-0" style="page-break-before:avoid">
+            <div class="row px-3 g-0" style="page-break-inside:avoid">
                 <div class="col-12">
                     <div class="mb-3 mt-3">
-                        <p class="fs-6 fw-bold text-black">ملاحظات مربية الفصل الدراسي الاول</p>
+                        <p class="fs-6  text-black">ملاحظات مربية الفصل الدراسي الاول</p>
                         <p class="fs-6">{{$studentCertificate->first_notes ?? ''}}</p>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="mb-3 h4 mt-5">
-                        <p class="fs-6 fw-bold text-black">ملاحظات مربية الفصل الدراسي الثاني</p>
+                        <p class="fs-6 text-black">ملاحظات مربية الفصل الدراسي الثاني</p>
                         <p class="fs-6">   {{$studentCertificate->second_notes ?? ''}}</p>
                     </div>
                 </div>
@@ -294,6 +294,18 @@
                         <br>أ.يسري رياض العيساوي
                     </p>
                 </div>
+
+
+                <div class="col-6 mt-3">
+                    <p class="fw-bolder h6">
+                        026654099 – 0522222553
+                    </p>
+                </div>
+                <div class="col-6 mt-3">
+                    <p class="fw-bolder text-end text-end h6">
+                        RiadaIm2011@gmail.com
+                    </p>
+                </div>
             </div>
 
 
@@ -306,8 +318,8 @@
 @endsection
 
 @push('scripts')
-    {{--    <script type="text/javascript">
-            window.onafterprint = window.close;
-            window.print();
-        </script>--}}
+    <script type="text/javascript">
+        window.onafterprint = window.close;
+        window.print();
+    </script>
 @endpush

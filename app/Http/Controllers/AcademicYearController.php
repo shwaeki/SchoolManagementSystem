@@ -63,7 +63,7 @@ class AcademicYearController extends Controller
             return back()->withErrors(['status' => ['يجب ان يكون هناك سنة دراسية واحدة على الاقل فعالة.']]);
         }
 
-        AcademicYear::where('status', true)->update(['status' => false]);
+        AcademicYear::where('status', true)->where('id', '!=', $academicYear->id)->update(['status' => false]);
 
         $academicYear->update(request()->all());
         Session::flash('message', 'تم تعديل معلومات السنة الدراسية بنجاح.');
