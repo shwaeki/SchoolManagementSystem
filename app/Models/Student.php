@@ -63,13 +63,13 @@ class Student extends Authenticatable
 
         Otp::updateOrCreate(
             ['student_id' => $this->id],
-            ['phone' => session('otpVerifyPhone'),'code' => $code],
+            ['phone' => session('otpVerifyPhone'), 'code' => $code],
         );
 
-        $receiverNumber = $this->father_phone;
-        $message = "2FA login code is " . $code;
-        //Send SMS
+        $receiverNumber = session('otpVerifyPhone');
 
+        $message = "رمز التحقق الخصا بك هو " . $code;
+        return sendSms($message, $receiverNumber);
 
     }
 }

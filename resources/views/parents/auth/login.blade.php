@@ -23,7 +23,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
-                                        <label for="identification"> رقم الهوية</label>
+                                        <label for="identification"> رقم هوية الطالب</label>
                                         <input id="identification" type="text"
                                                class="form-control @error('identification') is-invalid @enderror"
                                                name="identification"
@@ -38,7 +38,7 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="mb-4">
-                                        <label for="phone">رقم الهاتف</label>
+                                        <label for="phone">رقم هاتف الام/الاب</label>
                                         <input id="phone" type="text"
                                                class="form-control @error('phone') is-invalid @enderror"
                                                name="phone"
