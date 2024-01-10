@@ -321,7 +321,7 @@
 
 @push('scripts')
     <script type="text/javascript">
-        /*     window.onafterprint = window.close;
-             window.print();*/
+             window.onafterprint = window.close;
+             window.print();
     </script>
 @endpush
