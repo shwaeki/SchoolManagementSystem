@@ -65,14 +65,14 @@
 
         }
 
+
+        table{
+            table-layout: fixed;
+        }
+
         @media print {
             .layout-top-spacing {
                 margin-top: 0 !important;
-            }
-
-            html, body {
-                width: 210mm;
-                height: 297mm;
             }
 
 
@@ -137,11 +137,9 @@
                 color: black;
             }
 
-        }
 
-        @page {
-            size: A4 portrait;
-            margin: 0 !important;
+
+
         }
 
 
@@ -164,22 +162,26 @@
             <img src="{{ asset('assets/img/certificate_bg.jpg') }}" class="w-100" alt="image">
         </div>
 
-        <div>
+        <div class="table-responsive">
             <table class="table table-sm table-bordered ">
                 <thead>
                 <tr>
-                    <th class="fw-bold rounded-0" scope="col">المجال و مخرجات التعلم</th>
-                    <th class="text-center fw-bold rounded-0" scope="col" colspan="3">علامة الفصل الاول</th>
-                    <th class="text-center fw-bold rounded-0" scope="col" colspan="3">علامة الفصل الثاني</th>
+                    <th class="fw-bold rounded-0" style="width: 40%" scope="col">المجال و مخرجات التعلم</th>
+                    <th class="text-center fw-bold rounded-0" style="width: 30%" scope="col" colspan="3">
+                        علامة الفصل الاول
+                    </th>
+                    <th class="text-center fw-bold rounded-0" style="width: 30%" scope="col" colspan="3">
+                        علامة الفصل الثاني
+                    </th>
                 </tr>
                 <tr>
-                    <th class="text-center fw-bold rounded-0" scope="col"></th>
-                    <th class="text-center fw-bold rounded-0" scope="col">دائماً</th>
-                    <th class="text-center fw-bold rounded-0" scope="col">أحياناً</th>
-                    <th class="text-center fw-bold rounded-0" scope="col">نادراً</th>
-                    <th class="text-center fw-bold rounded-0" scope="col">دائماً</th>
-                    <th class="text-center fw-bold rounded-0" scope="col">أحياناً</th>
-                    <th class="text-center fw-bold rounded-0" scope="col">نادرا</th>
+                    <th class="text-center fw-bold rounded-0 px-0" scope="col"></th>
+                    <th class="text-center fw-bold rounded-0 px-0" scope="col">دائماً</th>
+                    <th class="text-center fw-bold rounded-0 px-0" scope="col">أحياناً</th>
+                    <th class="text-center fw-bold rounded-0 px-0" scope="col">نادراً</th>
+                    <th class="text-center fw-bold rounded-0 px-0" scope="col">دائماً</th>
+                    <th class="text-center fw-bold rounded-0 px-0" scope="col">أحياناً</th>
+                    <th class="text-center fw-bold rounded-0 px-0" scope="col">نادرا</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -190,35 +192,35 @@
                     @if(count($field->categories) > 0)
                         @foreach($field->mainCategories as $category)
                             <tr class="{{count($category->subcategories) > 0 ? 'table-warning' : ''}}">
-                                <td>{{ $category->name }}</td>
+                                <td style="white-space: pre-wrap">{{ $category->name }}</td>
 
-                                <td class="text-center py-0">
+                                <td class="text-center py-0 px-0">
                                     @if(isset($marks['first'][$category->id]) && $marks['first'][$category->id]['mark'] == "Always")
                                         <i class="fa fa-check fa-2x"></i>
                                     @endif
                                 </td>
-                                <td class="text-center py-0">
+                                <td class="text-center py-0 px-0">
                                     @if(isset($marks['first'][$category->id]) && $marks['first'][$category->id]['mark'] == "Sometimes")
                                         <i class="fa fa-check fa-2x"></i>
                                     @endif
                                 </td>
-                                <td class="text-center py-0">
+                                <td class="text-center py-0 px-0">
                                     @if(isset($marks['first'][$category->id]) && $marks['first'][$category->id]['mark'] == "Rarely")
                                         <i class="fa fa-check fa-2x"></i>
                                     @endif
                                 </td>
 
-                                <td class="text-center py-0">
+                                <td class="text-center py-0 px-0">
                                     @if(isset($marks['second'][$category->id]) && $marks['second'][$category->id]['mark'] == "Always")
                                         <i class="fa fa-check fa-2x"></i>
                                     @endif
                                 </td>
-                                <td class="text-center py-0">
+                                <td class="text-center py-0 px-0">
                                     @if(isset($marks['second'][$category->id]) && $marks['second'][$category->id]['mark'] == "Sometimes")
                                         <i class="fa fa-check fa-2x"></i>
                                     @endif
                                 </td>
-                                <td class="text-center py-0">
+                                <td class="text-center py-0 px-0">
                                     @if(isset($marks['second'][$category->id]) && $marks['second'][$category->id]['mark'] == "Rarely")
                                         <i class="fa fa-check fa-2x"></i>
                                     @endif
@@ -227,34 +229,34 @@
                             @if($category->subcategories->isNotEmpty())
                                 @foreach($category->subcategories as $subcategory)
                                     <tr>
-                                        <td>{{ $subcategory->name }}</td>
+                                        <td style="white-space: pre-wrap">{{ $subcategory->name }}</td>
 
-                                        <td class="text-center py-0">
+                                        <td class="text-center py-0 px-0">
                                             @if(isset($marks['first'][$subcategory->id]) && $marks['first'][$subcategory->id]['mark'] == "Always")
                                                 <i class="fa fa-check fa-2x"></i>
                                             @endif
                                         </td>
-                                        <td class="text-center py-0">
+                                        <td class="text-center py-0 px-0">
                                             @if(isset($marks['first'][$subcategory->id]) && $marks['first'][$subcategory->id]['mark'] == "Sometimes")
                                                 <i class="fa fa-check fa-2x"></i>
                                             @endif
                                         </td>
-                                        <td class="text-center py-0">
+                                        <td class="text-center py-0 px-0">
                                             @if(isset($marks['first'][$subcategory->id]) && $marks['first'][$subcategory->id]['mark'] == "Rarely")
                                                 <i class="fa fa-check fa-2x"></i>
                                             @endif
                                         </td>
-                                        <td class="text-center py-0">
+                                        <td class="text-center py-0 px-0">
                                             @if(isset($marks['second'][$subcategory->id]) && $marks['second'][$subcategory->id]['mark'] == "Always")
                                                 <i class="fa fa-check fa-2x"></i>
                                             @endif
                                         </td>
-                                        <td class="text-center py-0">
+                                        <td class="text-center py-0 px-0">
                                             @if(isset($marks['second'][$subcategory->id]) && $marks['second'][$subcategory->id]['mark'] == "Sometimes")
                                                 <i class="fa fa-check fa-2x"></i>
                                             @endif
                                         </td>
-                                        <td class="text-center py-0">
+                                        <td class="text-center py-0 px-0">
                                             @if(isset($marks['second'][$subcategory->id]) && $marks['second'][$subcategory->id]['mark'] == "Rarely")
                                                 <i class="fa fa-check fa-2x"></i>
                                             @endif
@@ -319,7 +321,7 @@
 
 @push('scripts')
     <script type="text/javascript">
-        window.onafterprint = window.close;
-        window.print();
+        /*     window.onafterprint = window.close;
+             window.print();*/
     </script>
 @endpush
