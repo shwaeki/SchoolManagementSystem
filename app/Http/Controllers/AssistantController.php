@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\TeachersDataTable;
+use App\DataTables\assistantDataTable;
+use App\Http\Requests\StoreAssistantRequest;
 use App\Http\Requests\StoreTeacherRequest;
+use App\Http\Requests\UpdateAssistantRequest;
 use App\Http\Requests\UpdateTeacherRequest;
 use App\Models\SchoolClass;
 use App\Models\Teacher;
@@ -12,12 +14,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
-class TeacherController extends Controller
+class AssistantController extends Controller
 {
 
-    public function index(TeachersDataTable $dataTable)
+    public function index(AssistantDataTable $dataTable)
     {
-        return $dataTable->render('teacher.index');
+        return $dataTable->render('assistant.index');
     }
 
     public function create()
@@ -26,14 +28,14 @@ class TeacherController extends Controller
             "schoolClasses" => SchoolClass::all(),
         ];
 
-        return view('teacher.create', $data);
+        return view('assistant.create', $data);
     }
 
 
-    public function store(StoreTeacherRequest $request)
+    public function store(StoreAssistantRequest $request)
     {
         $addedData = [
-            'teacher_type' => 'teacher',
+            'teacher_type' => 'assistant',
             'added_by' => auth()->id(),
             'work_afternoon' => request()->has('work_afternoon') ? 1 : 0,
         ];
@@ -48,43 +50,43 @@ class TeacherController extends Controller
         $data['star_work_date'] = date('Y-m-d', strtotime($date2));
 
         $data['password'] = Hash::make(request('password'));
-        $teacher = Teacher::create($data);
+        $assistant = Teacher::create($data);
 
         if ($request->hasFile('id_photo')) {
             $extension = $request->file('id_photo')->getClientOriginalExtension();
             $fileNameToStore = " صورة الهوية" . '.' . $extension;
-            $request->file('id_photo')->storeAs("public/files/Teacher_" . $teacher->id, $fileNameToStore);
+            $request->file('id_photo')->storeAs("public/files/Teacher_" . $assistant->id, $fileNameToStore);
         }
 
 
-        Session::flash('message', 'تم اضافة معلم جديد بنجاح.');
-        return redirect()->route('teachers.index');
+        Session::flash('message', 'تم اضافة مساعدة جديدة بنجاح.');
+        return redirect()->route('assistants.index');
     }
 
 
-    public function show(Teacher $teacher)
+    public function show(Teacher $assistant)
     {
         $data = [
-            "teacher" => $teacher,
+            "teacher" => $assistant,
         ];
 
-        Session::put('fileManagerConfig', "Teacher_" . $teacher->id);
-        return view('teacher.show', $data);
+        Session::put('fileManagerConfig', "Teacher_" . $assistant->id);
+        return view('assistant.show', $data);
     }
 
 
-    public function edit(Teacher $teacher)
+    public function edit(Teacher $assistant)
     {
         $data = [
-            "teacher" => $teacher,
+            "teacher" => $assistant,
             "schoolClasses" => SchoolClass::all(),
         ];
 
-        return view('teacher.edit', $data);
+        return view('assistant.edit', $data);
     }
 
 
-    public function update(UpdateTeacherRequest $request, Teacher $teacher)
+    public function update(UpdateAssistantRequest $request, Teacher $assistant)
     {
 
         $addedData = [
@@ -100,20 +102,20 @@ class TeacherController extends Controller
         $data['star_work_date'] = date('Y-m-d', strtotime($date2));
 
 
-        $teacher->update($data);
-        Session::flash('message', 'تم تعديل معلومات المعلم بنجاح.');
-        return redirect()->route('teachers.show', $teacher);
+        $assistant->update($data);
+        Session::flash('message', 'تم تعديل معلومات المساعدة بنجاح.');
+        return redirect()->route('assistants.show', $assistant);
     }
 
 
-    public function destroy(Teacher $teacher)
+    public function destroy(Teacher $assistant)
     {
-        $teacher->delete();
-        Session::flash('message', 'تم حذف المعلم بنجاح!');
-        return redirect()->route('teachers.index');
+        $assistant->delete();
+        Session::flash('message', 'تم حذف المساعدة بنجاح!');
+        return redirect()->route('assistants.index');
     }
 
-    public function passwordUpdate(Request $request, Teacher $teacher)
+    public function passwordUpdate(Request $request, Teacher $assistant)
     {
 
         $request->validate([
@@ -122,8 +124,8 @@ class TeacherController extends Controller
         ]);
 
 
-        $teacher->update(['password' => Hash::make($request->new_password)]);
+        $assistant->update(['password' => Hash::make($request->new_password)]);
         Session::flash('message', 'تم تعديل كلمة المرور  بنجاح.');
-        return redirect()->route('teachers.show', $teacher);
+        return redirect()->route('assistants.show', $assistant);
     }
 }

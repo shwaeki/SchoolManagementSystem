@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\AssistantController;
 use App\Http\Controllers\CertificateCategoryController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CertificateFieldController;
@@ -58,6 +59,10 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
 
         Route::put('teachers/change-password/{teacher}', [TeacherController::class, 'passwordUpdate'])->name('teachers.password');
         Route::resource('teachers', TeacherController::class);
+
+
+        Route::put('assistants/change-password/{teacher}', [AssistantController::class, 'passwordUpdate'])->name('assistants.password');
+        Route::resource('assistants', AssistantController::class);
 
         Route::resource('year-classes', YearClassController::class);
         Route::resource('student-reports', StudentReportController::class);

@@ -68,7 +68,7 @@ class Student extends Authenticatable
 
         $receiverNumber = session('otpVerifyPhone');
 
-        $message = "رمز التحقق الخصا بك هو " . $code;
+        $message = "رمز التحقق الخاص بك هو " . $code;
         return sendSms($message, $receiverNumber);
 
     }

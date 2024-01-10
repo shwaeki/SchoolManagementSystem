@@ -119,7 +119,7 @@
                                                     <tbody>
                                                     @foreach($certificate->fields as $field)
                                                         <tr class="table-primary">
-                                                            <td><strong>{{ $field->field_name }} {{ $field->field_order }}</strong></td>
+                                                            <td><strong>{{ $field->field_name }}</strong></td>
                                                             <td>
                                                                 <button type="button" class="btn btn-primary add-field"
                                                                         data-field-id="{{ $field->id }}">

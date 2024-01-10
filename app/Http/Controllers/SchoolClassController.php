@@ -60,7 +60,7 @@ class SchoolClassController extends Controller
         $all_students = [];
 
         if (Auth::guard('teacher')->check()) {
-            if ($current_year_class?->supervisor != auth()->id()){
+            if ($current_year_class?->supervisor != auth()->id()) {
                 return redirect()->route('home');
             }
         }
@@ -78,7 +78,8 @@ class SchoolClassController extends Controller
             "class" => $schoolClass,
             "class_years" => $schoolClass->yearClasses,
             "current_year_class" => $current_year_class,
-            "teachers" => Teacher::all(),
+            "teachers" => Teacher::where('teacher_type', 'teacher')->get(),
+            "assistants" => Teacher::where('teacher_type', 'assistant')->get(),
             "certificates" => Certificate::all(),
             "students" => Student::whereNotIn('id', $all_students)->get(),
         ];

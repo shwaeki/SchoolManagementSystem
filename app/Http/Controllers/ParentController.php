@@ -24,11 +24,13 @@ class ParentController extends Controller
             $query->where('academic_year_id', $adminActiveAcademicYear->id);
         })->get()->first();
 
+
         $studentCertificate = null;
         $organizedMarks = [];
 
         if ($current_student_class != null) {
             $studentCertificate = StudentCertificate::where('student_class_id', $current_student_class->id)->first();
+
             $marks = $studentCertificate?->marks ?? [];
 
             $organizedMarks = [];
@@ -129,8 +131,12 @@ class ParentController extends Controller
 
     public function resend()
     {
-        auth()->user()->generateCode();
-        Session::flash('success', 'تم ارسال الرمز الى رقم هاتفك.');
+        $student = Student::findOrFail(session('otpVerifyID'));
+        if ($student) {
+            $student->generateCode();
+            Session::flash('success', 'تم ارسال الرمز الى رقم هاتفك.');
+        }
+
         return back();
     }
 

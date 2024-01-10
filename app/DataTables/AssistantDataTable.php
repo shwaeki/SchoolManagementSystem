@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Services\DataTable;
 
-class TeachersDataTable extends DataTable
+class AssistantDataTable extends DataTable
 {
 
     public function dataTable($query)
@@ -17,10 +17,10 @@ class TeachersDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('Settings', function ($query) {
-                return '<a href="' . route('teachers.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>
-                    <a href="' . route('teachers.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
+                return '<a href="' . route('assistants.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>
+                    <a href="' . route('assistants.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
                     <button class="btn btn-light-danger text-danger  d-none" onclick="deleteItem(this)"
-                    data-item="' . route('teachers.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
+                    data-item="' . route('assistants.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
             })->editColumn('gender', function ($query) {
                 if ($query->gender === 'female')
                     return '<span class="badge badge-light-danger">انثى</span>';
@@ -40,7 +40,7 @@ class TeachersDataTable extends DataTable
      */
     public function query(Teacher $model): QueryBuilder
     {
-        return $model->newQuery()->where('teacher_type', 'teacher');
+        return $model->newQuery()->where('teacher_type','assistant');
     }
 
     /**
@@ -57,7 +57,7 @@ class TeachersDataTable extends DataTable
                 ],
 
                 'buttons' => [
-                    "excel", 'print'
+                    "excel",'print'
                 ],
             ])
             ->columns($this->getColumns())
