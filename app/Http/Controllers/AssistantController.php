@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\assistantDataTable;
+use App\DataTables\AssistantDataTable;
 use App\Http\Requests\StoreAssistantRequest;
 use App\Http\Requests\StoreTeacherRequest;
 use App\Http\Requests\UpdateAssistantRequest;
