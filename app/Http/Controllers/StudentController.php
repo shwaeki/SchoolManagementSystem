@@ -181,16 +181,14 @@ class StudentController extends Controller
         $birth_month = date('m', strtotime( $student->birth_date));
         $birth_year = date('y', strtotime( $student->birth_date));
         $school_name =  $class->name;
-        $school_name_small =  '';
+        $school_name_small =  $class->name;
         $school_address = $class->address;
         $idNumber = $student->identification;
         $manager_name = 'חמדאן יוסרי';
-
-        $subShoolName = 'مريم مريم';
         $schoolNum = '503256';
 
 
-        //   $imagePath = public_path('assets/img/sign.png');
+           $imagePath = public_path('assets/img/sign.png');
 
         foreach ($pdfParsed->getPages() as $pageNumber => $page) {
             $text = $page->getText();
@@ -208,7 +206,7 @@ class StudentController extends Controller
             $tcpdf->Write(0, $company_address);
 
             $tcpdf->SetFont('aealarabiya', 'B', 12);
-            $tcpdf->SetXY(43, 111);
+            $tcpdf->SetXY(35, 107);
             $tcpdf->Write(0, $student_name);
 
             $tcpdf->SetRTL(false);
@@ -241,7 +239,7 @@ class StudentController extends Controller
             $tcpdf->Write(0, $manager_name);
 
             $tcpdf->SetFont('aealarabiya', 'B', 12);
-            $tcpdf->SetXY(108, 221);
+            $tcpdf->SetXY(108, 219);
             $tcpdf->Write(0, $school_name_small);
 
             $tcpdf->SetRTL(false);
@@ -256,7 +254,7 @@ class StudentController extends Controller
             $tcpdf->SetXY(25, 221);
             $tcpdf->Write(0, $schoolNum);
 
-            //   $tcpdf->Image($imagePath, 90, 165, 35, 24);
+               $tcpdf->Image($imagePath, 90, 165, 35, 24);
 
             $tcpdf->SetRTL(true);
 
