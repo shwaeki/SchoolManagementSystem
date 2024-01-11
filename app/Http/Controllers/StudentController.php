@@ -177,18 +177,21 @@ class StudentController extends Controller
         $full_address = 'עיסוויה  ירושלים ת.ד 66872';
         $phone = 'נייד 0522037243';
         $student_name = $student->name;
-        $birth_day = date('d', strtotime( $student->birth_date));
-        $birth_month = date('m', strtotime( $student->birth_date));
-        $birth_year = date('y', strtotime( $student->birth_date));
-        $school_name =  $class->name;
-        $school_name_small =  $class->name;
+        $birth_day = date('d', strtotime($student->birth_date));
+        $birth_month = date('m', strtotime($student->birth_date));
+        $birth_year = date('y', strtotime($student->birth_date));
+        $school_name = $class->name;
+        $school_name_small = $class->name;
         $school_address = $class->address;
         $idNumber = $student->identification;
+        if (strlen($idNumber) <= 9) {
+            $idNumber = "0" . $idNumber;
+        }
         $manager_name = 'חמדאן יוסרי';
         $schoolNum = '503256';
 
 
-           $imagePath = public_path('assets/img/sign.png');
+        $imagePath = public_path('assets/img/sign.png');
 
         foreach ($pdfParsed->getPages() as $pageNumber => $page) {
             $text = $page->getText();
@@ -254,12 +257,12 @@ class StudentController extends Controller
             $tcpdf->SetXY(25, 221);
             $tcpdf->Write(0, $schoolNum);
 
-               $tcpdf->Image($imagePath, 90, 165, 35, 24);
+            $tcpdf->Image($imagePath, 90, 165, 35, 24);
 
             $tcpdf->SetRTL(true);
 
             header('Content-Type: application/pdf');
-            header('Content-Disposition: attachment; filename="'.$idNumber.'.pdf"');
+            header('Content-Disposition: attachment; filename="' . $idNumber . '.pdf"');
 
             $tcpdf->Output($idNumber . '.pdf', 'D');
             $tcpdf->endTemplate();
