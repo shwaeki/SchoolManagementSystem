@@ -420,11 +420,11 @@
                                                                 </a>
 
                                                             @endif
-                                                                <a href="{{route('students.yearlyFile',$data->id)}}"
-                                                                   target="_blank"
-                                                                   class="btn btn-light-success text-success">
-                                                                    <i class="fas fa-file-alt"></i>
-                                                                </a>
+                                                            <a href="{{route('students.yearlyFile',$data->id)}}"
+                                                               target="_blank"
+                                                               class="btn btn-light-success text-success">
+                                                                <i class="fas fa-file-alt"></i>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 @endforeach

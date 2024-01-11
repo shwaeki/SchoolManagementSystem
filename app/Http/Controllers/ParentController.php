@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AcademicYear;
-use App\Models\OTP;
+use App\Models\Otp;
 use App\Http\Requests\CheckOTPRequest;
 use App\Models\Student;
 use App\Models\StudentCertificate;

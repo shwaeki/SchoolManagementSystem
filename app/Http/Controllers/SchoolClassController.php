@@ -74,11 +74,10 @@ class SchoolClassController extends Controller
                 ->where('school_class_id', '=', $schoolClass->id)
                 ->get()->pluck('student_id')->toArray();
 
-            $assistants = Teacher::where('teacher_type', 'assistant')->get();
-    /*        $assistants = Teacher::where('teacher_type', 'assistant')
+            $assistants = Teacher::where('teacher_type', 'assistant')
                 ->whereDoesntHave('yearClassAssistants', function ($query) use ($current_year_class) {
                     $query->where('year_class_id', $current_year_class->id);
-                })->get();*/
+                })->get();
         }
 
 

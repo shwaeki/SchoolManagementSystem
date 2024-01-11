@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\AssistantDataTable;
+use App\DataTables\SalariesDataTable;
 use App\Models\SalarySlip;
 use App\Http\Requests\StoreSalarySlipRequest;
 use App\Http\Requests\UpdateSalarySlipRequest;
@@ -14,21 +16,22 @@ class SalarySlipController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    public function index(SalariesDataTable $dataTable)
     {
-
-        $tempFilePath = public_path('1223.pdf');
-
-        $this->processUploadedPDF($tempFilePath);
-        dd(1);
+        return $dataTable->render('salaries.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    /*        $tempFilePath = public_path('1223.pdf');
+
+            $this->processUploadedPDF($tempFilePath);
+
+        /**salaries
+         * Show the form for creating a new resource.
+         */
     public function create()
     {
-        //
+        return view('salaries.create');
     }
 
     /**

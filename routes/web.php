@@ -99,6 +99,7 @@ Route::prefix('parents')->group(function () {
 
         Route::middleware(['auth:parent', 'otp.verify'])->group(function () {
             Route::get('/', [ParentController::class, 'index'])->name('parents.index');
+            Route::get('', [ParentController::class, 'index'])->name('parents.index1');
         });
     });
 });
