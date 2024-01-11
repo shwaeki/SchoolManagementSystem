@@ -45,4 +45,10 @@ class YearClass extends Model
         return $this->belongsTo(Certificate::class);
     }
 
+
+    public function assistants()
+    {
+        return $this->belongsToMany(Teacher::class,'year_class_assistants','year_class_id','assistant_id');
+    }
+
 }

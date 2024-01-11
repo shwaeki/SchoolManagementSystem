@@ -58,6 +58,7 @@ class SchoolClassController extends Controller
 
         $current_year_class = $schoolClass->yearClasses()->where('academic_year_id', $activeAcademicYear->id)->get()->first();
         $all_students = [];
+        $assistants = [];
 
         if (Auth::guard('teacher')->check()) {
             if ($current_year_class?->supervisor != auth()->id()) {
@@ -72,34 +73,38 @@ class SchoolClassController extends Controller
                 ->where('academic_year_id', '=', $current_year_class->academic_year_id)
                 ->where('school_class_id', '=', $schoolClass->id)
                 ->get()->pluck('student_id')->toArray();
+
+            $assistants = Teacher::where('teacher_type', 'assistant')
+                ->whereDoesntHave('yearClassAssistants', function ($query) use ($current_year_class) {
+                    $query->where('year_class_id', $current_year_class->id);
+                })->get();
         }
+
 
         $data = [
             "class" => $schoolClass,
             "class_years" => $schoolClass->yearClasses,
             "current_year_class" => $current_year_class,
             "teachers" => Teacher::where('teacher_type', 'teacher')->get(),
-            "assistants" => Teacher::where('teacher_type', 'assistant')->get(),
+            "assistants" => $assistants,
             "certificates" => Certificate::all(),
             "students" => Student::whereNotIn('id', $all_students)->get(),
         ];
 
         if ($current_year_class != null) {
-
-
             $data['class_year_students'] = $current_year_class->students()->whereHas('student', function ($query) {
                 $query->whereNull('deleted_at');
             })->with('student', 'addedBy')->get();
 
             $data['certificate'] = $current_year_class->certificate;
         }
+
         return view('classes.show', $data);
     }
 
 
     public function edit(SchoolClass $schoolClass)
     {
-
         $data = [
             "class" => $schoolClass,
             "teachers" => Teacher::all(),
@@ -123,5 +128,6 @@ class SchoolClassController extends Controller
         Session::flash('message', 'تم حذف الفصل التعليمي بنجاح!');
         return redirect()->route('school-classes.index');
     }
+
 
 }

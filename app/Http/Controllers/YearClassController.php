@@ -6,6 +6,7 @@ use App\Models\SchoolClass;
 use App\Models\YearClass;
 use App\Http\Requests\StoreYearClassRequest;
 use App\Http\Requests\UpdateYearClassRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use function Psy\debug;
 
@@ -71,5 +72,12 @@ class YearClassController extends Controller
     public function destroy(YearClass $yearClass)
     {
         //
+    }
+
+    public function storeAssistant(Request $request, YearClass $yearClass)
+    {
+        $yearClass->assistants()->attach(request('assistant_id'));
+        Session::flash('message', 'تم اضافة مساعدةجديدة بنجاح.');
+        return redirect()->back();
     }
 }

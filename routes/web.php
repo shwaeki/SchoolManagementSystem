@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OtpController;
 use App\Http\Controllers\ParentController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SalarySlipController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\StudentClassController;
 use App\Http\Controllers\StudentController;
@@ -39,6 +40,7 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
 
 
     Route::get('students/ajax/marks/{studentClass}', [StudentController::class, 'getStudentMarks'])->name('students.ajax.marks');
+    Route::get('students/yearlyFile/{studentClass}', [StudentController::class, 'yearlyFile'])->name('students.yearlyFile');
     Route::get('students/marks/{studentClass}', [StudentController::class, 'showMarks'])->name('students.marks');
     Route::get('students/report', [StudentController::class, 'report'])->name('students.report');
 
@@ -64,6 +66,7 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
         Route::put('assistants/change-password/{teacher}', [AssistantController::class, 'passwordUpdate'])->name('assistants.password');
         Route::resource('assistants', AssistantController::class);
 
+        Route::post('year-classes/store-assistant/{yearClass}', [YearClassController::class, 'storeAssistant'])->name('year-classes.storeAssistant');
         Route::resource('year-classes', YearClassController::class);
         Route::resource('student-reports', StudentReportController::class);
 
@@ -77,6 +80,9 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
         Route::resource('users', UserController::class);
 
         Route::resource('academic-years', AcademicYearController::class);
+
+        Route::get('salary', [SalarySlipController::class, 'index'])->name('salary.index');
+
     });
 });
 

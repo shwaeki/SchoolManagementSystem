@@ -237,6 +237,46 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                                <div class="section general-info">
+                                    <div class="info">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <h6>قائمة المساعدات </h6>
+                                            </div>
+                                            @auth("web")
+                                                <div class="col-3 text-end">
+                                                    <a href="#addAssistantModal" data-bs-toggle="modal"
+                                                       class="btn btn-primary">اضافة </a>.
+                                                </div>
+                                            @endauth
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="table-responsive">
+                                                <table class="table table-hover table-striped table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col"> اسم المساعدة</th>
+                                                        <th scope="col"> رقم الهاتف</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($current_year_class->assistants as $assistant)
+                                                        <tr>
+                                                            <td>{{$assistant->name}}</td>
+                                                            <td>{{$assistant->phone}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         @endif
                     </div>
                 </div>
@@ -378,6 +418,11 @@
                                                                    class="btn btn-light-primary text-primary">
                                                                     <i class="fas fa-certificate"></i>
                                                                 </a>
+                                                                <a href="{{route('students.yearlyFile',$data->id)}}"
+                                                                   target="_blank"
+                                                                   class="btn btn-light-success text-success">
+                                                                    <i class="fas fa-file-alt"></i>
+                                                                </a>
                                                             @endif
                                                         </td>
                                                     </tr>
@@ -395,7 +440,10 @@
         </div>
     </div>
 
+
+
     @auth("web")
+
         <div class="modal fade" id="classYearModal">
             <div class="modal-dialog" role="document">
                 <form action="{{route('year-classes.store')}}" method="POST">
@@ -469,6 +517,47 @@
     @endauth
 
     @if($current_year_class != null)
+
+        <div class="modal fade" id="addAssistantModal">
+            <div class="modal-dialog" role="document">
+                <form action="{{route('year-classes.storeAssistant',$current_year_class)}}" method="POST">
+                    @csrf
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">اضافة مساعدة جديدة</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="mb-3">
+                                <label for="assistant_id" class="form-label"> المساعدة </label>
+                                <select class="form-select"
+                                        id="assistant_id" name="assistant_id" required>
+                                    <option selected disabled value="">اختر ...</option>
+                                    @foreach($assistants as $assistant)
+                                        <option
+                                            {{old('assistant_id') == $assistant->name ? 'selected' : '' }} value="{{$assistant->id}}">
+                                            {{$assistant->name}}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
+                                <i class="flaticon-cancel-12"></i> اغلاق
+                            </button>
+                            <button type="submit" class="btn btn-primary">حفظ</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         @auth("web")
             <div class="modal fade" id="classStudentModal">
                 <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
@@ -674,7 +763,7 @@
 
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">تعديل بيانات الفصل الدراسي السنوية  </h5>
+                                <h5 class="modal-title">تعديل بيانات الفصل الدراسي السنوية </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                     X
                                 </button>

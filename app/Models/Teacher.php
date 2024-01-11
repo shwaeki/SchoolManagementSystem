@@ -43,4 +43,9 @@ class Teacher extends Authenticatable
         return $this->belongsTo(SchoolClass::class,);
     }
 
+
+    public function yearClassAssistants()
+    {
+        return $this->belongsToMany(Teacher::class,'year_class_assistants','assistant_id','year_class_id');
+    }
 }
