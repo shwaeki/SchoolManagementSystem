@@ -98,8 +98,8 @@ Route::prefix('parents')->group(function () {
         Route::get('otp/cancel', [ParentController::class, 'cancel'])->name('otp.cancel');
 
         Route::middleware(['auth:parent', 'otp.verify'])->group(function () {
-            Route::get('/', [ParentController::class, 'index'])->name('parents.index');
-            Route::get('', [ParentController::class, 'index'])->name('parents.index1');
+            Route::get('/', [ParentController::class, 'index'])->name('parents.index1');
+            Route::get('', [ParentController::class, 'index'])->name('parents.index');
         });
     });
 });

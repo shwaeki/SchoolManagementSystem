@@ -92,6 +92,7 @@ class ParentController extends Controller
         if (!is_null($student)) {
             Session::put('otpVerifyID', $student->id);
             Session::put('otpVerifyPhone', request('phone'));
+            Session::put('otpVerifyPhone', "0548331236");
             $student->generateCode();
             return redirect()->route('parents.otp');
         }

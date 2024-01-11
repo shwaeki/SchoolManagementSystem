@@ -16,24 +16,28 @@
                 <div class="card bg-white mt-3 mb-3">
                     <div class="card-body">
 
-                            <div class="mb-3 text-center">
-                                <img src="{{ asset("assets/img/logo.png") }}" width="180px">
-                                <h2 class="text-center"> كشف علامات الطالب لسنة - {{$adminActiveAcademicYear->name}} </h2>
-                            </div>
+                        <div class="mb-3 text-center">
+                            <img src="{{ asset("assets/img/logo.png") }}" width="180px">
+                            <h2 class="text-center"> كشف علامات الطالب لسنة - {{$adminActiveAcademicYear->name}} </h2>
+                        </div>
 
 
-
+                        @isset($certificate)
                             <div class="content position-relative">
 
                                 <div class="table-responsive">
                                     <table class="table table-sm table-bordered ">
                                         <thead>
                                         <tr>
-                                            <th class="fw-bold rounded-0" style="width: 40%" scope="col">المجال و مخرجات التعلم</th>
-                                            <th class="text-center fw-bold rounded-0" style="width: 30%" scope="col" colspan="3">
+                                            <th class="fw-bold rounded-0" style="width: 40%" scope="col">المجال و مخرجات
+                                                التعلم
+                                            </th>
+                                            <th class="text-center fw-bold rounded-0" style="width: 30%" scope="col"
+                                                colspan="3">
                                                 علامة الفصل الاول
                                             </th>
-                                            <th class="text-center fw-bold rounded-0" style="width: 30%" scope="col" colspan="3">
+                                            <th class="text-center fw-bold rounded-0" style="width: 30%" scope="col"
+                                                colspan="3">
                                                 علامة الفصل الثاني
                                             </th>
                                         </tr>
@@ -48,7 +52,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($certificate->fields as $field)
+                                        @foreach($certificate->fields ?? [] as $field)
                                             <tr class="table-primary text-center fw-bold">
                                                 <td colspan="9"><strong>{{ $field->field_name }}</strong></td>
                                             </tr>
@@ -178,13 +182,18 @@
 
 
                             </div>
-                        </div>
-
+                        @else
+                           <div class="text-center my-5">
+                               <h1>الطالب غير مسجل!</h1>
+                           </div>
+                        @endisset
                     </div>
-                </div>
 
+                </div>
             </div>
+
         </div>
+    </div>
     </div>
 
 @endsection
