@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OtpController;
 use App\Http\Controllers\ParentController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\Salary1SlipController;
 use App\Http\Controllers\SalarySlipController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\StudentClassController;
@@ -80,8 +81,7 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
         Route::resource('users', UserController::class);
 
         Route::resource('academic-years', AcademicYearController::class);
-
-        Route::get('salary', [SalarySlipController::class, 'index'])->name('salary.index');
+        Route::resource('salaries', SalarySlipController::class);
 
     });
 });

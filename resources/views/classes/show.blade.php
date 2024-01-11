@@ -418,12 +418,13 @@
                                                                    class="btn btn-light-primary text-primary">
                                                                     <i class="fas fa-certificate"></i>
                                                                 </a>
+
+                                                            @endif
                                                                 <a href="{{route('students.yearlyFile',$data->id)}}"
                                                                    target="_blank"
                                                                    class="btn btn-light-success text-success">
                                                                     <i class="fas fa-file-alt"></i>
                                                                 </a>
-                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @endforeach
