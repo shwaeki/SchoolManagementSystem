@@ -20,7 +20,12 @@ class SalariesDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('Settings', function ($query) {
-                return '<a href="" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>';
+                if ($query->status != 'done') {
+                    return '<button class="btn btn-light-primary text-primary" onclick="updateSalaryFile(this)"
+                            data-item="' . route('salaries.update', $query) . '"><i class="far fa-file-archive"></i></button>';
+                } else {
+                    return '';
+                }
             })
             ->setRowId('id')
             ->rawColumns(['Settings', 'status']);

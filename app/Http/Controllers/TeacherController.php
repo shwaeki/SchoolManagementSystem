@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\DataTables\TeachersDataTable;
 use App\Http\Requests\StoreTeacherRequest;
 use App\Http\Requests\UpdateTeacherRequest;
+use App\Models\SalarySlip;
 use App\Models\SchoolClass;
 use App\Models\Teacher;
-use App\Rules\MatchOldPassword;
+use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -65,6 +66,7 @@ class TeacherController extends Controller
     public function show(Teacher $teacher)
     {
         $data = [
+            "salaries" => SalarySlip::where('identification', $teacher->identification)->get(),
             "teacher" => $teacher,
         ];
 
@@ -125,5 +127,12 @@ class TeacherController extends Controller
         $teacher->update(['password' => Hash::make($request->new_password)]);
         Session::flash('message', 'تم تعديل كلمة المرور  بنجاح.');
         return redirect()->route('teachers.show', $teacher);
+    }
+
+
+    public function downloadSlip(SalarySlip $salarySlip)
+    {
+        $path = public_path('storage/'.$salarySlip->file_path);
+        return response()->download($path);
     }
 }

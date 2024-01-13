@@ -1,5 +1,41 @@
 @extends('layouts.auth')
+@push('styles')
+    <style>
+        .student-info {
+            position: absolute;
+            top: 49.1%;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            z-index: 1;
+        }
 
+        .student-info .student-name {
+            font-size: 32px;
+            color: #1f3761;
+            text-align: right;
+            margin-right: 34%;
+        }
+
+        .student-info .certificate-class {
+            margin-top: 2%;
+            font-size: 50px;
+            color: #1f3761;
+        }
+
+        .student-info .year {
+            font-size: 50px;
+            margin-top: 16.5%;
+            color: black;
+        }
+
+        .main-page {
+            position: relative;
+        }
+
+
+    </style>
+@endpush
 
 @section('content')
     @if (session('status'))
@@ -24,6 +60,16 @@
 
                         @isset($certificate)
                             <div class="content position-relative">
+
+                                <div class="main-page">
+                                    <div class="student-info">
+                                        <p class="mb-0 student-name">  {{ $studentClass->student->name }}</p>
+                                        <p class="mb-0 certificate-class">  {{ $certificate->class }}</p>
+                                        <p class="mb-0 year">  {{ $adminActiveAcademicYear->name }}</p>
+                                    </div>
+                                    <img src="{{ asset('assets/img/certificate_bg.jpg') }}" class="w-100" alt="image">
+                                </div>
+
 
                                 <div class="table-responsive">
                                     <table class="table table-sm table-bordered ">
@@ -180,7 +226,9 @@
 
                                 </div>
 
-
+                                <div class="last-page">
+                                    <img src="{{ asset('assets/img/certificate_last_page.jpg') }}" class="w-100" alt="image">
+                                </div>
                             </div>
                         @else
                            <div class="text-center my-5">
@@ -194,6 +242,6 @@
 
         </div>
     </div>
-    </div>
+
 
 @endsection

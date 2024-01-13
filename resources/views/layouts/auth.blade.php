@@ -40,6 +40,7 @@
     <link href="{{ asset("assets/css/dark/elements/alert.css")  }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset("assets/css/dark/authentication/auth-boxed.css")  }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset("assets/plugins/src/jquery-ui/jquery-ui.min.css")  }}" rel="stylesheet" type="text/css"/>
+    @stack('styles')
 
 
 </head>

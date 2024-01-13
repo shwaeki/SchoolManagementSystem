@@ -19,6 +19,30 @@
         </div>
     </div>
 @endsection
+
+<form action="" id="updateSalariesFileStatusForm" method="POST">
+    @method('PUT')
+    @csrf
+</form>
 @push('scripts')
     {{ $dataTable->scripts() }}
+
+    <script>
+        function updateSalaryFile(e) {
+            Swal.fire({
+                title: 'هل انت متأكد؟',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'نعم',
+                cancelButtonText: 'الغاء'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let url = $(e).data('item');
+                    $('#updateSalariesFileStatusForm').attr('action', url).submit();
+                }
+            })
+        }
+    </script>
 @endpush

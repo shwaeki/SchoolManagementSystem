@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\DataTables\AssistantDataTable;
 use App\DataTables\SalariesDataTable;
 use App\Models\SalarySlip;
+use App\Models\SalarySlipFile;
 use App\Http\Requests\StoreSalarySlipRequest;
 use App\Http\Requests\UpdateSalarySlipRequest;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Smalot\PdfParser\Parser;
 use TCPDI;
@@ -22,13 +24,7 @@ class SalarySlipController extends Controller
         return $dataTable->render('salaries.index');
     }
 
-    /*        $tempFilePath = public_path('1223.pdf');
 
-            $this->processUploadedPDF($tempFilePath);
-
-        /**salaries
-         * Show the form for creating a new resource.
-         */
     public function create()
     {
         return view('salaries.create');
@@ -39,13 +35,25 @@ class SalarySlipController extends Controller
      */
     public function store(StoreSalarySlipRequest $request)
     {
-        //
+        $data = request('date');
+        $file = $request->file('file');
+        $name = time() . '.' . $file->getClientOriginalExtension();
+        $file->storeAs('public/salariesSlapsFiles', $name);
+
+        SalarySlipFile::create([
+            'file_path' => $name,
+            'date' => $data,
+            'added_by' => auth()->id(),
+        ]);
+
+        Session::flash('message', 'تم اضافة ملف جديد بنجاح.');
+        return redirect()->route('salaries.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(SalarySlip $salarySlip)
+    public function show(SalarySlipFile $salary)
     {
         //
     }
@@ -53,7 +61,7 @@ class SalarySlipController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SalarySlip $salarySlip)
+    public function edit(SalarySlipFile $salary)
     {
         //
     }
@@ -61,15 +69,22 @@ class SalarySlipController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSalarySlipRequest $request, SalarySlip $salarySlip)
+    public function update(UpdateSalarySlipRequest $request, SalarySlipFile $salary)
     {
-        //
+
+        if ($salary->status !== "done") {
+            $tempFilePath = public_path('storage/salariesSlapsFiles/'.$salary->file_path);
+            $this->processUploadedPDF($tempFilePath);
+            $salary->update(['status' => 'done']);
+        }
+        Session::flash('message', 'تماضافة اقسائم الرواتب الى الموظفين.');
+        return redirect()->route('salaries.index'); //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SalarySlip $salarySlip)
+    public function destroy(SalarySlipFile $salary)
     {
         //
     }
@@ -77,7 +92,7 @@ class SalarySlipController extends Controller
 
     private function processUploadedPDF($uploadedFilePath)
     {
-        $outputPath = 'SalariesSlaps/';
+        $outputPath = 'salariesSlaps/';
 
         $parser2 = new Parser();
         $pdfParsed = $parser2->parseFile($uploadedFilePath);

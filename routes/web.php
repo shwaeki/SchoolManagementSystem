@@ -7,10 +7,8 @@ use App\Http\Controllers\CertificateCategoryController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CertificateFieldController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\OtpController;
 use App\Http\Controllers\ParentController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\Salary1SlipController;
 use App\Http\Controllers\SalarySlipController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\StudentClassController;
@@ -60,6 +58,7 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
         Route::put('students-request/accept/{students_request}', [StudentRequestController::class, 'accept'])->name('students-request.accept');
         Route::resource('students-request', StudentRequestController::class);
 
+        Route::get('teachers/downloadSlip/{salarySlip}', [TeacherController::class, 'downloadSlip'])->name('teachers.downloadSlip');
         Route::put('teachers/change-password/{teacher}', [TeacherController::class, 'passwordUpdate'])->name('teachers.password');
         Route::resource('teachers', TeacherController::class);
 
