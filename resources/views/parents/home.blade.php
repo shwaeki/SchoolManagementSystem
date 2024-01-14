@@ -33,6 +33,73 @@
             position: relative;
         }
 
+        @media (max-width: 1199.98px) {
+            .card-body{
+                background-color: #0000ee !important;
+            }
+            .student-info .student-name {
+                font-size: 20px;
+            }
+            .student-info .certificate-class {
+                font-size: 28px;
+            }
+            .student-info .year {
+                font-size: 28px;
+                margin-top: 17.5%;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .card-body{
+                background-color: #00ff00 !important;
+            }
+            .student-info .student-name {
+                font-size: 20px;
+            }
+            .student-info .certificate-class {
+                font-size: 28px;
+            }
+            .student-info .year {
+                font-size: 28px;
+                margin-top: 17.5%;
+            }
+        }
+
+
+        @media (max-width: 767.98px){
+            .card-body{
+                background-color: #00ffff !important;
+            }
+            .student-info .student-name {
+                font-size: 20px;
+            }
+            .student-info .certificate-class {
+                font-size: 28px;
+            }
+            .student-info .year {
+                font-size: 28px;
+                margin-top: 17.5%;
+            }
+        }
+
+        @media (max-width: 575.98px){
+            .card-body{
+                background-color: #e7515a !important;
+            }
+            .student-info .student-name {
+                font-size: 13px;
+            }
+            .student-info .certificate-class {
+                font-size: 18px;
+            }
+            .student-info .year {
+                font-size: 20px;
+                margin-top: 17.5%;
+            }
+        }
+
+
+
 
     </style>
 @endpush
