@@ -34,9 +34,6 @@
         }
 
         @media (max-width: 1199.98px) {
-            .card-body{
-                background-color: #0000ee !important;
-            }
             .student-info .student-name {
                 font-size: 20px;
             }
@@ -50,9 +47,6 @@
         }
 
         @media (max-width: 991.98px) {
-            .card-body{
-                background-color: #00ff00 !important;
-            }
             .student-info .student-name {
                 font-size: 20px;
             }
@@ -67,9 +61,6 @@
 
 
         @media (max-width: 767.98px){
-            .card-body{
-                background-color: #00ffff !important;
-            }
             .student-info .student-name {
                 font-size: 20px;
             }
@@ -83,9 +74,6 @@
         }
 
         @media (max-width: 575.98px){
-            .card-body{
-                background-color: #e7515a !important;
-            }
             .student-info .student-name {
                 font-size: 13px;
             }
