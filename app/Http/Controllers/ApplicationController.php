@@ -48,14 +48,14 @@ class ApplicationController extends Controller
         $date = str_replace('/', '-', request('birth_date'));
         $data['birth_date'] = date('Y-m-d', strtotime($date));
 
-        $data = Arr::except($data, ['personal_photo', 'birth_certificate']);
+        $data = Arr::except($data, ['birth_certificate']);
         $studentRequest = StudentRequest::create($data);
 
-        if ($request->hasFile('personal_photo')) {
+/*        if ($request->hasFile('personal_photo')) {
             $extension = $request->file('personal_photo')->getClientOriginalExtension();
             $fileNameToStore = "الصورة الشخصية" . '.' . $extension;
             $request->file('personal_photo')->storeAs("public/files/StudentRequest_" . $studentRequest->id, $fileNameToStore);
-        }
+        }*/
 
         if ($request->hasFile('birth_certificate')) {
             $extension = $request->file('birth_certificate')->getClientOriginalExtension();

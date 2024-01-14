@@ -39,7 +39,7 @@ class StoreStudentRequestRequest extends FormRequest
             'old_school' => 'required|string',
             'school_class_id' => 'required',
 
-            'personal_photo' => 'required|max:2048',
+            'personal_photo' => 'nullable|max:2048',
             'birth_certificate' => 'required|max:2048',
 
             'mother_id' => 'required|string|digits:9|regex:/^[0-9]+$/',

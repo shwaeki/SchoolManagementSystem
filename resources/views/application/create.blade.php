@@ -351,17 +351,17 @@
                                     <h4>المرفقات</h4>
                                 </div>
 
-                                <div class="col-12 col-md-6">
+{{--                                <div class="col-12 col-md-6">
                                     <div class="mb-3">
                                         <label for="personal_photo" class="form-label">صورة شخصية </label>
                                         <input class="form-control @error('personal_photo') is-invalid @enderror"
-                                               type="file" name="personal_photo" id="personal_photo" required>
+                                               type="file" name="personal_photo" id="personal_photo">
                                         @error('personal_photo')
                                         <span class="invalid-feedback"
                                               role="alert"><strong>{{ $message }}</strong></span>
                                         @enderror
                                     </div>
-                                </div>
+                                </div>--}}
 
                                 <div class="col-12 col-md-6">
                                     <div class="mb-3">
