@@ -46,6 +46,15 @@
                             </button>
                         </li>
 
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="teacher-salaries-tab" data-bs-toggle="tab"
+                                    href="#teacher-salaries"
+                                    role="tab" aria-controls="teacher-salaries" aria-selected="false" tabindex="-1">
+                                <i class="fas fa-file-archive"></i>
+                                قسائم الرواتب
+                            </button>
+                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -244,21 +253,43 @@
                 </div>
 
 
-                {{--
-                                <div class="tab-pane fade " id="teacher-log" role="tabpanel" aria-labelledby="teacher-log-tab">
-                                    <div class="row">
-                                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
-                                            <form class="section general-info">
-                                                <div class="info">
-                                                    <h6> سجل الطالب </h6>
-
-                                                </div>
-                                            </form>
-                                        </div>
-
+                <div class="tab-pane fade " id="teacher-salaries" role="tabpanel"
+                     aria-labelledby="teacher-salaries-tab">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                            <form class="section general-info">
+                                <div class="info">
+                                    <h6> قسائم الرواتب </h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-striped table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col"> التاريخ</th>
+                                                <th scope="col"> خيارات</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($salaries as $salary)
+                                                <tr>
+                                                    <td>{{$salary->date}}</td>
+                                                    <td>
+                                                        <a class="btn btn-primary" target="_blank"
+                                                           href="{{route('assistants.downloadSlip',$salary)}}">
+                                                            تحميل
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                --}}
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
 
             </div>
 

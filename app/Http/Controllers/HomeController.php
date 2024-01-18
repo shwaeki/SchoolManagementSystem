@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SalarySlip;
 use App\Models\SchoolClass;
 use App\Models\Teacher;
 use App\Models\YearClass;
@@ -27,5 +28,21 @@ class HomeController extends Controller
                 ->get();
         }
         return view('home', $data);
+    }
+
+    public function mysalries()
+    {
+        $data = [];
+        if (Auth::guard('teacher')->check()) {
+            $data['salaries'] = SalarySlip::where('identification', auth()->user()->identification)->get();
+        }
+
+        return view('mysalries', $data);
+    }
+
+    public function showSalary(SalarySlip $salarySlip)
+    {
+        $path = public_path('storage/'.$salarySlip->file_path);
+        return response()->file($path);
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Requests\StoreAssistantRequest;
 use App\Http\Requests\StoreTeacherRequest;
 use App\Http\Requests\UpdateAssistantRequest;
 use App\Http\Requests\UpdateTeacherRequest;
+use App\Models\SalarySlip;
 use App\Models\SchoolClass;
 use App\Models\Teacher;
 use App\Rules\MatchOldPassword;
@@ -127,5 +128,11 @@ class AssistantController extends Controller
         $assistant->update(['password' => Hash::make($request->new_password)]);
         Session::flash('message', 'تم تعديل كلمة المرور  بنجاح.');
         return redirect()->route('assistants.show', $assistant);
+    }
+
+    public function downloadSlip(SalarySlip $salarySlip)
+    {
+        $path = public_path('storage/'.$salarySlip->file_path);
+        return response()->file($path);
     }
 }

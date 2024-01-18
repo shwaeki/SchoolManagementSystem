@@ -18,6 +18,7 @@ use App\Http\Controllers\StudentReportController;
 use App\Http\Controllers\StudentRequestController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WorkerController;
 use App\Http\Controllers\YearClassController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,8 @@ Route::resource('application', ApplicationController::class);
 
 Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/mysalries', [HomeController::class, 'mysalries'])->name('mysalries');
+    Route::get('show-salary/{salarySlip}', [HomeController::class, 'showSalary'])->name('show.salary');
 
     Route::resource('school-classes', SchoolClassController::class);
     Route::resource('student-classes', StudentClassController::class);
@@ -62,8 +65,12 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
         Route::put('teachers/change-password/{teacher}', [TeacherController::class, 'passwordUpdate'])->name('teachers.password');
         Route::resource('teachers', TeacherController::class);
 
+        Route::get('workers/downloadSlip/{salarySlip}', [WorkerController::class, 'downloadSlip'])->name('workers.downloadSlip');
+        Route::put('workers/change-password/{worker}', [WorkerController::class, 'passwordUpdate'])->name('workers.password');
+        Route::resource('workers', WorkerController::class);
 
-        Route::put('assistants/change-password/{teacher}', [AssistantController::class, 'passwordUpdate'])->name('assistants.password');
+        Route::get('assistants/downloadSlip/{salarySlip}', [AssistantController::class, 'downloadSlip'])->name('assistants.downloadSlip');
+        Route::put('assistants/change-password/{assistant}', [AssistantController::class, 'passwordUpdate'])->name('assistants.password');
         Route::resource('assistants', AssistantController::class);
 
         Route::post('year-classes/store-assistant/{yearClass}', [YearClassController::class, 'storeAssistant'])->name('year-classes.storeAssistant');

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\TeachersDataTable;
+use App\DataTables\WorkersDataTable;
 use App\Http\Requests\StoreTeacherRequest;
+use App\Http\Requests\StoreWorkerRequest;
 use App\Http\Requests\UpdateTeacherRequest;
+use App\Http\Requests\UpdateWorkerRequest;
 use App\Models\SalarySlip;
 use App\Models\SchoolClass;
 use App\Models\Teacher;
@@ -13,12 +16,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
-class TeacherController extends Controller
+class WorkerController extends Controller
 {
 
-    public function index(TeachersDataTable $dataTable)
+    public function index(WorkersDataTable $dataTable)
     {
-        return $dataTable->render('teacher.index');
+        return $dataTable->render('worker.index');
     }
 
     public function create()
@@ -27,16 +30,15 @@ class TeacherController extends Controller
             "schoolClasses" => SchoolClass::all(),
         ];
 
-        return view('teacher.create', $data);
+        return view('worker.create', $data);
     }
 
 
-    public function store(StoreTeacherRequest $request)
+    public function store(StoreWorkerRequest $request)
     {
         $addedData = [
-            'teacher_type' => 'teacher',
+            'teacher_type' => 'worker',
             'added_by' => auth()->id(),
-            'work_afternoon' => request()->has('work_afternoon') ? 1 : 0,
         ];
 
 
@@ -49,51 +51,47 @@ class TeacherController extends Controller
         $data['star_work_date'] = date('Y-m-d', strtotime($date2));
 
         $data['password'] = Hash::make(request('password'));
-        $teacher = Teacher::create($data);
+        $worker = Teacher::create($data);
 
         if ($request->hasFile('id_photo')) {
             $extension = $request->file('id_photo')->getClientOriginalExtension();
             $fileNameToStore = " صورة الهوية" . '.' . $extension;
-            $request->file('id_photo')->storeAs("public/files/Teacher_" . $teacher->id, $fileNameToStore);
+            $request->file('id_photo')->storeAs("public/files/Teacher_" . $worker->id, $fileNameToStore);
         }
 
 
-        Session::flash('message', 'تم اضافة معلم جديد بنجاح.');
-        return redirect()->route('teachers.index');
+        Session::flash('message', 'تم اضافة موظف جديد بنجاح.');
+        return redirect()->route('workers.index');
     }
 
 
-    public function show(Teacher $teacher)
+    public function show(Teacher $worker)
     {
         $data = [
-            "salaries" => SalarySlip::where('identification', $teacher->identification)->get(),
-            "teacher" => $teacher,
+            "salaries" => SalarySlip::where('identification', $worker->identification)->get(),
+            "worker" => $worker,
         ];
 
-        Session::put('fileManagerConfig', "Teacher_" . $teacher->id);
-        return view('teacher.show', $data);
+        Session::put('fileManagerConfig', "Teacher_" . $worker->id);
+        return view('worker.show', $data);
     }
 
 
-    public function edit(Teacher $teacher)
+    public function edit(Teacher $worker)
     {
         $data = [
-            "teacher" => $teacher,
+            "worker" => $worker,
             "schoolClasses" => SchoolClass::all(),
         ];
 
-        return view('teacher.edit', $data);
+        return view('worker.edit', $data);
     }
 
 
-    public function update(UpdateTeacherRequest $request, Teacher $teacher)
+    public function update(UpdateWorkerRequest $request, Teacher $worker)
     {
 
-        $addedData = [
-            'work_afternoon' => request()->has('work_afternoon') ? 1 : 0,
-        ];
-
-        $data = request()->all() + $addedData;
+        $data = request()->all();
 
         $date1 = str_replace('/', '-', request('birth_date'));
         $data['birth_date'] = date('Y-m-d', strtotime($date1));
@@ -102,20 +100,20 @@ class TeacherController extends Controller
         $data['star_work_date'] = date('Y-m-d', strtotime($date2));
 
 
-        $teacher->update($data);
-        Session::flash('message', 'تم تعديل معلومات المعلم بنجاح.');
-        return redirect()->route('teachers.show', $teacher);
+        $worker->update($data);
+        Session::flash('message', 'تم تعديل معلومات الموظف بنجاح.');
+        return redirect()->route('workers.show', $worker);
     }
 
 
-    public function destroy(Teacher $teacher)
+    public function destroy(Teacher $worker)
     {
-        $teacher->delete();
+        $worker->delete();
         Session::flash('message', 'تم حذف المعلم بنجاح!');
-        return redirect()->route('teachers.index');
+        return redirect()->route('workers.index');
     }
 
-    public function passwordUpdate(Request $request, Teacher $teacher)
+    public function passwordUpdate(Request $request, Teacher $worker)
     {
 
         $request->validate([
@@ -124,15 +122,15 @@ class TeacherController extends Controller
         ]);
 
 
-        $teacher->update(['password' => Hash::make($request->new_password)]);
+        $worker->update(['password' => Hash::make($request->new_password)]);
         Session::flash('message', 'تم تعديل كلمة المرور  بنجاح.');
-        return redirect()->route('teachers.show', $teacher);
+        return redirect()->route('workers.show', $worker);
     }
 
 
     public function downloadSlip(SalarySlip $salarySlip)
     {
-        $path = public_path('storage/'.$salarySlip->file_path);
+        $path = public_path('storage/' . $salarySlip->file_path);
         return response()->file($path);
     }
 }
