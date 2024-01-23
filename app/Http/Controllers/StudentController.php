@@ -177,6 +177,10 @@ class StudentController extends Controller
         $full_address = 'עיסוויה  ירושלים ת.ד 66872';
         $phone = 'נייד 0522037243';
         $student_name = $student->name;
+
+        $fatherNumber = $student->father_id ?? $student->mother_id;
+        $student_Father_name = $student->father_name ?? $student->mother_name;
+        
         $birth_day = date('d', strtotime($student->birth_date));
         $birth_month = date('m', strtotime($student->birth_date));
         $birth_year = date('y', strtotime($student->birth_date));
@@ -188,7 +192,7 @@ class StudentController extends Controller
             $idNumber = "0" . $idNumber;
         }
         $manager_name = 'חמדאן יוסרי';
-        $schoolNum = '503256';
+        $schoolNum = $class->code;
 
 
         $imagePath = public_path('assets/img/sign.png');
@@ -242,7 +246,7 @@ class StudentController extends Controller
             $tcpdf->Write(0, $manager_name);
 
             $tcpdf->SetFont('aealarabiya', 'B', 12);
-            $tcpdf->SetXY(108, 219);
+            $tcpdf->SetXY(104, 218);
             $tcpdf->Write(0, $school_name_small);
 
             $tcpdf->SetRTL(false);
@@ -260,12 +264,25 @@ class StudentController extends Controller
             $tcpdf->Image($imagePath, 90, 165, 35, 24);
 
             $tcpdf->SetRTL(true);
+            $tcpdf->SetFont('aealarabiya', 'B', 12);
+            $tcpdf->SetXY(50, 207);
+            $tcpdf->Write(0,   $student_Father_name);
+            
+            $tcpdf->SetRTL(false);
+            $tcpdf->SetFont('DejaVuSans', 'B', 12);
+            $tcpdf->SetXY(80, 207);
+            $tcpdf->Write(0, $fatherNumber);
+            
+            $tcpdf->SetFont('aealarabiya', 'B', 12);
+            $tcpdf->SetXY(65, 243);
+            $tcpdf->Write(0,   $student_Father_name);
 
+/*
             header('Content-Type: application/pdf');
             header('Content-Disposition: attachment; filename="' . $idNumber . '.pdf"');
-
-            $tcpdf->Output($idNumber . '.pdf', 'D');
-            $tcpdf->endTemplate();
+*/
+            return $tcpdf->Output($idNumber . '.pdf', 'I');
+           // $tcpdf->endTemplate();
         }
 
     }

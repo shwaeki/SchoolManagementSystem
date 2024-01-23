@@ -88,7 +88,7 @@ class SchoolClassController extends Controller
             "teachers" => Teacher::where('teacher_type', 'teacher')->get(),
             "assistants" => $assistants,
             "certificates" => Certificate::all(),
-            "students" => Student::whereNotIn('id', $all_students)->get(),
+            "students" => Student::whereNotIn('id', $all_students)->orderBy('name', 'asc')->get(),
         ];
 
         if ($current_year_class != null) {

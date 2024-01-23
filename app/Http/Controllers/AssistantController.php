@@ -68,6 +68,7 @@ class AssistantController extends Controller
     public function show(Teacher $assistant)
     {
         $data = [
+                "salaries" => SalarySlip::where('identification', $assistant->identification)->get(),
             "teacher" => $assistant,
         ];
 
