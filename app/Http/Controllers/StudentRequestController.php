@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\StudentsRequestDataTable;
+use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Models\StudentRequest;
 use App\Http\Requests\UpdateStudentRequestRequest;
@@ -17,7 +18,10 @@ class StudentRequestController extends Controller
 {
     public function index(StudentsRequestDataTable $dataTable)
     {
-        return $dataTable->render('studentRequest.index');
+        $data = [
+            'schools' => SchoolClass::all(),
+        ];
+        return $dataTable->render('studentRequest.index',$data);
     }
 
 

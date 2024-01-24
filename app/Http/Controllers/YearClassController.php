@@ -60,7 +60,7 @@ class YearClassController extends Controller
      */
     public function update(UpdateYearClassRequest $request, YearClass $yearClass)
     {
-
+ //       dd(request()->all());
         $yearClass->update(request()->all());
         Session::flash('message', 'تم تعديل معلومات الفصل التعليمي بنجاح.');
         return redirect()->back();

@@ -10,6 +10,20 @@
             </div>
         </div>
         <div class="widget-content widget-content-area">
+
+            <div class="row">
+                <div class="col-12">
+                    <select class="form-select form-select-sm" id="class" name="c">
+                        <option selected value=""> جميع الفروع</option>
+                        @foreach($schools as $school)
+                            <option value="{{ $school->id }}">
+                                {{$school->name}} - {{$school->address}}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
             {{ $dataTable->table() }}
         </div>
     </div>

@@ -21,9 +21,9 @@ class ClassesDataTable extends DataTable
                     <a href="' . route('school-classes.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
                     <button class="btn btn-light-danger text-danger  d-none" onclick="deleteItem(this)"
                     data-item="' . route('school-classes.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
-            })->editColumn('code', function ($query) {
+            })/*->editColumn('code', function ($query) {
                     return '<span class="badge badge-light-info">'.$query->code.'</span>';
-            })->editColumn('supervisor', function ($query) {
+            })*/->editColumn('supervisor', function ($query) {
                     return $query?->supervisorTeacher?->name;
             })
             ->setRowId('id')
@@ -76,7 +76,7 @@ class ClassesDataTable extends DataTable
         return
             [
                 'name' => ['title' => 'الاسم '],
-                'code' => ['title' => 'الكود'],
+                'phone' => ['title' => 'رقم الهاتف'],
                 'capacity' => ['title' => 'الطاقة الاستيعابة'],
                 'alphabetical_name' => ['title' => 'الكود الابجدي'],
 //                'supervisor ' => ['title' => 'المعلم المشرف'],

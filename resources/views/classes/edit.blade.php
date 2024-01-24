@@ -28,7 +28,7 @@
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-3">
+{{--                    <div class="col-12 col-md-3">
                         <div class="mb-3">
                             <label for="code" class="form-label"> الكود</label>
                             <input type="text" id="code" name="code"
@@ -38,7 +38,7 @@
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>
-                    </div>
+                    </div>--}}
 
                     <div class="col-12 col-md-3">
                         <div class="mb-3">

@@ -5,6 +5,8 @@ namespace App\DataTables;
 use App\Models\Student;
 use App\Models\StudentRequest;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Http\Request;
+use Symfony\Component\Console\Input\Input;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -36,6 +38,10 @@ class StudentsRequestDataTable extends DataTable
             ->editColumn('created_at', function ($query) {
                 return $query->created_at->format('d/m/Y');
             })
+
+            ->editColumn('school_class_id ', function ($query) {
+                return $query->schoolClass->name .' - '.$query->schoolClass->address;
+            })
             ->setRowId('id')
             ->rawColumns(['Settings', 'gender']);
 
@@ -47,7 +53,14 @@ class StudentsRequestDataTable extends DataTable
      */
     public function query(StudentRequest $model): QueryBuilder
     {
-        return $model->newQuery();
+
+        $quere = $model->newQuery();
+
+        if (request('c') && request('c') != ""){
+            $quere->where('school_class_id','=',$quere);
+        }
+
+        return $quere;
     }
 
     /**
@@ -65,6 +78,16 @@ class StudentsRequestDataTable extends DataTable
                 'buttons' => [
                     "excel",'print'
                 ],
+                'initComplete' =>
+                    "function (settings, data) {
+                        var class_col = this.api().columns(5);
+                        $('#class').on('change', function () {
+                            if( $(this).val() == null || $(this).val() == '')
+                                class_col.search('').draw();
+                            else
+                                class_col.search($(this).val()).draw();
+                        });
+                    }",
             ])
             ->setTableId('students-table')
             ->columns($this->getColumns())
@@ -90,6 +113,7 @@ class StudentsRequestDataTable extends DataTable
                 'mother_phone' => ['title' => 'رفم هاتف الام'],
                 'father_phone' => ['title' => 'رقم هاتف الاب'],
                 'gender' => ['title' => 'الجنس '],
+                'school_class_id ' => ['title' => 'الفرع '],
                 'created_at' => ['title' => 'تاريخ تقديم الطلب'],
                 'Settings' => ['title' => 'خيارات', 'orderable' => false],
             ];
