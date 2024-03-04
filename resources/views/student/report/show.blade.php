@@ -15,8 +15,9 @@
         }
 
         .content {
-            background: url({{ URL::asset('assets/img/report.jpg') }}) repeat top center;
-            background-size: contain;
+            background: url({{ URL::asset('assets/img/report.jpg') }}) no-repeat top center;
+            background-size: cover;
+            height: 100%;
         }
 
         html, body {
