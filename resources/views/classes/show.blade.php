@@ -231,6 +231,14 @@
                                                 </div>
                                             </div>
 
+                                            <div class="col-12 col-md-4">
+                                                <div class="mb-3">
+                                                    <label for="code" class="form-label">الكود </label>
+                                                    <input type="text" id="code" class="form-control"
+                                                           value="{{$current_year_class->code}}" disabled>
+                                                </div>
+                                            </div>
+
                                         </div>
 
 
@@ -299,6 +307,8 @@
                                             <tr>
                                                 <th scope="col">السنة الدراسية</th>
                                                 <th scope="col">المدرس المشرف</th>
+                                                <th scope="col"> الكود</th>
+                                                <th scope="col"> الشهادة</th>
                                                 <th scope="col">عدد الطلاب</th>
                                                 <th scope="col">اضيف بواسطة</th>
 
@@ -309,6 +319,8 @@
                                                 <tr>
                                                     <td>{{$year->academicYear->name}}</td>
                                                     <td>{{$year->supervisorTeacher->name}}</td>
+                                                    <td>{{$year->code}}</td>
+                                                    <td>{{$year->certificate?->name}}</td>
                                                     <td>{{count($year->students)}}</td>
                                                     <td>{{$year->addedBy->name}}</td>
                                                 </tr>
@@ -503,6 +515,12 @@
                                 </select>
 
                             </div>
+
+                            <div class="mb-3">
+                                <label for="code" class="form-label"> الكود </label>
+                                <input type="text" id="code" name="code" class="form-control">
+                            </div>
+
 
                         </div>
                         <div class="modal-footer">
@@ -804,7 +822,11 @@
                                             </option>
                                         @endforeach
                                     </select>
-
+                                </div>
+                                <div class="mb-3">
+                                    <label for="code" class="form-label"> الكود </label>
+                                    <input type="text" id="code" name="code" class="form-control"
+                                           value="{{$current_year_class->code}}" >
                                 </div>
 
                             </div>

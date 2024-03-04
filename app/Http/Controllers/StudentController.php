@@ -180,7 +180,7 @@ class StudentController extends Controller
 
         $fatherNumber = $student->father_id ?? $student->mother_id;
         $student_Father_name = $student->father_name ?? $student->mother_name;
-        
+
         $birth_day = date('d', strtotime($student->birth_date));
         $birth_month = date('m', strtotime($student->birth_date));
         $birth_year = date('y', strtotime($student->birth_date));
@@ -192,7 +192,7 @@ class StudentController extends Controller
             $idNumber = "0" . $idNumber;
         }
         $manager_name = 'חמדאן יוסרי';
-        $schoolNum = $class->code;
+        $schoolNum = $studentClass->yearClass?->code;
 
 
         $imagePath = public_path('assets/img/sign.png');
@@ -267,12 +267,12 @@ class StudentController extends Controller
             $tcpdf->SetFont('aealarabiya', 'B', 12);
             $tcpdf->SetXY(50, 207);
             $tcpdf->Write(0,   $student_Father_name);
-            
+
             $tcpdf->SetRTL(false);
             $tcpdf->SetFont('DejaVuSans', 'B', 12);
             $tcpdf->SetXY(80, 207);
             $tcpdf->Write(0, $fatherNumber);
-            
+
             $tcpdf->SetFont('aealarabiya', 'B', 12);
             $tcpdf->SetXY(65, 243);
             $tcpdf->Write(0,   $student_Father_name);

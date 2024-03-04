@@ -63,7 +63,7 @@ class ApplicationController extends Controller
             $request->file('birth_certificate')->storeAs("public/files/StudentRequest_" . $studentRequest->id, $fileNameToStore);
         }
 
-        Notification::route('mail', ['riadalm2011@gmail.com', 'shwaeki98@gmail.com', 'suppwithyou@gmail.com'])->notify(new NewStudentRequest($studentRequest));
+     //   Notification::route('mail', ['riadalm2011@gmail.com', 'shwaeki98@gmail.com', 'suppwithyou@gmail.com'])->notify(new NewStudentRequest($studentRequest));
 
         return redirect()->route("application.message");
     }
