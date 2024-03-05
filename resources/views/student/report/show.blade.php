@@ -48,7 +48,7 @@
     <div class="text-center" style="padding-top: 60mm;">
         <h1 class="">{{$studentReport->subject}}</h1>
     </div>
-    <div class="text-center"><p>{!! $content !!}</p></div>
+    <div class="text-start px-5"><p>{!! $content !!}</p></div>
 </div>
 
 <script src="{{ asset("assets/bootstrap/js/bootstrap.bundle.min.js") }}"></script>

@@ -35,7 +35,7 @@ class StudentReportController extends Controller
         $data = [
             "student" => $student,
             "studentReport" => $studentReport,
-            "content" => str_replace(["[name]", "[identification]", "[birthDate]"], [$student->name, $student->identification, $student->birth_date], $studentReport->content),
+            "content" => str_replace(["[name]", "[identification]", "[birthDate]", "[date]"], [$student->name, $student->identification, $student->birth_date,date('Y-m-d')], $studentReport->content),
         ];
 
 

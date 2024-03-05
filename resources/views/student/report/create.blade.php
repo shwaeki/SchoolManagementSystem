@@ -65,6 +65,9 @@
                         <button type="button" data-name="[birthDate]" class="btn btn-delete add_dynamic">
                             تاريخ الميلاد
                         </button>
+                        <button type="button" data-name="[date]" class="btn btn-delete add_dynamic">
+                           تاريخ اليوم
+                        </button>
                     </div>
                     <textarea id="contentText" name="content" class="form-control d-none" rows="20" required></textarea>
                     <div id="editor-container"></div>
