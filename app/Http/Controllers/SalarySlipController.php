@@ -101,6 +101,8 @@ class SalarySlipController extends Controller
             $text = $page->getTextArray();
             $idNumbersArray = $this->extractValuesBetweenKeys($text, 5, 15);
             $idNumber = $this->getIdNumberFromArray($idNumbersArray);
+
+
             $getMonthYearStr = $this->getMonthFromArray($text);
             $outputFilename = $outputPath;
 
@@ -143,7 +145,7 @@ class SalarySlipController extends Controller
 
     private function isValidDateFormat($input)
     {
-        $pattern = "/^(0[1-9]|1[0-2])\/\d{2}$/";
+        $pattern = "/^(0?[1-9]|1[0-2])\/\d{2}$/";
         return preg_match($pattern, $input) === 1;
     }
 
