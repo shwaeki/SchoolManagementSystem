@@ -300,6 +300,15 @@
                                 <label class="form-check-label" for="work_afternoon">يعمل/تعمل بعد الظهيرة ؟</label>
                             </div>
                         </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="1" name="show_salary_slip"
+                                       @if(old('show_salary_slip' ) == "1") checked @endif id="show_salary_slip">
+                                <label class="form-check-label" for="show_salary_slip">اظهار قسائم الرواتب في الملف الشخصي</label>
+                            </div>
+                        </div>
+
                     </div>
 
 

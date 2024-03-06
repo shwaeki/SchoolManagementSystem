@@ -37,6 +37,7 @@ class TeacherController extends Controller
             'teacher_type' => 'teacher',
             'added_by' => auth()->id(),
             'work_afternoon' => request()->has('work_afternoon') ? 1 : 0,
+            'show_salary_slip' => request()->has('show_salary_slip') ? 1 : 0,
         ];
 
 
@@ -91,6 +92,7 @@ class TeacherController extends Controller
 
         $addedData = [
             'work_afternoon' => request()->has('work_afternoon') ? 1 : 0,
+            'show_salary_slip' => request()->has('show_salary_slip') ? 1 : 0,
         ];
 
         $data = request()->all() + $addedData;

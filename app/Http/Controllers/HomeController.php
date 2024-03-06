@@ -32,6 +32,11 @@ class HomeController extends Controller
 
     public function mysalries()
     {
+
+        if(!auth()->user()->show_salary_slip){
+            return redirect()->route('home');
+        }
+
         $data = [];
         if (Auth::guard('teacher')->check()) {
             $data['salaries'] = SalarySlip::where('identification', auth()->user()->identification)->get();

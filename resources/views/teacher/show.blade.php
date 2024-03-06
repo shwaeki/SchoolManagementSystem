@@ -216,6 +216,13 @@
                                             </div>
                                         </div>
 
+                                        <div class="col-6 col-md-3">
+                                            <div class="mb-3">
+                                                <label for="show_salary_slip" class="form-label"> اظهار قسائم الرواتب في الملف الشخصي</label>
+                                                <input type="text" id="show_salary_slip" class="form-control"
+                                                       value="{{$teacher->show_salary_slip ? 'نعم' : 'لا'}}" disabled>
+                                            </div>
+                                        </div>
 
                                         <div class="col-12">
                                             <div class="mb-3">
@@ -224,8 +231,6 @@
                                                           disabled>{{ $teacher->notes }}</textarea>
                                             </div>
                                         </div>
-
-
                                     </div>
 
                                 </div>

@@ -25,6 +25,7 @@ return new class extends Migration {
             $table->enum('job_type', ['fullJob', 'partTime'])->nullable();
             $table->enum('teacher_type', ['teacher','assistant','worker'])->default('teacher');
             $table->boolean('work_afternoon')->default(false);
+            $table->boolean('show_salary_slip')->default(true);
             $table->string('bank_name')->nullable();
             $table->string('bank_branch')->nullable();
             $table->string('bank_account')->nullable();
