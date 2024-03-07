@@ -15,10 +15,19 @@ class MessageController extends Controller
 
     public function index()
     {
+
+        $messages = Message::query();
+        if (request('date')) {
+            $messages->whereDate('created_at', request('date'));
+        } else {
+            $messages->whereDate('created_at', now());
+        }
+
         $data = [
             "schoolClasses" => SchoolClass::all(),
             "students" => Student::all(),
             "teachers" => Teacher::all(),
+            "messages" => $messages->get()
         ];
 
         return view('messages.index', $data);
@@ -85,7 +94,6 @@ class MessageController extends Controller
             $year_class_students = $current_year_class->students()->whereHas('student', function ($query) {
                 $query->whereNull('deleted_at');
             })->with('student')->get();
-
 
 
             foreach ($year_class_students as $student) {

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="statbox widget box box-shadow">
+    <div class="statbox widget box box-shadow mb-4">
         <div class="widget-header">
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
@@ -70,12 +70,66 @@
             </form>
         </div>
     </div>
+    <div class="statbox widget box box-shadow">
+        <div class="widget-header">
+            <div class="row">
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                    <h4> سجل الرسائل</h4>
+                </div>
+            </div>
+        </div>
+        <div class="widget-content widget-content-area-normal">
+
+            <div class="row">
+                <div class="col-12">
+                    <form method="get" class="d-flex">
+                        <div class="mb-3 flex-grow-1 me-3">
+                            <label for="date" class="form-label">تاريخ الارسال</label>
+                            <input type="date" class="form-control" name="date" id="date"
+                                   value="{{request("date",now()->format('Y-m-d'))}}">
+                        </div>
+                        <div class="mb-3 align-self-end">
+                            <button type="submit" class="btn btn-primary btn-lg mb-1">
+                                فلترة
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col"> رقم الهاتف</th>
+                                <th scope="col"> تم الارسال بواسطة</th>
+                                <th scope="col"> تاريخ الارسال</th>
+                                <th scope="col"> نص الرسالة</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($messages as $message)
+                                <tr>
+                                    <td>{{$message->phone}}</td>
+                                    <td>{{$message->addedBy?->name }}</td>
+                                    <td>{{$message->created_at->format('Y-m-d')}}</td>
+                                    <td>{{$message->message}}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
 @endsection
 
 
 @push('scripts')
     <script>
-        $('#message_to').on('change', function(){
+        $('#message_to').on('change', function () {
             var selectedValue = $(this).val();
             $('.message_container').addClass('d-none').find('select').prop('disabled', true);
             $('#' + selectedValue).removeClass('d-none').find('select').prop('disabled', false);
