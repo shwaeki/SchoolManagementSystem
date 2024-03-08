@@ -26,6 +26,8 @@ class SalariesDataTable extends DataTable
                 } else {
                     return '';
                 }
+            })->editColumn('created_at', function ($query) {
+                return $query->created_at->format('Y-m-d');
             })
             ->setRowId('id')
             ->rawColumns(['Settings', 'status']);
@@ -78,6 +80,7 @@ class SalariesDataTable extends DataTable
             [
                 'date' => ['title' => 'التاريخ '],
                 'status' => ['title' => 'الحالة '],
+                'created_at' => ['title' => 'تاريخ الاضافة '],
                 'Settings' => ['title' => 'خيارات', 'orderable' => false],
             ];
     }

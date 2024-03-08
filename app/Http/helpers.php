@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 if (!function_exists('sendSms')) {
     function sendSms($message, $phone_number)
     {
-        $getToken = "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJmaXJzdF9rZXkiOiI2MTMzNyIsInNlY29uZF9rZXkiOiIzNDk5NTM1IiwiaXNzdWVkQXQiOiIxMC0wMS0yMDI0IDEyOjM3OjM0IiwidHRsIjo2MzA3MjAwMH0.8Y1xEd7uP0C6rYJieX--stlpQ5l-VsEmUv_kCxfQLNs";
+        $getToken = "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJmaXJzdF9rZXkiOiI2MTMzNyIsInNlY29uZF9rZXkiOiIzNDk5NTM1IiwiaXNzdWVkQXQiOiIwOC0wMy0yMDI0IDA5OjQ1OjE3IiwidHRsIjo2MzA3MjAwMH0.tmeGW4_aP57titk5aca-U-5j32Jod_-s9TtYh_lQGpg";
 
         if ($getToken) {
             $url = "https://019sms.co.il/api";
@@ -56,7 +56,7 @@ if (!function_exists('sendSms')) {
 if (!function_exists('sendSmsBulk')) {
     function sendSmsBulk($message, $phone_numbers)
     {
-        $getToken = "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJmaXJzdF9rZXkiOiI2MTMzNyIsInNlY29uZF9rZXkiOiIzNDk5NTM1IiwiaXNzdWVkQXQiOiIxMC0wMS0yMDI0IDEyOjM3OjM0IiwidHRsIjo2MzA3MjAwMH0.8Y1xEd7uP0C6rYJieX--stlpQ5l-VsEmUv_kCxfQLNs";
+        $getToken = "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJmaXJzdF9rZXkiOiI2MTMzNyIsInNlY29uZF9rZXkiOiIzNDk5NTM1IiwiaXNzdWVkQXQiOiIwOC0wMy0yMDI0IDA5OjQ1OjE3IiwidHRsIjo2MzA3MjAwMH0.tmeGW4_aP57titk5aca-U-5j32Jod_-s9TtYh_lQGpg";
 
 
         $phones = [];
@@ -90,6 +90,7 @@ if (!function_exists('sendSmsBulk')) {
 
                 $result = $response->json();
 
+               // dd(env('SMS_019_USERNAME'), env('SMS_019_PHONE'), $result);
                 if ($result['status'] == 0) {
                     return true;
                 } else {

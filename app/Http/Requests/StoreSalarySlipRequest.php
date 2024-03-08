@@ -22,7 +22,7 @@ class StoreSalarySlipRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "file" => "required|mimetypes:application/pdf|max:10000",
+            "file" => "required|mimetypes:application/pdf|max:100000",
             'date' => 'required|string|max:225',
         ];
     }
