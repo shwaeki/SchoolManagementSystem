@@ -23,8 +23,8 @@ if (!function_exists('sendSms')) {
 
                 $response = Http::withToken($getToken)->post($url, [
                     'sms' => [
-                        'user' => ['username' => env('SMS_019_USERNAME')],
-                        'source' => env('SMS_019_PHONE'),
+                        'user' => ['username' => env('SMS_019_USERNAME','riadmajd')],
+                        'source' => env('SMS_019_PHONE','026654099'),
                         'destinations' => [
                             'phone' => [
                                 '_' => $phone_number,
@@ -78,8 +78,8 @@ if (!function_exists('sendSmsBulk')) {
             try {
                 $response = Http::withToken($getToken)->post($url, [
                     'sms' => [
-                        'user' => ['username' => env('SMS_019_USERNAME')],
-                        'source' => env('SMS_019_PHONE'),
+                        'user' => ['username' => env('SMS_019_USERNAME','riadmajd')],
+                        'source' => env('SMS_019_PHONE','026654099'),
                         'destinations' => [
                             'phone' => $phones,
                         ],
