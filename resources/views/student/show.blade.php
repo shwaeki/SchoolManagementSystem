@@ -602,7 +602,7 @@
 
 @push('scripts')
     <script>
-        var attributes = {!! json_encode($attributes) !!};
+        var attributes = {!! json_encode($attributes ?? []) !!};
 
 
         $("#reportExportButton").on("click", function () {
