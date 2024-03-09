@@ -9,6 +9,7 @@ use App\Http\Controllers\CertificateFieldController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ParentController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SalarySlipController;
 use App\Http\Controllers\SchoolClassController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\StudentMarkController;
 use App\Http\Controllers\StudentReportController;
 use App\Http\Controllers\StudentRequestController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TeacherReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkerController;
 use App\Http\Controllers\YearClassController;
@@ -76,7 +78,13 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
 
         Route::post('year-classes/store-assistant/{yearClass}', [YearClassController::class, 'storeAssistant'])->name('year-classes.storeAssistant');
         Route::resource('year-classes', YearClassController::class);
+
+        Route::post('student-reports/generate', [StudentReportController::class, 'generate'])->name('student-reports.generate');
         Route::resource('student-reports', StudentReportController::class);
+
+        Route::post('teacher-reports/generate', [TeacherReportController::class, 'generate'])->name('teacher-reports.generate');
+        Route::resource('teacher-reports', TeacherReportController::class);
+        Route::resource('reports', ReportController::class);
 
 
         Route::resource('messages', MessageController::class);

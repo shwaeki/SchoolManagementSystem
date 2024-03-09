@@ -2,26 +2,20 @@
 
 namespace App\Http\Controllers;
 
-
-use App\DataTables\ReportsDataTable;
-use App\Http\Requests\UpdateMessageRequest;
-use App\Models\Message;
 use App\Models\Report;
-use App\Models\Student;
-use App\Models\StudentReport;
+use App\Models\Teacher;
+use App\Models\TeacherReport;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
-class StudentReportController extends Controller
+class TeacherReportController extends Controller
 {
 
 
-    public function show(StudentReport $student_report)
+    public function show(TeacherReport $teacherReport)
     {
         $data = [
-            "student" => $student_report->student_id,
-            "report" => $student_report,
-            "content" => $student_report->content,
+            "report" => $teacherReport,
+            "content" => $teacherReport->content,
         ];
 
         return view('reports.show', $data);
@@ -30,7 +24,7 @@ class StudentReportController extends Controller
     public function generate(Request $request)
     {
         $report = Report::findOrFail(request('report'));
-        $student = Student::findOrFail(request('student'));
+        $teacher = Teacher::findOrFail(request('teacher'));
         $date = request('date');
 
         $reportContent = $report->content;
@@ -42,25 +36,25 @@ class StudentReportController extends Controller
 
 
         $placeholders = [
-            'name' => $student->name,
-            'identification' => $student->identification,
-            'birthDate' => $student->birth_date,
+            'name' => $teacher->name,
+            'identification' => $teacher->identification,
+            'birthDate' => $teacher->birth_date,
             'date' => date('Y-m-d'),
         ];
 
         $reportContent = $this->replacePlaceholders($reportContent, $placeholders);
 
 
-        $studentReport = StudentReport::create([
-            'student_id' => $student->id,
+        $teacherReport = TeacherReport::create([
+            'teacher_id' => $teacher->id,
             'name' => $report->name,
             'subject' => $report->subject,
             'added_by' => auth()->id(),
             'content' => $reportContent,
         ]);
 
-        if ($studentReport) {
-            return response()->json(['status' => 'success', 'message' => 'تمت العملية بنجاح', 'data' => $studentReport]);
+        if ($teacherReport) {
+            return response()->json(['status' => 'success', 'message' => 'تمت العملية بنجاح', 'data' => $teacherReport]);
         }
 
         return response()->json(['status' => 'error', 'message' => 'حدث خطأ']);

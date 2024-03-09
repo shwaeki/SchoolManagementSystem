@@ -36,6 +36,12 @@ class Student extends Authenticatable
     }
 
 
+    public function reports(): hasMany
+    {
+        return $this->hasMany(StudentReport::class);
+    }
+
+
     public function YearClasses(): hasMany
     {
         return $this->hasMany(YearClass::class);

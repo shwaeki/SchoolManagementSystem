@@ -19,4 +19,6 @@ return [
     'Always' => 'دائماً',
     'Sometimes' => 'أحياناً',
     'Rarely' => 'نادراً',
+    'student' => 'طالب',
+    'teacher' => 'مدرس',
 ];

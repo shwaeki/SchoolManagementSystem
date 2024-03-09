@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DataTables\TeachersDataTable;
 use App\Http\Requests\StoreTeacherRequest;
 use App\Http\Requests\UpdateTeacherRequest;
+use App\Models\Report;
 use App\Models\SalarySlip;
 use App\Models\SchoolClass;
 use App\Models\Teacher;
@@ -69,6 +70,8 @@ class TeacherController extends Controller
         $data = [
             "salaries" => SalarySlip::where('identification', $teacher->identification)->get(),
             "teacher" => $teacher,
+            "reports" => Report::where('type','teacher')->get(),
+            "teacher_reports" => $teacher->reports,
         ];
 
         Session::put('fileManagerConfig', "Teacher_" . $teacher->id);

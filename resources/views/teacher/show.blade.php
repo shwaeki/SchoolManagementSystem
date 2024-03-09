@@ -55,7 +55,14 @@
                             </button>
                         </li>
 
-
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="teacher-reports-tab" data-bs-toggle="tab"
+                                    href="#teacher-reports"
+                                    role="tab" aria-controls="teacher-reports" aria-selected="false" tabindex="-1">
+                                <i class="fas fa-file-alt"></i>
+                                التقارير
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -218,7 +225,8 @@
 
                                         <div class="col-6 col-md-3">
                                             <div class="mb-3">
-                                                <label for="show_salary_slip" class="form-label"> اظهار قسائم الرواتب في الملف الشخصي</label>
+                                                <label for="show_salary_slip" class="form-label"> اظهار قسائم الرواتب في
+                                                    الملف الشخصي</label>
                                                 <input type="text" id="show_salary_slip" class="form-control"
                                                        value="{{$teacher->show_salary_slip ? 'نعم' : 'لا'}}" disabled>
                                             </div>
@@ -295,7 +303,81 @@
 
                     </div>
                 </div>
+                <div class="tab-pane fade " id="teacher-reports" role="tabpanel" aria-labelledby="teacher-reports-tab">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                            <form class="section general-info">
+                                <div class="info">
+                                    <h6> التقارير </h6>
+                                    <div class="d-flex">
+                                        <div class="mb-3 me-3 flex-grow-1">
+                                            <label for="reportSelect" class="form-label">اختر التقرير:</label>
+                                            <select class="form-select" id="reportSelect">
+                                                <option selected disabled value="">اختر ...</option>
+                                                @foreach($reports as $report)
+                                                        <?php
 
+                                                        preg_match_all("/\[dynamic name='(.*?)'\]/", $report->content, $matches);
+
+                                                        if (isset($matches[1])) {
+                                                            foreach ($matches[1] as $name) {
+                                                                if (!isset($attributes[$report->id])) {
+                                                                    $attributes[$report->id] = [];
+                                                                }
+                                                                $attributes[$report->id][] = $name;
+                                                            }
+                                                        }
+                                                        ?>
+                                                    <option value="{{ $report->id }}">{{ $report->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="mb-3 align-self-end">
+                                            <button type="button" class="btn btn-primary btn-lg"
+                                                    id="reportExportButton">
+                                                تصدير
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <h6> تقارير الطالب </h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">الاسم</th>
+                                                <th scope="col">اضيف بواسطة</th>
+                                                <th scope="col">تاريخ الاضافة</th>
+                                                <th scope="col">خيارات</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($teacher_reports as $report)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{$report->name}}</td>
+                                                    <td>{{$report->addedBy->name}}</td>
+                                                    <td>{{$report->created_at->format('Y-m-d')}}</td>
+                                                    <td>
+                                                        <a target="_blank"
+                                                           href="{{route('teacher-reports.show',['teacher_report'=>$report])}}"
+                                                           type="button" class="btn btn-delete">
+                                                            عرض
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
 
             </div>
 
@@ -303,4 +385,103 @@
 
     </div>
 
+    <div class="modal fade" id="attributeModal" tabindex="-1" aria-labelledby="attributeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="attributeModalLabel">قيمة العناصر المتغيرة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="inputContainer"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-dismiss="modal">غلاق</button>
+                    <button type="button" class="btn btn-primary" id="reportDynamicExport">تصدير</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
+
+@push('scripts')
+    <script>
+        var attributes = {!! json_encode($attributes ?? []) !!};
+
+
+        $("#reportExportButton").on("click", function () {
+            var selectedReportId = $("#reportSelect").val();
+
+            if (selectedReportId == null) {
+                Swal.fire({title: "خطأ!", text: "يرجى اختيار تقرير", icon: "error"});
+                return;
+            }
+
+            console.log(selectedReportId)
+            if (attributes[selectedReportId]) {
+                $("#inputContainer").empty();
+
+                var attributeValues = attributes[selectedReportId];
+                attributeValues.forEach(function (value) {
+                    $("#inputContainer").append('<input type="text" class="form-control mb-3" placeholder="' + value + '" date-name="' + value + '">');
+                });
+                $("#attributeModal").modal('show');
+            } else {
+
+                var showTeacherReportRoute = '{{route('reports.show',['report'=> ':id', 'teacher'=> $teacher])}}';
+                var showTeacherReportUrl = showTeacherReportRoute.replace(':id', selectedReportId);
+                window.open(showTeacherReportUrl, '_blank');
+            }
+        });
+
+
+        $("#reportDynamicExport").on("click", function () {
+            var selectedReportId = $("#reportSelect").val();
+            var allInputsFilled = true;
+            var postData = {};
+
+            $("#inputContainer input").each(function () {
+                var inputValue = $(this).val();
+                var dateNameAttribute = $(this).attr('date-name');
+
+                if (!inputValue) {
+                    allInputsFilled = false;
+                    return false;
+                }
+                postData[dateNameAttribute] = inputValue;
+            });
+
+            if (!allInputsFilled) {
+                Swal.fire({title: "خطأ!", text: "يرجى ملء جميع الحقول", icon: "error"});
+                return;
+            }
+
+
+            console.log("Exporting values:", postData);
+
+            $("#attributeModal").modal('hide');
+
+            $.ajax({
+                url: '{{route('teacher-reports.generate')}}',
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    report: selectedReportId,
+                    teacher: '{{$teacher->id}}',
+                    date: postData
+                },
+                success: function (response) {
+                    console.log('Ajax request successful:', response);
+                    var showTeacherReportRoute = '{{ route('teacher-reports.show', ['teacher_report' => ':id']) }}';
+                    var showTeacherReportUrl = showTeacherReportRoute.replace(':id', response.data.id);
+                    window.open(showTeacherReportUrl, '_blank');
+                    location.reload();
+                },
+                error: function (error) {
+                    Swal.fire({title: "خطأ!", text: "حدث خطا ما الرجاء المحاولة مرى اخرى", icon: "error"});
+                }
+            });
+
+        });
+    </script>
+@endpush

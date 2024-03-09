@@ -6,8 +6,18 @@
     <title>Report</title>
 
     <link href="{{ asset("assets/bootstrap/css/bootstrap.rtl.min.css") }}" rel="stylesheet" type="text/css"/>
-
+    <link href="{{ asset("assets/plugins/css/light/editors/quill/quill.snow.css")  }}" rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/dark/editors/quill/quill.snow.css")  }}" rel="stylesheet" type="text/css"/>
     <style>
+
+        .ql-editor p, .ql-editor ol, .ql-editor ul, .ql-editor pre, .ql-editor blockquote, .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5, .ql-editor h6 {
+            margin: 10px;
+        }
+
+        .ql-editor {
+            height: auto;
+        }
 
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -27,7 +37,7 @@
 
         @page {
             size: A4 portrait;
-            margin: 20mm;
+            margin: 0;
         }
 
         html {
@@ -46,17 +56,17 @@
 <body>
 <div class="content">
     <div class="text-center" style="padding-top: 60mm;">
-        <h1 class="">{{$studentReport->subject}}</h1>
+        <h1 class="">{{$report->subject}}</h1>
     </div>
-    <div class="text-start px-5"><p>{!! $content !!}</p></div>
+    <div class=" ql-editor text-start px-5"><p>{!! $content !!}</p></div>
 </div>
 
 <script src="{{ asset("assets/bootstrap/js/bootstrap.bundle.min.js") }}"></script>
 <script>
-    /*    window.onload = function () {
-            window.print();
-            setTimeout(window.close, 0);
-        }*/
+    window.onload = function () {
+        window.print();
+        setTimeout(window.close, 0);
+    }
 </script>
 </body>
 

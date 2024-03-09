@@ -640,6 +640,9 @@
                         <ul class="dropdown-menu submenu list-unstyled dropdown-menu-end" id="apps"
                             data-bs-parent="#accordionExample">
                             <li>
+                                <a href="{{route('reports.index')}}"> التقارير </a>
+                            </li>
+                            <li>
                                 <a href="{{route('messages.index')}}"> ارسال رسالة </a>
                             </li>
                             <li>

@@ -85,19 +85,19 @@
                         </li>
 
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="student-log-tab" data-bs-toggle="tab" href="#student-log"
-                                    role="tab" aria-controls="student-log" aria-selected="false" tabindex="-1">
-                                <i class="fas fa-history"></i>
-                                سجل الطالب
-                            </button>
-                        </li>
-
-                        <li class="nav-item" role="presentation">
                             <button class="nav-link" id="student-reports-tab" data-bs-toggle="tab"
                                     href="#student-reports"
                                     role="tab" aria-controls="student-reports" aria-selected="false" tabindex="-1">
                                 <i class="fas fa-file-alt"></i>
-                                القوالب
+                                التقارير
+                            </button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="student-log-tab" data-bs-toggle="tab" href="#student-log"
+                                    role="tab" aria-controls="student-log" aria-selected="false" tabindex="-1">
+                                <i class="fas fa-history"></i>
+                                سجل الطالب
                             </button>
                         </li>
 
@@ -505,9 +505,39 @@
                         <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
                             <form class="section general-info">
                                 <div class="info">
-
                                     <h6> التقارير </h6>
+                                    <div class="d-flex">
+                                        <div class="mb-3 me-3 flex-grow-1">
+                                            <label for="reportSelect" class="form-label">اختر التقرير:</label>
+                                            <select class="form-select" id="reportSelect">
+                                                <option selected disabled value="">اختر ...</option>
+                                                @foreach($reports as $report)
+                                                        <?php
 
+                                                        preg_match_all("/\[dynamic name='(.*?)'\]/", $report->content, $matches);
+
+                                                        if (isset($matches[1])) {
+                                                            foreach ($matches[1] as $name) {
+                                                                if (!isset($attributes[$report->id])) {
+                                                                    $attributes[$report->id] = [];
+                                                                }
+                                                                $attributes[$report->id][] = $name;
+                                                            }
+                                                        }
+                                                        ?>
+                                                    <option value="{{ $report->id }}">{{ $report->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="mb-3 align-self-end">
+                                            <button type="button" class="btn btn-primary btn-lg"
+                                                    id="reportExportButton">
+                                                تصدير
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <h6> تقارير الطالب </h6>
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
                                             <thead>
@@ -515,6 +545,7 @@
                                                 <th scope="col">#</th>
                                                 <th scope="col">الاسم</th>
                                                 <th scope="col">اضيف بواسطة</th>
+                                                <th scope="col">تاريخ الاضافة</th>
                                                 <th scope="col">خيارات</th>
                                             </tr>
                                             </thead>
@@ -524,11 +555,12 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{$report->name}}</td>
                                                     <td>{{$report->addedBy->name}}</td>
+                                                    <td>{{$report->created_at->format('Y-m-d')}}</td>
                                                     <td>
                                                         <a target="_blank"
-                                                           href="{{route('student-reports.show',['student_report'=>$report, 'student'=> $student])}}"
+                                                           href="{{route('student-reports.show',['student_report'=>$report])}}"
                                                            type="button" class="btn btn-delete">
-                                                            تصدير
+                                                            عرض
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -548,5 +580,104 @@
         </div>
 
     </div>
+    <div class="modal fade" id="attributeModal" tabindex="-1" aria-labelledby="attributeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="attributeModalLabel">قيمة العناصر المتغيرة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="inputContainer"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-dismiss="modal">غلاق</button>
+                    <button type="button" class="btn btn-primary" id="reportDynamicExport">تصدير</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection
+
+@push('scripts')
+    <script>
+        var attributes = {!! json_encode($attributes) !!};
+
+
+        $("#reportExportButton").on("click", function () {
+            var selectedReportId = $("#reportSelect").val();
+
+            if (selectedReportId == null) {
+                Swal.fire({title: "خطأ!", text: "يرجى اختيار تقرير", icon: "error"});
+                return;
+            }
+
+            console.log(selectedReportId)
+            if (attributes[selectedReportId]) {
+                $("#inputContainer").empty();
+
+                var attributeValues = attributes[selectedReportId];
+                attributeValues.forEach(function (value) {
+                    $("#inputContainer").append('<input type="text" class="form-control mb-3" placeholder="' + value + '" date-name="' + value + '">');
+                });
+                $("#attributeModal").modal('show');
+            } else {
+
+                var showStudentReportRoute = '{{route('reports.show',['report'=> ':id', 'student'=> $student])}}';
+                var showStudentReportUrl = showStudentReportRoute.replace(':id', selectedReportId);
+                window.open(showStudentReportUrl, '_blank');
+            }
+        });
+
+
+        $("#reportDynamicExport").on("click", function () {
+            var selectedReportId = $("#reportSelect").val();
+            var allInputsFilled = true;
+            var postData = {};
+
+            $("#inputContainer input").each(function () {
+                var inputValue = $(this).val();
+                var dateNameAttribute = $(this).attr('date-name');
+
+                if (!inputValue) {
+                    allInputsFilled = false;
+                    return false;
+                }
+                postData[dateNameAttribute] = inputValue;
+            });
+
+            if (!allInputsFilled) {
+                Swal.fire({title: "خطأ!", text: "يرجى ملء جميع الحقول", icon: "error"});
+                return;
+            }
+
+
+            console.log("Exporting values:", postData);
+
+            $("#attributeModal").modal('hide');
+
+            $.ajax({
+                url: '{{route('student-reports.generate')}}',
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    report: selectedReportId,
+                    student: '{{$student->id}}',
+                    date: postData
+                },
+                success: function (response) {
+                    console.log('Ajax request successful:', response);
+                    var showStudentReportRoute = '{{ route('student-reports.show', ['student_report' => ':id']) }}';
+                    var showStudentReportUrl = showStudentReportRoute.replace(':id', response.data.id);
+                    window.open(showStudentReportUrl, '_blank');
+                    location.reload();
+                },
+                error: function (error) {
+                    Swal.fire({title: "خطأ!", text: "حدث خطا ما الرجاء المحاولة مرى اخرى", icon: "error"});
+                }
+            });
+
+        });
+    </script>
+@endpush

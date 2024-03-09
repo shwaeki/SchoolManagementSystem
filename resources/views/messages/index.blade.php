@@ -60,8 +60,11 @@
 
                         <div class="mb-3">
                             <label class="form-label" for="message">نص الرسالة</label>
-                            <textarea class="form-control" rows="5" id="message" name="message"
+                            <textarea class="form-control @error('message') is-invalid @enderror" rows="5" id="message" name="message"
                                       required>{{old("message")}}</textarea>
+                            @error('message')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
                         </div>
                     </div>
                 </div>
