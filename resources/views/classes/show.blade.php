@@ -374,7 +374,13 @@
                                                 @foreach($class_year_students as $data)
                                                     <tr>
                                                         <td>{{$data->id}} </td>
-                                                        <td> {{$data->student?->name}}</td>
+                                                        <td>
+                                                            <img src=" {{$data->student?->photo}}"
+                                                                 class="me-2 rounded-circle border border-primary"
+                                                                 style="object-fit: contain;" width="50px"
+                                                                 height="50px">
+                                                            {{$data->student?->name}}
+                                                        </td>
                                                         <td>{{$data->student?->identification}}</td>
                                                         <td>{{$data->student?->address}}</td>
                                                         <td>
@@ -620,7 +626,12 @@
                                                                value="{{$student->id}}">
                                                     </div>
                                                 </td>
-                                                <td>{{$student->name}}</td>
+                                                <td>
+                                                    <img src=" {{$student->photo}}"
+                                                         class="me-2 rounded-circle border border-primary"
+                                                         style="object-fit: contain;" width="35px" height="35px">
+                                                    {{$student->name}}
+                                                </td>
                                                 <td>{{$student->identification}}</td>
                                                 <td>{{$student->address}}</td>
                                                 <td>
@@ -826,7 +837,7 @@
                                 <div class="mb-3">
                                     <label for="code" class="form-label"> الكود </label>
                                     <input type="text" id="code" name="code" class="form-control"
-                                           value="{{$current_year_class->code}}" >
+                                           value="{{$current_year_class->code}}">
                                 </div>
 
                             </div>
@@ -912,7 +923,7 @@
 
 
         $('.dataTableCustomTitleConfig').DataTable({
-             order: [[1, 'asc']],
+            order: [[1, 'asc']],
             "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'B><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
                 "<'table-responsive'tr>" +
                 "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
