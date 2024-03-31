@@ -37,7 +37,9 @@
                     <h5 class="mb-0 text-black-50">الطلاب</h5>
                     @foreach($data['students'] as $i => $item)
                         <a href="{{route('students.show',$item['id'])}}" data-search="{{$loopIndex}}"
-                           class="list-item search-item px-3 py-2 text-dark">{{ $item['name'] }}</a>
+                           class="list-item search-item px-3 py-2 text-dark">
+                            <img src="{{ $item['photo'] }}" class="me-2 rounded-circle border border-primary" style="object-fit: contain;" width="30px" height="30px"> {{ $item['name'] }}
+                        </a>
                         @php($loopIndex++)
                     @endforeach
                     @if(count($data['teachers']) > 0)

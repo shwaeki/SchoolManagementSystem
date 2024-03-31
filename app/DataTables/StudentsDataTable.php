@@ -25,15 +25,17 @@ class StudentsDataTable extends DataTable
                     <a href="' . route('students.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
                     <button class="btn btn-light-danger text-danger  d-none" onclick="deleteItem(this)"
                     data-item="' . route('students.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
-            })
-            ->editColumn('gender', function ($query) {
+            })->editColumn('gender', function ($query) {
                 if ($query->gender === 'female')
                     return '<span class="badge badge-light-danger">انثى</span>';
                 else
                     return '<span class="badge badge-light-info">ذكر</span>';
+            })->editColumn('name', function ($query) {
+                return '<img src="' . $query->photo . '" class="me-2 rounded-circle border border-primary" style="object-fit: contain;" width="50px" height="50px">' . $query->name;
+
             })
             ->setRowId('id')
-            ->rawColumns(['Settings', 'gender']);
+            ->rawColumns(['Settings', 'name', 'gender']);
 
     }
 
@@ -59,7 +61,7 @@ class StudentsDataTable extends DataTable
                 ],
 
                 'buttons' => [
-                    "excel",'print'
+                    "excel", 'print'
                 ],
             ])
             ->setTableId('students-table')

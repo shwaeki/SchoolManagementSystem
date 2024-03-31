@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -18,6 +19,7 @@ class Student extends Authenticatable
     use HasFactory, SoftDeletes, LogsActivity;
 
     protected $guarded = [];
+    protected $appends = ['photo'];
 
     public function addedBy(): belongsTo
     {
@@ -77,5 +79,15 @@ class Student extends Authenticatable
         $message = "رمز التحقق الخاص بك هو " . $code;
         return sendSms($message, $receiverNumber);
 
+    }
+
+    public function getPhotoAttribute()
+    {
+
+        if ( !empty($this->personal_photo) && Storage::disk('public')->exists($this->personal_photo)) {
+            return Storage::url($this->personal_photo);
+        }
+    //    return asset("assets/img/90x90.jpg");
+        return 'https://placehold.co/100x100/f9f9f9/4361ee.png?text=?';
     }
 }
