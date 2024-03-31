@@ -29,6 +29,9 @@
                 <div class="col-md-12">
                     <h2 class="mb-3"> معلومات الطالب - {{$student->name}}</h2>
 
+{{--                    @if($student->personal_photo)
+                        <img src="{{ asset('storage/'.$student->personal_photo) }}" alt="Student Photo">
+                    @endif--}}
 
                     @if($current_student_class == null)
                         @push('warnings')

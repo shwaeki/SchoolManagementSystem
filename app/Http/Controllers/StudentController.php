@@ -10,10 +10,6 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Models\StudentCertificate;
 use App\Models\StudentClass;
-use App\Models\StudentMark;
-use App\Models\StudentReport;
-use Carbon\Carbon;
-use App\Models\Teacher;
 use Illuminate\Support\Facades\Session;
 use Smalot\PdfParser\Parser;
 use TCPDI;
@@ -45,21 +41,26 @@ class StudentController extends Controller
 
         $date = str_replace('/', '-', request('birth_date'));
         $all_data['birth_date'] = date('Y-m-d', strtotime($date));
-
         $data = $all_data + ['added_by' => auth()->id()];
         $student = Student::create($data);
 
+
         if ($request->hasFile('personal_photo')) {
             $extension = $request->file('personal_photo')->getClientOriginalExtension();
-            $fileNameToStore = "الصورة الشخصية" . '.' . $extension;
-            $request->file('personal_photo')->storeAs("public/files/Student_" . $student->id, $fileNameToStore);
+            $fileName = "الصورة الشخصية" . '.' . $extension;
+            $filePath = "files/Student_" . $student->id;
+            $request->file('personal_photo')->storeAs('public/'.$filePath, $fileName);
+            $image_data['personal_photo'] = $filePath . '/' . $fileName;
+            $student->update($image_data);
         }
+
 
         if ($request->hasFile('birth_certificate')) {
             $extension = $request->file('birth_certificate')->getClientOriginalExtension();
             $fileNameToStore = "شهادة الميلاد " . '.' . $extension;
             $request->file('birth_certificate')->storeAs("public/files/Student_" . $student->id, $fileNameToStore);
         }
+
 
         Session::flash('message', 'تم اضافة الطالب بنجاح.');
         return redirect()->route('students.index');
@@ -107,6 +108,15 @@ class StudentController extends Controller
         $all_data = request()->all();
         $date = str_replace('/', '-', request('birth_date'));
         $all_data['birth_date'] = date('Y-m-d', strtotime($date));
+
+
+        if ($request->hasFile('personal_photo')) {
+            $extension = $request->file('personal_photo')->getClientOriginalExtension();
+            $fileName = "الصورة الشخصية" . '.' . $extension;
+            $filePath = "files/Student_" . $student->id;
+            $request->file('personal_photo')->storeAs('public/'.$filePath, $fileName);
+            $all_data['personal_photo'] = $filePath . '/' . $fileName;
+        }
 
 
         $student->update($all_data);
