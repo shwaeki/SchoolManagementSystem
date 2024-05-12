@@ -48,6 +48,10 @@ return [
             'driver' => 'session',
             'provider' => 'parents',
         ],
+        'api_parent' => [
+            'driver' => 'sanctum',
+            'provider' => 'parents',
+        ],
     ],
 
     /*
