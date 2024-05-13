@@ -78,7 +78,7 @@ class StudentController extends BaseController
             $studentOTP = Otp::where('student_id', $student->id)
                 ->where('code', $code)
                 ->where('phone', $phone)
-                ->where('updated_at', '>=', now()->subMinutes(5))
+              /*  ->where('updated_at', '>=', now()->subMinutes(5))*/
                 ->first();
 
             if (!is_null($studentOTP)) {
