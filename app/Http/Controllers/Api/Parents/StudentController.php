@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Parents;
 
 use App\Http\Controllers\Api\BaseController;
+use App\Http\Resources\StudentClassResource;
+use App\Models\AcademicYear;
 use App\Models\Otp;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -37,8 +39,8 @@ class StudentController extends BaseController
 
 
         if ($student) {
-           // $student->generateCode($phone);
-            $code = 1234567;
+            // $student->generateCode($phone);
+            $code = 123456;
 
             Otp::updateOrCreate(
                 ['student_id' => $student->id],
@@ -82,7 +84,7 @@ class StudentController extends BaseController
             if (!is_null($studentOTP)) {
                 auth('parent')->login($student);
 
-             //   $student->tokens()->delete();
+                //   $student->tokens()->delete();
 
                 $token = $student->createToken('Parent')->plainTextToken;
 
@@ -97,5 +99,21 @@ class StudentController extends BaseController
     {
         $request->user()->currentAccessToken()->delete();
         return $this->sendResponse([], 'Successfully logged out');
+    }
+
+    public function classes(Request $request)
+    {
+
+        $student = $request->user();
+
+        $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
+
+        $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) use ($adminActiveAcademicYear) {
+            $query->where('academic_year_id', $adminActiveAcademicYear->id);
+        })->get()->first();
+
+        $classes = $student->studentClasses;
+
+        return $this->sendResponse(['current_class' => new StudentClassResource($currentClass), 'classes' => StudentClassResource::collection($classes)], 'Student Classes');
     }
 }

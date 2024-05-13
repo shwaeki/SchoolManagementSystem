@@ -28,6 +28,7 @@ Route::prefix('parents')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/info', [StudentController::class, 'info']);
+        Route::get('/classes', [StudentController::class, 'classes']);
         Route::post('/logout', [StudentController::class, 'logout']);
     });
 
