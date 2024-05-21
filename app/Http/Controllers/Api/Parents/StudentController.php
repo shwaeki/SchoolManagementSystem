@@ -48,6 +48,7 @@ class StudentController extends BaseController
             );
             return $this->sendResponse([], 'Otp code send successfully');
         }
+         return $this->sendError([], 'Unauthorized', 401);
 
     }
 
