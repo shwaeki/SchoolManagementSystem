@@ -6,6 +6,7 @@ use App\Http\Controllers\AssistantController;
 use App\Http\Controllers\CertificateCategoryController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CertificateFieldController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ParentController;
@@ -55,6 +56,8 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
     Route::put('profile/change-password', [UserController::class, 'passwordUpdate'])->name('profile.password');
 
     Route::get('academic-year/select', [AcademicYearController::class, 'selectAcademicYear'])->name('academic-year.select');
+
+    Route::resource('chats', ChatController::class);
 
     Route::middleware(['auth:web', 'check.year'])->group(function () {
         Route::resource('roles', RoleController::class);

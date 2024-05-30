@@ -53,4 +53,10 @@ class Teacher extends Authenticatable
     {
         return $this->hasMany(TeacherReport::class);
     }
+
+    public function chats()
+    {
+        return $this->hasMany(Chat::class, 'teacher_id');
+    }
+
 }

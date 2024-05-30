@@ -25,8 +25,6 @@ $('.user-list-box .person').on('click', function(event) {
         $('.chat').removeClass('active-chat');
         $('.user-list-box .person').removeClass('active');
         $('.chat-box .chat-box-inner').css('height', '100%');
-        $('.chat-box .overlay-phone-call').css('display', 'block');
-        $('.chat-box .overlay-video-call').css('display', 'block');
         $(this).addClass('active');
         $('.chat[data-chat = '+findChat+']').addClass('active-chat');
     }
