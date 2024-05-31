@@ -3,7 +3,25 @@
 @push('styles')
     <link href="{{ asset("assets/css/light/apps/chat.css")  }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset("assets/css/dark/apps/chat.css")  }}" rel="stylesheet" type="text/css"/>
+    <style>
+        .chat-conversation-box {
+            position: relative;
+        }
 
+        #loading-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #ffffff96;
+            padding: 10px;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
 @endpush
 
 
@@ -23,6 +41,7 @@
                             <line x1="3" y1="18" x2="21" y2="18"></line>
                         </svg>
                     </div>
+
                     <div class="user-list-box">
                         <div class="search">
                             <input type="text" class="form-control" placeholder="بحث في المحادثات ..."/>
@@ -30,7 +49,7 @@
                         <div class="people">
 
                             @foreach($chats as $chat)
-                                <div class="person" data-chat="person1">
+                                <div class="person" data-chat="" data-student="{{$chat->student_id}}">
                                     <div class="user-info">
                                         <div class="f-head">
                                             <img src="{{$chat->student->photo}}" alt="avatar">
@@ -65,7 +84,10 @@
 
                             <div class="row justify-content-center mt-3">
                                 <div class="col-6 text-center">
-                                    <button class="btn btn-primary btn-lg"> بدأ محادثة جديدة</button>
+                                    <button class="btn btn-primary btn-lg" data-bs-toggle="modal"
+                                            data-bs-target="#newChatModal">
+                                        بدء محادثة جديدة
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -119,109 +141,21 @@
                                 </div>
                             </div>
                             <div class="chat-conversation-box">
+                                <div id="loading-indicator" style="display: none">
+                                    <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+
                                 <div id="chat-conversation-box-scroll" class="chat-conversation-box-scroll">
-                                    <div class="chat" data-chat="person1">
-                                        <div class="conversation-start">
-                                            <span>Today, 6:48 AM</span>
-                                        </div>
-                                        <div class="bubble you">
-                                            Hello,
-                                        </div>
-                                        <div class="bubble you">
-                                            It's me.
-                                        </div>
-                                        <div class="bubble you">
-                                            I have a question regarding project.
-                                        </div>
+
+                                    <div class="chat" id="main-chat">
+                                        {{--          <div class="conversation-start">
+                                                      <span>Today, 6:48 AM</span>
+                                                  </div>--}}
                                     </div>
-                                    <div class="chat" data-chat="person2">
-                                        <div class="conversation-start">
-                                            <span>Today, 5:38 PM</span>
-                                        </div>
-                                        <div class="bubble you">
-                                            Hello!
-                                        </div>
-                                        <div class="bubble me">
-                                            Hey!
-                                        </div>
-                                        <div class="bubble me">
-                                            How was your day so far.
-                                        </div>
-                                        <div class="bubble you">
-                                            It was a bit dramatic.
-                                        </div>
-                                    </div>
-                                    <div class="chat" data-chat="person3">
-                                        <div class="conversation-start">
-                                            <span>Today, 3:38 AM</span>
-                                        </div>
-                                        <div class="bubble me">
-                                            Hey Buddy.
-                                        </div>
-                                        <div class="bubble me">
-                                            What's up
-                                        </div>
-                                        <div class="bubble you">
-                                            I am sick
-                                        </div>
-                                        <div class="bubble you">
-                                            Not comming to office today.
-                                        </div>
-                                    </div>
-                                    <div class="chat" data-chat="person4">
-                                        <div class="conversation-start">
-                                            <span>Yesterday, 4:20 PM</span>
-                                        </div>
-                                        <div class="bubble you">
-                                            Hi, collect your check
-                                        </div>
-                                        <div class="bubble me">
-                                            Ok, I will be there in 10 mins
-                                        </div>
-                                    </div>
-                                    <div class="chat" data-chat="person5">
-                                        <div class="conversation-start">
-                                            <span>Today, 6:28 AM</span>
-                                        </div>
-                                        <div class="bubble you">
-                                            Hi
-                                        </div>
-                                        <div class="bubble you">
-                                            Uploaded files to server.
-                                        </div>
-                                    </div>
-                                    <div class="chat" data-chat="person6">
-                                        <div class="conversation-start">
-                                            <span>Monday, 1:27 PM</span>
-                                        </div>
-                                        <div class="bubble you">
-                                            Hi, I am back from vacation
-                                        </div>
-                                        <div class="bubble you">
-                                            How are you?
-                                        </div>
-                                        <div class="bubble me">
-                                            Welcom Back
-                                        </div>
-                                        <div class="bubble me">
-                                            I am all well
-                                        </div>
-                                        <div class="bubble you">
-                                            Coffee?
-                                        </div>
-                                    </div>
-                                    <div class="chat" data-chat="person7">
-                                    </div>
-                                    <div class="chat" data-chat="person8">
-                                    </div>
-                                    <div class="chat" data-chat="person9">
-                                    </div>
-                                    <div class="chat" data-chat="person10">
-                                    </div>
-                                    <div class="chat" data-chat="person11">
-                                    </div>
-                                    <div class="chat" data-chat="person12">
-                                    </div>
+
+
                                 </div>
                             </div>
                             <div class="chat-footer">
@@ -234,7 +168,8 @@
                                             <path
                                                 d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                                         </svg>
-                                        <input type="text" class="mail-write-box form-control" placeholder="الرسالة"/>
+                                        <input type="text" class="mail-write-box form-control" data-student=""
+                                               placeholder="الرسالة"/>
                                     </form>
                                 </div>
                             </div>
@@ -245,12 +180,117 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="newChatModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">بدء محادثة جديدة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="student" class="form-label"> الطالب </label>
+                        <select class="form-select"
+                                id="student" name="student" required>
+                            <option selected disabled value="">اختر ...</option>
+                            @foreach($students as $student)
+                                <option
+                                    {{old('student') == $student->name ? 'selected' : '' }} value="{{$student->id}}">
+                                    {{$student->name}}
+                                </option>
+                            @endforeach
+                        </select>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
+                    <button type="button" class="btn btn-primary">بدء</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 
 @push('scripts')
     <script src="{{ asset("assets/js/apps/chat.js")  }}"></script>
     <script>
+        var receiver_id = '';
+        var my_id = "{{ Auth::id() }}";
+        $(document).ready(function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
+
+            $('.user').click(function () {
+                $('.user').removeClass('active');
+                $(this).addClass('active');
+                $(this).find('.pending').remove();
+                receiver_id = $(this).attr('id');
+
+            });
+
+            function getMessages(Salon) {
+                var salonli = $('li[data-salon="salon' + Salon + '"]');
+                salonli.addClass('active');
+                salonli.find('.pending').remove();
+                receiver_id = salonli.attr('id');
+                $.ajax({
+                    type: "get",
+                    url: "message/" + receiver_id, // need to create this route
+                    data: "",
+                    cache: false,
+                    success: function (data) {
+                        $('#messages').html(data);
+                        scrollToBottomFunc();
+                    },
+
+                });
+            }
+
+            @if(request()->has('salon'))
+            getMessages({{request()->get('salon')}});
+            @endif
+
+            $(document).on('keyup', 'input[name="sendMassage"]', function (e) {
+                var message = $(this).val();
+                if (e.keyCode == 13 && message != '' && receiver_id != '') {
+                    sendMassage(message);
+                    $(this).val('');
+                }
+            });
+
+
+            function sendMassage(message) {
+                $(this).val(''); // while pressed enter text box will be empty
+                var datastr = "receiver_id=" + receiver_id + "&message=" + message;
+                $.ajax({
+                    type: "post",
+                    url: "message", // need to create this post route
+                    data: datastr,
+                    cache: false,
+                    success: function (data) {
+                    },
+                    error: function (jqXHR, status, err) {
+                    },
+                    complete: function () {
+                        scrollToBottomFunc();
+                    }
+                })
+            }
+        });
+
+
+        // make a function to scroll down auto
+        function scrollToBottomFunc() {
+            $('.message-wrapper').animate({
+                scrollTop: $('.message-wrapper').get(0).scrollHeight
+            }, 50);
+        }
     </script>
 @endpush

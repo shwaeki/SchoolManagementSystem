@@ -57,6 +57,10 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
 
     Route::get('academic-year/select', [AcademicYearController::class, 'selectAcademicYear'])->name('academic-year.select');
 
+
+    Route::post('chats/getMessages', [ChatController::class, 'getMessages'])->name('chats.messages.get');
+    Route::post('chats/sendMessage', [ChatController::class, 'sendMessage'])->name('chats.message.send');
+
     Route::resource('chats', ChatController::class);
 
     Route::middleware(['auth:web', 'check.year'])->group(function () {

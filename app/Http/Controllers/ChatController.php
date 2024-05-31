@@ -7,7 +7,11 @@ use App\Http\Requests\StoreChatRequest;
 use App\Http\Requests\UpdateChatRequest;
 use App\Models\Message;
 use App\Models\Student;
+use App\Models\User;
+use http\Client\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 
 class ChatController extends Controller
 {
@@ -83,5 +87,31 @@ class ChatController extends Controller
     public function destroy(Chat $chat)
     {
         //
+    }
+
+
+    public function getMessages()
+    {
+        $student_id = request('student_id');
+        $student = Student::findOrfail($student_id);
+
+        $data = [
+            'chats' => $student->chats()->get(),
+        ];
+
+        return response()->json($data);
+    }
+
+    public function sendMessage(Request $request)
+    {
+        $student_id = request('student_id');
+        $message = request('message');
+
+        $data = new Chat();
+        $data->teacher_id = Auth::id();
+        $data->student_id = $student_id;
+        $data->message = $message;
+        $data->sender = "teacher";
+        $data->save();
     }
 }

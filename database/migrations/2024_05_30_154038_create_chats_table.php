@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('message');
             $table->foreignId('student_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('teacher_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->enum('sender',['student','teacher'])->default('student');
             $table->softDeletes();
             $table->timestamps();
         });
