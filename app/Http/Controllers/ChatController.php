@@ -113,5 +113,6 @@ class ChatController extends Controller
         $data->message = $message;
         $data->sender = "teacher";
         $data->save();
+        return response()->json(['chat' => $data]);
     }
 }

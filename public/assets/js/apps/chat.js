@@ -6,6 +6,7 @@ $('.search > input').on('keyup', function () {
     }).show();
 });
 
+/*
 $('.user-list-box .person').on('click', function (event) {
     if ($(this).hasClass('.active')) {
         return false;
@@ -35,6 +36,7 @@ $('.user-list-box .person').on('click', function (event) {
 
 
 });
+*/
 
 
 function loadChat(student_id) {
@@ -74,9 +76,9 @@ function loadChat(student_id) {
     });
 }
 
-new PerfectScrollbar('.people', {suppressScrollX: true});
 
-$('.mail-write-box').on('keydown', function (event) {
+
+/*$('.mail-write-box').on('keydown', function (event) {
     if (event.key === 'Enter') {
         event.preventDefault(); // Prevent default form submission
 
@@ -103,18 +105,18 @@ $('.mail-write-box').on('keydown', function (event) {
             },
             type: "POST",
             url: "chats/sendMessage",
-            data: { student_id: student_id, message: chatMessageValue }, // send the message value, not appendMessage
+            data: { student_id: student_id, message: chatMessageValue },
             dataType: 'json',
             success: function (data) {
                 console.log(data);
-                // Optionally handle the response data if needed
+                Livewire.emit('refreshChats');
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error("Error sending message:", textStatus, errorThrown);
             }
         });
     }
-});
+});*/
 $('.hamburger, .chat-system .chat-box .chat-not-selected p').on('click', function (event) {
     $(this).parents('.chat-system').find('.user-list-box').toggleClass('user-list-box-show')
 })

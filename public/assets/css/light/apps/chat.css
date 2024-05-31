@@ -26,8 +26,7 @@
 
 .chat-system {
   display: flex;
-  height: calc(100vh - 104px);
-  height: calc(100vh - 158px);
+  height: calc(100vh - 190px);
   box-shadow: none;
   border: 1px solid #e0e6ed;
   border-radius: 6px;
@@ -79,8 +78,7 @@
   position: relative;
   margin: auto;
   width: 100%;
-  overflow: auto;
-  height: calc(100vh - 238px);
+  height: calc(100vh - 350px);
 }
 .chat-system .user-list-box .people .person {
   position: relative;
@@ -146,7 +144,7 @@
   background-image: url(../../../img/bg.png);
   border-bottom-left-radius: 8px;
   border-top-left-radius: 8px;
-  height: calc(100vh - 158px);
+  height: calc(100vh - 190px);
 }
 .chat-system .chat-box .chat-not-selected {
   display: flex;
