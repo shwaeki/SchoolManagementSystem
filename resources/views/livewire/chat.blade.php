@@ -37,7 +37,7 @@
                     </div>
                 @endif
                 @foreach($chats as $chat)
-                    <div class="person {{ $chat->student_id == $selectedStudent?->id ? 'bg-light-primary' : '' }}"
+                    <div class="person selectStudent {{ $chat->student_id == $selectedStudent?->id ? 'bg-light-primary' : '' }}"
                          wire:click="selectStudent({{$chat->student_id}})">
                         <div class="user-info">
                             <div class="f-head">

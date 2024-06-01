@@ -75,6 +75,10 @@
             $("#newChatModal").modal("hide");
 
         });
+        $(document).on('click', '.selectStudent', function (event) {
+            $('#loading-indicator').show();
+            $('#main-chat').empty();
+        });
 
         Livewire.on('chat-new-message', message => {
             let bubbleClass = message.sender === 'student' ? 'bubble you' : 'bubble me';
@@ -90,6 +94,7 @@
 
         Livewire.on('chat-select-student', () => {
             scrollToBottom();
+            $("#loading-indicator").hide();
         });
 
         function scrollToBottom() {
