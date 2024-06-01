@@ -933,14 +933,14 @@
 
                 {
                     extend: 'excel',
-                    messageTop: 'طلاب روضة - {{$class->name}} - المعلمة : {{$current_year_class?->supervisorTeacher?->name}} : رقم الروضة : {{$class->code}}',
+                    messageTop: 'طلاب روضة - {{$class->name}} - المعلمة : {{$current_year_class?->supervisorTeacher?->name}} : رقم الروضة : {{$current_year_class?->code}}',
 
                 },
 
                 {
                     extend: 'print',
                     messageTop: function () {
-                        return 'طلاب روضة - {{$class->name}} - المعلمة : {{$current_year_class?->supervisorTeacher?->name}} : رقم الروضة : {{$class->code}}';
+                        return 'طلاب روضة - {{$class->name}} - المعلمة : {{$current_year_class?->supervisorTeacher?->name}} : رقم الروضة : {{$current_year_class?->code}}';
                     },
                     messageBottom: null
                 }
