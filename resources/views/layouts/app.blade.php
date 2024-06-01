@@ -656,7 +656,8 @@
                             </li>
                             <li>
                                 <a href="{{route('salaries.index')}}"> قسيمة الراتب </a>
-                            </li>     <li>
+                            </li>
+                            <li class="d-none">
                                 <a href="{{route('chats.index')}}">  الدردشات </a>
                             </li>
                         </ul>
