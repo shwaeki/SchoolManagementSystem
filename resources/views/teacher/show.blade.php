@@ -340,7 +340,7 @@
                                         </div>
                                     </div>
                                     <hr>
-                                    <h6> تقارير الطالب </h6>
+                                    <h6> تقارير المعلمة </h6>
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
                                             <thead>

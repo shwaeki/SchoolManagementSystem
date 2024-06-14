@@ -8,6 +8,7 @@ use App\Http\Requests\StoreTeacherRequest;
 use App\Http\Requests\StoreWorkerRequest;
 use App\Http\Requests\UpdateTeacherRequest;
 use App\Http\Requests\UpdateWorkerRequest;
+use App\Models\Report;
 use App\Models\SalarySlip;
 use App\Models\SchoolClass;
 use App\Models\Teacher;
@@ -70,6 +71,8 @@ class WorkerController extends Controller
         $data = [
             "salaries" => SalarySlip::where('identification', $worker->identification)->get(),
             "worker" => $worker,
+            "reports" => Report::where('type','teacher')->get(),
+            "teacher_reports" => $worker->reports,
         ];
 
         Session::put('fileManagerConfig', "Teacher_" . $worker->id);

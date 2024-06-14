@@ -7,6 +7,7 @@ use App\Http\Requests\StoreAssistantRequest;
 use App\Http\Requests\StoreTeacherRequest;
 use App\Http\Requests\UpdateAssistantRequest;
 use App\Http\Requests\UpdateTeacherRequest;
+use App\Models\Report;
 use App\Models\SalarySlip;
 use App\Models\SchoolClass;
 use App\Models\Teacher;
@@ -71,6 +72,8 @@ class AssistantController extends Controller
         $data = [
             "salaries" => SalarySlip::where('identification', $assistant->identification)->get(),
             "teacher" => $assistant,
+            "reports" => Report::where('type','teacher')->get(),
+            "teacher_reports" => $assistant->reports,
         ];
 
         Session::put('fileManagerConfig', "Teacher_" . $assistant->id);
