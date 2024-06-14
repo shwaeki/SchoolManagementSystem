@@ -397,7 +397,7 @@
                 $("#attributeModal").modal('show');
             } else {
 
-                var showTeacherReportRoute = '{{route('reports.show',['report'=> ':id', 'teacher'=> $teacher])}}';
+                var showTeacherReportRoute = '{{route('reports.show',['report'=> ':id', 'teacher'=> $worker])}}';
                 var showTeacherReportUrl = showTeacherReportRoute.replace(':id', selectedReportId);
                 window.open(showTeacherReportUrl, '_blank');
             }
@@ -436,7 +436,7 @@
                 data: {
                     _token: "{{ csrf_token() }}",
                     report: selectedReportId,
-                    teacher: '{{$teacher->id}}',
+                    teacher: '{{$worker->id}}',
                     date: postData
                 },
                 success: function (response) {
