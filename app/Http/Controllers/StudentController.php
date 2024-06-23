@@ -105,7 +105,13 @@ class StudentController extends Controller
 
     public function update(UpdateStudentRequest $request, Student $student)
     {
-        $all_data = request()->all();
+
+        $addedData = [
+            'can_login' => request()->has('can_login') ? 1 : 0,
+        ];
+
+        $all_data = request()->all() + $addedData;
+
         $date = str_replace('/', '-', request('birth_date'));
         $all_data['birth_date'] = date('Y-m-d', strtotime($date));
 

@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateMessageRequest;
 use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\YearClass;
 use Illuminate\Support\Facades\Session;
 
 class MessageController extends Controller
@@ -52,14 +53,22 @@ class MessageController extends Controller
         $phones = [];
 
         if ($message_to == "all_students") {
-            $students = Student::all();
 
-            foreach ($students as $student) {
-                if ($student->mother_phone != null) {
-                    $phones[] = $student->mother_phone;
-                }
-                if ($student->father_phone != null) {
-                    $phones[] = $student->father_phone;
+            $activeAcademicYear = Session::get('activeAcademicYear');
+            $current_year_class = YearClass::where('academic_year_id', $activeAcademicYear->id)->get()->first();
+
+            foreach ($current_year_class as $year_class) {
+                $year_class_students = $current_year_class->students()->whereHas('student', function ($query) {
+                    $query->whereNull('deleted_at');
+                })->with('student')->get();
+
+                foreach ($year_class_students as $student) {
+                    if ($student?->student?->mother_phone != null) {
+                        $phones[] = $student?->student?->mother_phone;
+                    }
+                    if ($student?->student?->father_phone != null) {
+                        $phones[] = $student?->student?->father_phone;
+                    }
                 }
             }
         } elseif ($message_to == "all_teachers") {

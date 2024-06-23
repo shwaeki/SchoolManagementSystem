@@ -49,7 +49,7 @@
                             <input type="text" id="birth_date" name="birth_date"
                                    class="form-control  @error('birth_date') is-invalid @enderror"
                                    value="{{ date('d/m/Y', strtotime(old('birth_date',$student->birth_date))) }}"
-                                {{--   min="{{ date("Y") - 5 }}-01-01" max="{{ date("Y")  }}-12-31" --}}required>
+                                   {{--   min="{{ date("Y") - 5 }}-01-01" max="{{ date("Y")  }}-12-31" --}}required>
                             @error('birth_date')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
@@ -121,15 +121,19 @@
                     </div>
 
 
-
                     <div class="col-6 col-md-3">
                         <div class="mb-3">
                             <label for="gender" class="form-label"> الجنس </label>
                             <select class="form-select @error('gender') is-invalid @enderror"
                                     id="gender" name="gender" required>
                                 <option selected disabled value="">اختر ...</option>
-                                <option {{old('gender',$student->gender) == 'male' ? 'selected' : '' }} value="male">ذكر</option>
-                                <option {{old('gender',$student->gender) == 'female' ? 'selected' : '' }} value="female">انثى</option>
+                                <option {{old('gender',$student->gender) == 'male' ? 'selected' : '' }} value="male">
+                                    ذكر
+                                </option>
+                                <option
+                                    {{old('gender',$student->gender) == 'female' ? 'selected' : '' }} value="female">
+                                    انثى
+                                </option>
                             </select>
                             @error('gender')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -172,7 +176,16 @@
                         </div>
                     </div>
 
-
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="1" name="can_login"
+                                       @if(old('can_login',$student->can_login ) == "1") checked
+                                       @endif id="can_login">
+                                <label class="form-check-label" for="can_login">امكانية تسجيل الدخول</label>
+                            </div>
+                        </div>
+                    </div>
 
 
                 </div>
@@ -194,7 +207,7 @@
                             <label for="mother_name" class="form-label"> اسم الام </label>
                             <input type="text" id="mother_name" name="mother_name"
                                    class="form-control  @error('mother_name') is-invalid @enderror"
-                                   value="{{old('mother_name',$student->mother_name)}}"  required>
+                                   value="{{old('mother_name',$student->mother_name)}}" required>
                             @error('mother_name')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
@@ -268,10 +281,12 @@
                                     id="family_status" name="family_status" required>
                                 <option selected disabled value="">اختر ...</option>
                                 <option
-                                    {{old('family_status',$student->family_status) == 'unspecified' ? 'selected' : '' }} value="unspecified">غير
+                                    {{old('family_status',$student->family_status) == 'unspecified' ? 'selected' : '' }} value="unspecified">
+                                    غير
                                     محدد
                                 </option>
-                                <option {{old('family_status',$student->family_status) == 'divorced' ? 'selected' : '' }} value="divorced">
+                                <option
+                                    {{old('family_status',$student->family_status) == 'divorced' ? 'selected' : '' }} value="divorced">
                                     مطلقين
                                 </option>
                             </select>
@@ -287,11 +302,19 @@
                             <select class="form-select @error('custody') is-invalid @enderror"
                                     id="custody" name="custody" required>
                                 <option selected disabled value="">اختر ...</option>
-                                <option {{old('custody',$student->custody) == 'unspecified' ? 'selected' : '' }} value="unspecified">غير
+                                <option
+                                    {{old('custody',$student->custody) == 'unspecified' ? 'selected' : '' }} value="unspecified">
+                                    غير
                                     محدد
                                 </option>
-                                <option {{old('custody',$student->custody) == 'mother' ? 'selected' : '' }} value="mother">الام</option>
-                                <option {{old('custody',$student->custody) == 'father' ? 'selected' : '' }} value="father">الاب</option>
+                                <option
+                                    {{old('custody',$student->custody) == 'mother' ? 'selected' : '' }} value="mother">
+                                    الام
+                                </option>
+                                <option
+                                    {{old('custody',$student->custody) == 'father' ? 'selected' : '' }} value="father">
+                                    الاب
+                                </option>
                             </select>
                             @error('custody')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -321,7 +344,7 @@
 
 @push('scripts')
     <script>
-        $( "#birth_date" ).datepicker({
+        $("#birth_date").datepicker({
             dateFormat: 'dd/mm/yy',
         });
 
