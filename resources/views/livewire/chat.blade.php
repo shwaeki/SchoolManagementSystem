@@ -161,7 +161,7 @@
                                         d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                                 </svg>
                                 <input type="text" class="mail-write-box form-control"
-                                       wire:model="message"
+                                       wire:model.defer="message"
                                        data-student="" placeholder="الرسالة"/>
                             </form>
                         </div>
