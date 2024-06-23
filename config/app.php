@@ -169,7 +169,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
-        Mccarlosen\LaravelMpdf\LaravelMpdfServiceProvider::class
+        Mccarlosen\LaravelMpdf\LaravelMpdfServiceProvider::class,
+        Milon\Barcode\BarcodeServiceProvider::class,
 
     ])->toArray(),
 

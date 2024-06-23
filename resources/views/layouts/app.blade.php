@@ -660,6 +660,9 @@
                             <li class="d-none">
                                 <a href="{{route('chats.index')}}">  الدردشات </a>
                             </li>
+                            <li class="d-none">
+                                <a href="{{route('products.index')}}">  المنتجات </a>
+                            </li>
                         </ul>
                     </li>
 

@@ -10,6 +10,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ParentController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SalarySlipController;
@@ -106,6 +107,7 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
 
         Route::resource('academic-years', AcademicYearController::class);
         Route::resource('salaries', SalarySlipController::class);
+        Route::resource('products', ProductController::class);
 
     });
 });

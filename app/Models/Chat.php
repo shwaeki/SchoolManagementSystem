@@ -28,6 +28,6 @@ class Chat extends Model
 
     public function getCreatedAtHumanAttribute()
     {
-        return Carbon::parse($this->created_at)->diffForHumans();
+        return Carbon::parse($this->created_at)->locale('ar')->diffForHumans();
     }
 }
