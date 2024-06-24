@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Purchases;
 use App\Http\Requests\StorePurchasesRequest;
 use App\Http\Requests\UpdatePurchasesRequest;
+use App\Models\Student;
+use Illuminate\Support\Facades\Session;
 
 class PurchasesController extends Controller
 {
@@ -29,7 +31,20 @@ class PurchasesController extends Controller
      */
     public function store(StorePurchasesRequest $request)
     {
-        //
+        $products = request('order');
+        $student_id = request('student_id');
+        $student = Student::find($student_id);
+
+        foreach ($products as $product) {
+            $student->purchases()->create([
+                'product_id' => $product['product'],
+                'price' => $product['price'],
+                'added_by' => auth()->id(),
+            ]);
+        }
+
+        Session::flash('message', 'تمت عملية الشراء بنجاح');
+        return redirect()->back();
     }
 
     /**

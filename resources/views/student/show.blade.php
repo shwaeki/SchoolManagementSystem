@@ -17,6 +17,15 @@
             box-shadow: 0 0 2rem 0 rgb(136 152 170 / 15%);
             border-radius: 0.375rem;
         }
+
+        .select2-container--bootstrap-5 .select2-selection {
+            min-height: calc(1.5em + 1.25rem + 2px) !important;
+        }
+
+        .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
+            line-height: 1.8 !important;
+        }
+
     </style>
 @endpush
 
@@ -46,7 +55,7 @@
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                      stroke-linejoin="round" class="feather feather-alert-triangle">
                                     <path
-                                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
                                     <line x1="12" y1="9" x2="12" y2="13"></line>
                                     <line x1="12" y1="17" x2="12" y2="17"></line>
                                 </svg>
@@ -616,11 +625,11 @@
                                             <tbody>
                                             @foreach($student_purchases as $purchases)
                                                 <tr>
-                                                    <td>{{ $purchases->iteration }}</td>
+                                                    <td>{{ $loop->iteration }}</td>
                                                     <td>{{$purchases->product->name}}</td>
                                                     <td>{{$purchases->price}}₪</td>
-                                                    <td>{{$report->addedBy->name}}</td>
-                                                    <td>{{$report->created_at->format('Y-m-d')}}</td>
+                                                    <td>{{$purchases->addedBy->name}}</td>
+                                                    <td>{{$purchases->created_at->format('Y-m-d')}}</td>
                                                     <td>
 
                                                     </td>
@@ -661,34 +670,40 @@
 
     <div class="modal fade" id="purchasesModal" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">عملية شراء جديدة</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-                    <div class="productContainer">
-
+            <form action="{{ route('purchases.store') }}" method="post">
+                @csrf
+                <input type="hidden" name="student_id" value="{{ $student->id }}">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">عملية شراء جديدة</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <hr>
-                    <p>
-                        المجموع : <span class="totalPrices">0</span>
-                    </p>
-                    <button type="button" class="btn btn-primary w-100" onclick="addRow()">
-                        اضافة منتج اخر
-                    </button>
+                    <div class="modal-body">
+
+                        <div class="productContainer">
+
+                        </div>
+                        <hr>
+                        <p>
+                            المجموع : <span class="totalPrices">0</span>
+                        </p>
+                        <button type="button" class="btn btn-primary w-100" onclick="addRow()">
+                            اضافة منتج اخر
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-bs-dismiss="modal">اغلاق</button>
+                        <button type="submit" class="btn btn-primary">حفظ</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn" data-bs-dismiss="modal">اغلاق</button>
-                    <button type="button" class="btn btn-primary">حفظ</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 @endsection
 
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/i18n/ar.js"></script>
+
     <script>
         var attributes = {!! json_encode($attributes ?? []) !!};
 
@@ -771,8 +786,9 @@
             $(selector).select2({
                 dropdownParent: $("#purchasesModal"),
                 theme: 'bootstrap-5',
-                width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
-                allowClear: true,
+                dir: 'rtl',
+                language: 'ar',
+                width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
                 placeholder: {
                     id: "",
                     text: "اختر منتج ...",
@@ -812,14 +828,12 @@
         }
 
 
-
-
         function addRow() {
-            let index = $('.productContainer .row').length;
+            let index = $('.productContainer .row').length + 1;
             $('.productContainer').append(`
                         <div class="row mt-3">
                             <div class="col-4">
-                                <select class="form-select searchSelect" name="order[` + index + `][product]">
+                                <select class="form-select searchSelect" name="order[` + index + `][product]" required>
                                     <option value="" selected disabled>اختر ...</option>
                                 </select>
                             </div>
@@ -828,11 +842,11 @@
                             </div>
 
                             <div class="col-3">
-                                <input type="text" class="form-control price" name="price[]"  placeholder="السعر" readonly>
+                                <input type="text" class="form-control price" name="order[` + index + `][price]"  placeholder="السعر" readonly>
                             </div>
 
                             <div class="col-2">
-                                <button type="button" class="btn btn-danger w-100 h-100">
+                                <button type="button" class="btn btn-danger w-100 h-100 delete">
                                     X
                                 </button>
                             </div>
@@ -849,6 +863,15 @@
             });
             $('.totalPrices').html(total);
         }
+
+        $(document).on('click', '.delete', function () {
+            if ($('.productContainer .row').length == 1) {
+                Swal.fire({title: "خطأ!", text: "لا يمكن حذف هذا المنتج", icon: "error"});
+                return;
+            }
+            $(this).parent().parent().remove();
+            getTotalPrices();
+        });
 
 
         $(document).ready(function () {
