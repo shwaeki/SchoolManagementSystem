@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DataTables\StudentsDataTable;
 use App\Models\AcademicYear;
+use App\Models\Product;
 use App\Models\Report;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
@@ -85,6 +86,8 @@ class StudentController extends Controller
             "student_classes" => $student->studentClasses,
             "reports" => Report::where('type','student')->get(),
             "student_reports" => $student->reports,
+            "student_purchases" => $student->purchases,
+            "products" =>Product::where('status',true)->get(),
             "current_student_class" => $current_student_class,
         ];
 

@@ -69,6 +69,11 @@ class Student extends Authenticatable
         return $this->hasMany(Chat::class, 'student_id');
     }
 
+    public function purchases()
+    {
+        return $this->hasMany(Purchases::class, 'student_id');
+    }
+
 
     public function generateCode($phone = null)
     {

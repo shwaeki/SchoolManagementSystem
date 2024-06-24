@@ -30,7 +30,7 @@
             var product_name = $(this).data('name');
             console.log(product_name);
             html2canvas(targetDiv, {
-                scale: 3,
+                scale: 2,
             }).then(function (canvas) {
                 var link = document.createElement('a');
                 link.href = canvas.toDataURL('image/png');

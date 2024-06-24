@@ -93,6 +93,15 @@
                         </li>
 
                         <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="student-purchases-tab" data-bs-toggle="tab"
+                                    href="#student-purchases"
+                                    role="tab" aria-controls="student-purchases" aria-selected="false" tabindex="-1">
+                                <i class="fas fa-cart-shopping"></i>
+                                المشتريات
+                            </button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
                             <button class="nav-link" id="student-log-tab" data-bs-toggle="tab" href="#student-log"
                                     role="tab" aria-controls="student-log" aria-selected="false" tabindex="-1">
                                 <i class="fas fa-history"></i>
@@ -574,12 +583,65 @@
 
                     </div>
                 </div>
+                <div class="tab-pane fade " id="student-purchases" role="tabpanel"
+                     aria-labelledby="student-purchases-tab">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                            <form class="section general-info">
+                                <div class="info">
+
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <h6> المشتريات </h6>
+                                        </div>
+                                        <div class="col-3 text-end">
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#purchasesModal">
+                                                اضافة
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">المنتج</th>
+                                                <th scope="col">السعر</th>
+                                                <th scope="col">اضيف بواسطة</th>
+                                                <th scope="col">تاريخ الاضافة</th>
+                                                <th scope="col">خيارات</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($student_purchases as $purchases)
+                                                <tr>
+                                                    <td>{{ $purchases->iteration }}</td>
+                                                    <td>{{$purchases->product->name}}</td>
+                                                    <td>{{$purchases->price}}₪</td>
+                                                    <td>{{$report->addedBy->name}}</td>
+                                                    <td>{{$report->created_at->format('Y-m-d')}}</td>
+                                                    <td>
+
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
         </div>
-
     </div>
-    <div class="modal fade" id="attributeModal" tabindex="-1" aria-labelledby="attributeModalLabel" aria-hidden="true">
+
+    <div class="modal fade" id="attributeModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -597,12 +659,38 @@
         </div>
     </div>
 
+    <div class="modal fade" id="purchasesModal" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">عملية شراء جديدة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="productContainer">
+
+                    </div>
+                    <hr>
+                    <p>
+                        المجموع : <span class="totalPrices">0</span>
+                    </p>
+                    <button type="button" class="btn btn-primary w-100" onclick="addRow()">
+                        اضافة منتج اخر
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-dismiss="modal">اغلاق</button>
+                    <button type="button" class="btn btn-primary">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
     <script>
         var attributes = {!! json_encode($attributes ?? []) !!};
-
 
         $("#reportExportButton").on("click", function () {
             var selectedReportId = $("#reportSelect").val();
@@ -628,7 +716,6 @@
                 window.open(showStudentReportUrl, '_blank');
             }
         });
-
 
         $("#reportDynamicExport").on("click", function () {
             var selectedReportId = $("#reportSelect").val();
@@ -678,5 +765,95 @@
             });
 
         });
+
+
+        function initializeSelect2(selector = '.searchSelect') {
+            $(selector).select2({
+                dropdownParent: $("#purchasesModal"),
+                theme: 'bootstrap-5',
+                width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+                allowClear: true,
+                placeholder: {
+                    id: "",
+                    text: "اختر منتج ...",
+                    selected: 'selected'
+                },
+                minimumInputLength: 2,
+                ajax: {
+                    url: "{{route('products.ajax')}}",
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.name,
+                                    id: item.id,
+                                    price: item.price,
+                                    barcode: item.barcode,
+                                }
+                            })
+                        };
+                    },
+                    cache: true
+                }
+            });
+
+
+            $(selector).on('select2:select', function (e) {
+                var select = $(e.currentTarget);
+                var product_id = e.params.data.id;
+                var product_price = e.params.data.price;
+                var product_barcode = e.params.data.barcode;
+                select.parent().parent().find('.price').val(product_price);
+                select.parent().parent().find('.barcode').val(product_barcode);
+                getTotalPrices();
+            });
+        }
+
+
+
+
+        function addRow() {
+            let index = $('.productContainer .row').length;
+            $('.productContainer').append(`
+                        <div class="row mt-3">
+                            <div class="col-4">
+                                <select class="form-select searchSelect" name="order[` + index + `][product]">
+                                    <option value="" selected disabled>اختر ...</option>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <input type="text" class="form-control barcode"  name="order[` + index + `][barcode]" placeholder="الباركود" readonly>
+                            </div>
+
+                            <div class="col-3">
+                                <input type="text" class="form-control price" name="price[]"  placeholder="السعر" readonly>
+                            </div>
+
+                            <div class="col-2">
+                                <button type="button" class="btn btn-danger w-100 h-100">
+                                    X
+                                </button>
+                            </div>
+                        </div>`);
+            var select2 = $("select[name='order[" + index + "][product]']")
+            initializeSelect2(select2);
+        }
+
+
+        function getTotalPrices() {
+            var total = 0;
+            $('.price').each(function () {
+                total += +$(this).val();
+            });
+            $('.totalPrices').html(total);
+        }
+
+
+        $(document).ready(function () {
+            addRow();
+        });
+
     </script>
 @endpush

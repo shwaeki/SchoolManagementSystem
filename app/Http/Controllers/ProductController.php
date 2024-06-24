@@ -6,11 +6,9 @@ use App\DataTables\ProductsDataTable;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use App\Models\Student;
 use Illuminate\Support\Facades\Session;
-use DNS1D;
-use DNS2D;
-use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+
 
 class ProductController extends Controller
 {
@@ -88,4 +86,18 @@ class ProductController extends Controller
     {
         //
     }
+
+    public function ajax(Request $request)
+    {
+        $data = [];
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = Product::select("id", "name", "barcode","price")
+                ->where('status', true)
+                ->where('name', 'LIKE', "%$search%")
+                ->get();
+        }
+        return response()->json($data);
+    }
+
 }

@@ -107,6 +107,8 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
 
         Route::resource('academic-years', AcademicYearController::class);
         Route::resource('salaries', SalarySlipController::class);
+
+        Route::get('products/ajax', [ProductController::class, 'ajax'])->name('products.ajax');
         Route::resource('products', ProductController::class);
 
     });

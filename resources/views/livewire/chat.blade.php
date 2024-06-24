@@ -62,7 +62,7 @@
 
         </div>
 
-        <div class="chat-box">
+        <div class="chat-box" wire:poll.5s="refreshChats" >
 
             @if(empty($selectedStudent))
                 <div class="chat-not-selected">
@@ -77,7 +77,7 @@
                 </div>
 
             @else
-                <div class="chat-box-inner h-100">
+                <div class="chat-box-inner h-100" >
                     <div class="chat-meta-user chat-active">
                         <div class="current-chat-user-name">
                         <span>
@@ -101,7 +101,7 @@
                                 </a>
 
                                 <div class="dropdown-menu left" aria-labelledby="dropdownMenuLink-2">
-                                    <a class="dropdown-item" href="javascript:void(0);">
+{{--                                    <a class="dropdown-item" href="javascript:void(0);">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                              viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -122,7 +122,7 @@
                                             <line x1="10" y1="11" x2="10" y2="17"></line>
                                             <line x1="14" y1="11" x2="14" y2="17"></line>
                                         </svg>
-                                        Delete</a>
+                                        Delete</a>--}}
                                 </div>
                             </div>
                         </div>

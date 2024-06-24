@@ -26,10 +26,10 @@ class ProductsDataTable extends DataTable
                 return '<div class="download_barcode d-inline-block" style="cursor: pointer;"
                         data-name="'.$query->name.'">
                     <div class="align-items-md-center d-flex flex-column px-3">
-                    <p class="mb-0">'.$query->name.'</p>
-                    <p class="mb-0">Price: '.$query->price.'</p>
+                    <p class="mb-0 text-black" style="line-height: 14px;">'.$query->name.'</p>
+                    <p class="mb-0 text-black">Price: '.$query->price.'₪</p>
                     '.DNS1D::getBarcodeHTML($query->barcode, "C128") .'
-                    <p class="mb-0 small">'.$query->barcode.'</p>
+                    <p class="mb-0 text-black small">'.$query->barcode.'</p>
                 </div></div>';
             })->editColumn('status', function ($query) {
                 if ($query->status)
