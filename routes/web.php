@@ -51,6 +51,7 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
     Route::get('students/ajax/marks/{studentClass}', [StudentController::class, 'getStudentMarks'])->name('students.ajax.marks');
     Route::get('students/yearlyFile/{studentClass}', [StudentController::class, 'yearlyFile'])->name('students.yearlyFile');
     Route::get('students/marks/{studentClass}', [StudentController::class, 'showMarks'])->name('students.marks');
+    Route::get('students/marks/pdf/{studentClass}', [StudentController::class, 'showMarksPdf'])->name('students.marks.pdf');
     Route::get('students/report', [StudentController::class, 'report'])->name('students.report');
 
 

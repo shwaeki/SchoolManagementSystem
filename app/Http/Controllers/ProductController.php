@@ -92,10 +92,18 @@ class ProductController extends Controller
         $data = [];
         if ($request->has('q')) {
             $search = $request->q;
-            $data = Product::select("id", "name", "barcode","price")
-                ->where('status', true)
-                ->where('name', 'LIKE', "%$search%")
-                ->get();
+            $barcode = $request->barcode;
+            if ($barcode) {
+                $data = Product::select("id", "name", "barcode", "price")
+                    ->where('status', true)
+                    ->where('barcode', $barcode)
+                    ->get();
+            } else {
+                $data = Product::select("id", "name", "barcode", "price")
+                    ->where('status', true)
+                    ->where('name', 'LIKE', "%$search%")
+                    ->get();
+            }
         }
         return response()->json($data);
     }

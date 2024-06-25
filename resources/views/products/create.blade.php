@@ -32,8 +32,8 @@
                                     id="category" name="category" required>
                                 <option selected disabled value="">اختر ...</option>
                                 <option {{ old('category') == "كتب" ? 'selected' : '' }} value="كتب">كتب</option>
-                                <option {{ old('category') == "الزر المدرسي" ? 'selected' : '' }} value="كتب">الزر المدرسي</option>
-                                <option {{ old('category') == "قرطاسية" ? 'selected' : '' }} value="كتب">قرطاسية</option>
+                                <option {{ old('category') == "الزر المدرسي" ? 'selected' : '' }} value="الزر المدرسي">الزر المدرسي</option>
+                                <option {{ old('category') == "قرطاسية" ? 'selected' : '' }} value="قرطاسية">قرطاسية</option>
                             </select>
                             @error('category')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>

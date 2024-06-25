@@ -55,7 +55,7 @@
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                      stroke-linejoin="round" class="feather feather-alert-triangle">
                                     <path
-                                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
                                     <line x1="12" y1="9" x2="12" y2="13"></line>
                                     <line x1="12" y1="17" x2="12" y2="17"></line>
                                 </svg>
@@ -825,33 +825,40 @@
                 select.parent().parent().find('.barcode').val(product_barcode);
                 getTotalPrices();
             });
+
+            getTotalPrices();
         }
 
 
-        function addRow() {
+        function addRow(data) {
             let index = $('.productContainer .row').length + 1;
+            let productID = data ? data.id : '';
+            let productName = data ? data.name : '';
+            let barcode = data ? data.barcode : '';
+            let price = data ? data.price : '';
+
             $('.productContainer').append(`
-                        <div class="row mt-3">
-                            <div class="col-4">
-                                <select class="form-select searchSelect" name="order[` + index + `][product]" required>
-                                    <option value="" selected disabled>اختر ...</option>
-                                </select>
-                            </div>
-                            <div class="col-3">
-                                <input type="text" class="form-control barcode"  name="order[` + index + `][barcode]" placeholder="الباركود" readonly>
-                            </div>
-
-                            <div class="col-3">
-                                <input type="text" class="form-control price" name="order[` + index + `][price]"  placeholder="السعر" readonly>
-                            </div>
-
-                            <div class="col-2">
-                                <button type="button" class="btn btn-danger w-100 h-100 delete">
-                                    X
-                                </button>
-                            </div>
-                        </div>`);
-            var select2 = $("select[name='order[" + index + "][product]']")
+            <div class="row mt-3">
+                <div class="col-4">
+                    <select class="form-select searchSelect" name="order[` + index + `][product]" required>
+                        <option value="" selected disabled>اختر ...</option>
+                        <option value="` + productID + `" selected>` + productName + `</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control barcode" name="order[` + index + `][barcode]" placeholder="الباركود" value="` + barcode + `" required readonly>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="form-control price" name="order[` + index + `][price]" placeholder="السعر" value="` + price + `" required readonly>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-danger w-100 h-100 delete">
+                        X
+                    </button>
+                </div>
+            </div>
+        `);
+            var select2 = $("select[name='order[" + index + "][product]']");
             initializeSelect2(select2);
         }
 
@@ -877,6 +884,53 @@
         $(document).ready(function () {
             addRow();
         });
+
+
+        var barcode = "";
+        $(document).keydown(function (e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code == 16 || code == 220) {
+                return;
+            }
+            if (code == 13) {
+                event.preventDefault();
+                if (barcode.length > 6) {
+                    var cleanBarcode = barcode.replace(/[\x00-\x1F\x10\x7F]/g, '');
+                    addBarcodeProduct(cleanBarcode);
+                }
+                barcode = "";
+            } else {
+                barcode = barcode + String.fromCharCode(code);
+            }
+        });
+
+        function removeEmptyRows() {
+            $('.productContainer .row').each(function(index, row) {
+                let productName = $(row).find('select[name^="order["]').val();
+                if (!productName) {
+                    $(row).remove();
+                }
+            });
+        }
+
+
+        function addBarcodeProduct(barcode) {
+            console.log(barcode);
+
+            $.ajax({
+                url: "{{route('products.ajax')}}",
+                method: 'get',
+                data: {barcode: barcode, q: "barcode"},
+                success: function (response) {
+                    addRow(response[0]);
+                    removeEmptyRows();
+                },
+                error: function (xhr) {
+                    console.error("Product not found");
+                }
+            });
+
+        }
 
     </script>
 @endpush

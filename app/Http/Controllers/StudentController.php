@@ -12,6 +12,7 @@ use App\Http\Requests\UpdateStudentRequest;
 use App\Models\StudentCertificate;
 use App\Models\StudentClass;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 use Smalot\PdfParser\Parser;
 use TCPDI;
 
@@ -50,7 +51,7 @@ class StudentController extends Controller
             $extension = $request->file('personal_photo')->getClientOriginalExtension();
             $fileName = "الصورة الشخصية" . '.' . $extension;
             $filePath = "files/Student_" . $student->id;
-            $request->file('personal_photo')->storeAs('public/'.$filePath, $fileName);
+            $request->file('personal_photo')->storeAs('public/' . $filePath, $fileName);
             $image_data['personal_photo'] = $filePath . '/' . $fileName;
             $student->update($image_data);
         }
@@ -84,10 +85,10 @@ class StudentController extends Controller
             "student" => $student,
             "student_logs" => $student->activities,
             "student_classes" => $student->studentClasses,
-            "reports" => Report::where('type','student')->get(),
+            "reports" => Report::where('type', 'student')->get(),
             "student_reports" => $student->reports,
             "student_purchases" => $student->purchases,
-            "products" =>Product::where('status',true)->get(),
+            "products" => Product::where('status', true)->get(),
             "current_student_class" => $current_student_class,
         ];
 
@@ -123,7 +124,7 @@ class StudentController extends Controller
             $extension = $request->file('personal_photo')->getClientOriginalExtension();
             $fileName = "الصورة الشخصية" . '.' . $extension;
             $filePath = "files/Student_" . $student->id;
-            $request->file('personal_photo')->storeAs('public/'.$filePath, $fileName);
+            $request->file('personal_photo')->storeAs('public/' . $filePath, $fileName);
             $all_data['personal_photo'] = $filePath . '/' . $fileName;
         }
 
@@ -162,6 +163,59 @@ class StudentController extends Controller
 
         return view('student.marks', $data);
     }
+
+    public function showMarksPdf(StudentClass $studentClass)
+    {
+
+        $studentCertificate = StudentCertificate::where('student_class_id', $studentClass->id)->first();
+        $marks = $studentCertificate?->marks ?? [];
+
+        $organizedMarks = [];
+        foreach ($marks as $mark) {
+            $organizedMarks[$mark->semester][$mark->certificate_category_id] = $mark;
+        }
+
+        $data = [
+            "studentCertificate" => $studentCertificate,
+            "marks" => $organizedMarks,
+            "studentClass" => $studentClass,
+            "certificate" => $studentClass->yearClass->certificate,
+        ];
+
+
+        $tcpdf = new TCPDI();
+
+        $company_name = 'ריאד אלמגד אלאהליה בעיימ';
+        $company_address = 'עיסוויה ירושלים';
+        $student_name = "اسم طالب تجريبي";
+        $idNumber = "123456789";
+
+
+        $tcpdf->AddPage();
+
+        $html = view('student.marks_pdf',$data);
+
+        $tcpdf->writeHTML($html, true, false, true, false, '');
+        $tcpdf->SetRTL(true);
+        $tcpdf->SetFont('DejaVuSans', 'B', 10);
+        $tcpdf->SetXY(45, 67);
+        $tcpdf->Write(0, $company_name);
+        $tcpdf->SetXY(48, 75);
+        $tcpdf->Write(0, $company_address);
+
+        $tcpdf->SetFont('aealarabiya', 'B', 12);
+        $tcpdf->SetXY(35, 107);
+        $tcpdf->Write(0, $student_name);
+
+
+
+        return $tcpdf->Output($idNumber . '.pdf', 'I');
+
+
+        //  return view('student.marks', $data);
+    }
+
+
 
 
     public function getStudentMarks(StudentClass $studentClass)
@@ -287,7 +341,7 @@ class StudentController extends Controller
             $tcpdf->SetRTL(true);
             $tcpdf->SetFont('aealarabiya', 'B', 12);
             $tcpdf->SetXY(50, 207);
-            $tcpdf->Write(0,   $student_Father_name);
+            $tcpdf->Write(0, $student_Father_name);
 
             $tcpdf->SetRTL(false);
             $tcpdf->SetFont('DejaVuSans', 'B', 12);
@@ -296,14 +350,14 @@ class StudentController extends Controller
 
             $tcpdf->SetFont('aealarabiya', 'B', 12);
             $tcpdf->SetXY(65, 243);
-            $tcpdf->Write(0,   $student_Father_name);
+            $tcpdf->Write(0, $student_Father_name);
 
-/*
-            header('Content-Type: application/pdf');
-            header('Content-Disposition: attachment; filename="' . $idNumber . '.pdf"');
-*/
+            /*
+                        header('Content-Type: application/pdf');
+                        header('Content-Disposition: attachment; filename="' . $idNumber . '.pdf"');
+            */
             return $tcpdf->Output($idNumber . '.pdf', 'I');
-           // $tcpdf->endTemplate();
+            // $tcpdf->endTemplate();
         }
 
     }
