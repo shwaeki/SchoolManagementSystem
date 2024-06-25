@@ -1,5 +1,8 @@
 
     <style>
+        *{
+            font-family:"aealarabiya", sans-serif;
+        }
         html {
             height: 100%;
         }
@@ -142,10 +145,6 @@
 
 
     </style>
-
-    <div class="watermark">
-        <img src="assets/img/watermark.png" alt="watermark">
-    </div>
 
     <div class="content position-relative">
 

@@ -207,6 +207,18 @@ class StudentController extends Controller
         $tcpdf->SetXY(35, 107);
         $tcpdf->Write(0, $student_name);
 
+        $ImageW = 100; //WaterMark Size
+        $ImageH = 100;
+        $myPageWidth = $tcpdf->getPageWidth();
+        $myPageHeight = $tcpdf->getPageHeight();
+        $myX = ($myPageWidth / 2) + 50;  //WaterMark Positioning
+        $myY = ($myPageHeight / 2) - 50;
+
+        $tcpdf->SetAlpha(0.35);
+        $tcpdf->Image("assets/img/watermark.png", $myX, $myY, $ImageW, $ImageH, '', '', 'C', true, 300);
+        $tcpdf->SetAlpha(1);
+        $tcpdf->SetFooterMargin(0);
+
 
 
         return $tcpdf->Output($idNumber . '.pdf', 'I');
