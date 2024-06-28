@@ -48,7 +48,7 @@ class StudentController extends BaseController
             );
             return $this->sendResponse([], 'Otp code send successfully');
         }
-         return $this->sendError([], 'Unauthorized', 401);
+        return $this->sendError([], 'Unauthorized', 401);
 
     }
 
@@ -79,7 +79,7 @@ class StudentController extends BaseController
             $studentOTP = Otp::where('student_id', $student->id)
                 ->where('code', $code)
                 ->where('phone', $phone)
-              /*  ->where('updated_at', '>=', now()->subMinutes(5))*/
+                /*  ->where('updated_at', '>=', now()->subMinutes(5))*/
                 ->first();
 
             if (!is_null($studentOTP)) {
@@ -109,12 +109,25 @@ class StudentController extends BaseController
 
         $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
 
+
         $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) use ($adminActiveAcademicYear) {
             $query->where('academic_year_id', $adminActiveAcademicYear->id);
         })->get()->first();
 
         $classes = $student->studentClasses;
 
-        return $this->sendResponse(['current_class' => new StudentClassResource($currentClass), 'classes' => StudentClassResource::collection($classes)], 'Student Classes');
+        if ($currentClass == null) {
+            $currentClassData = null;
+        } else {
+            $currentClassData = new StudentClassResource($currentClass);
+        }
+
+        if ($classes == null) {
+            $classesData = null;
+        } else {
+            $classesData = StudentClassResource::collection($classes);
+        }
+
+        return $this->sendResponse(['current_class' => $currentClassData, 'classes' =>$classesData], 'Student Classes');
     }
 }

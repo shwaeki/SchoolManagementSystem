@@ -38,7 +38,7 @@ class ChatController extends BaseController
         })->get()->first();
 
         $message = Chat::create([
-            'teacher_id' => $currentClass->teacher_id,
+            'teacher_id' => $currentClass?->teacher_id ,
             'student_id' => $student->id,
             'message' => $request->input('massage'),
             'sender' => 'student',
