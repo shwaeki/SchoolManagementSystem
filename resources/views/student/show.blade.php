@@ -55,7 +55,7 @@
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                      stroke-linejoin="round" class="feather feather-alert-triangle">
                                     <path
-                                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
                                     <line x1="12" y1="9" x2="12" y2="13"></line>
                                     <line x1="12" y1="17" x2="12" y2="17"></line>
                                 </svg>
@@ -106,7 +106,7 @@
                                     href="#student-purchases"
                                     role="tab" aria-controls="student-purchases" aria-selected="false" tabindex="-1">
                                 <i class="fas fa-cart-shopping"></i>
-                                المشتريات
+                                المبيعات
                             </button>
                         </li>
 
@@ -595,7 +595,36 @@
                 <div class="tab-pane fade " id="student-purchases" role="tabpanel"
                      aria-labelledby="student-purchases-tab">
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+
+                        <div class="col-12 text-center mb-3">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title"> {{  $student->purchases->sum('amount')}}</h5>
+                                            <p class="card-text">مشتريات</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{  $student->payments->sum('amount')}}</h5>
+                                            <p class="card-text">مدفوعات</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title"> {{  $student->purchases->sum('amount') - $student->payments->sum('amount') }}</h5>
+                                            <p class="card-text">الرصيد</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 layout-spacing">
                             <form class="section general-info">
                                 <div class="info">
 
@@ -619,7 +648,6 @@
                                                 <th scope="col">السعر</th>
                                                 <th scope="col">اضيف بواسطة</th>
                                                 <th scope="col">تاريخ الاضافة</th>
-                                                <th scope="col">خيارات</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -630,9 +658,49 @@
                                                     <td>{{$purchases->price}}₪</td>
                                                     <td>{{$purchases->addedBy->name}}</td>
                                                     <td>{{$purchases->created_at->format('Y-m-d')}}</td>
-                                                    <td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
 
-                                                    </td>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-12 col-md-6 layout-spacing">
+                            <form class="section general-info">
+                                <div class="info">
+
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <h6> الدفعات </h6>
+                                        </div>
+                                        <div class="col-3 text-end">
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#addPaumentModal">
+                                                اضافة
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">المبلغ</th>
+                                                <th scope="col"> طريقة الدفع</th>
+                                                <th scope="col">اضيف بواسطة</th>
+                                                <th scope="col">تاريخ الاضافة</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($student_payments ?? [] as $payment)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{$payment->amount}}₪</td>
+                                                    <td>{{$payment->payment_way}}</td>
+                                                    <td>{{$payment->payment_date}}</td>
+                                                    <td>{{$payment->addedBy->name}}</td>
                                                 </tr>
                                             @endforeach
                                             </tbody>
@@ -665,6 +733,47 @@
                     <button type="button" class="btn btn-primary" id="reportDynamicExport">تصدير</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addPaumentModal">
+        <div class="modal-dialog">
+            <form action="{{ route('payments.store') }}" method="post">
+                @csrf
+                <input type="hidden" name="student_id" value="{{ $student->id }}">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"> اضافة دفعة جديدة</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3 ">
+                            <label for="payment_way" class="form-label">اختر التقرير:</label>
+                            <select class="form-select" id="payment_way" name="payment_way">
+                                <option selected disabled value="">اختر ...</option>
+                                <option value="cash">كاش</option>
+                                <option value="check">شيك</option>
+                                <option value="transfer">تحويل</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">المبلغ:</label>
+                            <input type="text" class="form-control only-integer" id="amount" name="amount" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="payment_date" class="form-label">تاريخ الدفع:</label>
+                            <input type="date" class="form-control" id="payment_date" name="payment_date"
+                                   value="{{ date('Y-m-d') }}" required>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-bs-dismiss="modal">اغلاق</button>
+                        <button type="submit" class="btn btn-primary">حفظ</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -905,7 +1014,7 @@
         });
 
         function removeEmptyRows() {
-            $('.productContainer .row').each(function(index, row) {
+            $('.productContainer .row').each(function (index, row) {
                 let productName = $(row).find('select[name^="order["]').val();
                 if (!productName) {
                     $(row).remove();

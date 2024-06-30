@@ -8,6 +8,8 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
+
+    // ALTER TABLE `students` ADD `balance` DOUBLE NOT NULL DEFAULT '0' AFTER `notes`;
     public function up(): void
     {
         Schema::create('students', function (Blueprint $table) {

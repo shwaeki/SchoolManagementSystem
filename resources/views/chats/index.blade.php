@@ -65,6 +65,25 @@
 
 
 @push('scripts')
+
+    <script>
+        document.addEventListener('livewire:load', function () {
+            scrollChatToBottom();
+        });
+
+        document.addEventListener('livewire:update', function () {
+            scrollChatToBottom();
+        });
+
+        function scrollChatToBottom() {
+            var chatBox = document.getElementById('chat-conversation-box-scroll');
+            if (chatBox) {
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+    </script>
+
+
     <script src="{{ asset("assets/js/apps/chat.js")  }}"></script>
     <script>
         new PerfectScrollbar('.people', {suppressScrollX: true});

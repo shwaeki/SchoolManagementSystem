@@ -59,7 +59,7 @@ body.dark .widget-content-area-normal {
     max-height: 300px;
     width: 370px;
     overflow: auto;
-    margin-top: 5px;
+    margin-top: 35px;
     position: absolute;
     padding: 1rem;
     background-color: white;

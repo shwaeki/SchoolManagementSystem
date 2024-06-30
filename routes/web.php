@@ -10,6 +10,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ParentController;
+use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchasesController;
 use App\Http\Controllers\ReportController;
@@ -114,6 +115,7 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
         Route::get('products/ajax', [ProductController::class, 'ajax'])->name('products.ajax');
         Route::resource('products', ProductController::class);
         Route::resource('purchases', PurchasesController::class);
+        Route::resource('payments', PaymentsController::class);
 
     });
 });

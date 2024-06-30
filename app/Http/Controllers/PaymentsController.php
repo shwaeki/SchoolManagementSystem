@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Purchases;
-use App\Http\Requests\StorePurchasesRequest;
-use App\Http\Requests\UpdatePurchasesRequest;
+use App\Models\Payments;
+use App\Http\Requests\StorePaymentsRequest;
+use App\Http\Requests\UpdatePaymentsRequest;
 use App\Models\Student;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
-class PurchasesController extends Controller
+class PaymentsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -30,28 +30,30 @@ class PurchasesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePurchasesRequest $request)
+    public function store(StorePaymentsRequest $request)
     {
 
-        DB::Transaction(function () {
-            $products = request('order');
+
+
+
+        DB::Transaction(function (){
             $student_id = request('student_id');
             $student = Student::findOrFail($student_id);
 
+           $text = $student->payments()->create([
+                'payment_way' => request('payment_way'),
+                'amount' => request('amount'),
+                'amount_before' => $student->balance,
+                'amount_after' => $student->balance - request('amount'),
+                'student_id' => request('student_id'),
+                'payment_date' => request('payment_date'),
+                'added_by' => auth()->id(),
+            ]);
 
-            foreach ($products as $product) {
-                $student->purchases()->create([
-                    'product_id' => $product['product'],
-                    'price' => $product['price'],
-                    'added_by' => auth()->id(),
-                ]);
-
-                $student->update([
-                    'balance' => $student->balance - $product['price'],
-                ]);
-            }
+            $student->update([
+                'balance' => $student->balance - request('amount'),
+            ]);
         });
-
 
         Session::flash('message', 'تمت عملية الشراء بنجاح');
         return redirect()->back();
@@ -60,7 +62,7 @@ class PurchasesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Purchases $purchases)
+    public function show(Payments $payments)
     {
         //
     }
@@ -68,7 +70,7 @@ class PurchasesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Purchases $purchases)
+    public function edit(Payments $payments)
     {
         //
     }
@@ -76,7 +78,7 @@ class PurchasesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePurchasesRequest $request, Purchases $purchases)
+    public function update(UpdatePaymentsRequest $request, Payments $payments)
     {
         //
     }
@@ -84,7 +86,7 @@ class PurchasesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Purchases $purchases)
+    public function destroy(Payments $payments)
     {
         //
     }

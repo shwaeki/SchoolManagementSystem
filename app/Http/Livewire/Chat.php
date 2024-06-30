@@ -36,7 +36,6 @@ class Chat extends Component
             ->with('student', 'teacher')
             ->limit(30)
             ->get();
-        $this->message = '';
         $this->newChat = false;
 
     }
@@ -63,7 +62,7 @@ class Chat extends Component
             'message' => $this->message,
             'sender' => 'teacher',
         ]);
-
+        $this->message = '';
         $this->refreshChats();
         $this->emit('chat-new-message', $message);
     }

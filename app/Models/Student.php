@@ -74,6 +74,11 @@ class Student extends Authenticatable
         return $this->hasMany(Purchases::class, 'student_id');
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payments::class, 'student_id');
+    }
+
 
     public function generateCode($phone = null)
     {
