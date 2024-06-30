@@ -70,12 +70,12 @@
     <link href="{{ asset("assets/plugins/css/dark/sweetalerts2/custom-sweetalert.css")  }}" rel="stylesheet"
           type="text/css"/>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css"/>
 
 
     <link href="{{ asset("assets/css/style.css")  }}" rel="stylesheet" type="text/css"/>
-
 
 
     @livewireStyles
@@ -115,17 +115,6 @@
                 <line x1="3" y1="18" x2="21" y2="18"></line>
             </svg>
         </a>
-
-        <ul class="navbar-item theme-brand flex-row  text-center">
-            <li class="nav-item theme-logo">
-                <a href="{{route('home')}}" class="d-none">
-                    <img src="{{ asset("assets/img/logo.png") }}" class="navbar-logo" alt="logo">
-                </a>
-            </li>
-            <li class="nav-item theme-text">
-                <a href="{{route('home')}}" class="nav-link"> رياض المجد </a>
-            </li>
-        </ul>
         @auth("web")
             <livewire:search/>
         @endauth
@@ -278,10 +267,10 @@
                     </div>
                 </div>
             </div>
-            <div class="shadow-bottom"></div>
             <ul class="list-unstyled menu-categories" id="accordionExample">
-                <li class="menu link active">
-                    <a href="/">
+
+                <li class="menu active">
+                    <a href="/" aria-expanded="true" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -296,38 +285,23 @@
 
 
                 @auth("web")
+
                     <li class="menu">
-                        <a href="#elements" data-bs-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">
+                        <a href="{{route('school-classes.index')}}" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                      stroke-linejoin="round" class="feather feather-zap">
                                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                                 </svg>
-                                <span> الفصول الدراسية</span>
-                            </div>
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-chevron-right">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
+                                <span>الفصول الدراسية</span>
                             </div>
                         </a>
-                        <ul class="dropdown-menu submenu list-unstyled dropdown-menu-end" id="elements"
-                            data-bs-parent="#accordionExample">
-                            <li>
-                                <a href="{{route('school-classes.index')}}"> قائمة الفصول التعليمية </a>
-                            </li>
-                            <li>
-                                <a href="{{route('school-classes.create')}}"> اضافة </a>
-                            </li>
-                        </ul>
                     </li>
 
 
                     <li class="menu">
-                        <a href="#apps" data-bs-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">
+                        <a href="#students" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -353,7 +327,7 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="dropdown-menu submenu list-unstyled dropdown-menu-end" id="apps"
+                        <ul class="collapse submenu list-unstyled" id="students"
                             data-bs-parent="#accordionExample">
                             <li>
                                 <a href="{{route('students.index')}}"> قائمة الطلاب </a>
@@ -362,74 +336,18 @@
                                 <a href="{{route('students.create')}}"> اضافة </a>
                             </li>
                             <li>
-                                <a href="{{route('student-reports.create')}}"> أصافة تقرير </a>
-                            </li>
-                            <li>
                                 <a href="{{route('students-request.index')}}"> طلبات الطلاب </a>
                             </li>
                         </ul>
                     </li>
-                @endauth
 
-                @auth("teacher")
 
-                    @foreach(auth()->user()->supervisorYearClasses()->where('academic_year_id',$activeAcademicYear->id)->get() ?? [] as $yearClass)
-                        @if($yearClass->schoolClass)
+                    <li class="menu menu-heading">
+                        <div class="heading"><span>الموظفين و المستخدمين</span></div>
+                    </li>
 
-                            <li class="menu link active">
-                                <a href="{{route('school-classes.show', $yearClass->schoolClass)  }}">
-                                    <div class="">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                             viewBox="0 0 24 24"
-                                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                             stroke-linejoin="round" class="feather feather-cpu">
-                                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                            <rect x="9" y="9" width="6" height="6"></rect>
-                                            <line x1="9" y1="1" x2="9" y2="4"></line>
-                                            <line x1="15" y1="1" x2="15" y2="4"></line>
-                                            <line x1="9" y1="20" x2="9" y2="23"></line>
-                                            <line x1="15" y1="20" x2="15" y2="23"></line>
-                                            <line x1="20" y1="9" x2="23" y2="9"></line>
-                                            <line x1="20" y1="14" x2="23" y2="14"></line>
-                                            <line x1="1" y1="9" x2="4" y2="9"></line>
-                                            <line x1="1" y1="14" x2="4" y2="14"></line>
-                                        </svg>
-                                        <span>{{$yearClass->schoolClass?->name}}</span>
-                                    </div>
-                                </a>
-                            </li>
-                        @endif
-                    @endforeach
-
-                    @if(auth()->user()->show_salary_slip == true)
-                        <li class="menu link active">
-                            <a href="{{route('mysalries')  }}">
-                                <div class="">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24"
-                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                         stroke-linejoin="round" class="feather feather-cpu">
-                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                        <rect x="9" y="9" width="6" height="6"></rect>
-                                        <line x1="9" y1="1" x2="9" y2="4"></line>
-                                        <line x1="15" y1="1" x2="15" y2="4"></line>
-                                        <line x1="9" y1="20" x2="9" y2="23"></line>
-                                        <line x1="15" y1="20" x2="15" y2="23"></line>
-                                        <line x1="20" y1="9" x2="23" y2="9"></line>
-                                        <line x1="20" y1="14" x2="23" y2="14"></line>
-                                        <line x1="1" y1="9" x2="4" y2="9"></line>
-                                        <line x1="1" y1="14" x2="4" y2="14"></line>
-                                    </svg>
-                                    <span>قسائم الراتب </span>
-                                </div>
-                            </a>
-                        </li>
-                    @endif
-                @endauth
-
-                @auth("web")
                     <li class="menu">
-                        <a href="#apps" data-bs-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">
+                        <a href="#teachers" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -455,7 +373,7 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="dropdown-menu submenu list-unstyled dropdown-menu-end" id="apps"
+                        <ul class="collapse submenu list-unstyled" id="teachers"
                             data-bs-parent="#accordionExample">
                             <li>
                                 <a href="{{route('teachers.index')}}"> قائمة المعلمين </a>
@@ -467,7 +385,7 @@
                     </li>
 
                     <li class="menu">
-                        <a href="#apps" data-bs-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">
+                        <a href="#assistants" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -493,7 +411,7 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="dropdown-menu submenu list-unstyled dropdown-menu-end" id="apps"
+                        <ul class="collapse submenu list-unstyled" id="assistants"
                             data-bs-parent="#accordionExample">
                             <li>
                                 <a href="{{route('assistants.index')}}"> قائمة المساعدات </a>
@@ -505,7 +423,7 @@
                     </li>
 
                     <li class="menu">
-                        <a href="#apps" data-bs-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">
+                        <a href="#workers" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -532,7 +450,7 @@
                             </div>
                         </a>
 
-                        <ul class="dropdown-menu submenu list-unstyled dropdown-menu-end" id="apps"
+                        <ul class="collapse submenu list-unstyled" id="workers"
                             data-bs-parent="#accordionExample">
                             <li>
                                 <a href="{{route('workers.index')}}"> قائمة الموظفين </a>
@@ -543,39 +461,9 @@
                         </ul>
                     </li>
 
+
                     <li class="menu">
-                        <a href="#components" data-bs-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-box">
-                                    <path
-                                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                                </svg>
-                                <span>السنوات الدراسية</span>
-                            </div>
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-chevron-right">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </div>
-                        </a>
-                        <ul class="dropdown-menu submenu list-unstyled dropdown-menu-end" id="components"
-                            data-bs-parent="#accordionExample">
-                            <li>
-                                <a href="{{route('academic-years.index')}}"> السنوات الدراسية </a>
-                            </li>
-                            <li>
-                                <a href="{{route('academic-years.create')}}"> اضافة </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="menu">
-                        <a href="#apps" data-bs-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">
+                        <a href="#users" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -601,7 +489,7 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="dropdown-menu submenu list-unstyled dropdown-menu-end" id="apps"
+                        <ul class="collapse submenu list-unstyled" id="users"
                             data-bs-parent="#accordionExample">
                             <li>
                                 <a href="{{route('users.index')}}"> مستخدمي النظام </a>
@@ -616,8 +504,11 @@
                     </li>
 
 
+                    <li class="menu menu-heading">
+                        <div class="heading"><span> إعدادات </span></div>
+                    </li>
                     <li class="menu">
-                        <a href="#apps" data-bs-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">
+                        <a href="{{route('academic-years.index')}}" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -633,38 +524,197 @@
                                     <line x1="1" y1="9" x2="4" y2="9"></line>
                                     <line x1="1" y1="14" x2="4" y2="14"></line>
                                 </svg>
-                                <span>المزيد</span>
-                            </div>
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-chevron-right">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
+                                <span>السنوات الدراسية</span>
                             </div>
                         </a>
-                        <ul class="dropdown-menu submenu list-unstyled dropdown-menu-end" id="apps"
-                            data-bs-parent="#accordionExample">
-                            <li>
-                                <a href="{{route('reports.index')}}"> التقارير </a>
-                            </li>
-                            <li>
-                                <a href="{{route('messages.index')}}"> ارسال رسالة </a>
-                            </li>
-                            <li>
-                                <a href="{{route('certificates.index')}}"> انوع الشهادات </a>
-                            </li>
-                            <li>
-                                <a href="{{route('salaries.index')}}"> قسيمة الراتب </a>
-                            </li>
-                            <li class="d-none">
-                                <a href="{{route('chats.index')}}">  الدردشات </a>
-                            </li>
-                            <li class="d-none">
-                                <a href="{{route('products.index')}}">  المنتجات </a>
-                            </li>
-                        </ul>
                     </li>
+
+                    <li class="menu">
+                        <a href="{{route('reports.index')}}" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-cpu">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                    <rect x="9" y="9" width="6" height="6"></rect>
+                                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                                    <line x1="9" y1="20" x2="9" y2="23"></line>
+                                    <line x1="15" y1="20" x2="15" y2="23"></line>
+                                    <line x1="20" y1="9" x2="23" y2="9"></line>
+                                    <line x1="20" y1="14" x2="23" y2="14"></line>
+                                    <line x1="1" y1="9" x2="4" y2="9"></line>
+                                    <line x1="1" y1="14" x2="4" y2="14"></line>
+                                </svg>
+                                <span>التقارير</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu">
+                        <a href="{{route('messages.index')}}" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-cpu">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                    <rect x="9" y="9" width="6" height="6"></rect>
+                                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                                    <line x1="9" y1="20" x2="9" y2="23"></line>
+                                    <line x1="15" y1="20" x2="15" y2="23"></line>
+                                    <line x1="20" y1="9" x2="23" y2="9"></line>
+                                    <line x1="20" y1="14" x2="23" y2="14"></line>
+                                    <line x1="1" y1="9" x2="4" y2="9"></line>
+                                    <line x1="1" y1="14" x2="4" y2="14"></line>
+                                </svg>
+                                <span>ارسال رسالة </span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu">
+                        <a href="{{route('certificates.index')}}" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-cpu">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                    <rect x="9" y="9" width="6" height="6"></rect>
+                                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                                    <line x1="9" y1="20" x2="9" y2="23"></line>
+                                    <line x1="15" y1="20" x2="15" y2="23"></line>
+                                    <line x1="20" y1="9" x2="23" y2="9"></line>
+                                    <line x1="20" y1="14" x2="23" y2="14"></line>
+                                    <line x1="1" y1="9" x2="4" y2="9"></line>
+                                    <line x1="1" y1="14" x2="4" y2="14"></line>
+                                </svg>
+                                <span> انوع الشهادات</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu">
+                        <a href="{{route('salaries.index')}}" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-cpu">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                    <rect x="9" y="9" width="6" height="6"></rect>
+                                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                                    <line x1="9" y1="20" x2="9" y2="23"></line>
+                                    <line x1="15" y1="20" x2="15" y2="23"></line>
+                                    <line x1="20" y1="9" x2="23" y2="9"></line>
+                                    <line x1="20" y1="14" x2="23" y2="14"></line>
+                                    <line x1="1" y1="9" x2="4" y2="9"></line>
+                                    <line x1="1" y1="14" x2="4" y2="14"></line>
+                                </svg>
+                                <span>قسيمة الراتب</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu d-none">
+                        <a href="{{route('chats.index')}}" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-cpu">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                    <rect x="9" y="9" width="6" height="6"></rect>
+                                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                                    <line x1="9" y1="20" x2="9" y2="23"></line>
+                                    <line x1="15" y1="20" x2="15" y2="23"></line>
+                                    <line x1="20" y1="9" x2="23" y2="9"></line>
+                                    <line x1="20" y1="14" x2="23" y2="14"></line>
+                                    <line x1="1" y1="9" x2="4" y2="9"></line>
+                                    <line x1="1" y1="14" x2="4" y2="14"></line>
+                                </svg>
+                                <span>الدردشات</span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li class="menu">
+                        <a href="{{route('products.index')}}" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-cpu">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                    <rect x="9" y="9" width="6" height="6"></rect>
+                                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                                    <line x1="9" y1="20" x2="9" y2="23"></line>
+                                    <line x1="15" y1="20" x2="15" y2="23"></line>
+                                    <line x1="20" y1="9" x2="23" y2="9"></line>
+                                    <line x1="20" y1="14" x2="23" y2="14"></line>
+                                    <line x1="1" y1="9" x2="4" y2="9"></line>
+                                    <line x1="1" y1="14" x2="4" y2="14"></line>
+                                </svg>
+                                <span>المنتجات</span>
+                            </div>
+                        </a>
+                    </li>
+
+                @endauth
+
+                @auth("teacher")
+
+                    @if(auth()->user()->show_salary_slip == true)
+                        <li class="menu">
+                            <a href="{{route('mysalries')}}" aria-expanded="false" class="dropdown-toggle">
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-cpu">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                        <rect x="9" y="9" width="6" height="6"></rect>
+                                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                                    </svg>
+                                    <span>قسائم الراتب </span>
+                                </div>
+                            </a>
+                        </li>
+                    @endif
+
+                    <li class="menu menu-heading">
+                        <div class="heading"><span> فصولي الدراسية </span></div>
+                    </li>
+
+                    @foreach(auth()->user()->supervisorYearClasses()->where('academic_year_id',$activeAcademicYear->id)->get() ?? [] as $yearClass)
+                        @if($yearClass->schoolClass)
+
+                            <li class="menu">
+                                <a href="{{route('school-classes.show', $yearClass->schoolClass)  }}" aria-expanded="false" class="dropdown-toggle">
+                                    <div class="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                             stroke-linejoin="round" class="feather feather-cpu">
+                                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                            <rect x="9" y="9" width="6" height="6"></rect>
+                                            <line x1="9" y1="1" x2="9" y2="4"></line>
+                                            <line x1="15" y1="1" x2="15" y2="4"></line>
+                                            <line x1="9" y1="20" x2="9" y2="23"></line>
+                                            <line x1="15" y1="20" x2="15" y2="23"></line>
+                                            <line x1="20" y1="9" x2="23" y2="9"></line>
+                                            <line x1="20" y1="14" x2="23" y2="14"></line>
+                                            <line x1="1" y1="9" x2="4" y2="9"></line>
+                                            <line x1="1" y1="14" x2="4" y2="14"></line>
+                                        </svg>
+                                        <span>{{$yearClass->schoolClass?->name}}</span>
+                                    </div>
+                                </a>
+                            </li>
+                        @endif
+                    @endforeach
 
                 @endauth
 
@@ -676,131 +726,6 @@
     <div id="content" class="main-content">
         <div class="layout-px-spacing">
             <div class="middle-content container-xxl p-0">
-                <div class="secondary-nav">
-                    <div class="breadcrumbs-container" data-page-heading="Analytics">
-                        <header class="header navbar navbar-expand-sm">
-                            <a href="javascript:void(0);" class="btn-toggle sidebarCollapse" data-placement="bottom">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-menu">
-                                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                                </svg>
-                            </a>
-                            <div class="d-flex breadcrumb-content">
-                                <div class="page-header">
-
-                                    <div class="page-title">
-                                    </div>
-
-                                    <nav class="breadcrumb-style-one" aria-label="breadcrumb">
-                                        <ol class="breadcrumb">
-                                            <li class="breadcrumb-item"><a href="#">Layouts</a></li>
-                                            <li class="breadcrumb-item active" aria-current="page">Empty Page</li>
-                                        </ol>
-                                    </nav>
-
-                                </div>
-                            </div>
-                            <ul class="navbar-nav flex-row ms-auto breadcrumb-action-dropdown">
-                                <li class="nav-item more-dropdown">
-                                    <div class="dropdown  custom-dropdown-icon">
-                                        <a class="dropdown-toggle btn" href="#" role="button" id="customDropdown"
-                                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span>Settings</span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                 stroke-linecap="round" stroke-linejoin="round"
-                                                 class="feather feather-chevron-down custom-dropdown-arrow">
-                                                <polyline points="6 9 12 15 18 9"></polyline>
-                                            </svg>
-                                        </a>
-
-                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="customDropdown">
-
-                                            <a class="dropdown-item" data-value="Settings"
-                                               data-icon="<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; class=&quot;feather feather-settings&quot;><circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;3&quot;></circle><path d=&quot;M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z&quot;></path></svg>"
-                                               href="javascript:void(0);">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                     class="feather feather-settings">
-                                                    <circle cx="12" cy="12" r="3"></circle>
-                                                    <path
-                                                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                                                </svg>
-                                                Settings
-                                            </a>
-
-                                            <a class="dropdown-item" data-value="Mail"
-                                               data-icon="<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; class=&quot;feather feather-mail&quot;><path d=&quot;M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z&quot;></path><polyline points=&quot;22,6 12,13 2,6&quot;></polyline></svg>"
-                                               href="javascript:void(0);">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                     class="feather feather-mail">
-                                                    <path
-                                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                                </svg>
-                                                Mail
-                                            </a>
-
-                                            <a class="dropdown-item" data-value="Print"
-                                               data-icon="<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; class=&quot;feather feather-printer&quot;><polyline points=&quot;6 9 6 2 18 2 18 9&quot;></polyline><path d=&quot;M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2&quot;></path><rect x=&quot;6&quot; y=&quot;14&quot; width=&quot;12&quot; height=&quot;8&quot;></rect></svg>"
-                                               href="javascript:void(0);">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                     class="feather feather-printer">
-                                                    <polyline points="6 9 6 2 18 2 18 9"></polyline>
-                                                    <path
-                                                        d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-                                                    <rect x="6" y="14" width="12" height="8"></rect>
-                                                </svg>
-                                                Print
-                                            </a>
-
-                                            <a class="dropdown-item" data-value="Download"
-                                               data-icon="<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; class=&quot;feather feather-download&quot;><path d=&quot;M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4&quot;></path><polyline points=&quot;7 10 12 15 17 10&quot;></polyline><line x1=&quot;12&quot; y1=&quot;15&quot; x2=&quot;12&quot; y2=&quot;3&quot;></line></svg>"
-                                               href="javascript:void(0);">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                     class="feather feather-download">
-                                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                                    <polyline points="7 10 12 15 17 10"></polyline>
-                                                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                                                </svg>
-                                                Download
-                                            </a>
-
-                                            <a class="dropdown-item" data-value="Share"
-                                               data-icon="<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; class=&quot;feather feather-share-2&quot;><circle cx=&quot;18&quot; cy=&quot;5&quot; r=&quot;3&quot;></circle><circle cx=&quot;6&quot; cy=&quot;12&quot; r=&quot;3&quot;></circle><circle cx=&quot;18&quot; cy=&quot;19&quot; r=&quot;3&quot;></circle><line x1=&quot;8.59&quot; y1=&quot;13.51&quot; x2=&quot;15.42&quot; y2=&quot;17.49&quot;></line><line x1=&quot;15.41&quot; y1=&quot;6.51&quot; x2=&quot;8.59&quot; y2=&quot;10.49&quot;></line></svg>"
-                                               href="javascript:void(0);">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                     class="feather feather-share-2">
-                                                    <circle cx="18" cy="5" r="3"></circle>
-                                                    <circle cx="6" cy="12" r="3"></circle>
-                                                    <circle cx="18" cy="19" r="3"></circle>
-                                                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                                                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                                                </svg>
-                                                Share
-                                            </a>
-
-                                        </div>
-
-                                    </div>
-                                </li>
-                            </ul>
-                        </header>
-                    </div>
-                </div>
-
 
                 <div class="row layout-top-spacing">
 

@@ -3,16 +3,26 @@
 namespace App\DataTables;
 
 
+use App\Models\AcademicYear;
 use App\Models\SchoolClass;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Services\DataTable;
 
 class ClassesDataTable extends DataTable
 {
 
+    private $activeAcademicYear;
+
+    function __construct()
+    {
+        $this->activeAcademicYear = Session::get('activeAcademicYear');
+    }
+
     public function dataTable($query)
     {
+
 
         return datatables()
             ->eloquent($query)
@@ -21,13 +31,13 @@ class ClassesDataTable extends DataTable
                     <a href="' . route('school-classes.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
                     <button class="btn btn-light-danger text-danger  d-none" onclick="deleteItem(this)"
                     data-item="' . route('school-classes.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
-            })/*->editColumn('code', function ($query) {
-                    return '<span class="badge badge-light-info">'.$query->code.'</span>';
-            })*/->editColumn('supervisor', function ($query) {
-                    return $query?->supervisorTeacher?->name;
+            })
+            ->addColumn('YearCode', function ($query) {
+                $current_year_class = $query?->yearClasses()?->where('academic_year_id', $this->activeAcademicYear->id)?->get()?->first();
+                return '<span class="badge badge-light-info">' . $current_year_class?->code . '</span>';
             })
             ->setRowId('id')
-            ->rawColumns(['Settings', 'code']);
+            ->rawColumns(['Settings', 'YearCode']);
 
     }
 
@@ -53,8 +63,9 @@ class ClassesDataTable extends DataTable
                 ],
 
                 'buttons' => [
-                    "excel",'print'
+                    "excel", 'print'
                 ],
+
             ])
             ->setTableId('school-class-table')
             ->columns($this->getColumns())
@@ -79,8 +90,8 @@ class ClassesDataTable extends DataTable
                 'phone' => ['title' => 'رقم الهاتف'],
                 'capacity' => ['title' => 'الطاقة الاستيعابة'],
                 'alphabetical_name' => ['title' => 'الكود الابجدي'],
-//                'supervisor ' => ['title' => 'المعلم المشرف'],
                 'address' => ['title' => 'العنوان'],
+                'YearCode' => ['title' => 'الكود', 'orderable' => false],
                 'Settings' => ['title' => 'خيارات', 'orderable' => false],
             ];
     }

@@ -7,6 +7,11 @@
     <link href="{{ asset("assets/css/light/components/tabs.css")  }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset("assets/css/dark/components/tabs.css")  }}" rel="stylesheet" type="text/css"/>
 
+    <style>
+        #DataTables_Table_1_wrapper {
+            margin-top: 30px;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -107,13 +112,13 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-12 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="code" class="form-label"> الكود</label>
-                                                <input type="text" id="code" class="form-control"
-                                                       value="{{$class->code}}" disabled>
-                                            </div>
-                                        </div>
+                                        {{--                                        <div class="col-12 col-md-3">
+                                                                                    <div class="mb-3">
+                                                                                        <label for="code" class="form-label"> الكود</label>
+                                                                                        <input type="text" id="code" class="form-control"
+                                                                                               value="{{$class->code}}" disabled>
+                                                                                    </div>
+                                                                                </div>--}}
 
                                         <div class="col-12 col-md-3">
                                             <div class="mb-3">
@@ -123,7 +128,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12 col-md-3">
                                             <div class="mb-3">
                                                 <label for="address" class="form-label">العنوان </label>
                                                 <input type="text" id="address" class="form-control"
@@ -271,11 +276,13 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
+                                                    @php($assistants_data = '')
                                                     @foreach($current_year_class->assistants as $assistant)
                                                         <tr>
                                                             <td>{{$assistant->name}}</td>
                                                             <td>{{$assistant->phone}}</td>
                                                         </tr>
+                                                        @php($assistants_data .= '- '.$assistant->name)
                                                     @endforeach
                                                     </tbody>
                                                 </table>
@@ -930,17 +937,17 @@
             "language": {"url": "{{asset('assets/datatable_arabic.json')}}"},
 
             buttons: [
-
                 {
                     extend: 'excel',
-                    messageTop: 'طلاب روضة - {{$class->name}} - المعلمة : {{$current_year_class?->supervisorTeacher?->name}} : رقم الروضة : {{$current_year_class?->code}}',
-
+                    messageTop: function () {
+                        return 'طلاب روضة - {{$class->name}} - المعلمة : {{$current_year_class?->supervisorTeacher?->name}} : رقم الروضة : {{$current_year_class?->code}} المساعدات: {{$assistants_data}}';
+                    },
                 },
 
                 {
                     extend: 'print',
                     messageTop: function () {
-                        return 'طلاب روضة - {{$class->name}} - المعلمة : {{$current_year_class?->supervisorTeacher?->name}} : رقم الروضة : {{$current_year_class?->code}}';
+                        return 'طلاب روضة - {{$class->name}} - المعلمة : {{$current_year_class?->supervisorTeacher?->name}} : رقم الروضة : {{$current_year_class?->code}} </br> المساعدات: {{$assistants_data}} </br></br>';
                     },
                     messageBottom: null
                 }
