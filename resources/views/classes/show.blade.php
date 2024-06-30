@@ -942,14 +942,28 @@
                     messageTop: function () {
                         return 'طلاب روضة - {{$class->name}} - المعلمة : {{$current_year_class?->supervisorTeacher?->name}} : رقم الروضة : {{$current_year_class?->code}} المساعدات: {{$assistants_data}}';
                     },
+                    exportOptions: {
+                        columns: ':not(:last-child)'
+                    },
                 },
 
                 {
                     extend: 'print',
                     messageTop: function () {
-                        return 'طلاب روضة - {{$class->name}} - المعلمة : {{$current_year_class?->supervisorTeacher?->name}} : رقم الروضة : {{$current_year_class?->code}} </br> المساعدات: {{$assistants_data}} </br></br>';
+                        return '<div style="text-align: center;">' +
+                            'طلاب روضة - {{$class->name}}<br>' +
+                            'المعلمة : {{$current_year_class?->supervisorTeacher?->name}}<br>' +
+                            'رقم الروضة : {{$current_year_class?->code}}<br>' +
+                            'المساعدات: {{$assistants_data}}' +
+                            '</div>';
                     },
-                    messageBottom: null
+                    messageBottom: null,
+                    exportOptions: {
+                        columns: ':not(:last-child)'
+                    },
+                    customize: function (win) {
+                        $(win.document.body).find('h1').css('text-align', 'center');
+                    }
                 }
             ],
             "pageLength": 25
