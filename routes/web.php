@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\AdvertiseController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AssistantController;
 use App\Http\Controllers\CertificateCategoryController;
@@ -116,6 +117,7 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
         Route::resource('products', ProductController::class);
         Route::resource('purchases', PurchasesController::class);
         Route::resource('payments', PaymentsController::class);
+        Route::resource('advertises', AdvertiseController::class);
 
     });
 });

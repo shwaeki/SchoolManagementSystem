@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Parents\ChatController;
+use App\Http\Controllers\Api\Parents\GeneralController;
 use App\Http\Controllers\Api\Parents\StudentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,7 @@ Route::prefix('parents')->group(function () {
         Route::post('/logout', [StudentController::class, 'logout']);
         Route::post('/sendMassage', [ChatController::class, 'sendMassage']);
         Route::get('/getMessages', [ChatController::class, 'getMessages']);
+        Route::get('/getAdvertises', [GeneralController::class, 'getAdvertises']);
     });
 
 });
