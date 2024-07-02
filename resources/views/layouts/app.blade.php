@@ -657,7 +657,7 @@
                         </a>
                     </li>
 
-                    @if(auth()->id() == 1)
+                    @if(auth()->id() == 1 || auth()->id() == 5)
                         <li class="menu menu-heading">
                             <div class="heading"><span> قيد التطوير</span></div>
                         </li>
