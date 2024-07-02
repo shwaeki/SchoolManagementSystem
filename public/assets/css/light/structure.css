@@ -1117,10 +1117,8 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
     height: 20px;
     stroke-width: 1.8;
 }
-#sidebar ul.menu-categories li.menu.active > .dropdown-toggle {
-    background-color: #4361ee;
-}
-#sidebar ul.menu-categories li.menu.active > .dropdown-toggle svg, #sidebar ul.menu-categories li.menu.active > .dropdown-toggle span {
+
+/*#sidebar ul.menu-categories li.menu.active > .dropdown-toggle svg, #sidebar ul.menu-categories li.menu.active > .dropdown-toggle span {
     color: #fff;
 }
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle[aria-expanded=true] {
@@ -1128,7 +1126,7 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
 }
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle:hover {
     color: #fff;
-}
+}*/
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle:hover svg:not(.badge-icon) {
     color: #fff;
     fill: rgba(67, 97, 238, 0.0392156863);

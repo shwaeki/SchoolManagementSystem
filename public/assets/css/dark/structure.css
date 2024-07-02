@@ -1065,7 +1065,7 @@ body.dark #sidebar ul.menu-categories li.menu > .dropdown-toggle svg:not(.badge-
     height: 20px;
     stroke-width: 1.8;
 }
-body.dark #sidebar ul.menu-categories li.menu.active > .dropdown-toggle {
+/*body.dark #sidebar ul.menu-categories li.menu.active > .dropdown-toggle {
     background-color: #4361ee;
 }
 body.dark #sidebar ul.menu-categories li.menu.active > .dropdown-toggle svg, body.dark #sidebar ul.menu-categories li.menu.active > .dropdown-toggle span {
@@ -1080,7 +1080,7 @@ body.dark #sidebar ul.menu-categories li.menu.active > .dropdown-toggle:hover {
 body.dark #sidebar ul.menu-categories li.menu.active > .dropdown-toggle:hover svg:not(.badge-icon) {
     color: #fff;
     fill: rgba(67, 97, 238, 0.0392156863);
-}
+}*/
 body.dark #sidebar ul.menu-categories li.menu > .dropdown-toggle[aria-expanded=false] svg.feather-chevron-right {
     transform: rotate(180deg);
     transition: 0.5s;

@@ -270,7 +270,7 @@
             <ul class="list-unstyled menu-categories" id="accordionExample">
 
                 <li class="menu active">
-                    <a href="/" aria-expanded="true" class="dropdown-toggle">
+                    <a href="/" aria-expanded="{{ Route::is('home') ? 'true' : 'false' }}" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -287,7 +287,7 @@
                 @auth("web")
 
                     <li class="menu">
-                        <a href="{{route('school-classes.index')}}" aria-expanded="false" class="dropdown-toggle">
+                        <a href="{{route('school-classes.index')}}" aria-expanded="{{ Route::is('school-classes.index','school-classes.edit','school-classes.create','school-classes.show') ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -301,7 +301,7 @@
 
 
                     <li class="menu">
-                        <a href="#students" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <a href="#students" data-bs-toggle="collapse" aria-expanded="{{ Route::is('students.index','students.edit','students.create','students-request.index','students.show') ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -327,15 +327,15 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="collapse submenu list-unstyled" id="students"
+                        <ul class="submenu list-unstyled  {{ Route::is('students.index','students.edit','students.create','students-request.index','students.show') ? 'show' : 'collapse' }}" id="students"
                             data-bs-parent="#accordionExample">
-                            <li>
+                            <li class="{{ Route::is('students.index') ? 'active' : '' }}">
                                 <a href="{{route('students.index')}}"> قائمة الطلاب </a>
                             </li>
-                            <li>
+                            <li class="{{ Route::is('students.create') ? 'active' : '' }}">
                                 <a href="{{route('students.create')}}"> اضافة </a>
                             </li>
-                            <li>
+                            <li class="{{ Route::is('students-request.index') ? 'active' : '' }}">
                                 <a href="{{route('students-request.index')}}"> طلبات الطلاب </a>
                             </li>
                         </ul>
@@ -347,7 +347,7 @@
                     </li>
 
                     <li class="menu">
-                        <a href="#teachers" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <a href="#teachers" data-bs-toggle="collapse" aria-expanded="{{ Route::is('teachers.index','teachers.edit','teachers.create','teachers.show') ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -373,19 +373,19 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="collapse submenu list-unstyled" id="teachers"
+                        <ul class="submenu list-unstyled {{ Route::is('teachers.index','teachers.edit','teachers.create','teachers.show') ? 'show' : 'collapse' }}" id="teachers"
                             data-bs-parent="#accordionExample">
-                            <li>
+                            <li class="{{ Route::is('teachers.index') ? 'active' : '' }}">
                                 <a href="{{route('teachers.index')}}"> قائمة المعلمين </a>
                             </li>
-                            <li>
+                            <li class="{{ Route::is('teachers.create') ? 'active' : '' }}">
                                 <a href="{{route('teachers.create')}}"> اضافة </a>
                             </li>
                         </ul>
                     </li>
 
                     <li class="menu">
-                        <a href="#assistants" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <a href="#assistants" data-bs-toggle="collapse" aria-expanded="{{ Route::is('assistants.index','assistants.edit','assistants.create','assistants.show') ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -411,19 +411,19 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="collapse submenu list-unstyled" id="assistants"
+                        <ul class="submenu list-unstyled {{ Route::is('assistants.index','assistants.edit','assistants.create','assistants.show') ? 'show' : 'collapse' }}" id="assistants"
                             data-bs-parent="#accordionExample">
-                            <li>
+                            <li class="{{ Route::is('assistants.index') ? 'active' : '' }}">
                                 <a href="{{route('assistants.index')}}"> قائمة المساعدات </a>
                             </li>
-                            <li>
+                            <li class="{{ Route::is('assistants.create') ? 'active' : '' }}">
                                 <a href="{{route('assistants.create')}}"> اضافة </a>
                             </li>
                         </ul>
                     </li>
 
                     <li class="menu">
-                        <a href="#workers" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <a href="#workers" data-bs-toggle="collapse" aria-expanded="{{ Route::is('workers.index','workers.edit','workers.create','workers.show') ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -450,12 +450,12 @@
                             </div>
                         </a>
 
-                        <ul class="collapse submenu list-unstyled" id="workers"
+                        <ul class="submenu list-unstyled {{ Route::is('workers.index','workers.edit','workers.create','workers.show') ? 'show' : 'collapse' }}" id="workers"
                             data-bs-parent="#accordionExample">
-                            <li>
+                            <li class="{{ Route::is('workers.index') ? 'active' : '' }}">
                                 <a href="{{route('workers.index')}}"> قائمة الموظفين </a>
                             </li>
-                            <li>
+                            <li class="{{ Route::is('workers.create') ? 'active' : '' }}">
                                 <a href="{{route('workers.create')}}"> اضافة </a>
                             </li>
                         </ul>
@@ -463,7 +463,7 @@
 
 
                     <li class="menu">
-                        <a href="#users" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <a href="#users" data-bs-toggle="collapse" aria-expanded="{{ Route::is('users.index','users.edit','users.create','users.show','roles.create') ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -489,15 +489,15 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="collapse submenu list-unstyled" id="users"
+                        <ul class="submenu list-unstyled  {{ Route::is('users.index','users.edit','users.create','users.show','roles.create') ? 'show' : 'collapse' }}" id="users"
                             data-bs-parent="#accordionExample">
-                            <li>
+                            <li class="{{ Route::is('users.index') ? 'active' : '' }}">
                                 <a href="{{route('users.index')}}"> مستخدمي النظام </a>
                             </li>
-                            <li>
+                            <li class="{{ Route::is('roles.create') ? 'active' : '' }}">
                                 <a href="{{route('roles.create')}}"> قائمة الادوار </a>
                             </li>
-                            <li>
+                            <li class="{{ Route::is('users.create') ? 'active' : '' }}">
                                 <a href="{{route('users.create')}}"> مستخدم جديد </a>
                             </li>
                         </ul>
@@ -508,7 +508,7 @@
                         <div class="heading"><span> إعدادات </span></div>
                     </li>
                     <li class="menu">
-                        <a href="{{route('academic-years.index')}}" aria-expanded="false" class="dropdown-toggle">
+                        <a href="{{route('academic-years.index')}}" aria-expanded="{{ Route::is('academic-years.index','academic-years.edit','academic-years.create','academic-years.show') ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -530,7 +530,7 @@
                     </li>
 
                     <li class="menu">
-                        <a href="{{route('reports.index')}}" aria-expanded="false" class="dropdown-toggle">
+                        <a href="{{route('reports.index')}}" aria-expanded="{{ Route::is('reports.index','reports.edit','reports.create','reports.show') ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -551,7 +551,7 @@
                         </a>
                     </li>
                     <li class="menu">
-                        <a href="{{route('messages.index')}}" aria-expanded="false" class="dropdown-toggle">
+                        <a href="{{route('messages.index')}}" aria-expanded="{{ Route::is('messages.index','messages.edit','messages.create','messages.show') ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -572,7 +572,7 @@
                         </a>
                     </li>
                     <li class="menu">
-                        <a href="{{route('certificates.index')}}" aria-expanded="false" class="dropdown-toggle">
+                        <a href="{{route('certificates.index')}}" aria-expanded="{{ Route::is('certificates.index','certificates.edit','certificates.create','certificates.show') ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -593,7 +593,7 @@
                         </a>
                     </li>
                     <li class="menu">
-                        <a href="{{route('salaries.index')}}" aria-expanded="false" class="dropdown-toggle">
+                        <a href="{{route('salaries.index')}}" aria-expanded="{{ Route::is('salaries.index','salaries.edit','salaries.create','salaries.show') ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -613,30 +613,10 @@
                             </div>
                         </a>
                     </li>
-                    <li class="menu d-none">
-                        <a href="{{route('chats.index')}}" aria-expanded="false" class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-cpu">
-                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                    <rect x="9" y="9" width="6" height="6"></rect>
-                                    <line x1="9" y1="1" x2="9" y2="4"></line>
-                                    <line x1="15" y1="1" x2="15" y2="4"></line>
-                                    <line x1="9" y1="20" x2="9" y2="23"></line>
-                                    <line x1="15" y1="20" x2="15" y2="23"></line>
-                                    <line x1="20" y1="9" x2="23" y2="9"></line>
-                                    <line x1="20" y1="14" x2="23" y2="14"></line>
-                                    <line x1="1" y1="9" x2="4" y2="9"></line>
-                                    <line x1="1" y1="14" x2="4" y2="14"></line>
-                                </svg>
-                                <span>الدردشات</span>
-                            </div>
-                        </a>
-                    </li>
+
 
                     <li class="menu">
-                        <a href="{{route('products.index')}}" aria-expanded="false" class="dropdown-toggle">
+                        <a href="{{route('products.index')}}" aria-expanded="{{ Route::is('products.index','products.edit','products.create','products.show') ? 'true' : 'false' }}" class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -663,7 +643,7 @@
                         </li>
 
                         <li class="menu">
-                            <a href="{{route('chats.index')}}" aria-expanded="false" class="dropdown-toggle">
+                            <a href="{{route('chats.index')}}" aria-expanded="{{ Route::is('chats.index','chats.edit','chats.create','chats.show') ? 'true' : 'false' }}" class="dropdown-toggle">
                                 <div class="">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -685,7 +665,7 @@
                         </li>
 
                         <li class="menu">
-                            <a href="{{route('advertises.index')}}" aria-expanded="false" class="dropdown-toggle">
+                            <a href="{{route('advertises.index')}}" aria-expanded="{{ Route::is('advertises.index','advertises.edit','advertises.create','advertises.show') ? 'true' : 'false' }}" class="dropdown-toggle">
                                 <div class="">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -714,7 +694,7 @@
 
                     @if(auth()->user()->show_salary_slip == true)
                         <li class="menu">
-                            <a href="{{route('mysalries')}}" aria-expanded="false" class="dropdown-toggle">
+                            <a href="{{route('mysalries')}}" aria-expanded="{{ Route::is('mysalries') ? 'true' : 'false' }}" class="dropdown-toggle">
                                 <div class="">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -745,7 +725,7 @@
 
                             <li class="menu">
                                 <a href="{{route('school-classes.show', $yearClass->schoolClass)  }}"
-                                   aria-expanded="false" class="dropdown-toggle">
+                                   aria-expanded="{{ Route::is('school-classes.show', $yearClass->schoolClass) ? 'true' : 'false' }}" class="dropdown-toggle">
                                     <div class="">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                              viewBox="0 0 24 24"
