@@ -601,7 +601,7 @@
                                 <div class="col-4">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title"> {{  $student->purchases->sum('amount')}}</h5>
+                                            <h5 class="card-title"> {{  $student->purchases->sum('price')}}</h5>
                                             <p class="card-text">مشتريات</p>
                                         </div>
                                     </div>
@@ -748,7 +748,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3 ">
-                            <label for="payment_way" class="form-label">اختر التقرير:</label>
+                            <label for="payment_way" class="form-label">طريقة الدفع:</label>
                             <select class="form-select" id="payment_way" name="payment_way">
                                 <option selected disabled value="">اختر ...</option>
                                 <option value="cash">كاش</option>
