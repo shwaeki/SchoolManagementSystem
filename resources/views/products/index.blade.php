@@ -32,6 +32,7 @@
             html2canvas(targetDiv, {
                 scale: 2,
             }).then(function (canvas) {
+                CanvasRenderingContext2D.direction = "rtl";
                 var link = document.createElement('a');
                 link.href = canvas.toDataURL('image/png');
                 link.download = product_name + '.png';
