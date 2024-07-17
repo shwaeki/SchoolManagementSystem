@@ -54,8 +54,6 @@ class StudentController extends BaseController
 
     public function login(Request $request)
     {
-
-
         $validator = Validator::make($request->all(), [
             'identification' => 'required|exists:students,identification',
             'phone' => 'required',
@@ -100,6 +98,15 @@ class StudentController extends BaseController
     {
         $request->user()->currentAccessToken()->delete();
         return $this->sendResponse([], 'Successfully logged out');
+    }
+
+    public function updateDeviceToken(Request $request)
+    {
+        $student = $request->user();
+        $student->device_token = request('device_token');
+        $student->save();
+
+        return $this->sendResponse([], 'Token stored successfully');
     }
 
     public function classes(Request $request)

@@ -3,6 +3,7 @@
 
 use App\Models\Message;
 use App\Models\SchoolClass;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 
 if (!function_exists('sendSms')) {
@@ -104,6 +105,29 @@ if (!function_exists('sendSmsBulk')) {
         }
 
 
+    }
+}
+
+if (!function_exists('sendNotification')) {
+     function sendNotification($deviceToken, $title, $body)
+    {
+        $client = new Client();
+
+        $response = $client->post('https://fcm.googleapis.com/fcm/send', [
+            'headers' => [
+                'Authorization' => 'key=' . config('services.fcm.key'),
+                'Content-Type' => 'application/json',
+            ],
+            'json' => [
+                'to' => $deviceToken,
+                'notification' => [
+                    'title' => $title,
+                    'body' => $body,
+                ],
+            ],
+        ]);
+
+        return $response->getStatusCode() == 200;
     }
 }
 
