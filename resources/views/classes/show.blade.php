@@ -380,6 +380,7 @@
 
                                                 @foreach($class_year_students as $data)
                                                     <tr>
+                                                        <td>{{$data->student?->id}} </td>
                                                         <td>{{$data->id}} </td>
                                                         <td>
                                                             <img src=" {{$data->student?->photo}}"

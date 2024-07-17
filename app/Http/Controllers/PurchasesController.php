@@ -6,6 +6,7 @@ use App\Models\Purchases;
 use App\Http\Requests\StorePurchasesRequest;
 use App\Http\Requests\UpdatePurchasesRequest;
 use App\Models\Student;
+use App\Models\StudentClass;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -33,16 +34,22 @@ class PurchasesController extends Controller
     public function store(StorePurchasesRequest $request)
     {
 
+
+
         DB::Transaction(function () {
             $products = request('order');
             $student_id = request('student_id');
+            $student_class_id = request('student_class');
+            $student_class = StudentClass::findOrFail($student_class_id);
             $student = Student::findOrFail($student_id);
 
 
             foreach ($products as $product) {
-                $student->purchases()->create([
+                $student_class->purchases()->create([
                     'product_id' => $product['product'],
                     'price' => $product['price'],
+                    'student_id' => request('student_id'),
+                    'student_classes_id' => request('student_class_id'),
                     'added_by' => auth()->id(),
                 ]);
 

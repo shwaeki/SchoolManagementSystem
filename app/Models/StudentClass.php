@@ -40,14 +40,14 @@ class StudentClass extends Model
     }
 
 
-    /*    public function schoolClass(): belongsTo
-        {
-            return $this->belongsTo(SchoolClass::class);
-        }
+    public function purchases()
+    {
+        return $this->hasMany(Purchases::class, 'student_classes_id');
+    }
 
-        public function academicYear(): belongsTo
-        {
-            return $this->belongsTo(AcademicYear::class);
-        }*/
+    public function payments()
+    {
+        return $this->hasMany(Payments::class, 'student_classes_id');
+    }
 
 }

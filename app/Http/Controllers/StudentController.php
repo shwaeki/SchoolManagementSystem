@@ -87,9 +87,9 @@ class StudentController extends Controller
             "student_classes" => $student->studentClasses,
             "reports" => Report::where('type', 'student')->get(),
             "student_reports" => $student->reports,
-            "student_purchases" => $student->purchases,
-            "student_payments" => $student->payments,
-            "products" => Product::where('status', true)->get(),
+            "student_purchases" => $current_student_class?->purchases,
+            "student_payments" => $current_student_class?->payments,
+            "products" => Product::where('status', true)?->get(),
             "current_student_class" => $current_student_class,
         ];
 
