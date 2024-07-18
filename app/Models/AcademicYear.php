@@ -27,4 +27,15 @@ class AcademicYear extends Model
     {
         return $this->hasMany(StudentClass::class);
     }
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchases::class, 'academic_year_id');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payments::class, 'academic_year_id');
+    }
+
 }

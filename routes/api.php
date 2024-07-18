@@ -31,6 +31,9 @@ Route::prefix('parents')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/info', [StudentController::class, 'info']);
         Route::get('/classes', [StudentController::class, 'classes']);
+        Route::post('/update-device-token', [StudentController::class, 'updateDeviceToken']);
+        Route::post('/send-test-notification', [StudentController::class, 'sendTestNotification']);
+
         Route::post('/logout', [StudentController::class, 'logout']);
         Route::post('/sendMassage', [ChatController::class, 'sendMassage']);
         Route::get('/getMessages', [ChatController::class, 'getMessages']);

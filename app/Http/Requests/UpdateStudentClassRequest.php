@@ -11,7 +11,7 @@ class UpdateStudentClassRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class UpdateStudentClassRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'register_fees' => 'required|numeric',
+            'study_fees' => 'required|numeric',
         ];
     }
 }

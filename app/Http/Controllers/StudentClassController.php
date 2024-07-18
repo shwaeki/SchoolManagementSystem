@@ -16,15 +16,14 @@ class StudentClassController extends Controller
     {
         $this->middleware('auth');
 
-        $this->middleware('auth:web,teacher')->only(['store','destroy']);
-        $this->middleware('auth:web')->except(['store','destroy']);
+        $this->middleware('auth:web,teacher')->only(['store', 'destroy']);
+        $this->middleware('auth:web')->except(['store', 'destroy']);
     }
 
     public function index()
     {
 
     }
-
 
 
     public function create()
@@ -38,7 +37,7 @@ class StudentClassController extends Controller
         $yearClass = YearClass::findOrFail(request('year_class_id'));
         $students = request('students');
 
-        foreach ($students as $student){
+        foreach ($students as $student) {
             $data = [
                 'student_id' => $student,
                 'teacher_id' => $yearClass->supervisor,
@@ -68,7 +67,11 @@ class StudentClassController extends Controller
 
     public function update(UpdateStudentClassRequest $request, StudentClass $studentClass)
     {
-        //
+        $data = request()->all();
+
+        $studentClass->update($data);
+        Session::flash('message', 'تم تعديل المعلومات بنجاح!');
+        return redirect()->back();
     }
 
 

@@ -65,6 +65,17 @@ class Chat extends Component
         $this->message = '';
         $this->refreshChats();
         $this->emit('chat-new-message', $message);
+
+
+        $deviceToken = $this->selectedStudent->device_token;
+
+        if ($deviceToken) {
+            sendNotification(
+                $deviceToken,
+                'New Message',
+                'You have a new message from Riad Majd.'
+            );
+        }
     }
 
     public function mount()

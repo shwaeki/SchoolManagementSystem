@@ -80,6 +80,17 @@ class Student extends Authenticatable
     }
 
 
+    public function purchasesCurrentYear()
+    {
+        return $this->hasMany(Purchases::class, 'student_id')->where( 'academic_year_id', getUserActiveAcademicYearID());
+    }
+
+    public function paymentsCurrentYear()
+    {
+        return $this->hasMany(Payments::class, 'student_id')->where( 'academic_year_id', getUserActiveAcademicYearID());
+    }
+
+
     public function generateCode($phone = null)
     {
         $code = rand(1000, 9999);

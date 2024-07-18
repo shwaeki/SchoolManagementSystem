@@ -39,15 +39,4 @@ class StudentClass extends Model
         return $this->hasMany(StudentMark::class);
     }
 
-
-    /*    public function schoolClass(): belongsTo
-        {
-            return $this->belongsTo(SchoolClass::class);
-        }
-
-        public function academicYear(): belongsTo
-        {
-            return $this->belongsTo(AcademicYear::class);
-        }*/
-
 }

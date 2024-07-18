@@ -1,9 +1,12 @@
 <?php
 
 
+use App\Models\AcademicYear;
 use App\Models\Message;
 use App\Models\SchoolClass;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 
 if (!function_exists('sendSms')) {
     function sendSms($message, $phone_number)
@@ -23,8 +26,8 @@ if (!function_exists('sendSms')) {
 
                 $response = Http::withToken($getToken)->post($url, [
                     'sms' => [
-                        'user' => ['username' => env('SMS_019_USERNAME','riadmajd')],
-                        'source' => env('SMS_019_PHONE','026654099'),
+                        'user' => ['username' => env('SMS_019_USERNAME', 'riadmajd')],
+                        'source' => env('SMS_019_PHONE', '026654099'),
                         'destinations' => [
                             'phone' => [
                                 '_' => $phone_number,
@@ -78,8 +81,8 @@ if (!function_exists('sendSmsBulk')) {
             try {
                 $response = Http::withToken($getToken)->post($url, [
                     'sms' => [
-                        'user' => ['username' => env('SMS_019_USERNAME','riadmajd')],
-                        'source' => env('SMS_019_PHONE','026654099'),
+                        'user' => ['username' => env('SMS_019_USERNAME', 'riadmajd')],
+                        'source' => env('SMS_019_PHONE', '026654099'),
                         'destinations' => [
                             'phone' => $phones,
                         ],
@@ -90,7 +93,7 @@ if (!function_exists('sendSmsBulk')) {
 
                 $result = $response->json();
 
-               // dd(env('SMS_019_USERNAME'), env('SMS_019_PHONE'), $result);
+                // dd(env('SMS_019_USERNAME'), env('SMS_019_PHONE'), $result);
                 if ($result['status'] == 0) {
                     return true;
                 } else {
@@ -104,6 +107,43 @@ if (!function_exists('sendSmsBulk')) {
         }
 
 
+    }
+}
+
+if (!function_exists('getUserActiveAcademicYearID')) {
+    function getUserActiveAcademicYearID()
+    {
+        return Session::get('activeAcademicYear')->id;
+    }
+}
+
+if (!function_exists('getAdminActiveAcademicYearID')) {
+    function getAdminActiveAcademicYearID()
+    {
+        return AcademicYear::where('status', true)->get()->first()?->id;
+    }
+}
+
+if (!function_exists('sendNotification')) {
+    function sendNotification($deviceToken, $title, $body)
+    {
+        $client = new Client();
+
+        $response = $client->post('https://fcm.googleapis.com/fcm/send', [
+            'headers' => [
+                'Authorization' => 'key=' . config('services.fcm.key'),
+                'Content-Type' => 'application/json',
+            ],
+            'json' => [
+                'to' => $deviceToken,
+                'notification' => [
+                    'title' => $title,
+                    'body' => $body,
+                ],
+            ],
+        ]);
+
+        return $response->getStatusCode() == 200;
     }
 }
 

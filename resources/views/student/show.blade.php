@@ -55,7 +55,7 @@
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                      stroke-linejoin="round" class="feather feather-alert-triangle">
                                     <path
-                                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
                                     <line x1="12" y1="9" x2="12" y2="13"></line>
                                     <line x1="12" y1="17" x2="12" y2="17"></line>
                                 </svg>
@@ -338,6 +338,7 @@
                         </div>
 
                         @if($current_student_class != null)
+
                             <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
                                 <div class="section general-info">
                                     <div class="info">
@@ -346,7 +347,14 @@
                                                 <h6> بيانات الفصل الدراسي لسنة
                                                     - {{$current_student_class->yearClass->academicYear->name}} </h6>
                                             </div>
+                                            <div class="col-3 text-end">
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#editFeesModal">
+                                                    تعديل
+                                                </button>
+                                            </div>
                                         </div>
+
 
                                         <div class="row">
                                             <div class="col-12 col-md-3">
@@ -385,6 +393,22 @@
                                                 </div>
                                             </div>
 
+
+                                            <div class="col-12 col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="study_fees" class="form-label">القسط الدراسي </label>
+                                                    <input type="text" id="study_fees" class="form-control"
+                                                           value="{{$current_student_class->study_fees}}" disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="register_fees" class="form-label">رسوم التسجيل</label>
+                                                    <input type="text" id="register_fees" class="form-control"
+                                                           value="{{$current_student_class->register_fees}}" disabled>
+                                                </div>
+                                            </div>
                                         </div>
 
 
@@ -592,24 +616,24 @@
 
                     </div>
                 </div>
+
                 <div class="tab-pane fade " id="student-purchases" role="tabpanel"
                      aria-labelledby="student-purchases-tab">
                     <div class="row">
-
                         <div class="col-12 text-center mb-3">
                             <div class="row">
                                 <div class="col-4">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title"> {{  $student->purchases->sum('price')}}</h5>
-                                            <p class="card-text">مشتريات</p>
+                                            <h5 class="card-title"> {{  $student_purchases?->sum('price') + $current_student_class?->register_fees + $current_student_class?->study_fees}}</h5>
+                                            <p class="card-text">الديون </p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title">{{  $student->payments->sum('amount')}}</h5>
+                                            <h5 class="card-title">{{ $student_payments?->sum('amount')}}</h5>
                                             <p class="card-text">مدفوعات</p>
                                         </div>
                                     </div>
@@ -617,7 +641,7 @@
                                 <div class="col-4">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title"> {{  $student->purchases->sum('amount') - $student->payments->sum('amount') }}</h5>
+                                            <h5 class="card-title"> {{  ( $student_purchases?->sum('price') + $current_student_class?->register_fees + $current_student_class?->study_fees) - $student_payments->sum('amount') }}</h5>
                                             <p class="card-text">الرصيد</p>
                                         </div>
                                     </div>
@@ -677,7 +701,7 @@
                                         </div>
                                         <div class="col-3 text-end">
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#addPaumentModal">
+                                                    data-bs-target="#addPaymentModal">
                                                 اضافة
                                             </button>
                                         </div>
@@ -710,33 +734,58 @@
                                 </div>
                             </form>
                         </div>
-
                     </div>
                 </div>
+
             </div>
 
         </div>
     </div>
 
-    <div class="modal fade" id="attributeModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="attributeModalLabel">قيمة العناصر المتغيرة</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="inputContainer"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn" data-bs-dismiss="modal">غلاق</button>
-                    <button type="button" class="btn btn-primary" id="reportDynamicExport">تصدير</button>
-                </div>
+    @if($current_student_class != null)
+        <div class="modal fade" id="editFeesModal">
+            <div class="modal-dialog">
+                <form action="{{ route('student-classes.update',['student_class'=>$current_student_class]) }}"
+                      method="post">
+                    @method('PUT')
+                    @csrf
+                    <input type="hidden" name="student_id" value="{{ $student->id }}">
+                    <input type="hidden" name="student_class" value="{{ $current_student_class->id }}">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel"> تعديل الرسوم</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="mb-3">
+                                <label for="register_fees" class="form-label">رسوم التسجيل:</label>
+                                <input type="text" class="form-control only-integer" id="register_fees"
+                                       name="register_fees"
+                                       value="{{ $current_student_class->register_fees }}" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="study_fees" class="form-label">القسط الدراسي :</label>
+                                <input type="text" class="form-control only-integer" id="study_fees" name="study_fees"
+                                       value="{{ $current_student_class->study_fees }}" required>
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-bs-dismiss="modal">اغلاق</button>
+                            <button type="submit" class="btn btn-primary">حفظ</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
 
-    <div class="modal fade" id="addPaumentModal">
+    @endif
+
+
+    <div class="modal fade" id="addPaymentModal">
         <div class="modal-dialog">
             <form action="{{ route('payments.store') }}" method="post">
                 @csrf
@@ -749,11 +798,21 @@
                     <div class="modal-body">
                         <div class="mb-3 ">
                             <label for="payment_way" class="form-label">طريقة الدفع:</label>
-                            <select class="form-select" id="payment_way" name="payment_way">
+                            <select class="form-select" id="payment_way" name="payment_way" required>
                                 <option selected disabled value="">اختر ...</option>
                                 <option value="cash">كاش</option>
                                 <option value="check">شيك</option>
                                 <option value="transfer">تحويل</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3 ">
+                            <label for="payment_for" class="form-label"> نوع الدفع:</label>
+                            <select class="form-select" id="payment_for" name="payment_for" required>
+                                <option selected disabled value="">اختر ...</option>
+                                <option>رسوم التسجيل</option>
+                                <option>القسط الدراسي</option>
+                                <option>مبيعات</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -808,6 +867,25 @@
             </form>
         </div>
     </div>
+
+    <div class="modal fade" id="attributeModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="attributeModalLabel">قيمة العناصر المتغيرة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="inputContainer"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-dismiss="modal">غلاق</button>
+                    <button type="button" class="btn btn-primary" id="reportDynamicExport">تصدير</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @push('scripts')

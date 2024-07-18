@@ -72,12 +72,8 @@ class StudentController extends Controller
     public function show(Student $student)
     {
 
-
-        $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
-        $activeAcademicYear = Session::get('activeAcademicYear');
-
-        $current_student_class = $student->studentClasses()->whereHas('yearClass', function ($query) use ($activeAcademicYear) {
-            $query->where('academic_year_id', $activeAcademicYear->id);
+        $current_student_class = $student->studentClasses()->whereHas('yearClass', function ($query)  {
+            $query->where('academic_year_id', getUserActiveAcademicYearID());
         })->get()->first();
 
 
@@ -87,9 +83,9 @@ class StudentController extends Controller
             "student_classes" => $student->studentClasses,
             "reports" => Report::where('type', 'student')->get(),
             "student_reports" => $student->reports,
-            "student_purchases" => $student->purchases,
-            "student_payments" => $student->payments,
-            "products" => Product::where('status', true)->get(),
+            "student_purchases" => $student->purchasesCurrentYear,
+            "student_payments" => $student->paymentsCurrentYear,
+            "products" => Product::where('status', true)?->get(),
             "current_student_class" => $current_student_class,
         ];
 

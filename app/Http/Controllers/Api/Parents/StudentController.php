@@ -9,7 +9,9 @@ use App\Models\Otp;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use Kreait\Firebase\Exception\Messaging\NotFound;
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\Messaging\CloudMessage;
 
 class StudentController extends BaseController
 {
@@ -54,8 +56,6 @@ class StudentController extends BaseController
 
     public function login(Request $request)
     {
-
-
         $validator = Validator::make($request->all(), [
             'identification' => 'required|exists:students,identification',
             'phone' => 'required',
@@ -102,6 +102,57 @@ class StudentController extends BaseController
         return $this->sendResponse([], 'Successfully logged out');
     }
 
+    public function updateDeviceToken(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'device_token' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $student = $request->user();
+        $student->device_token = request('device_token');
+        $student->save();
+
+        return $this->sendResponse([], 'Token stored successfully');
+    }
+
+    public function sendTestNotification(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'body' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $student = $request->user();
+        $title = request('title');
+        $body = request('body');
+
+        $deviceToken = $student->device_token;
+
+        if ($deviceToken) {
+            try {
+                $factory = (new Factory)->withServiceAccount(public_path('firebase-configuration.json'));
+                $messaging = $factory->createMessaging();
+                $message = CloudMessage::withTarget('token', $deviceToken)->withNotification(['title' => $title, 'body' => $body]);
+                $messaging->send($message);
+                return $this->sendResponse(['message' => $message], 'Notification send successfully');
+            }catch ( NotFound $exception){
+                return $this->sendError('Device Token Not Found .', []);
+            }
+        } else {
+            return $this->sendError('Device Token is empty .', []);
+        }
+    }
+
     public function classes(Request $request)
     {
 
@@ -128,6 +179,6 @@ class StudentController extends BaseController
             $classesData = StudentClassResource::collection($classes);
         }
 
-        return $this->sendResponse(['current_class' => $currentClassData, 'classes' =>$classesData], 'Student Classes');
+        return $this->sendResponse(['current_class' => $currentClassData, 'classes' => $classesData], 'Student Classes');
     }
 }
