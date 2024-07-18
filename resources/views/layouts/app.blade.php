@@ -75,7 +75,7 @@
           href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css"/>
 
 
-    <link href="{{ asset("assets/css/style.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/css/style.css?v=1.0")  }}" rel="stylesheet" type="text/css"/>
 
 
     @livewireStyles

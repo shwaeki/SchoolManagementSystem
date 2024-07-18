@@ -270,7 +270,7 @@
                 </tbody>
             </table>
 
-            <div class="row px-3 g-0" style="page-break-inside:avoid">
+            <div class="row px-3 g-0" style="page-break-inside:avoid; {{ $certificate->id == 3 ? 'page-break-before: always;' : ''}}">
                 <div class="col-12">
                     <div class="mb-3 mt-3">
                         <p class="fs-6  text-black">ملاحظات مربية الفصل الدراسي الاول</p>
@@ -320,9 +320,11 @@
     </div>
 @endsection
 
+
+
 @push('scripts')
     <script type="text/javascript">
-             window.onafterprint = window.close;
-             window.print();
+        window.onafterprint = window.close;
+        window.print();
     </script>
 @endpush
