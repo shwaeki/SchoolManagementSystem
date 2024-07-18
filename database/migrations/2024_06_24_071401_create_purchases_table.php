@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained('products')->onUpdate('cascade')->onDelete('cascade');
             $table->double('price');
-            $table->foreignId('student_classes_id')->nullable()->constrained('student_classes')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('academic_year_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('student_id')->constrained('students')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('added_by')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

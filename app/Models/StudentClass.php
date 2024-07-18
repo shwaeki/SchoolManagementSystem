@@ -39,15 +39,4 @@ class StudentClass extends Model
         return $this->hasMany(StudentMark::class);
     }
 
-
-    public function purchases()
-    {
-        return $this->hasMany(Purchases::class, 'student_classes_id');
-    }
-
-    public function payments()
-    {
-        return $this->hasMany(Payments::class, 'student_classes_id');
-    }
-
 }

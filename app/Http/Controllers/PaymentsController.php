@@ -34,21 +34,18 @@ class PaymentsController extends Controller
     public function store(StorePaymentsRequest $request)
     {
 
-        DB::Transaction(function (){
+        DB::Transaction(function () {
             $student_id = request('student_id');
-            $student_class_id = request('student_class');
-
-            $student_class = StudentClass::findOrFail($student_class_id);
             $student = Student::findOrFail($student_id);
 
-           $text = $student_class->payments()->create([
+            $student->payments()->create([
                 'payment_for' => request('payment_for'),
                 'payment_way' => request('payment_way'),
                 'amount' => request('amount'),
                 'amount_before' => $student->balance,
                 'amount_after' => $student->balance - request('amount'),
                 'student_id' => request('student_id'),
-                'student_classes_id' => request('student_class_id'),
+                'academic_year_id' => getUserActiveAcademicYearID(),
                 'payment_date' => request('payment_date'),
                 'added_by' => auth()->id(),
             ]);

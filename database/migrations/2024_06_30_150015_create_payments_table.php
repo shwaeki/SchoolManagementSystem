@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->double('amount_before')->default(0);
             $table->double('amount_after')->default(0);
             $table->date('payment_date')->nullable();
-            $table->foreignId('student_classes_id')->nullable()->constrained('student_classes')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('academic_year_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('student_id')->constrained('students')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('added_by')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
