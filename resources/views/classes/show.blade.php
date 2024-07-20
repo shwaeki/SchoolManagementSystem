@@ -273,6 +273,7 @@
                                                     <tr>
                                                         <th scope="col"> اسم المساعدة</th>
                                                         <th scope="col"> رقم الهاتف</th>
+                                                        <th scope="col"> خيارات </th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -281,6 +282,14 @@
                                                         <tr>
                                                             <td>{{$assistant->name}}</td>
                                                             <td>{{$assistant->phone}}</td>
+                                                            <td>
+                                                                <button type="button"
+                                                                        class="btn btn-light-danger text-danger"
+                                                                        onclick="deleteItem(this)"
+                                                                        data-item="{{route('year-classes.destroyAssistant',[$current_year_class,$assistant])}}">
+                                                                    <i class="far fa-trash-alt"></i>
+                                                                </button>
+                                                            </td>
                                                         </tr>
                                                         @php($assistants_data .= '- '.$assistant->name)
                                                     @endforeach

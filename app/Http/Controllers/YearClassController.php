@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SchoolClass;
+use App\Models\Teacher;
 use App\Models\YearClass;
 use App\Http\Requests\StoreYearClassRequest;
 use App\Http\Requests\UpdateYearClassRequest;
@@ -60,7 +61,7 @@ class YearClassController extends Controller
      */
     public function update(UpdateYearClassRequest $request, YearClass $yearClass)
     {
- //       dd(request()->all());
+        //       dd(request()->all());
         $yearClass->update(request()->all());
         Session::flash('message', 'تم تعديل معلومات الفصل التعليمي بنجاح.');
         return redirect()->back();
@@ -77,7 +78,15 @@ class YearClassController extends Controller
     public function storeAssistant(Request $request, YearClass $yearClass)
     {
         $yearClass->assistants()->attach(request('assistant_id'));
-        Session::flash('message', 'تم اضافة مساعدةجديدة بنجاح.');
+        Session::flash('message', 'تم اضافة مساعدة جديدة بنجاح.');
+        return redirect()->back();
+    }
+
+    public function destroyAssistant(Request $request, YearClass $yearClass, Teacher $assistant)
+    {
+
+        $yearClass->assistants()->detach($assistant->id);
+        Session::flash('message', 'تم حذف المساعدة بنجاح.');
         return redirect()->back();
     }
 }

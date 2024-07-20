@@ -89,6 +89,7 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
         Route::put('assistants/change-password/{assistant}', [AssistantController::class, 'passwordUpdate'])->name('assistants.password');
         Route::resource('assistants', AssistantController::class);
 
+        Route::delete('year-classes/destroy-assistant/{yearClass}/{assistant}', [YearClassController::class, 'destroyAssistant'])->name('year-classes.destroyAssistant');
         Route::post('year-classes/store-assistant/{yearClass}', [YearClassController::class, 'storeAssistant'])->name('year-classes.storeAssistant');
         Route::resource('year-classes', YearClassController::class);
 
