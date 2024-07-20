@@ -55,7 +55,7 @@
                     </div>
                     <div class="w-content" style="    margin-top: 10px;">
                         <div class="w-info">
-                            <p class="value">{{ $registered_students_count }}<span>طالب</span></p>
+                            <p class="value">{{ $registered_students_count }}<span> طالب </span></p>
                         </div>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                     </div>
                     <div class="w-content" style="    margin-top: 10px;">
                         <div class="w-info">
-                            <p class="value">{{  $students_count}} <span>طالب</span></p>
+                            <p class="value">{{  $students_count}} <span> طالب </span></p>
                         </div>
                     </div>
                 </div>

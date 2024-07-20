@@ -38,19 +38,13 @@ class HomeController extends Controller
         $data['teachers_count'] = Teacher::count();
 
 
-        $activeAcademicYear = Session::get('activeAcademicYear');
-        $current_year_class = YearClass::where('academic_year_id', $activeAcademicYear->id)->get()->first();
+        $activeAcademicYear = getUserActiveAcademicYearID();
 
-        $registered_students_count = 0;
-        foreach ($current_year_class as $year_class) {
-            $year_class_students = $current_year_class->students()->whereHas('student', function ($query) {
+        $data['registered_students_count'] = YearClass::where('academic_year_id', $activeAcademicYear)
+            ->withCount(['students' => function ($query) {
                 $query->whereNull('deleted_at');
-            })->get();
-
-            $registered_students_count += $year_class_students->count();
-        }
-
-        $data['registered_students_count'] = $registered_students_count;
+            }])
+            ->get()->sum('students_count');
 
 
 
