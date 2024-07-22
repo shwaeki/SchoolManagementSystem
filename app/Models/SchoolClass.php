@@ -18,11 +18,6 @@ class SchoolClass extends Model
         return $this->belongsTo(User::class,'added_by');
     }
 
-/*    public function studentClasses(): hasMany
-    {
-        return $this->hasMany(StudentClass::class);
-    }*/
-
     public function yearClasses(): hasMany
     {
         return $this->hasMany(YearClass::class);

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreDailyProgramRequest;
+use App\Models\DailyProgram;
 use App\Models\SchoolClass;
 use App\Models\Teacher;
 use App\Models\YearClass;
@@ -9,6 +11,7 @@ use App\Http\Requests\StoreYearClassRequest;
 use App\Http\Requests\UpdateYearClassRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use function Psy\debug;
 
 class YearClassController extends Controller
@@ -87,6 +90,41 @@ class YearClassController extends Controller
 
         $yearClass->assistants()->detach($assistant->id);
         Session::flash('message', 'تم حذف المساعدة بنجاح.');
+        return redirect()->back();
+    }
+
+    public function storeDailyProgram(StoreDailyProgramRequest $request, YearClass $yearClass)
+    {
+
+        $conflict = DailyProgram::where('year_class_id', $yearClass->id)
+            ->where('day', request('day'))
+            ->where(function ($query) use ($request) {
+                $query->whereBetween('start_time', [request('start_time'), request('end_time')])
+                    ->orWhereBetween('end_time', [request('start_time'), request('end_time')]);
+            })->exists();
+
+        if ($conflict) {
+            Session::flash('warnings', 'الفترة الزمنية محجوزة بالفعل لهذا الصف في اليوم المحدد.');
+            return redirect()->back();
+        }
+
+      $dailyProgram = $yearClass->dailyPrograms()->create($request->all());
+
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $path = $image->storeAs('public/images/daily_programs', $image->getClientOriginalName());
+            $dailyProgram->update(['image' => $path]);
+        }
+
+        Session::flash('message', 'تم إنشاء البرنامج اليومي بنجاح.');
+        return redirect()->back();
+    }
+
+    public function destroyDailyProgram(Request $request, DailyProgram $day)
+    {
+        $day->delete();
+        Session::flash('message', 'تم حذف البرنامج اليومي بنجاح.');
         return redirect()->back();
     }
 }

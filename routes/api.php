@@ -33,11 +33,13 @@ Route::prefix('parents')->group(function () {
         Route::get('/classes', [StudentController::class, 'classes']);
         Route::post('/update-device-token', [StudentController::class, 'updateDeviceToken']);
         Route::post('/send-test-notification', [StudentController::class, 'sendTestNotification']);
+        Route::get('/daily-program', [StudentController::class, 'getDailyProgram']);
 
         Route::post('/logout', [StudentController::class, 'logout']);
         Route::post('/sendMassage', [ChatController::class, 'sendMassage']);
         Route::get('/getMessages', [ChatController::class, 'getMessages']);
         Route::get('/getAdvertises', [GeneralController::class, 'getAdvertises']);
+
     });
 
 });

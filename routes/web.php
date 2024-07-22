@@ -8,6 +8,7 @@ use App\Http\Controllers\CertificateCategoryController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CertificateFieldController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\DailyProgramController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ParentController;
@@ -91,6 +92,8 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
 
         Route::delete('year-classes/destroy-assistant/{yearClass}/{assistant}', [YearClassController::class, 'destroyAssistant'])->name('year-classes.destroyAssistant');
         Route::post('year-classes/store-assistant/{yearClass}', [YearClassController::class, 'storeAssistant'])->name('year-classes.storeAssistant');
+        Route::post('year-classes/store-daily-program/{yearClass}', [YearClassController::class, 'storeDailyProgram'])->name('year-classes.dailyProgram.store');
+        Route::delete('year-classes/destroy-daily-program/{day}', [YearClassController::class, 'destroyDailyProgram'])->name('year-classes.dailyProgram.destroy');
         Route::resource('year-classes', YearClassController::class);
 
         Route::post('student-reports/generate', [StudentReportController::class, 'generate'])->name('student-reports.generate');

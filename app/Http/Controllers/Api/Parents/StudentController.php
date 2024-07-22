@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Parents;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\StudentClassResource;
 use App\Models\AcademicYear;
+use App\Models\DailyProgram;
 use App\Models\Otp;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -145,7 +146,7 @@ class StudentController extends BaseController
                 $message = CloudMessage::withTarget('token', $deviceToken)->withNotification(['title' => $title, 'body' => $body]);
                 $messaging->send($message);
                 return $this->sendResponse(['message' => $message], 'Notification send successfully');
-            }catch ( NotFound $exception){
+            } catch (NotFound $exception) {
                 return $this->sendError('Device Token Not Found .', []);
             }
         } else {
@@ -158,11 +159,8 @@ class StudentController extends BaseController
 
         $student = $request->user();
 
-        $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
-
-
-        $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) use ($adminActiveAcademicYear) {
-            $query->where('academic_year_id', $adminActiveAcademicYear->id);
+        $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) {
+            $query->where('academic_year_id', getAdminActiveAcademicYearID());
         })->get()->first();
 
         $classes = $student->studentClasses;
@@ -180,5 +178,22 @@ class StudentController extends BaseController
         }
 
         return $this->sendResponse(['current_class' => $currentClassData, 'classes' => $classesData], 'Student Classes');
+    }
+
+
+    public function getDailyProgram(Request $request)
+    {
+
+        $student = $request->user();
+
+
+        $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) {
+            $query->where('academic_year_id', getAdminActiveAcademicYearID());
+        })->get()->first();
+
+
+        $data = $currentClass?->yearClass?->dailyPrograms;
+
+        return $this->sendResponse([$data], 'Daily Program Data');
     }
 }

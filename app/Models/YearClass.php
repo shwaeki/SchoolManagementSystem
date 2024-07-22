@@ -46,6 +46,12 @@ class YearClass extends Model
     }
 
 
+    public function dailyPrograms(): hasMany
+    {
+        return $this->hasMany(DailyProgram::class);
+    }
+
+
     public function assistants()
     {
         return $this->belongsToMany(Teacher::class,'year_class_assistants','year_class_id','assistant_id');
