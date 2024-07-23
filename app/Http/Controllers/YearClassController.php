@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreDailyProgramRequest;
+use App\Http\Requests\UpdateStudentAttendanceRequest;
 use App\Models\DailyProgram;
 use App\Models\SchoolClass;
+use App\Models\StudentAttendance;
 use App\Models\Teacher;
 use App\Models\YearClass;
 use App\Http\Requests\StoreYearClassRequest;
 use App\Http\Requests\UpdateYearClassRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use function Psy\debug;
@@ -64,7 +67,6 @@ class YearClassController extends Controller
      */
     public function update(UpdateYearClassRequest $request, YearClass $yearClass)
     {
-        //       dd(request()->all());
         $yearClass->update(request()->all());
         Session::flash('message', 'تم تعديل معلومات الفصل التعليمي بنجاح.');
         return redirect()->back();
@@ -108,7 +110,7 @@ class YearClassController extends Controller
             return redirect()->back();
         }
 
-      $dailyProgram = $yearClass->dailyPrograms()->create($request->all());
+        $dailyProgram = $yearClass->dailyPrograms()->create($request->all());
 
 
         if ($request->hasFile('image')) {
@@ -125,6 +127,35 @@ class YearClassController extends Controller
     {
         $day->delete();
         Session::flash('message', 'تم حذف البرنامج اليومي بنجاح.');
+        return redirect()->back();
+    }
+
+
+    public function updateStudentAttendance(UpdateStudentAttendanceRequest $request, YearClass $yearClass)
+    {
+
+
+        DB::transaction(function () use ($yearClass) {
+            $students = request('students',[]);
+            $date = request('date', now());
+
+
+
+            foreach ($students as $student=>$status) {
+                StudentAttendance::updateOrCreate(
+                    [
+                        'year_class_id' => $yearClass->id,
+                        'student_id' => $student,
+                        'date' => $date,
+                    ],
+                    [
+                    'status' => $status,
+                    'added_by' => auth()->id(),
+                ]);
+            }
+        });
+
+        Session::flash('message', 'تم تسجيل حضور الطلاب بنجاح');
         return redirect()->back();
     }
 }

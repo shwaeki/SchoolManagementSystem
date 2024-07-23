@@ -90,6 +90,11 @@ class Student extends Authenticatable
         return $this->hasMany(Payments::class, 'student_id')->where( 'academic_year_id', getUserActiveAcademicYearID());
     }
 
+    public function attendances()
+    {
+        return $this->hasMany(StudentAttendance::class);
+    }
+
 
     public function generateCode($phone = null)
     {

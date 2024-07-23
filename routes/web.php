@@ -71,6 +71,8 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
     Route::resource('chats', ChatController::class);
 
 
+    Route::post('year-classes/update-attendance/{yearClass}', [YearClassController::class, 'updateStudentAttendance'])->name('year-classes.attendance.update');
+
     Route::post('year-classes/store-daily-program/{yearClass}', [YearClassController::class, 'storeDailyProgram'])->name('year-classes.dailyProgram.store');
     Route::delete('year-classes/destroy-daily-program/{day}', [YearClassController::class, 'destroyDailyProgram'])->name('year-classes.dailyProgram.destroy');
 

@@ -70,6 +70,12 @@
     <link href="{{ asset("assets/plugins/css/dark/sweetalerts2/custom-sweetalert.css")  }}" rel="stylesheet"
           type="text/css"/>
 
+
+    <link href="{{ asset("assets/plugins/src/flatpickr/flatpickr.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/light/flatpickr/custom-flatpickr.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("assets/plugins/css/dark/flatpickr/custom-flatpickr.css")  }}" rel="stylesheet" type="text/css"/>
+
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"/>
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css"/>
@@ -852,6 +858,8 @@
 <script src="{{ asset("assets/plugins/src/table/datatable/button-ext/buttons.print.min.js") }}"></script>
 <script src="{{ asset("assets/plugins/src/table/datatable/button-ext/jszip.min.js") }}"></script>
 <script src="{{ asset("assets/plugins/src/jquery-ui/jquery-ui.min.js")  }}"></script>
+<script src="{{ asset("assets/plugins/src/flatpickr/flatpickr.js")  }}"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script src="{{ asset("assets/js/custom.js")  }}"></script>

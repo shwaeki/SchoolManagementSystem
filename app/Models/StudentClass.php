@@ -38,5 +38,4 @@ class StudentClass extends Model
     {
         return $this->hasMany(StudentMark::class);
     }
-
 }

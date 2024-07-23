@@ -9,6 +9,7 @@ use App\Models\SchoolClass;
 use App\Http\Requests\StoreSchoolClassRequest;
 use App\Http\Requests\UpdateSchoolClassRequest;
 use App\Models\Student;
+use App\Models\StudentAttendance;
 use App\Models\Teacher;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Support\Facades\Auth;
@@ -53,13 +54,12 @@ class SchoolClassController extends Controller
 
     public function show(SchoolClass $schoolClass)
     {
-        $activeAcademicYear = Session::get('activeAcademicYear');
+        $date = request('date', now());
 
-        //   $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
-
-        $current_year_class = $schoolClass->yearClasses()->where('academic_year_id', $activeAcademicYear->id)->get()->first();
+        $current_year_class = $schoolClass->yearClasses()->where('academic_year_id', getUserActiveAcademicYearID())->get()->first();
         $all_students = [];
         $assistants = [];
+        $studentsAttendance = [];
 
         if (Auth::guard('teacher')->check()) {
             if ($current_year_class?->supervisor != auth()->id()) {
@@ -72,7 +72,7 @@ class SchoolClassController extends Controller
                 ->select(['student_id'])
                 ->join('year_classes', 'year_classes.id', '=', 'student_classes.year_class_id')
                 ->where('academic_year_id', '=', $current_year_class->academic_year_id)
-                ->where('school_class_id', '=', $schoolClass->id)
+                /*  ->where('school_class_id', '=', $schoolClass->id)*/
                 ->where('student_classes.deleted_at', '=', null)
                 ->get()->pluck('student_id')->toArray();
 
@@ -80,6 +80,15 @@ class SchoolClassController extends Controller
                 ->whereDoesntHave('yearClassAssistants', function ($query) use ($current_year_class) {
                     $query->where('year_class_id', $current_year_class->id);
                 })->get();
+
+            $studentsAttendance = StudentAttendance::where('year_class_id', $current_year_class->id)->whereDate('date', $date)->pluck('status', 'student_id')->toArray();
+
+
+            $class_year_students = $current_year_class->students()->whereHas('student', function ($query) {
+                $query->whereNull('deleted_at');
+            })->with('student', 'addedBy')->get();
+
+            $certificate = $current_year_class->certificate;
         }
 
 
@@ -89,17 +98,12 @@ class SchoolClassController extends Controller
             "current_year_class" => $current_year_class,
             "teachers" => Teacher::where('teacher_type', 'teacher')->get(),
             "assistants" => $assistants,
+            "studentsAttendance" => $studentsAttendance,
             "certificates" => Certificate::all(),
             "students" => Student::whereNotIn('id', $all_students)->orderBy('name', 'asc')->get(),
+            "class_year_students" => $class_year_students,
+            "certificate" => $certificate,
         ];
-
-        if ($current_year_class != null) {
-            $data['class_year_students'] = $current_year_class->students()->whereHas('student', function ($query) {
-                $query->whereNull('deleted_at');
-            })->with('student', 'addedBy')->get();
-
-            $data['certificate'] = $current_year_class->certificate;
-        }
 
         return view('classes.show', $data);
     }

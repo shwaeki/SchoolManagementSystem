@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
 use App\Models\StudentClass;
 use App\Http\Requests\StoreStudentClassRequest;
 use App\Http\Requests\UpdateStudentClassRequest;
 use App\Models\YearClass;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class StudentClassController extends Controller

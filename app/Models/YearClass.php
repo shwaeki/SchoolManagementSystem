@@ -57,4 +57,9 @@ class YearClass extends Model
         return $this->belongsToMany(Teacher::class,'year_class_assistants','year_class_id','assistant_id');
     }
 
+    public function studentAttendances()
+    {
+        return $this->hasMany(StudentAttendance::class);
+    }
+
 }
