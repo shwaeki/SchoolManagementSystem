@@ -11,6 +11,7 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Models\StudentCertificate;
 use App\Models\StudentClass;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Smalot\PdfParser\Parser;
@@ -161,6 +162,27 @@ class StudentController extends Controller
         return view('student.marks', $data);
     }
 
+    public function updatePersonalPhoto(Request $request, Student $student)
+    {
+
+        $request->validate([
+            'personal_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        if ($request->hasFile('personal_photo')) {
+            $extension = $request->file('personal_photo')->getClientOriginalExtension();
+            $fileName = "الصورة الشخصية" . '.' . $extension;
+            $filePath = "files/Student_" . $student->id;
+            $request->file('personal_photo')->storeAs('public/' . $filePath, $fileName);
+
+            $student->personal_photo = $filePath . '/' . $fileName;
+            $student->save();
+        }
+
+        Session::flash('message', 'تم تعديل الصورة الشخصية للطالب بنجاح.');
+        return redirect()->back();
+    }
+
     public function showMarksPdf(StudentClass $studentClass)
     {
 
@@ -223,8 +245,6 @@ class StudentController extends Controller
 
         //  return view('student.marks', $data);
     }
-
-
 
 
     public function getStudentMarks(StudentClass $studentClass)

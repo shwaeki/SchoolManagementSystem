@@ -118,3 +118,8 @@ body.dark .table .btn-dismiss {
     background-color: #5b73e8 !important;
     color: white !important;
 }
+
+
+.object-fit{
+    object-fit: contain;
+}

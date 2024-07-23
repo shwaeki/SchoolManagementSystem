@@ -312,7 +312,9 @@
                                                     <tr>
                                                         <th scope="col"> اسم المساعدة</th>
                                                         <th scope="col"> رقم الهاتف</th>
-                                                        <th scope="col"> خيارات</th>
+                                                        @auth("web")
+                                                            <th scope="col"> خيارات</th>
+                                                        @endauth
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -321,14 +323,16 @@
                                                         <tr>
                                                             <td>{{$assistant->name}}</td>
                                                             <td>{{$assistant->phone}}</td>
-                                                            <td>
-                                                                <button type="button"
-                                                                        class="btn btn-light-danger text-danger"
-                                                                        onclick="deleteItem(this)"
-                                                                        data-item="{{route('year-classes.destroyAssistant',[$current_year_class,$assistant])}}">
-                                                                    <i class="far fa-trash-alt"></i>
-                                                                </button>
-                                                            </td>
+                                                            @auth("web")
+                                                                <td>
+                                                                    <button type="button"
+                                                                            class="btn btn-light-danger text-danger"
+                                                                            onclick="deleteItem(this)"
+                                                                            data-item="{{route('year-classes.destroyAssistant',[$current_year_class,$assistant])}}">
+                                                                        <i class="far fa-trash-alt"></i>
+                                                                    </button>
+                                                                </td>
+                                                            @endauth
                                                         </tr>
                                                         @php($assistants_data .= '- '.$assistant->name)
                                                     @endforeach
@@ -430,10 +434,12 @@
                                                     <tr>
                                                         <td>{{$data->id}} </td>
                                                         <td>
-                                                            <img src=" {{$data->student?->photo}}"
-                                                                 class="me-2 rounded-circle border border-primary"
-                                                                 style="object-fit: contain;" width="50px"
-                                                                 height="50px">
+                                                            <img src="{{$data->student?->photo}}"
+                                                                 class="me-2 rounded-circle border border-primary object-fit edit-personal-image"
+                                                                 width="50px" height="50px"
+                                                                 data-id="{{$data->student?->id}}"
+                                                                 data-name="{{$data->student?->name}}"
+                                                                 data-image="{{$data->student?->photo}}">
                                                             {{$data->student?->name}}
                                                         </td>
                                                         <td>{{$data->student?->identification}}</td>
@@ -539,100 +545,95 @@
                                                 'Saturday' => 'السبت',
                                             ])
 
+                                        <div class="row">
+                                            @foreach ( $dayNames as $key=>$day)
+                                                @php( $programs = $current_year_class->dailyPrograms->where('day', $key)->sortBy('start_time'))
 
-                                        @foreach ( $dayNames as $key=>$day)
-                                            @php( $programs = $current_year_class->dailyPrograms->where('day', $key)->sortBy('start_time'))
+                                                @if ($programs->isEmpty())
+                                                    @continue
+                                                @endif
 
-                                            @if ($programs->isEmpty())
-                                                @continue
-                                            @endif
+                                                {{--      Style 1      --}}
+                                                {{--                                                    <div class="col-12 d-none">
+                                                  <p class="fs-5">{{ $day }}</p>
+                                                                                                        <table class="table table-bordered table-sm">
+                                                                                                            <tr>
+                                                                                                                <td>الساعة</td>
+                                                                                                                @foreach ($programs as $program)
+                                                                                                                    <td>
+                                                                                                                        {{ Carbon\Carbon::createFromFormat('H:i:s', $program->start_time)->format('h:i') }}
+                                                                                                                        -
+                                                                                                                        {{ Carbon\Carbon::createFromFormat('H:i:s', $program->end_time)->format('h:i') }}
+                                                                                                                    </td>
+                                                                                                                @endforeach
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                <td>المادة</td>
+                                                                                                                @foreach ($programs as $program)
+                                                                                                                    <td>{{ $program->subject_name }}</td>
+                                                                                                                @endforeach
+                                                                                                            </tr>
+                                                                                                        </table>
+                                                                                                    </div>--}}
 
-                                            <div class="row">
-                                                <div class="day-container mb-4">
+                                                {{--      Style 2     --}}
+                                                <div class="mb-4 col-12 col-md-6">
                                                     <p class="fs-5">{{ $day }}</p>
-
-                                                    {{--      Style 1      --}}
-                                                    {{--                                                    <div class="col-12 d-none">
-                                                                                                            <table class="table table-bordered table-sm">
-                                                                                                                <tr>
-                                                                                                                    <td>الساعة</td>
-                                                                                                                    @foreach ($programs as $program)
-                                                                                                                        <td>
-                                                                                                                            {{ Carbon\Carbon::createFromFormat('H:i:s', $program->start_time)->format('h:i') }}
-                                                                                                                            -
-                                                                                                                            {{ Carbon\Carbon::createFromFormat('H:i:s', $program->end_time)->format('h:i') }}
-                                                                                                                        </td>
-                                                                                                                    @endforeach
-                                                                                                                </tr>
-                                                                                                                <tr>
-                                                                                                                    <td>المادة</td>
-                                                                                                                    @foreach ($programs as $program)
-                                                                                                                        <td>{{ $program->subject_name }}</td>
-                                                                                                                    @endforeach
-                                                                                                                </tr>
-                                                                                                            </table>
-                                                                                                        </div>--}}
-
-                                                    {{--      Style 2     --}}
-                                                    {{--<div class="col-12 col-md-6">
-                                                        <table class="table table-bordered table-sm">
-                                                            <thead>
+                                                    <table class="table table-bordered table-sm">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">الساعة</th>
+                                                            <th scope="col">المادة</th>
+                                                            <th scope="col">الصورة</th>
+                                                            <th scope="col">خيارات</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach ($programs as $program)
                                                             <tr>
-                                                                <th scope="col">الساعة</th>
-                                                                <th scope="col">المادة</th>
-                                                                <th scope="col">الصورة</th>
-                                                                <th scope="col">خيارات</th>
+                                                                <td>{{ $program->time }}</td>
+                                                                <td>{{ $program->subject_name }}</td>
+                                                                <td>
+                                                                    <img src="{{ $program->image_path }}"
+                                                                         class="rounded object-fit" height="50px"
+                                                                         width="50px">
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button"
+                                                                            class="btn btn-light-danger text-danger"
+                                                                            onclick="deleteItem(this)"
+                                                                            data-item="{{route('year-classes.dailyProgram.destroy',$program)}}">
+                                                                        <i class="far fa-trash-alt"></i>
+                                                                    </button>
+                                                                </td>
                                                             </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            @foreach ($programs as $program)
-                                                                <tr>
-                                                                    <td>
-                                                                        {{ Carbon\Carbon::createFromFormat('H:i:s', $program->start_time)->format('h:i') }}
-                                                                        -
-                                                                        {{ Carbon\Carbon::createFromFormat('H:i:s', $program->end_time)->format('h:i') }}
-                                                                    </td>
-                                                                    <td>{{ $program->subject_name }}</td>
-                                                                    <td>
-                                                                        <img src="{{  Storage::url($program->image) }}" height="150px" width="150px">
-                                                                    </td>
-                                                                    <td>
-                                                                        <button type="button"
-                                                                                class="btn btn-light-danger text-danger"
-                                                                                onclick="deleteItem(this)"
-                                                                                data-item="{{route('year-classes.dailyProgram.destroy',$program)}}">
-                                                                            <i class="far fa-trash-alt"></i>
-                                                                        </button>
-                                                                    </td>
-                                                                </tr>
-                                                            @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>--}}
-
-                                                    <div class="col-12">
-                                                        <div class="row">
-                                                            @foreach ($programs as $program)
-                                                                <div class="col-2">
-                                                                    <div class="card text-center">
-                                                                        <div class="card-body p-2">
-                                                                            <h5 class="card-title mb-1">{{ $program->subject_name }}</h5>
-                                                                            <p>{{ $program->time }}</p>
-                                                                            <img src="{{  Storage::url($program->image) }}"
-                                                                               class="img-fluid"  >
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            @endforeach
-                                                        </div>
-                                                    </div>
-
-
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
                                                 </div>
-                                                @endforeach
+
+                                                {{--      Style 3     --}}
+                                                {{--                                                    <div class="col-12">
+                                                  <p class="fs-5">{{ $day }}</p>
+                                                                                                        <div class="row">
+                                                                                                            @foreach ($programs as $program)
+                                                                                                                <div class="col-2">
+                                                                                                                    <div class="card text-center">
+                                                                                                                        <div class="card-body p-2">
+                                                                                                                            <h5 class="card-title mb-1">{{ $program->subject_name }}</h5>
+                                                                                                                            <p>{{ $program->time }}</p>
+                                                                                                                            <img src="{{  Storage::url($program->image) }}"
+                                                                                                                               class="img-fluid"  >
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            @endforeach
+                                                                                                        </div>
+                                                                                                    </div>--}}
+                                            @endforeach
 
 
-                                            </div>
+                                        </div>
                                     </div>
                                 </form>
 
@@ -728,6 +729,49 @@
     @endauth
 
     @if($current_year_class != null)
+
+        <div class="modal fade" id="editStudentImage">
+            <div class="modal-dialog" role="document">
+                <form action="" id="editStudentImageForm"
+                      method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+
+                    <input type="hidden" name="edit_image_student_id" value="">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">تعديل الصورة الشخصية </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                X
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="text-center">
+                                <p>الصورة الحالية</p>
+                                <img src="" id="edit_image_student_image" width="200px" height="200px"
+                                     class="mb-3 rounded-circle border border-primary object-fit">
+                                <p class="fs-5" id="edit_image_student_name">N/A</p>
+                            </div>
+                            <hr>
+
+                            <div class="mb-3">
+                                <label for="personal_photo">الصورة </label>
+                                <input type="file" id="personal_photo" name="personal_photo"
+                                       class="form-control" accept="image/*" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
+                                <i class="flaticon-cancel-12"></i> اغلاق
+                            </button>
+                            <button type="submit" class="btn btn-primary">حفظ</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <div class="modal fade" id="addDailyProgramModal">
             <div class="modal-dialog" role="document">
@@ -1027,8 +1071,8 @@
                                                 </td>
                                                 <td>
                                                     <img src=" {{$student->photo}}"
-                                                         class="me-2 rounded-circle border border-primary"
-                                                         style="object-fit: contain;" width="35px" height="35px">
+                                                         class="me-2 rounded-circle border border-primary object-fit"
+                                                         width="35px" height="35px">
                                                     {{$student->name}}
                                                 </td>
                                                 <td>{{$student->identification}}</td>
@@ -1166,6 +1210,24 @@
             });
         });
 
+
+        $('.edit-personal-image').on('click', function () {
+            var studentId = $(this).data('id');
+            var studentName = $(this).data('name');
+            var studentImage = $(this).data('image');
+            $('#edit_image_student_id').val(studentId);
+            $('#edit_image_student_name').text(studentName);
+            $('#edit_image_student_image').attr('src', studentImage);
+
+
+            var url = '{{ route("students.image.update", ":studentId") }}';
+            url = url.replace(':studentId', studentId);
+            console.log(url)
+            $('#editStudentImageForm').attr('action', url);
+            $("#editStudentImage").modal('show');
+        });
+
+
         $('.editStudentCertification').on('click', function () {
             var studentId = $(this).data('student_class_year-id');
             $('#student_class_year').val(studentId);
@@ -1210,7 +1272,6 @@
             });
         });
 
-
         $('.dataTableCustomTitleConfig').DataTable({
             order: [[1, 'asc']],
             "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'B><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
@@ -1250,6 +1311,5 @@
             ],
             "pageLength": 25
         });
-
     </script>
 @endpush

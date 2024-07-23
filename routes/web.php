@@ -70,6 +70,13 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
 
     Route::resource('chats', ChatController::class);
 
+
+    Route::post('year-classes/store-daily-program/{yearClass}', [YearClassController::class, 'storeDailyProgram'])->name('year-classes.dailyProgram.store');
+    Route::delete('year-classes/destroy-daily-program/{day}', [YearClassController::class, 'destroyDailyProgram'])->name('year-classes.dailyProgram.destroy');
+
+    Route::put('students/updataImage/{student}', [StudentController::class, 'updatePersonalPhoto'])->name('students.image.update');
+
+
     Route::middleware(['auth:web', 'check.year'])->group(function () {
         Route::resource('roles', RoleController::class);
 
@@ -92,8 +99,8 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
 
         Route::delete('year-classes/destroy-assistant/{yearClass}/{assistant}', [YearClassController::class, 'destroyAssistant'])->name('year-classes.destroyAssistant');
         Route::post('year-classes/store-assistant/{yearClass}', [YearClassController::class, 'storeAssistant'])->name('year-classes.storeAssistant');
-        Route::post('year-classes/store-daily-program/{yearClass}', [YearClassController::class, 'storeDailyProgram'])->name('year-classes.dailyProgram.store');
-        Route::delete('year-classes/destroy-daily-program/{day}', [YearClassController::class, 'destroyDailyProgram'])->name('year-classes.dailyProgram.destroy');
+
+
         Route::resource('year-classes', YearClassController::class);
 
         Route::post('student-reports/generate', [StudentReportController::class, 'generate'])->name('student-reports.generate');
