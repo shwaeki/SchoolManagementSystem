@@ -143,7 +143,10 @@ class StudentController extends BaseController
             try {
                 $factory = (new Factory)->withServiceAccount(public_path('firebase-configuration.json'));
                 $messaging = $factory->createMessaging();
-                $message = CloudMessage::withTarget('token', $deviceToken)->withNotification(['title' => $title, 'body' => $body]);
+                $message = CloudMessage::withTarget('token', $deviceToken)->withNotification(['title' => $title, 'body' => $body])->withDefaultSounds();
+
+                  //  ->withApnsConfig(['payload' => ['aps' => [ 'sound' =>'default']]]);
+
                 $messaging->send($message);
                 return $this->sendResponse(['message' => $message], 'Notification send successfully');
             } catch (NotFound $exception) {

@@ -174,6 +174,6 @@ $( '.select2' ).select2( {
 } );
 
 
-flatpickr($('input[type="date"]'),{
+flatpickr($('input[type="date"]:not(.custom-date)'),{
     static: true
 })
