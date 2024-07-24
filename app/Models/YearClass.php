@@ -51,6 +51,10 @@ class YearClass extends Model
         return $this->hasMany(DailyProgram::class);
     }
 
+    public function weeklyPrograms(): hasMany
+    {
+        return $this->hasMany(WeeklyProgram::class);
+    }
 
     public function assistants()
     {

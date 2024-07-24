@@ -138,7 +138,6 @@
 
 
 @push("html")
-    @if($current_year_class != null)
         @auth("web")
             <div class="modal fade" id="classStudentModal">
                 <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
@@ -339,7 +338,6 @@
                 </div>
             </div>
         @endif
-
         <div class="modal fade" id="editStudentImage">
             <div class="modal-dialog" role="document">
                 <form action="" id="editStudentImageForm"
@@ -382,8 +380,6 @@
                 </form>
             </div>
         </div>
-    @endauth
-
 @endpush
 
 

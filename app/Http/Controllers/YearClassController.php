@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreDailyProgramRequest;
+use App\Http\Requests\StoreWeeklyProgramRequest;
 use App\Http\Requests\UpdateStudentAttendanceRequest;
 use App\Models\DailyProgram;
 use App\Models\SchoolClass;
 use App\Models\StudentAttendance;
 use App\Models\Teacher;
+use App\Models\WeeklyProgram;
 use App\Models\YearClass;
 use App\Http\Requests\StoreYearClassRequest;
 use App\Http\Requests\UpdateYearClassRequest;
@@ -127,6 +129,40 @@ class YearClassController extends Controller
     {
         $day->delete();
         Session::flash('message', 'تم حذف البرنامج اليومي بنجاح.');
+        return redirect()->back();
+    }
+
+
+
+    public function storeWeeklyProgram(StoreWeeklyProgramRequest $request, YearClass $yearClass)
+    {
+
+        $conflict = WeeklyProgram::where('year_class_id', $yearClass->id)
+            ->where('day', request('day'))
+            ->where('week', request('week'))->exists();
+
+        if ($conflict) {
+            Session::flash('warnings', 'هناك بالفعل خطة اسبوعية مسجل في هذا اليوم و هذا الاسبوع.');
+            return redirect()->back();
+        }
+
+        $dailyProgram = $yearClass->weeklyPrograms()->create($request->all());
+
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $path = $image->storeAs('public/images/weekly_programs', $image->getClientOriginalName());
+            $dailyProgram->update(['image' => $path]);
+        }
+
+        Session::flash('message', 'تم إنشاء الخطوة الاسبوعية  بنجاح.');
+        return redirect()->back();
+    }
+
+    public function destroyWeeklyProgram(Request $request, WeeklyProgram $week)
+    {
+        $week->delete();
+        Session::flash('message', 'تم حذف الخطة الاسبوعية بنجاح.');
         return redirect()->back();
     }
 

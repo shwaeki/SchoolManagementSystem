@@ -73,6 +73,10 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
 
     Route::post('year-classes/update-attendance/{yearClass}', [YearClassController::class, 'updateStudentAttendance'])->name('year-classes.attendance.update');
 
+    Route::post('year-classes/store-weekly-program/{yearClass}', [YearClassController::class, 'storeWeeklyProgram'])->name('year-classes.weeklyProgram.store');
+    Route::delete('year-classes/destroy-weekly-program/{week}', [YearClassController::class, 'destroyWeeklyProgram'])->name('year-classes.weeklyProgram.destroy');
+
+
     Route::post('year-classes/store-daily-program/{yearClass}', [YearClassController::class, 'storeDailyProgram'])->name('year-classes.dailyProgram.store');
     Route::delete('year-classes/destroy-daily-program/{day}', [YearClassController::class, 'destroyDailyProgram'])->name('year-classes.dailyProgram.destroy');
 

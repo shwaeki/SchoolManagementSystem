@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateSchoolClassRequest;
 use App\Models\Student;
 use App\Models\StudentAttendance;
 use App\Models\Teacher;
+use Carbon\Carbon;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -55,58 +56,77 @@ class SchoolClassController extends Controller
     public function show(SchoolClass $schoolClass)
     {
         $date = request('date', now());
+        $week = request('weekSelect', Carbon::now()->format('o-\WW'));
 
-        $current_year_class = $schoolClass->yearClasses()->where('academic_year_id', getUserActiveAcademicYearID())->get()->first();
+        $current_year_class = $schoolClass->yearClasses()
+            ->where('academic_year_id', getUserActiveAcademicYearID())
+            ->first();
+
+        if (Auth::guard('teacher')->check() && $current_year_class && $current_year_class->supervisor != auth()->id()) {
+            return redirect()->route('home');
+        }
+
         $all_students = [];
         $assistants = [];
         $studentsAttendance = [];
+        $class_year_students = [];
+        $weeklyPrograms = [];
 
-        if (Auth::guard('teacher')->check()) {
-            if ($current_year_class?->supervisor != auth()->id()) {
-                return redirect()->route('home');
-            }
-        }
-
-        if ($current_year_class != null) {
+        if ($current_year_class) {
+            // Get all student IDs
             $all_students = DB::table('student_classes')
-                ->select(['student_id'])
+                ->select('student_id')
                 ->join('year_classes', 'year_classes.id', '=', 'student_classes.year_class_id')
-                ->where('academic_year_id', '=', $current_year_class->academic_year_id)
-                /*  ->where('school_class_id', '=', $schoolClass->id)*/
-                ->where('student_classes.deleted_at', '=', null)
-                ->get()->pluck('student_id')->toArray();
+              /*  ->where('academic_year_id', $current_year_class->academic_year_id)*/
+                ->whereNull('student_classes.deleted_at')
+                ->pluck('student_id')
+                ->toArray();
 
+            // Get assistants
             $assistants = Teacher::where('teacher_type', 'assistant')
                 ->whereDoesntHave('yearClassAssistants', function ($query) use ($current_year_class) {
                     $query->where('year_class_id', $current_year_class->id);
-                })->get();
+                })
+                ->get();
 
-            $studentsAttendance = StudentAttendance::where('year_class_id', $current_year_class->id)->whereDate('date', $date)->pluck('status', 'student_id')->toArray();
+            // Get student attendance
+            $studentsAttendance = StudentAttendance::where('year_class_id', $current_year_class->id)
+                ->whereDate('date', $date)
+                ->pluck('status', 'student_id')
+                ->toArray();
 
+            // Get class year students with their related data
+            $class_year_students = $current_year_class->students()
+                ->whereHas('student', function ($query) {
+                    $query->whereNull('deleted_at');
+                })
+                ->with('student', 'addedBy')
+                ->get();
 
-            $class_year_students = $current_year_class->students()->whereHas('student', function ($query) {
-                $query->whereNull('deleted_at');
-            })->with('student', 'addedBy')->get();
-
-            $certificate = $current_year_class->certificate;
+            // Get the certificate and weekly programs
+          //  $certificate = $current_year_class->certificate;
+            $weeklyPrograms = $current_year_class->weeklyPrograms
+                ->where('week', $week)
+                ->keyBy('day')
+                ->toArray();
         }
 
-
         $data = [
-            "class" => $schoolClass,
-            "class_years" => $schoolClass->yearClasses,
-            "current_year_class" => $current_year_class,
-            "teachers" => Teacher::where('teacher_type', 'teacher')->get(),
-            "assistants" => $assistants,
-            "studentsAttendance" => $studentsAttendance,
-            "certificates" => Certificate::all(),
-            "students" => Student::whereNotIn('id', $all_students)->orderBy('name', 'asc')->get(),
-            "class_year_students" => $class_year_students,
-            "certificate" => $certificate,
+            'class' => $schoolClass,
+            'class_years' => $schoolClass->yearClasses,
+            'current_year_class' => $current_year_class,
+            'teachers' => Teacher::where('teacher_type', 'teacher')->get(),
+            'assistants' => $assistants,
+            'studentsAttendance' => $studentsAttendance,
+            'certificates' => Certificate::all(),
+            'students' => Student::whereNotIn('id', $all_students)->orderBy('name', 'asc')->get(),
+            'class_year_students' => $class_year_students,
+            'weeklyPrograms' => $weeklyPrograms,
         ];
 
         return view('classes.show', $data);
     }
+
 
 
     public function edit(SchoolClass $schoolClass)
@@ -130,8 +150,8 @@ class SchoolClassController extends Controller
 
     public function destroy(SchoolClass $schoolClass)
     {
-        $schoolClass->delete();
-        Session::flash('message', 'تم حذف الفصل التعليمي بنجاح!');
+/*        $schoolClass->delete();
+        Session::flash('message', 'تم حذف الفصل التعليمي بنجاح!');*/
         return redirect()->route('school-classes.index');
     }
 
