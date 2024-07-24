@@ -865,7 +865,11 @@
 <script src="{{ asset("assets/js/custom.js")  }}"></script>
 <script src="{{ asset("assets/loader.js")  }}"></script>
 <script src="{{ asset("assets/app.js")}}"></script>
-
+<script>
+    var timeoutId = setTimeout(function() {
+        document.body.removeChild(document.getElementById("load_screen"));
+    }, 3000);
+</script>
 @stack('scripts')
 
 </body>

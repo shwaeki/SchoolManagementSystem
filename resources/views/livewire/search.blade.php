@@ -7,7 +7,7 @@
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
 
-        <div class="form-inline search-full form-inline search" role="search">
+        <div class="form-inline search-full form-inline search  bg-light rounded-3" role="search">
             <div class="search-bar">
                 <input type="text" class="form-control search-form-control  ml-lg-auto"
                        placeholder="بحث ..."
