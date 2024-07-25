@@ -31,7 +31,7 @@ class StudentReportController extends Controller
     {
         $report = Report::findOrFail(request('report'));
         $student = Student::findOrFail(request('student'));
-        $date = request('date');
+        $date = request('date',[]);
 
         $reportContent = $report->content;
 

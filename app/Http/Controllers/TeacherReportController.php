@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Report;
+use App\Models\SalarySlip;
 use App\Models\Teacher;
 use App\Models\TeacherReport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TeacherReportController extends Controller
 {
@@ -13,6 +15,14 @@ class TeacherReportController extends Controller
 
     public function show(TeacherReport $teacherReport)
     {
+
+        if (Auth::guard('teacher')->check()) {
+            if ($teacherReport->teacher_id != auth()->id()) {
+                abort(404);
+            }
+        }
+
+
         $data = [
             "report" => $teacherReport,
             "content" => $teacherReport->content,
@@ -23,9 +33,10 @@ class TeacherReportController extends Controller
 
     public function generate(Request $request)
     {
+
         $report = Report::findOrFail(request('report'));
         $teacher = Teacher::findOrFail(request('teacher'));
-        $date = request('date');
+        $date = request('date', []);
 
         $reportContent = $report->content;
 

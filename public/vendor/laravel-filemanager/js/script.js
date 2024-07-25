@@ -237,6 +237,7 @@ function goTo(new_dir) {
 
 function getPreviousDir() {
   var working_dir = $('#working_dir').val();
+  console.log(working_dir);
   return working_dir.substring(0, working_dir.lastIndexOf('/'));
 }
 

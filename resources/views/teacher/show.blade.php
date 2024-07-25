@@ -428,9 +428,32 @@
                 $("#attributeModal").modal('show');
             } else {
 
-                var showTeacherReportRoute = '{{route('reports.show',['report'=> ':id', 'teacher'=> $teacher])}}';
+/*                var showTeacherReportRoute = '{{route('reports.show',['report'=> ':id', 'teacher'=> $teacher])}}';
                 var showTeacherReportUrl = showTeacherReportRoute.replace(':id', selectedReportId);
-                window.open(showTeacherReportUrl, '_blank');
+                window.open(showTeacherReportUrl, '_blank');*/
+
+
+                $.ajax({
+                    url: '{{route('teacher-reports.generate')}}',
+                    type: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        report: selectedReportId,
+                        teacher: '{{$teacher->id}}',
+                        date: {},
+                    },
+                    success: function (response) {
+                        console.log('Ajax request successful:', response);
+                        var showTeacherReportRoute = '{{ route('teacher-reports.show', ['teacher_report' => ':id']) }}';
+                        var showTeacherReportUrl = showTeacherReportRoute.replace(':id', response.data.id);
+                        window.open(showTeacherReportUrl, '_blank');
+                        location.reload();
+                    },
+                    error: function (error) {
+                        Swal.fire({title: "خطأ!", text: "حدث خطا ما الرجاء المحاولة مرى اخرى", icon: "error"});
+                    }
+                });
+
             }
         });
 

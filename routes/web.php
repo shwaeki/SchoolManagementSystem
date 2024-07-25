@@ -32,6 +32,7 @@ use App\Http\Controllers\YearClassController;
 use App\Models\Purchases;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use UniSharp\LaravelFilemanager\Lfm;
 
 
 Auth::routes(['reset' => false]);
@@ -44,6 +45,8 @@ Route::resource('application', ApplicationController::class);
 Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/mysalries', [HomeController::class, 'mysalries'])->name('mysalries');
+    Route::get('/myfiles', [HomeController::class, 'myFiles'])->name('myfiles');
+    Route::get('/myreports', [HomeController::class, 'myReports'])->name('myreports');
     Route::get('show-salary/{salarySlip}', [HomeController::class, 'showSalary'])->name('show.salary');
 
     Route::resource('school-classes', SchoolClassController::class);
@@ -83,6 +86,13 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
     Route::put('students/updataImage/{student}', [StudentController::class, 'updatePersonalPhoto'])->name('students.image.update');
 
 
+    Route::group(['prefix' => 'filemanager'], function () {
+        Lfm::routes();
+    });
+
+
+    Route::get('teacher-reports/show/{teacher_report}', [TeacherReportController::class, 'show'])->name('teacher-reports.show');
+
     Route::middleware(['auth:web', 'check.year'])->group(function () {
         Route::resource('roles', RoleController::class);
 
@@ -113,7 +123,6 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
         Route::resource('student-reports', StudentReportController::class);
 
         Route::post('teacher-reports/generate', [TeacherReportController::class, 'generate'])->name('teacher-reports.generate');
-        Route::resource('teacher-reports', TeacherReportController::class);
         Route::resource('reports', ReportController::class);
 
 

@@ -122,7 +122,26 @@ class HomeController extends Controller
             $data['salaries'] = SalarySlip::where('identification', auth()->user()->identification)->get();
         }
 
-        return view('mysalries', $data);
+        return view('teacher_views.mysalries', $data);
+    }
+
+
+    public function myReports()
+    {
+
+        $data = [];
+        if (Auth::guard('teacher')->check()) {
+            $data['reports'] = auth()->user()->reports;
+        }
+
+        return view('teacher_views.myreports', $data);
+    }
+
+
+    public function myFiles()
+    {
+        Session::put('fileManagerConfig', "Teacher_" .auth()->id());
+        return view('teacher_views.myfiles');
     }
 
     public function showSalary(SalarySlip $salarySlip)
