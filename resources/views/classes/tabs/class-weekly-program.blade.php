@@ -55,14 +55,17 @@
                             </div>
                         </div>
 
+                        @php( $seletedWeek = request('weekSelect', Carbon\Carbon::now()->format('o-\WW')))
                         <form method="GET" id="weekSelectForm">
                             <div class="mb-3">
                                 <label for="weekSelect" class="form-label">الاسبوع</label>
                                 <input type="week" id="weekSelect" name="weekSelect"
                                        class="form-control"
-                                       value="{{request('weekSelect', Carbon\Carbon::now()->format('o-\WW') )}}">
+                                       value="{{ $seletedWeek }}">
                             </div>
                         </form>
+
+                        <p class="fs-5">  <span>من تاريخ {{ $weekFirstDate  }}</span>   <span>الى  تاريخ {{ $weekLastDate  }}</span></p>
 
                         @php(
                             $dayNames = [
@@ -76,8 +79,7 @@
                             ])
 
 
-                       @if(count($weeklyPrograms) > 0)
-
+                        @if(count($weeklyPrograms) > 0)
 
                             <div class="row">
                                 @foreach ( $dayNames as $key=>$day)
@@ -94,10 +96,10 @@
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <p class="fs-5 mb-0">{{ $day }}</p>
                                                     <div>
-{{--                                                        <button type="button"
-                                                                class="btn btn-light-warning text-warning rounded-circle me-2 ">
-                                                            <i class="far fa-edit"></i>
-                                                        </button>--}}
+                                                        {{--                                                        <button type="button"
+                                                                                                                        class="btn btn-light-warning text-warning rounded-circle me-2 ">
+                                                                                                                    <i class="far fa-edit"></i>
+                                                                                                                </button>--}}
 
                                                         <button type="button"
                                                                 class="btn btn-light-danger text-danger rounded-circle "
@@ -119,9 +121,9 @@
                             </div>
                         @else
 
-                           <h4 class="text-center py-5">
-                               لا  يوجد خطة اسبوعية لهذا الاسبوع
-                           </h4>
+                            <h4 class="text-center py-5">
+                                لا يوجد خطة اسبوعية لهذا الاسبوع
+                            </h4>
                         @endif
 
                     </div>
@@ -138,77 +140,77 @@
 
 @push("html")
     <div class="modal fade" id="addweeklyProgramModal">
-            <div class="modal-dialog" role="document">
-                <form action="{{ route('year-classes.weeklyProgram.store',$current_year_class) }}"
-                      method="POST" enctype="multipart/form-data">
-                    @csrf
+        <div class="modal-dialog" role="document">
+            <form action="{{ route('year-classes.weeklyProgram.store',$current_year_class) }}"
+                  method="POST" enctype="multipart/form-data">
+                @csrf
 
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">اضافة برنامج يومي </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            </button>
-                        </div>
-                        <div class="modal-body">
-
-
-                            {{--                    <div class="mb-3">
-                                                    <label for="image">الصورة </label>
-                                                    <input type="file" id="image" name="image" class="form-control" accept="image/*">
-                                                </div>
-                    --}}
-                            <div class="mb-3">
-                                <label for="week"> الاسبوع</label>
-                                <input type="week" id="week" name="week" class="form-control"
-                                       value="{{ old('week') }}" required>
-                                @error('start_date')
-                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="day">اليوم</label>
-                                <select id="day" name="day" class="form-control @error('day') is-invalid @enderror"
-                                        required>
-                                    <option value="Sunday" {{ old('day') == 'Sunday' ? 'selected' : '' }}>الأحد</option>
-                                    <option value="Monday" {{ old('day') == 'Monday' ? 'selected' : '' }}>الإثنين
-                                    </option>
-                                    <option value="Tuesday" {{ old('day') == 'Tuesday' ? 'selected' : '' }}>الثلاثاء
-                                    </option>
-                                    <option value="Wednesday" {{ old('day') == 'Wednesday' ? 'selected' : '' }}>
-                                        الأربعاء
-                                    </option>
-                                    <option value="Thursday" {{ old('day') == 'Thursday' ? 'selected' : '' }}>الخميس
-                                    </option>
-                                    <option value="Friday" {{ old('day') == 'Friday' ? 'selected' : '' }}>الجمعة
-                                    </option>
-                                    <option value="Saturday" {{ old('day') == 'Saturday' ? 'selected' : '' }}>السبت
-                                    </option>
-                                </select>
-                                @error('day')
-                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                @enderror
-                            </div>
-
-
-                            <div class="mb-3">
-                                <label for="contentText">المحتوى </label>
-                                <textarea id="contentText" name="content" class="form-control d-none" rows="20"
-                                          required></textarea>
-                                <div id="editor-container"></div>
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
-                                <i class="flaticon-cancel-12"></i> اغلاق
-                            </button>
-                            <button type="submit" class="btn btn-primary">حفظ</button>
-                        </div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">اضافة برنامج يومي </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
                     </div>
-                </form>
-            </div>
+                    <div class="modal-body">
+
+
+                        {{--                    <div class="mb-3">
+                                                <label for="image">الصورة </label>
+                                                <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                                            </div>
+                --}}
+                        <div class="mb-3">
+                            <label for="week"> الاسبوع</label>
+                            <input type="week" id="week" name="week" class="form-control"
+                                   value="{{ old('week') }}" required>
+                            @error('start_date')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="day">اليوم</label>
+                            <select id="day" name="day" class="form-control @error('day') is-invalid @enderror"
+                                    required>
+                                <option value="Sunday" {{ old('day') == 'Sunday' ? 'selected' : '' }}>الأحد</option>
+                                <option value="Monday" {{ old('day') == 'Monday' ? 'selected' : '' }}>الإثنين
+                                </option>
+                                <option value="Tuesday" {{ old('day') == 'Tuesday' ? 'selected' : '' }}>الثلاثاء
+                                </option>
+                                <option value="Wednesday" {{ old('day') == 'Wednesday' ? 'selected' : '' }}>
+                                    الأربعاء
+                                </option>
+                                <option value="Thursday" {{ old('day') == 'Thursday' ? 'selected' : '' }}>الخميس
+                                </option>
+                                <option value="Friday" {{ old('day') == 'Friday' ? 'selected' : '' }}>الجمعة
+                                </option>
+                                <option value="Saturday" {{ old('day') == 'Saturday' ? 'selected' : '' }}>السبت
+                                </option>
+                            </select>
+                            @error('day')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="contentText">المحتوى </label>
+                            <textarea id="contentText" name="content" class="form-control d-none" rows="20"
+                                      required></textarea>
+                            <div id="editor-container"></div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
+                            <i class="flaticon-cancel-12"></i> اغلاق
+                        </button>
+                        <button type="submit" class="btn btn-primary">حفظ</button>
+                    </div>
+                </div>
+            </form>
         </div>
+    </div>
 @endpush
 
 

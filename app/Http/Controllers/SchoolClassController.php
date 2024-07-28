@@ -111,6 +111,12 @@ class SchoolClassController extends Controller
                 ->toArray();
         }
 
+
+        [$year, $week] = sscanf($week, '%d-W%d');
+
+        $start =  Carbon::now()->setISODate($year, $week)->startOfWeek();
+        $end = $start->copy()->endOfWeek();
+
         $data = [
             'class' => $schoolClass,
             'class_years' => $schoolClass->yearClasses,
@@ -121,6 +127,8 @@ class SchoolClassController extends Controller
             'certificates' => Certificate::all(),
             'students' => Student::whereNotIn('id', $all_students)->orderBy('name', 'asc')->get(),
             'class_year_students' => $class_year_students,
+            'weekFirstDate' => $start->toDateString(),
+            'weekLastDate' => $end->toDateString(),
             'weeklyPrograms' => $weeklyPrograms,
         ];
 
