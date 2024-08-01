@@ -11,6 +11,7 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Models\StudentCertificate;
 use App\Models\StudentClass;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
@@ -78,6 +79,25 @@ class StudentController extends Controller
         })->get()->first();
 
 
+        $attendanceData = $student->attendances->groupBy(function($date) {
+            return $date->date->format('Y-m');
+        })->map(function ($group, $key) {
+            return [
+                'attended' => [
+                    'count' => $group->where('status', 1)->count(),
+                    'dates' => $group->where('status', 1)->pluck('date')->map(function ($date) {
+                        return Carbon::parse($date)->format('Y-m-d');
+                    })->toArray(),
+                ],
+                'missed' => [
+                    'count' => $group->where('status', 0)->count(),
+                    'dates' => $group->where('status', 0)->pluck('date')->map(function ($date) {
+                        return Carbon::parse($date)->format('Y-m-d');
+                    })->toArray(),
+                ],
+            ];
+        });
+
         $data = [
             "student" => $student,
             "student_logs" => $student->activities,
@@ -88,6 +108,7 @@ class StudentController extends Controller
             "student_payments" => $student->paymentsCurrentYear,
             "products" => Product::where('status', true)?->get(),
             "current_student_class" => $current_student_class,
+            "attendanceData" => $attendanceData,
         ];
 
         Session::put('fileManagerConfig', "Student_" . $student->id);

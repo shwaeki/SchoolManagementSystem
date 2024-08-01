@@ -12,6 +12,9 @@ class StudentAttendance extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'date' => 'datetime',
+    ];
 
     public function addedBy(): belongsTo
     {

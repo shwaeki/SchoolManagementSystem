@@ -110,6 +110,18 @@
                             </button>
                         </li>
 
+                        @if($current_student_class != null)
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="student-attendance-tab" data-bs-toggle="tab"
+                                        href="#student-attendance"
+                                        role="tab" aria-controls="student-attendance" aria-selected="false"
+                                        tabindex="-1">
+                                    <i class="fas fa-user-alt-slash"></i>
+                                    الحضور والغياب
+                                </button>
+                            </li>
+                        @endif
+
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="student-log-tab" data-bs-toggle="tab" href="#student-log"
                                     role="tab" aria-controls="student-log" aria-selected="false" tabindex="-1">
@@ -419,7 +431,8 @@
 
                     </div>
                 </div>
-                <div class="tab-pane fade " id="student-files" role="tabpanel" aria-labelledby="student-files-tab">
+                <div class="tab-pane fade" id="student-files" role="tabpanel"
+                     aria-labelledby="student-files-tab">
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
                             <form class="section general-info">
@@ -436,7 +449,8 @@
 
                     </div>
                 </div>
-                <div class="tab-pane fade " id="student-classes" role="tabpanel" aria-labelledby="student-classes-tab">
+                <div class="tab-pane fade" id="student-classes" role="tabpanel"
+                     aria-labelledby="student-classes-tab">
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
                             <div class="section general-info">
@@ -484,7 +498,8 @@
 
                     </div>
                 </div>
-                <div class="tab-pane fade " id="student-log" role="tabpanel" aria-labelledby="student-log-tab">
+                <div class="tab-pane fade" id="student-log" role="tabpanel"
+                     aria-labelledby="student-log-tab">
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
                             <form class="section general-info">
@@ -541,7 +556,8 @@
 
                     </div>
                 </div>
-                <div class="tab-pane fade " id="student-reports" role="tabpanel" aria-labelledby="student-reports-tab">
+                <div class="tab-pane fade" id="student-reports" role="tabpanel"
+                     aria-labelledby="student-reports-tab">
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
                             <form class="section general-info">
@@ -616,8 +632,7 @@
 
                     </div>
                 </div>
-
-                <div class="tab-pane fade " id="student-purchases" role="tabpanel"
+                <div class="tab-pane fade" id="student-purchases" role="tabpanel"
                      aria-labelledby="student-purchases-tab">
                     <div class="row">
                         <div class="col-12 text-center mb-3">
@@ -736,11 +751,55 @@
                         </div>
                     </div>
                 </div>
+                @if($current_student_class != null)
+                    <div class="tab-pane fade" id="student-attendance" role="tabpanel"
+                         aria-labelledby="student-attendance-tab">
 
+                        <div class="section general-info">
+                            <div class="info">
+                                <h6> الحضور و الغياب </h6>
+                                <div class="table-responsive">
+
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">التاريخ</th>
+                                            <th scope="col">عدد ايام الحضور</th>
+                                            <th scope="col">عدد ايام الغياب</th>
+                                            <th scope="col">خيارات</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach ($attendanceData as $monthYear => $data)
+                                            <tr>
+                                                <td>{{ $monthYear }}</td>
+                                                <td>{{ $data['attended']['count'] }}</td>
+                                                <td>{{ $data['missed']['count'] }}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-light-primary text-primary" data-bs-toggle="modal"
+                                                            data-bs-target="#attendanceDetailsModal"
+                                                            data-attended='@json($data['attended']['dates'])'
+                                                            data-missed='@json($data['missed']['dates'])'>
+                                                        <i class="far fa-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
 
         </div>
+
     </div>
+
 
     @if($current_student_class != null)
         <div class="modal fade" id="editFeesModal">
@@ -779,6 +838,31 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+
+        <div class="modal fade" id="attendanceDetailsModal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">تفاصيل الايام</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="ccl-12 col-md-6">
+                                <h6> ايام الحضور:</h6>
+                                <ul id="attendanceDetailsList" class="list-unstyled"></ul>
+                            </div>
+                            <div class="ccl-12 col-md-6">
+                                <h6> ايام الغياب:</h6>
+                                <ul id="missedDaysDetailsList" class="list-unstyled"></ul>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -885,13 +969,56 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/i18n/ar.js"></script>
 
+
     <script>
+        $(document).ready(function () {
+            $('#attendanceDetailsModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var attendedDetails = button.data('attended');
+                var missedDetails = button.data('missed');
+
+                console.log('Attended Details:', attendedDetails);
+                console.log('Missed Details:', missedDetails);
+
+
+                console.log(attendedDetails)
+                console.log(attendedDetails.length)
+
+                var attendanceModalBody = $('#attendanceDetailsList');
+                var missedModalBody = $('#missedDaysDetailsList');
+
+                attendanceModalBody.empty();
+                missedModalBody.empty();
+
+                if (attendedDetails.length > 0) {
+                    attendedDetails.forEach(function (date) {
+                        var formattedDate = new Date(date).toISOString().split('T')[0];
+                        attendanceModalBody.append('<li>' + formattedDate + '</li>');
+                    });
+                } else {
+                    attendanceModalBody.append('<li>لا يوجد</li>');
+                }
+
+                if (missedDetails.length > 0) {
+                    missedDetails.forEach(function (date) {
+                        var formattedDate = new Date(date).toISOString().split('T')[0];
+                        missedModalBody.append('<li>' + formattedDate + '</li>');
+                    });
+                } else {
+                    missedModalBody.append('<li>لا يوجد</li>');
+                }
+            });
+        });
+    </script>
+
+
+    <script>
+
         var attributes = {!! json_encode($attributes ?? []) !!};
 
         $("#reportExportButton").on("click", function () {
@@ -902,7 +1029,7 @@
                 return;
             }
 
-            console.log(selectedReportId)
+
             if (attributes[selectedReportId]) {
                 $("#inputContainer").empty();
 
@@ -912,10 +1039,6 @@
                 });
                 $("#attributeModal").modal('show');
             } else {
-
-/*                var showStudentReportRoute = '{{route('reports.show',['report'=> ':id', 'student'=> $student])}}';
-                var showStudentReportUrl = showStudentReportRoute.replace(':id', selectedReportId);
-                window.open(showStudentReportUrl, '_blank');*/
 
                 $.ajax({
                     url: '{{route('student-reports.generate')}}',
