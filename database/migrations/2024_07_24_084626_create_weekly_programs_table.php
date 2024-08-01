@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('weekly_programs', function (Blueprint $table) {
             $table->id();
             $table->text('content');
-            $table->text('image')->nullable();
+     /*       $table->text('image')->nullable();*/
             $table->string('week');
-            $table->enum('day', ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']);
+            $table->string('subject');
+         /*   $table->enum('day', ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']);*/
             $table->foreignId('year_class_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });

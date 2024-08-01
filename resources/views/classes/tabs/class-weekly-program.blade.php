@@ -2,23 +2,6 @@
     <link href="{{ asset("assets/plugins/css/light/editors/quill/quill.snow.css")  }}" rel="stylesheet"
           type="text/css"/>
     <link href="{{ asset("assets/plugins/css/dark/editors/quill/quill.snow.css")  }}" rel="stylesheet" type="text/css"/>
-    <style>
-        .ql-container {
-            min-height: 200px;
-            height: 100%;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .ql-editor {
-            height: 100%;
-            flex: 1;
-            overflow-y: auto;
-            width: 100%;
-        }
-    </style>
-
 @endpush
 
 @push("tab_button")
@@ -32,6 +15,9 @@
         </button>
     </li>
 @endpush
+
+@php($weeklySubjects = ["التنوير اللغوي",  "المنطق الرياضي","علوم وتكنولوجيا", "الفنون والموسيقى", "القيم / التراث / الدين", "الزوايا الصفية", "التربية البدنية", "اللغة الانجليزية"])
+
 
 @push("tab_content")
     <div class="tab-pane fade" id="class-weekly-program" role="tabpanel"
@@ -65,53 +51,42 @@
                             </div>
                         </form>
 
-                        <p class="fs-5">  <span>من تاريخ {{ $weekFirstDate  }}</span>   <span>الى  تاريخ {{ $weekLastDate  }}</span></p>
-
-                        @php(
-                            $dayNames = [
-                                'Sunday' => 'الأحد',
-                                'Monday' => 'الاثنين',
-                                'Tuesday' => 'الثلاثاء',
-                                'Wednesday' => 'الأربعاء',
-                                'Thursday' => 'الخميس',
-                                'Friday' => 'الجمعة',
-                                'Saturday' => 'السبت',
-                            ])
-
-
+                        <p class="fs-5 text-center mb-3"><span>من تاريخ {{ $weekFirstDate  }}</span>
+                            <span>الى  تاريخ {{ $weekLastDate  }}</span></p>
+                        <hr>
                         @if(count($weeklyPrograms) > 0)
 
                             <div class="row">
-                                @foreach ( $dayNames as $key=>$day)
+                                @foreach ( $weeklySubjects as $key)
 
                                     @if ( !isset($weeklyPrograms[$key]))
                                         @continue
                                     @endif
 
 
-                                    <div class="col-4">
-
+                                    <div class="col-4 mb-3">
                                         <div class="card">
                                             <div class="card-header py-2 bg-transparent">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <p class="fs-5 mb-0">{{ $day }}</p>
-                                                    <div>
-                                                        {{--                                                        <button type="button"
-                                                                                                                        class="btn btn-light-warning text-warning rounded-circle me-2 ">
-                                                                                                                    <i class="far fa-edit"></i>
-                                                                                                                </button>--}}
-
-                                                        <button type="button"
-                                                                class="btn btn-light-danger text-danger rounded-circle "
-                                                                onclick="deleteItem(this)"
-                                                                data-item="{{route('year-classes.weeklyProgram.destroy',$weeklyPrograms[$key]['id'])}}">
-                                                            <i class="far fa-trash-alt"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                                    <p class="fs-5 mb-0">{{ $key }}</p>
                                             </div>
                                             <div class="card-body">
-                                                {!! $weeklyPrograms[$key]['content'] !!}
+                                                @foreach($weeklyPrograms[$key] as $contents)
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        {!! $contents['content'] !!}
+                                                        <div>
+                                                            <button type="button"
+                                                                    class="btn btn-light-danger text-danger rounded-circle "
+                                                                    onclick="deleteItem(this)"
+                                                                    data-item="{{route('year-classes.weeklyProgram.destroy',$contents['id'])}}">
+                                                                <i class="far fa-trash-alt"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    @if(!$loop->last)
+                                                        <hr>
+                                                    @endif
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
@@ -140,7 +115,7 @@
 
 @push("html")
     <div class="modal fade" id="addweeklyProgramModal">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <form action="{{ route('year-classes.weeklyProgram.store',$current_year_class) }}"
                   method="POST" enctype="multipart/form-data">
                 @csrf
@@ -153,12 +128,6 @@
                     </div>
                     <div class="modal-body">
 
-
-                        {{--                    <div class="mb-3">
-                                                <label for="image">الصورة </label>
-                                                <input type="file" id="image" name="image" class="form-control" accept="image/*">
-                                            </div>
-                --}}
                         <div class="mb-3">
                             <label for="week"> الاسبوع</label>
                             <input type="week" id="week" name="week" class="form-control"
@@ -168,38 +137,17 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
-                            <label for="day">اليوم</label>
-                            <select id="day" name="day" class="form-control @error('day') is-invalid @enderror"
-                                    required>
-                                <option value="Sunday" {{ old('day') == 'Sunday' ? 'selected' : '' }}>الأحد</option>
-                                <option value="Monday" {{ old('day') == 'Monday' ? 'selected' : '' }}>الإثنين
-                                </option>
-                                <option value="Tuesday" {{ old('day') == 'Tuesday' ? 'selected' : '' }}>الثلاثاء
-                                </option>
-                                <option value="Wednesday" {{ old('day') == 'Wednesday' ? 'selected' : '' }}>
-                                    الأربعاء
-                                </option>
-                                <option value="Thursday" {{ old('day') == 'Thursday' ? 'selected' : '' }}>الخميس
-                                </option>
-                                <option value="Friday" {{ old('day') == 'Friday' ? 'selected' : '' }}>الجمعة
-                                </option>
-                                <option value="Saturday" {{ old('day') == 'Saturday' ? 'selected' : '' }}>السبت
-                                </option>
-                            </select>
-                            @error('day')
-                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                            @enderror
+                        <div class="row">
+                            @foreach($weeklySubjects as $subject)
+                                <div class="col-12 col-md-6">
+                                    <div class="mb-3">
+                                        <label for="contentText">{{ $subject  }} </label>
+                                        <textarea id="contentText" name="content[{{$subject}}]" class="form-control"
+                                                  rows="2"></textarea>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-
-
-                        <div class="mb-3">
-                            <label for="contentText">المحتوى </label>
-                            <textarea id="contentText" name="content" class="form-control d-none" rows="20"
-                                      required></textarea>
-                            <div id="editor-container"></div>
-                        </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
@@ -218,22 +166,6 @@
     <script src="{{ asset("assets/plugins/src/editors/quill/quill.js")  }}"></script>
 
     <script>
-        var quill = new Quill('#editor-container', {
-            modules: {
-                toolbar: [
-                    [{header: [1, 2, 3, 4, 5, 6, false]}],
-                    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                    [{align: []}],
-                    [{'direction': 'rtl'}]
-                ]
-            },
-            theme: 'snow'
-        });
-        quill.on('text-change', function (delta, oldDelta, source) {
-            $('#contentText').val(quill.container.firstChild.innerHTML);
-        });
-
-
         $("#weekSelect").change(function () {
             $("#weekSelectForm").submit();
         });

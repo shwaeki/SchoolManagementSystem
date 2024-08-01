@@ -107,7 +107,7 @@ class SchoolClassController extends Controller
           //  $certificate = $current_year_class->certificate;
             $weeklyPrograms = $current_year_class->weeklyPrograms
                 ->where('week', $week)
-                ->keyBy('day')
+                ->groupBy('subject')
                 ->toArray();
         }
 

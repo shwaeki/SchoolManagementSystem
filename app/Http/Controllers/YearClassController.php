@@ -101,7 +101,7 @@ class YearClassController extends Controller
     {
 
         $conflict = DailyProgram::where('year_class_id', $yearClass->id)
-            ->where('day', request('day'))
+            /*   ->where('day', request('day'))*/
             ->where(function ($query) use ($request) {
                 $query->whereBetween('start_time', [request('start_time'), request('end_time')])
                     ->orWhereBetween('end_time', [request('start_time'), request('end_time')]);
@@ -133,26 +133,19 @@ class YearClassController extends Controller
     }
 
 
-
     public function storeWeeklyProgram(StoreWeeklyProgramRequest $request, YearClass $yearClass)
     {
 
-        $conflict = WeeklyProgram::where('year_class_id', $yearClass->id)
-            ->where('day', request('day'))
-            ->where('week', request('week'))->exists();
-
-        if ($conflict) {
-            Session::flash('warnings', 'هناك بالفعل خطة اسبوعية مسجل في هذا اليوم و هذا الاسبوع.');
-            return redirect()->back();
-        }
-
-        $dailyProgram = $yearClass->weeklyPrograms()->create($request->all());
-
-
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $path = $image->storeAs('public/images/weekly_programs', $image->getClientOriginalName());
-            $dailyProgram->update(['image' => $path]);
+        $week = request('week');
+        foreach (request('content') as $subject => $content) {
+            if ($content != null && $content != "") {
+                $data = [
+                    'content' => $content,
+                    'subject' => $subject,
+                    'week' => $week,
+                ];
+                $yearClass->weeklyPrograms()->create($data);
+            }
         }
 
         Session::flash('message', 'تم إنشاء الخطوة الاسبوعية  بنجاح.');
@@ -172,12 +165,11 @@ class YearClassController extends Controller
 
 
         DB::transaction(function () use ($yearClass) {
-            $students = request('students',[]);
+            $students = request('students', []);
             $date = request('date', now());
 
 
-
-            foreach ($students as $student=>$status) {
+            foreach ($students as $student => $status) {
                 StudentAttendance::updateOrCreate(
                     [
                         'year_class_id' => $yearClass->id,
@@ -185,9 +177,9 @@ class YearClassController extends Controller
                         'date' => $date,
                     ],
                     [
-                    'status' => $status,
-                    'added_by' => auth()->id(),
-                ]);
+                        'status' => $status,
+                        'added_by' => auth()->id(),
+                    ]);
             }
         });
 
