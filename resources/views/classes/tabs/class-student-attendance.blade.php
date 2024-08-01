@@ -26,7 +26,7 @@
                         <form method="GET" id="attendanceDateForm">
                             <div class="mb-3">
                                 <label for="attendanceDate" class="form-label">التاريخ</label>
-                                <input type="date" id="attendanceDate" name="date" max="<?= date('Y-m-d'); ?>"
+                                <input type="date" id="attendanceDate" name="date"
                                        class="form-control custom-date" value="{{request('date',date('Y-m-d'))}}">
                             </div>
                         </form>
@@ -110,7 +110,7 @@
     <script>
         flatpickr($('#attendanceDate'),{
             static: true,
-            minDate: new Date().fp_incr(-7),
+       /*     minDate: new Date().fp_incr(-7),*/
             maxDate: "today",
         })
 

@@ -141,6 +141,14 @@ body.dark .flatpickr-time .numInputWrapper span.arrowUp:after {
 body.dark .flatpickr-time .numInputWrapper span.arrowDown:after {
   border-top-color: #009688;
 }
+
+
+body.dark .flatpickr-day[tabindex="-1"]:not(.selected){
+    color: #000;
+}
+
+
+
 @supports (-webkit-overflow-scrolling: touch) {
   body.dark .form-control {
     height: auto;

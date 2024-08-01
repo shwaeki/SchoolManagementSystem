@@ -154,6 +154,12 @@ span.flatpickr-weekday {
   border-top-color: #4361ee;
 }
 
+.flatpickr-day[tabindex="-1"]:not(.selected){
+    color: #000;
+}
+
+
+
 @supports (-webkit-overflow-scrolling: touch) {
   .form-control {
     height: auto;

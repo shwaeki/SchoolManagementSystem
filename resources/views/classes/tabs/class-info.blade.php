@@ -203,7 +203,6 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @php($assistants_data = '')
                                         @foreach($current_year_class->assistants as $assistant)
                                             <tr>
                                                 <td>{{$assistant->name}}</td>
@@ -219,7 +218,6 @@
                                                     </td>
                                                 @endauth
                                             </tr>
-                                            @php($assistants_data .= '- '.$assistant->name)
                                         @endforeach
                                         </tbody>
                                     </table>

@@ -383,6 +383,9 @@
 @endpush
 
 
+
+@php(  $assistants_data = $current_year_class->assistants->implode('name', '- ') )
+
 @push("scripts")
     <script>
         $("#addStudentsForm").on('submit', function (e) {
