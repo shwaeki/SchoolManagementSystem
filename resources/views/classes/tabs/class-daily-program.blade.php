@@ -33,41 +33,39 @@
                         </div>
 
                         <div class="table-responsive">
-
                             @php( $programs = $current_year_class->dailyPrograms->sortBy('start_time'))
 
-
-                                <table class="table table-bordered table-sm">
-                                    <thead>
+                            <table class="table table-bordered table-sm">
+                                <thead>
+                                <tr>
+                                    <th scope="col">الساعة</th>
+                                    <th scope="col">الموضوع</th>
+                                    <th scope="col">الصورة</th>
+                                    <th scope="col">خيارات</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach ($programs as $program)
                                     <tr>
-                                        <th scope="col">الساعة</th>
-                                        <th scope="col">الموضوع</th>
-                                        <th scope="col">الصورة</th>
-                                        <th scope="col">خيارات</th>
+                                        <td>{{ $program->time }}</td>
+                                        <td>{{ $program->subject_name }}</td>
+                                        <td>
+                                            <img src="{{ $program->image_path }}"
+                                                 class="rounded object-fit" height="50px"
+                                                 width="50px">
+                                        </td>
+                                        <td>
+                                            <button type="button"
+                                                    class="btn btn-light-danger text-danger"
+                                                    onclick="deleteItem(this)"
+                                                    data-item="{{route('year-classes.dailyProgram.destroy',$program)}}">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </td>
                                     </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach ($programs as $program)
-                                        <tr>
-                                            <td>{{ $program->time }}</td>
-                                            <td>{{ $program->subject_name }}</td>
-                                            <td>
-                                                <img src="{{ $program->image_path }}"
-                                                     class="rounded object-fit" height="50px"
-                                                     width="50px">
-                                            </td>
-                                            <td>
-                                                <button type="button"
-                                                        class="btn btn-light-danger text-danger"
-                                                        onclick="deleteItem(this)"
-                                                        data-item="{{route('year-classes.dailyProgram.destroy',$program)}}">
-                                                    <i class="far fa-trash-alt"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
+                                @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </form>

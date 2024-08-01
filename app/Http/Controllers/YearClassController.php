@@ -135,13 +135,13 @@ class YearClassController extends Controller
     public function storeWeeklyProgram(StoreWeeklyProgramRequest $request, YearClass $yearClass)
     {
 
-        $week = request('week');
+        $start_date = request('start_date');
         foreach (request('content') as $subject => $content) {
             if ($content != null && $content != "") {
                 $data = [
                     'content' => $content,
                     'subject' => $subject,
-                    'week' => $week,
+                    'start_date' => $start_date,
                 ];
                 $yearClass->weeklyPrograms()->create($data);
             }

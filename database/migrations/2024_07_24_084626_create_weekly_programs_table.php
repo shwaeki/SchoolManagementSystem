@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('content');
      /*       $table->text('image')->nullable();*/
-            $table->string('week');
+            $table->date('start_date');
             $table->string('subject');
          /*   $table->enum('day', ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']);*/
             $table->foreignId('year_class_id')->constrained()->onUpdate('cascade')->onDelete('cascade');

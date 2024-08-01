@@ -35,20 +35,20 @@
                             </div>
                             <div class="col-3 text-end">
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#addweeklyProgramModal">
+                                        data-bs-target="#addWeeklyProgramModal">
                                     اضافة
                                 </button>
                             </div>
                         </div>
 
-                        @php( $seletedWeek = request('weekSelect', Carbon\Carbon::now()->format('o-\WW')))
                         <form method="GET" id="weekSelectForm">
                             <div class="mb-3">
-                                <label for="weekSelect" class="form-label">الاسبوع</label>
-                                <input type="week" id="weekSelect" name="weekSelect"
-                                       class="form-control"
-                                       value="{{ $seletedWeek }}">
+                                <label for="weekSelect" class="form-label">التاريخ</label>
+                                <input type="date" id="weekSelect" name="weekSelect"
+                                       class="form-control custom-date"
+                                       value="{{ request('weekSelect', $weekFirstDate) }}">
                             </div>
+
                         </form>
 
                         <p class="fs-5 text-center mb-3"><span>من تاريخ {{ $weekFirstDate  }}</span>
@@ -67,7 +67,7 @@
                                     <div class="col-4 mb-3">
                                         <div class="card">
                                             <div class="card-header py-2 bg-transparent">
-                                                    <p class="fs-5 mb-0">{{ $key }}</p>
+                                                <p class="fs-5 mb-0">{{ $key }}</p>
                                             </div>
                                             <div class="card-body">
                                                 @foreach($weeklyPrograms[$key] as $contents)
@@ -114,7 +114,7 @@
 
 
 @push("html")
-    <div class="modal fade" id="addweeklyProgramModal">
+    <div class="modal fade" id="addWeeklyProgramModal">
         <div class="modal-dialog modal-lg" role="document">
             <form action="{{ route('year-classes.weeklyProgram.store',$current_year_class) }}"
                   method="POST" enctype="multipart/form-data">
@@ -129,13 +129,16 @@
                     <div class="modal-body">
 
                         <div class="mb-3">
-                            <label for="week"> الاسبوع</label>
-                            <input type="week" id="week" name="week" class="form-control"
-                                   value="{{ old('week') }}" required>
+                            <label for="start_date" class="form-label">التاريخ</label>
+                            <input type="date" id="start_date" name="start_date"
+                                   class="form-control custom-date"
+                                   value="{{ request('start_date') }}">
+
                             @error('start_date')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>
+
 
                         <div class="row">
                             @foreach($weeklySubjects as $subject)
@@ -169,12 +172,36 @@
         $("#weekSelect").change(function () {
             $("#weekSelectForm").submit();
         });
+
+        $("#weekSelect").flatpickr({
+            "disable": [
+                function (date) {
+                    return (date.getDay() != 0);
+                }
+            ],
+            "locale": {
+                "firstDayOfWeek": 0
+            }
+        });
+
+        $("#start_date").flatpickr({
+            "static": true,
+            "disable": [
+                function (date) {
+                    return (date.getDay() != 0);
+                }
+            ],
+            "locale": {
+                "firstDayOfWeek": 0
+            }
+        });
+
     </script>
 
-    @if ($errors->has('day') || $errors->has('week') || $errors->has('content'))
+    @if ($errors->has('day') || $errors->has('start_date') || $errors->has('content'))
         <script>
             $(document).ready(function () {
-                $('#addweeklyProgramModal').modal('show');
+                $('#addWeeklyProgramModal').modal('show');
             });
         </script>
     @endif

@@ -55,8 +55,13 @@ class SchoolClassController extends Controller
 
     public function show(SchoolClass $schoolClass)
     {
-        $date = request('date', now());
-        $week = request('weekSelect', Carbon::now()->format('o-\WW'));
+        $attendanceDate = request('date', now());
+
+        $weekDate = Carbon::parse(request('weekSelect',Carbon::now()));
+
+        $weekStartDate  = $weekDate->startOfWeek(Carbon::SUNDAY)->toDateString();
+        $weekEndDate = $weekDate->endOfWeek(Carbon::SATURDAY)->toDateString();
+
 
         $current_year_class = $schoolClass->yearClasses()
             ->where('academic_year_id', getUserActiveAcademicYearID())
@@ -91,7 +96,7 @@ class SchoolClassController extends Controller
 
             // Get student attendance
             $studentsAttendance = StudentAttendance::where('year_class_id', $current_year_class->id)
-                ->whereDate('date', $date)
+                ->whereDate('date', $attendanceDate)
                 ->pluck('status', 'student_id')
                 ->toArray();
 
@@ -103,19 +108,15 @@ class SchoolClassController extends Controller
                 ->with('student', 'addedBy')
                 ->get();
 
-            // Get the certificate and weekly programs
-          //  $certificate = $current_year_class->certificate;
+
             $weeklyPrograms = $current_year_class->weeklyPrograms
-                ->where('week', $week)
+                ->where('start_date', $weekStartDate)
                 ->groupBy('subject')
                 ->toArray();
         }
 
 
-        [$year, $week] = sscanf($week, '%d-W%d');
 
-        $start =  Carbon::now()->setISODate($year, $week)->startOfWeek();
-        $end = $start->copy()->endOfWeek();
 
         $data = [
             'class' => $schoolClass,
@@ -127,8 +128,8 @@ class SchoolClassController extends Controller
             'certificates' => Certificate::all(),
             'students' => Student::whereNotIn('id', $all_students)->orderBy('name', 'asc')->get(),
             'class_year_students' => $class_year_students,
-            'weekFirstDate' => $start->toDateString(),
-            'weekLastDate' => $end->toDateString(),
+            'weekFirstDate' => $weekStartDate,
+            'weekLastDate' => $weekEndDate,
             'weeklyPrograms' => $weeklyPrograms,
         ];
 
