@@ -82,8 +82,8 @@ class SchoolClassController extends Controller
             $all_students = DB::table('student_classes')
                 ->select('student_id')
                 ->join('year_classes', 'year_classes.id', '=', 'student_classes.year_class_id')
-              /*  ->where('academic_year_id', $current_year_class->academic_year_id)*/
-              /*  ->whereNull('student_classes.deleted_at')*/
+                ->where('academic_year_id', $current_year_class->academic_year_id)
+                ->whereNull('student_classes.deleted_at')
                 ->pluck('student_id')
                 ->toArray();
 
