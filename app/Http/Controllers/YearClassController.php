@@ -100,8 +100,7 @@ class YearClassController extends Controller
     public function storeDailyProgram(StoreDailyProgramRequest $request, YearClass $yearClass)
     {
 
-        $conflict = DailyProgram::where('year_class_id', $yearClass->id)
-            /*   ->where('day', request('day'))*/
+/*        $conflict = DailyProgram::where('year_class_id', $yearClass->id)
             ->where(function ($query) use ($request) {
                 $query->whereBetween('start_time', [request('start_time'), request('end_time')])
                     ->orWhereBetween('end_time', [request('start_time'), request('end_time')]);
@@ -110,7 +109,7 @@ class YearClassController extends Controller
         if ($conflict) {
             Session::flash('warnings', 'الفترة الزمنية محجوزة بالفعل لهذا الصف في اليوم المحدد.');
             return redirect()->back();
-        }
+        }*/
 
         $dailyProgram = $yearClass->dailyPrograms()->create($request->all());
 
