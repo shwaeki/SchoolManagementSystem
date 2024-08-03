@@ -104,6 +104,7 @@
                             <thead>
                             <tr>
                                 <th scope="col"> رقم الهاتف</th>
+                                <th scope="col">  الاسم</th>
                                 <th scope="col"> تم الارسال بواسطة</th>
                                 <th scope="col"> تاريخ الارسال</th>
                                 <th scope="col"> نص الرسالة</th>
@@ -113,6 +114,7 @@
                             @foreach($messages as $message)
                                 <tr>
                                     <td>{{$message->phone}}</td>
+                                    <td>{{$message->name }}</td>
                                     <td>{{$message->addedBy?->name }}</td>
                                     <td>{{$message->created_at->format('Y-m-d')}}</td>
                                     <td>{{$message->message}}</td>

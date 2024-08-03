@@ -87,4 +87,12 @@ class ReportController extends Controller
 
         return $content;
     }
+
+    public function destroy(Report $report)
+    {
+        $report->delete();
+        Session::flash('message', 'تم حذف التقرير بنجاح!');
+        return redirect()->route('reports.index');
+    }
+
 }

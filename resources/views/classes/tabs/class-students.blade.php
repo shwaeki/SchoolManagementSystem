@@ -387,6 +387,10 @@
 @php(  $assistants_data = $current_year_class->assistants->implode('name', '- ') )
 
 @push("scripts")
+
+
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.colVis.min.js"></script>
+
     <script>
         $("#addStudentsForm").on('submit', function (e) {
             var table = $('.dataTableConfigNoData').DataTable();
@@ -478,7 +482,7 @@
                 {
                     extend: 'excel',
                     messageTop: function () {
-                        return 'طلاب روضة - {{$class->name}} - المعلمة : {{$current_year_class?->supervisorTeacher?->name}} : رقم الروضة : {{$current_year_class?->code}} المساعدات: {{$assistants_data ?? ''}}';
+                        return 'المعلمة : {{$current_year_class?->supervisorTeacher?->name}} : رقم الروضة : {{$current_year_class?->code}} المساعدات: {{$assistants_data ?? ''}}';
                     },
                     exportOptions: {
                         columns: ':not(:last-child)'
@@ -489,7 +493,6 @@
                     extend: 'print',
                     messageTop: function () {
                         return '<div style="text-align: center;">' +
-                            'طلاب روضة - {{$class->name}}<br>' +
                             'المعلمة : {{$current_year_class?->supervisorTeacher?->name}}<br>' +
                             'رقم الروضة : {{$current_year_class?->code}}<br>' +
                             'المساعدات: {{$assistants_data ?? ''}}' +
@@ -502,6 +505,10 @@
                     customize: function (win) {
                         $(win.document.body).find('h1').css('text-align', 'center');
                     }
+                },
+                {
+                    extend: 'colvis',
+
                 }
             ],
             "pageLength": 25

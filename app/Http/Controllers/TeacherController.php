@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DataTables\TeachersDataTable;
 use App\Http\Requests\StoreTeacherRequest;
 use App\Http\Requests\UpdateTeacherRequest;
+use App\Models\Message;
 use App\Models\Report;
 use App\Models\SalarySlip;
 use App\Models\SchoolClass;
@@ -72,6 +73,7 @@ class TeacherController extends Controller
             "teacher" => $teacher,
             "reports" => Report::where('type','teacher')->get(),
             "teacher_reports" => $teacher->reports,
+            "teacher_messages" => Message::where('phone', $teacher->phone)->get(),
         ];
 
         Session::put('fileManagerConfig', "Teacher_" . $teacher->id);
@@ -118,6 +120,13 @@ class TeacherController extends Controller
         $teacher->delete();
         Session::flash('message', 'تم حذف المعلم بنجاح!');
         return redirect()->route('teachers.index');
+    }
+
+    public function deleteSlip(SalarySlip $salarySlip)
+    {
+        $salarySlip->delete();
+        Session::flash('message', 'تم حذف قسيمة الراتب بنجاح!');
+        return redirect()->back();
     }
 
     public function passwordUpdate(Request $request, Teacher $teacher)

@@ -47,6 +47,20 @@
                     @endif
                 @endif
 
+                    @if(count($data['students-request']) > 0)
+                    <h5 class="mb-0 text-black-50">طلبات الطلاب</h5>
+                    @foreach($data['students-request'] as $i => $item)
+                        <a href="{{route('students-request.show',$item['id'])}}" data-search="{{$loopIndex}}"
+                           class="list-item search-item px-3 py-2 text-dark">
+                           {{ $item['name'] }}
+                        </a>
+                        @php($loopIndex++)
+                    @endforeach
+                    @if(count($data['teachers']) > 0)
+                        <div class="mt-3"></div>
+                    @endif
+                @endif
+
                 @if(count($data['teachers']) > 0)
                     <h5 class="mb-0 text-black-50"> المعلمين </h5>
                     @foreach($data['teachers'] as $i => $item)
@@ -56,7 +70,7 @@
                     @endforeach
                 @endif
 
-                @if(count($data['students']) == 0 && count($data['teachers']) == 0 )
+                @if(count($data['students']) == 0 && count($data['students-request']) == 0 && count($data['teachers']) == 0 )
                     <div class="list-item text-center p-2 mb-0">لم يتم العثور على نتيجة لـ "{{$query}}" !</div>
                 @endif
             </div>

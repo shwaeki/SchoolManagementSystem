@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Student;
+use App\Models\StudentRequest;
 use App\Models\Teacher;
 use Livewire\Component;
 
@@ -25,6 +26,7 @@ class Search extends Component
         $this->searchStatus = false;
         $this->query = '';
         $this->data['students'] = [];
+        $this->data['students-request'] = [];
         $this->data['teachers'] = [];
     }
 
@@ -44,6 +46,13 @@ class Search extends Component
                 $q->orWhere('father_phone', 'LIKE', '%' . $this->query . '%');
             })->get()->toArray();
 
+            $studentsRequests = StudentRequest::where(function ($q) {
+                $q->where('name', 'LIKE', '%' . $this->query . '%');
+                $q->orWhere('identification', 'LIKE', '%' . $this->query . '%');
+                $q->orWhere('mother_phone', 'LIKE', '%' . $this->query . '%');
+                $q->orWhere('father_phone', 'LIKE', '%' . $this->query . '%');
+            })->get()->toArray();
+
 
             $teachers = Teacher::where(function ($q) {
                 $q->where('name', 'LIKE', '%' . $this->query . '%');
@@ -53,6 +62,7 @@ class Search extends Component
             })->get()->toArray();
 
             $this->data['students'] = $students;
+            $this->data['students-request'] = $studentsRequests;
             $this->data['teachers'] = $teachers;
         }
     }

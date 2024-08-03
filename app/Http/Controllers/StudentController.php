@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DataTables\StudentsDataTable;
 use App\Models\AcademicYear;
+use App\Models\Message;
 use App\Models\Product;
 use App\Models\Report;
 use App\Models\Student;
@@ -109,6 +110,7 @@ class StudentController extends Controller
             "products" => Product::where('status', true)?->get(),
             "current_student_class" => $current_student_class,
             "attendanceData" => $attendanceData,
+            "student_messages" => Message::where('phone', $student->mother_phone)->orWhere('phone', $student->father_phone)->get(),
         ];
 
         Session::put('fileManagerConfig', "Student_" . $student->id);

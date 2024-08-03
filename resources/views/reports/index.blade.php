@@ -1,9 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
-
-
     <div class="statbox widget box box-shadow">
         <div class="widget-header">
             <div class="row">

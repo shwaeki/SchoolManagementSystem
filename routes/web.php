@@ -102,6 +102,7 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
         Route::resource('students-request', StudentRequestController::class);
 
         Route::get('teachers/downloadSlip/{salarySlip}', [TeacherController::class, 'downloadSlip'])->name('teachers.downloadSlip');
+        Route::delete('teachers/deleteSlip/{salarySlip}', [TeacherController::class, 'deleteSlip'])->name('teachers.deleteSlip');
         Route::put('teachers/change-password/{teacher}', [TeacherController::class, 'passwordUpdate'])->name('teachers.password');
         Route::resource('teachers', TeacherController::class);
 

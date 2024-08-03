@@ -19,13 +19,13 @@ class ReportsDataTable extends DataTable
             ->eloquent($query)
             ->addColumn('Settings', function ($query) {
                 return '<a href="' . route('reports.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
-                    <button class="btn btn-light-danger text-danger  d-none" onclick="deleteItem(this)"
+                    <button class="btn btn-light-danger text-danger" onclick="deleteItem(this)"
                     data-item="' . route('reports.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
             })
             ->editColumn('added_by', function ($query) {
                 return $query->addedBy?->name;
             })->editColumn('type', function ($query) {
-                return __('options.'.$query->type);
+                return __('options.' . $query->type);
             })
             ->setRowId('id')
             ->rawColumns(['Settings', 'gender']);

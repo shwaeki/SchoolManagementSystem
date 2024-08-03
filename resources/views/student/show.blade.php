@@ -123,6 +123,15 @@
                         @endif
 
                         <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="student-messages-tab" data-bs-toggle="tab"
+                                    href="#student-messages"
+                                    role="tab" aria-controls="student-messages" aria-selected="false" tabindex="-1">
+                                <i class="fas fa-sms"></i>
+                                الرسائل
+                            </button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
                             <button class="nav-link" id="student-log-tab" data-bs-toggle="tab" href="#student-log"
                                     role="tab" aria-controls="student-log" aria-selected="false" tabindex="-1">
                                 <i class="fas fa-history"></i>
@@ -637,15 +646,15 @@
                     <div class="row">
                         <div class="col-12 text-center mb-3">
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col">
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title"> {{  $student_purchases?->sum('price') + $current_student_class?->register_fees + $current_student_class?->study_fees}}</h5>
-                                            <p class="card-text">الديون </p>
+                                            <p class="card-text">المشتريات </p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col">
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title">{{ $student_payments?->sum('amount')}}</h5>
@@ -653,7 +662,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-4">
+
+                                <div class="col">
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title"> {{  ( $student_purchases?->sum('price') + $current_student_class?->register_fees + $current_student_class?->study_fees) - $student_payments->sum('amount') }}</h5>
@@ -661,6 +671,19 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                @if($current_student_class)
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title"> {{  ( $current_student_class?->register_fees + $current_student_class?->study_fees) - $student_payments->whereIn('payment_for',['القسط الدراسي','رسوم التسجيل'])->sum('amount')  }}</h5>
+                                                <p class="card-text">القسط الدراسي المتبقي</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+
+
                             </div>
                         </div>
                         <div class="col-12 col-md-6 layout-spacing">
@@ -682,7 +705,6 @@
                                         <table class="table table-bordered">
                                             <thead>
                                             <tr>
-                                                <th scope="col">#</th>
                                                 <th scope="col">المنتج</th>
                                                 <th scope="col">السعر</th>
                                                 <th scope="col">اضيف بواسطة</th>
@@ -692,7 +714,6 @@
                                             <tbody>
                                             @foreach($student_purchases as $purchases)
                                                 <tr>
-                                                    <td>{{ $loop->iteration }}</td>
                                                     <td>{{$purchases->product->name}}</td>
                                                     <td>{{$purchases->price}}₪</td>
                                                     <td>{{$purchases->addedBy->name}}</td>
@@ -725,9 +746,9 @@
                                         <table class="table table-bordered">
                                             <thead>
                                             <tr>
-                                                <th scope="col">#</th>
                                                 <th scope="col">المبلغ</th>
                                                 <th scope="col"> طريقة الدفع</th>
+                                                <th scope="col"> نوع الدفع</th>
                                                 <th scope="col">اضيف بواسطة</th>
                                                 <th scope="col">تاريخ الاضافة</th>
                                             </tr>
@@ -735,9 +756,9 @@
                                             <tbody>
                                             @foreach($student_payments ?? [] as $payment)
                                                 <tr>
-                                                    <td>{{ $loop->iteration }}</td>
                                                     <td>{{$payment->amount}}₪</td>
                                                     <td>{{$payment->payment_way}}</td>
+                                                    <td>{{$payment->payment_for}}</td>
                                                     <td>{{$payment->payment_date}}</td>
                                                     <td>{{$payment->addedBy->name}}</td>
                                                 </tr>
@@ -751,7 +772,46 @@
                         </div>
                     </div>
                 </div>
-                @if($current_student_class != null)
+                <div class="tab-pane fade" id="student-messages" role="tabpanel"
+                     aria-labelledby="student-messages-tab">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                            <form class="section general-info">
+                                <div class="info">
+
+                                    <h6> الرسال التي تم ارسائلها الى الطالب  </h6>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-striped table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col"> تم الارسال بواسطة</th>
+                                                <th scope="col"> تاريخ الارسال</th>
+                                                <th scope="col"> نص الرسالة</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($student_messages as $message)
+                                                <tr>
+                                                    <td>{{$message->addedBy?->name }}</td>
+                                                    <td>{{$message->created_at->format('Y-m-d')}}</td>
+                                                    <td style="-webkit-user-modify: read-write-plaintext-only">
+                                                        {{$message->message}}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            @if($current_student_class != null)
                     <div class="tab-pane fade" id="student-attendance" role="tabpanel"
                          aria-labelledby="student-attendance-tab">
 
@@ -776,7 +836,8 @@
                                                 <td>{{ $data['attended']['count'] }}</td>
                                                 <td>{{ $data['missed']['count'] }}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-light-primary text-primary" data-bs-toggle="modal"
+                                                    <button type="button" class="btn btn-light-primary text-primary"
+                                                            data-bs-toggle="modal"
                                                             data-bs-target="#attendanceDetailsModal"
                                                             data-attended='@json($data['attended']['dates'])'
                                                             data-missed='@json($data['missed']['dates'])'>

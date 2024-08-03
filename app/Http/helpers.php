@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 
 if (!function_exists('sendSms')) {
-    function sendSms($message, $phone_number)
+    function sendSms($message, $phone_number, $name = null)
     {
         $getToken = "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJmaXJzdF9rZXkiOiI2MTMzNyIsInNlY29uZF9rZXkiOiIzNDk5NTM1IiwiaXNzdWVkQXQiOiIwOC0wMy0yMDI0IDA5OjQ1OjE3IiwidHRsIjo2MzA3MjAwMH0.tmeGW4_aP57titk5aca-U-5j32Jod_-s9TtYh_lQGpg";
 
@@ -21,6 +21,7 @@ if (!function_exists('sendSms')) {
                 Message::create([
                     'message' => $message,
                     'phone' => $phone_number,
+                    'name' => $name,
                     'added_by' => auth()->id(),
                 ]);
 
@@ -59,17 +60,19 @@ if (!function_exists('sendSms')) {
 if (!function_exists('sendSmsBulk')) {
     function sendSmsBulk($message, $phone_numbers)
     {
+
         $getToken = "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJmaXJzdF9rZXkiOiI2MTMzNyIsInNlY29uZF9rZXkiOiIzNDk5NTM1IiwiaXNzdWVkQXQiOiIwOC0wMy0yMDI0IDA5OjQ1OjE3IiwidHRsIjo2MzA3MjAwMH0.tmeGW4_aP57titk5aca-U-5j32Jod_-s9TtYh_lQGpg";
 
 
         $phones = [];
 
-        foreach ($phone_numbers as $number) {
-            $phones[] = ['_' => $number];
+        foreach ($phone_numbers as $data) {
+            $phones[] = ['_' => $data['phone']];
 
             Message::create([
                 'message' => $message,
-                'phone' => $number,
+                'phone' => $data['phone'],
+                'name' => $data['name'],
                 'added_by' => auth()->id(),
             ]);
         }

@@ -64,10 +64,10 @@ class MessageController extends Controller
 
                 foreach ($year_class_students as $student) {
                     if ($student?->student?->mother_phone != null) {
-                        $phones[] = $student?->student?->mother_phone;
+                        $phones[] =['phone' => $student?->student?->mother_phone, 'name' => $student?->student?->name];
                     }
                     if ($student?->student?->father_phone != null) {
-                        $phones[] = $student?->student?->father_phone;
+                        $phones[] = ['phone' => $student?->student?->father_phone, 'name' => $student?->student?->name];
                     }
                 }
             }
@@ -75,7 +75,7 @@ class MessageController extends Controller
             $teachers = Teacher::all();
             foreach ($teachers as $teacher) {
                 if ($teacher->phone != null) {
-                    $phones[] = $teacher->phone;
+                    $phones[] = ['phone' => $teacher->phone, 'name' => $teacher->name];
                 }
             }
         } elseif ($message_to == "specific_student") {
@@ -83,16 +83,16 @@ class MessageController extends Controller
             $student = Student::findOrFail($student_id);
 
             if ($student->mother_phone != null) {
-                $phones[] = $student->mother_phone;
+                $phones[] = ['phone' => $student->mother_phone, 'name' => $student->name];
             }
             if ($student->father_phone != null) {
-                $phones[] = $student->father_phone;
+                $phones[] = ['phone' => $student->father_phone, 'name' => $student->name];
             }
 
         } elseif ($message_to == "specific_teacher") {
             $teacher_id = request('teacher');
             $teacher = Teacher::findOrFail($teacher_id);
-            $phones[] = $teacher->phone;
+            $phones[] = ['phone' => $teacher->phone, 'name' => $teacher->name];
         } elseif ($message_to == "specific_class") {
             $schoolclass_id = request('schoolclass');
             $schoolClass = SchoolClass::findOrFail($schoolclass_id);
@@ -107,10 +107,10 @@ class MessageController extends Controller
 
             foreach ($year_class_students as $student) {
                 if ($student?->student?->mother_phone != null) {
-                    $phones[] = $student?->student?->mother_phone;
+                    $phones[] = ['phone' => $student?->student?->mother_phone, 'name' => $student?->student?->name];
                 }
                 if ($student?->student?->father_phone != null) {
-                    $phones[] = $student?->student?->father_phone;
+                    $phones[] = ['phone' => $student?->student?->father_phone, 'name' => $student?->student?->name];
                 }
             }
         }

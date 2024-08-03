@@ -63,6 +63,16 @@
                                 التقارير
                             </button>
                         </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="teacher-messages-tab" data-bs-toggle="tab"
+                                    href="#teacher-messages"
+                                    role="tab" aria-controls="teacher-messages" aria-selected="false" tabindex="-1">
+                                <i class="fas fa-sms"></i>
+                                الرسائل
+                            </button>
+                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -278,6 +288,7 @@
                                         <table class="table table-hover table-striped table-bordered">
                                             <thead>
                                             <tr>
+                                                <th scope="col"> #</th>
                                                 <th scope="col"> التاريخ</th>
                                                 <th scope="col"> خيارات</th>
                                             </tr>
@@ -285,12 +296,18 @@
                                             <tbody>
                                             @foreach($salaries as $salary)
                                                 <tr>
+                                                    <td>{{$loop->iteration}}</td>
                                                     <td>{{$salary->date}}</td>
                                                     <td>
-                                                        <a class="btn btn-primary" target="_blank"
-                                                           href="{{route('teachers.downloadSlip',$salary)}}">
-                                                            تحميل
+                                                        <a href="{{route('teachers.downloadSlip',$salary)}}"
+                                                           target="_blank" class="btn btn-light-primary text-primary">
+                                                            <i class="far fa-eye"></i>
                                                         </a>
+
+                                                        <button class="btn btn-light-danger text-danger " onclick="deleteItem(this)"
+                                                                data-item="{{route('teachers.deleteSlip',$salary)}}">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -365,6 +382,43 @@
                                                            type="button" class="btn btn-delete">
                                                             عرض
                                                         </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="tab-pane fade " id="teacher-messages" role="tabpanel" aria-labelledby="teacher-messages-tab">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                            <form class="section general-info">
+                                <div class="info">
+
+                                    <h6> الرسال التي تم ارسائلها الى المعلمة  </h6>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-striped table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col"> تم الارسال بواسطة</th>
+                                                <th scope="col"> تاريخ الارسال</th>
+                                                <th scope="col"> نص الرسالة</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($teacher_messages as $message)
+                                                <tr>
+                                                    <td>{{$message->addedBy?->name }}</td>
+                                                    <td>{{$message->created_at->format('Y-m-d')}}</td>
+                                                    <td style="-webkit-user-modify: read-write-plaintext-only">
+                                                        {{$message->message}}
                                                     </td>
                                                 </tr>
                                             @endforeach
