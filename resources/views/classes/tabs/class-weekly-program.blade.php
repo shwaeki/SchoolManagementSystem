@@ -75,6 +75,14 @@
                                                         {!! $contents['content'] !!}
                                                         <div>
                                                             <button type="button"
+                                                                    data-id="{{ $contents['id']  }}"
+                                                                    data-title="{{ $key }}"
+                                                                    data-content=" {!! $contents['content'] !!}"
+                                                                    class="btn btn-light-warning text-warning rounded-circle editWeek">
+                                                                <i class="far fa-edit"></i>
+                                                            </button>
+
+                                                            <button type="button"
                                                                     class="btn btn-light-danger text-danger rounded-circle "
                                                                     onclick="deleteItem(this)"
                                                                     data-item="{{route('year-classes.weeklyProgram.destroy',$contents['id'])}}">
@@ -122,7 +130,7 @@
 
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">اضافة برنامج يومي </h5>
+                        <h5 class="modal-title">اضافة الخطة الاسبوعية </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
@@ -162,6 +170,41 @@
             </form>
         </div>
     </div>
+
+    <div class="modal fade" id="editWeeklyProgramModal">
+        <div class="modal-dialog modal-lg" role="document">
+            <form action="" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">تعديل الخطة الاسبوعية </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="editWeekSubject">العنوان </label>
+                            <input type="text" id="editWeekSubject" class="form-control" disabled>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editWeekContent">المحتوى </label>
+                            <textarea id="editWeekContent" name="content" class="form-control" rows="3"></textarea>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
+                            <i class="flaticon-cancel-12"></i> اغلاق
+                        </button>
+                        <button type="submit" class="btn btn-primary">حفظ</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 @endpush
 
 
@@ -169,6 +212,22 @@
     <script src="{{ asset("assets/plugins/src/editors/quill/quill.js")  }}"></script>
 
     <script>
+
+        $(document).on("click", ".editWeek", function () {
+            var id = $(this).data("id");
+            var title = $(this).data("title");
+            var content = $(this).data("content");
+
+            $("#editWeekSubject").val(title);
+            $("#editWeekContent").val(content);
+
+            var url = '{{ route("year-classes.weeklyProgram.update", ":ID") }}';
+            url = url.replace(':ID', id);
+            $('#editWeeklyProgramModal form').attr('action', url);
+            $('#editWeeklyProgramModal').modal('show');
+        })
+
+
         $("#weekSelect").change(function () {
             $("#weekSelectForm").submit();
         });

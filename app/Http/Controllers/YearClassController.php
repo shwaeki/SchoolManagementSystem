@@ -14,6 +14,7 @@ use App\Models\YearClass;
 use App\Http\Requests\StoreYearClassRequest;
 use App\Http\Requests\UpdateYearClassRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -100,19 +101,7 @@ class YearClassController extends Controller
     public function storeDailyProgram(StoreDailyProgramRequest $request, YearClass $yearClass)
     {
 
-/*        $conflict = DailyProgram::where('year_class_id', $yearClass->id)
-            ->where(function ($query) use ($request) {
-                $query->whereBetween('start_time', [request('start_time'), request('end_time')])
-                    ->orWhereBetween('end_time', [request('start_time'), request('end_time')]);
-            })->exists();
-
-        if ($conflict) {
-            Session::flash('warnings', 'الفترة الزمنية محجوزة بالفعل لهذا الصف في اليوم المحدد.');
-            return redirect()->back();
-        }*/
-
         $dailyProgram = $yearClass->dailyPrograms()->create($request->all());
-
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -148,6 +137,23 @@ class YearClassController extends Controller
         }
 
         Session::flash('message', 'تم إنشاء الخطوة الاسبوعية  بنجاح.');
+        return redirect()->back();
+    }
+
+
+    public function updateWeeklyProgram(StoreWeeklyProgramRequest $request, WeeklyProgram $weeklyProgram)
+    {
+        if (Auth::guard('teacher')->check()) {
+            if ($weeklyProgram->yearClass->supervisor != auth()->id()) {
+                abort(404);
+            }
+        }
+
+        $weeklyProgram->update([
+            'content' => request('content'),
+        ]);
+
+        Session::flash('message', 'تم تعديل الخطوة الاسبوعية  بنجاح.');
         return redirect()->back();
     }
 

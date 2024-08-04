@@ -141,39 +141,58 @@ if (jQuery().dataTable) {
 
 $('button[data-bs-toggle="tab"]').on('click', function (e) {
     e.preventDefault();
-    window.location.hash = $(this).attr('href');
-    localStorage.setItem('selectedTabHash', $(this).attr('href'));
+    var href = $(this).attr('href');
+    window.location.hash = href;
+    localStorage.setItem('selectedTabHash', href);
     localStorage.setItem('currentPageUrl', $("#current_url").val());
 });
 
 
-var hash = window.location.hash;
-if (hash) {
+function showTabFromHash(hash) {
     var tab = $('.nav-pills button[href="' + hash + '"]');
     if (tab.length > 0) {
         new bootstrap.Tab(tab[0]).show();
     }
-} else {
-    var savedHash = localStorage.getItem('selectedTabHash');
-    var currentPageUrl = localStorage.getItem('currentPageUrl');
-    /*    console.log("CURRENT : " + $("#current_url").val());
-        console.log("OLD : " + currentPageUrl + " Hash: " + savedHash);*/
-    if (savedHash && currentPageUrl == $("#current_url").val()) {
-        var tab = $('.nav-pills button[href="' + savedHash + '"]');
-        if (tab.length > 0) {
-            new bootstrap.Tab(tab[0]).show();
-            window.location.hash = savedHash;
-        }
-    }
 }
 
 
-$( '.select2' ).select2( {
+$(document).ready(function () {
+    var hash = window.location.hash;
+    if (hash) {
+        showTabFromHash(hash);
+    } else {
+        var savedHash = localStorage.getItem('selectedTabHash');
+        var currentPageUrl = localStorage.getItem('currentPageUrl');
+        if (savedHash && currentPageUrl == $("#current_url").val()) {
+            showTabFromHash(savedHash);
+            window.location.hash = savedHash;
+        }
+    }
+});
+
+
+$(window).on('hashchange', function () {
+    var hash = window.location.hash;
+    if (hash) {
+        var savedHash = localStorage.getItem('selectedTabHash');
+        var currentPageUrl = hash;
+        var currentUrl = $("#current_url").val();
+
+        if (savedHash && currentPageUrl === currentUrl) {
+            showTabFromHash(savedHash);
+        } else {
+            showTabFromHash(hash);
+        }
+    }
+});
+
+
+$('.select2').select2({
     theme: 'bootstrap-5',
-    width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
-} );
+    width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+});
 
 
-flatpickr($('input[type="date"]:not(.custom-date)'),{
+flatpickr($('input[type="date"]:not(.custom-date)'), {
     static: true
 })

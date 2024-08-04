@@ -7,6 +7,7 @@ use App\Http\Requests\StoreChatRequest;
 use App\Http\Requests\UpdateChatRequest;
 use App\Models\Message;
 use App\Models\Student;
+use App\Models\StudentClass;
 use App\Models\User;
 use http\Client\Response;
 use Illuminate\Support\Facades\Auth;
@@ -20,15 +21,25 @@ class ChatController extends Controller
      */
     public function index()
     {
+
+        if (Auth::guard('teacher')->check()) {
+
+            $studentIds = StudentClass::join('year_classes', 'student_classes.year_class_id', '=', 'year_classes.id')
+                ->where('year_classes.supervisor', auth()->id())
+                ->where('year_classes.academic_year_id', getAdminActiveAcademicYearID())
+                ->pluck('student_classes.student_id');
+
+            $students = Student::whereIn('id', $studentIds)->get();
+
+        } else {
+            $students = Student::all();
+        }
+
         $data = [
-            'students' => Student::all(),
-            'chats' => Chat::select('chats.*')
-                ->join(DB::raw('(SELECT MAX(id) as id FROM chats GROUP BY student_id) as latest_messages'), 'chats.id', '=', 'latest_messages.id')
-                ->latest('chats.created_at')
-                ->with('student', 'teacher')
-                ->limit(15)
-                ->get(),
+
+            'students' => $students
         ];
+
 
         return view('chats.index', $data);
     }
