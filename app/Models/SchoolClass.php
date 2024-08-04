@@ -28,5 +28,10 @@ class SchoolClass extends Model
         return $this->hasMany(Teacher::class);
     }
 
+    public function chats(): hasMany
+    {
+        return $this->hasMany(GroupChat::class, 'school_class_id');
+    }
+
 
 }

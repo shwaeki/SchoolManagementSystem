@@ -6,6 +6,7 @@ use App\Models\Chat;
 use App\Http\Requests\StoreChatRequest;
 use App\Http\Requests\UpdateChatRequest;
 use App\Models\Message;
+use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Models\StudentClass;
 use App\Models\User;
@@ -36,10 +37,8 @@ class ChatController extends Controller
         }
 
         $data = [
-
-            'students' => $students
+            'students' => $students,
         ];
-
 
         return view('chats.index', $data);
     }

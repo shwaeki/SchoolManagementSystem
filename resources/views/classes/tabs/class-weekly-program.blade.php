@@ -29,11 +29,20 @@
 
                 <div class="section general-info">
                     <div class="info">
-                        <div class="row mb-4">
+                        <div class="text-center d-none d-print-block">
+                            <img src="{{ asset('assets/img/logo.png') }}" height="150px" alt="logo">
+                            <h6 class="mb-1">الخطة الاسبوعية</h6>
+                            <h6 class="mb-1">{{ $class->name }}</h6>
+                        </div>
+
+                        <div class="row mb-4 d-print-none">
                             <div class="col-9">
-                                <h6 class="mb-0">الخطة الاسبوعية</h6>
+                                <h6 class="mb-0 ">الخطة الاسبوعية</h6>
                             </div>
                             <div class="col-3 text-end">
+                                <button type="button" class="btn btn-warning" onclick="window.print()">
+                                    طباعة
+                                </button>
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#addWeeklyProgramModal">
                                     اضافة
@@ -41,14 +50,13 @@
                             </div>
                         </div>
 
-                        <form method="GET" id="weekSelectForm">
+                        <form method="GET" id="weekSelectForm" class="d-print-none">
                             <div class="mb-3">
                                 <label for="weekSelect" class="form-label">التاريخ</label>
                                 <input type="date" id="weekSelect" name="weekSelect"
                                        class="form-control custom-date"
                                        value="{{ request('weekSelect', $weekFirstDate) }}">
                             </div>
-
                         </form>
 
                         <p class="fs-5 text-center mb-3"><span>من تاريخ {{ $weekFirstDate  }}</span>
@@ -73,7 +81,7 @@
                                                 @foreach($weeklyPrograms[$key] as $contents)
                                                     <div class="d-flex justify-content-between align-items-center">
                                                         {!! $contents['content'] !!}
-                                                        <div>
+                                                        <div class="d-print-none">
                                                             <button type="button"
                                                                     data-id="{{ $contents['id']  }}"
                                                                     data-title="{{ $key }}"

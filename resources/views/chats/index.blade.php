@@ -86,7 +86,7 @@
 
     <script src="{{ asset("assets/js/apps/chat.js")  }}"></script>
     <script>
-        new PerfectScrollbar('.people', {suppressScrollX: true});
+    //    new PerfectScrollbar('.people', {suppressScrollX: true});
 
         $("#startChat").click(function () {
             var student_id = $('#student').val()
@@ -94,10 +94,17 @@
             $("#newChatModal").modal("hide");
 
         });
+
         $(document).on('click', '.selectStudent', function (event) {
             $('#loading-indicator').show();
             $('#main-chat').empty();
         });
+
+        $(document).on('click', '.selectClass', function (event) {
+            $('#loading-indicator').show();
+            $('#main-chat').empty();
+        });
+
 
         Livewire.on('chat-new-message', message => {
             let bubbleClass = message.sender === 'student' ? 'bubble you' : 'bubble me';
@@ -112,13 +119,18 @@
         });
 
         Livewire.on('chat-select-student', () => {
-            scrollToBottom();
             $("#loading-indicator").hide();
+            scrollToBottom();
+        });
+
+        Livewire.on('chat-select-class', () => {
+            $("#loading-indicator").hide();
+            scrollToBottom();
         });
 
         function scrollToBottom() {
-            new PerfectScrollbar('.people', {suppressScrollX: true});
-            new PerfectScrollbar('.chat-conversation-box', {suppressScrollX: true});
+       //     new PerfectScrollbar('.people', {suppressScrollX: true});
+       //     new PerfectScrollbar('.chat-conversation-box', {suppressScrollX: true});
             var getScrollContainer = $('.chat-conversation-box');
             getScrollContainer.scrollTop(getScrollContainer.get(0).scrollHeight);
         }

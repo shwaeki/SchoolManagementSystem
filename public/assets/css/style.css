@@ -120,7 +120,7 @@ body.dark .table .btn-dismiss {
 }
 
 
-.object-fit{
+.object-fit {
     object-fit: contain;
 }
 
@@ -132,9 +132,76 @@ body.dark .table .btn-dismiss {
 
 .dt-buttons .buttons-columnVisibility {
     font-size: 12px;
-    background-color:#00000063 !important;
+    background-color: #00000063 !important;
 }
 
 .buttons-columnVisibility.active {
-    background-color:#4361ee !important;
+    background-color: #4361ee !important;
+}
+
+
+.chat-system {
+    display: flex;
+    height: 85vh;
+    box-shadow: none;
+    border: 1px solid #e0e6ed;
+    border-radius: 6px;
+}
+
+.chat-system .user-list-box .people {
+    height: 56vh !important;
+}
+
+
+.chat-system .user-list-box .people.classes {
+    height:  73vh !important;
+}
+
+.chat-section ::-webkit-scrollbar {
+    width: 5px;
+}
+
+.chat-section ::-webkit-scrollbar-track {
+    background-color: #e4e4e4;
+    border-radius: 100px;
+}
+
+.chat-section ::-webkit-scrollbar-thumb {
+    border-radius: 100px;
+    background-color: #4d69e9c7;
+
+}
+
+
+
+@media print {
+    .header-container, .sidebar-wrapper, .nav {
+        display: none !important;
+    }
+
+    #content {
+        margin-top: 0;
+        margin-right: 0;
+    }
+
+    .layout-top-spacing {
+        margin-top: 0;
+    }
+
+    .general-info {
+        border: 0 !important;
+        box-shadow: none !important;
+    }
+
+    #class-weekly-program .col-4 {
+        width: 50% !important;
+    }
+
+    #class-weekly-program  .card .card-body {
+        padding: 10px !important;
+    }
+
+    #class-weekly-program  .fs-5 {
+        font-size: 1.05rem !important;
+    }
 }

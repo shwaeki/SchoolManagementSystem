@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\GroupChat;
+use App\Models\SchoolClass;
 use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -10,13 +12,17 @@ use Livewire\Component;
 class Chat extends Component
 {
 
+    public $chatType = 'student';
     public $newChat;
     public $selectedStudent;
     public $chats;
+    public $classes;
     public $message;
     public $userType = "admin";
+    public $selectedClass;
 
     protected $listeners = ['start-chat' => 'startNewChat'];
+
 
     public function startNewChat($student_id)
     {
@@ -40,6 +46,12 @@ class Chat extends Component
                 ->with('student', 'teacher')
                 ->limit(30)
                 ->get();
+
+            $this->classes = SchoolClass::whereHas('yearClasses', function ($query) {
+                $query->whereHas('students')->where('academic_year_id', getAdminActiveAcademicYearID());
+            })->with(['yearClasses.students'])->get();
+
+
         } else {
             $latestMessagesSubquery = DB::table('chats')->select(DB::raw('MAX(id) as id'))->groupBy('student_id');
 
@@ -66,18 +78,27 @@ class Chat extends Component
     public function selectStudent($id)
     {
         $this->selectedStudent = Student::findOrFail($id);
+        $this->selectedClass = null;
         $this->message = '';
+        $this->chatType = 'student';
         $this->emit('chat-select-student');
     }
 
-
-    public function sendMessage()
+    public function selectClass($id)
     {
+        $this->selectedStudent = null;
+        $this->selectedClass = SchoolClass::findOrFail($id);
+        $this->message = '';
+        $this->chatType = 'class';
+        $this->emit('chat-select-class');
+    }
 
+
+    public function sendStudentMessage()
+    {
         $this->validate([
             'message' => 'required|min:2',
         ]);
-
 
         $message = \App\Models\Chat::create([
             'teacher_id' => Auth::id(),
@@ -91,7 +112,6 @@ class Chat extends Component
         $this->emit('chat-new-message', $message);
 
 
-
         $deviceToken = $this->selectedStudent->device_token;
 
         if ($deviceToken) {
@@ -101,6 +121,35 @@ class Chat extends Component
                 'You have a new message from Riad Majd.'
             );
         }
+    }
+
+    public function sendClassMessage()
+    {
+        $this->validate([
+            'message' => 'required|min:2',
+        ]);
+
+        $message = GroupChat::create([
+            'teacher_id' => Auth::id(),
+            'school_class_id' => $this->selectedClass->id,
+            'message' => $this->message,
+            'sender' => 'teacher',
+        ]);
+        $this->message = '';
+        $this->newChat = false;
+        $this->refreshChats();
+        $this->emit('chat-new-message', $message);
+
+/*
+        $deviceToken = $this->selectedStudent->device_token;
+
+        if ($deviceToken) {
+            sendNotification(
+                $deviceToken,
+                'New Message',
+                'You have a new message from Riad Majd.'
+            );
+        }*/
     }
 
     public function mount()
