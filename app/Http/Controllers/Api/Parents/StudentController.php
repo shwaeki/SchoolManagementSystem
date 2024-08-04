@@ -145,8 +145,6 @@ class StudentController extends BaseController
                 $messaging = $factory->createMessaging();
                 $message = CloudMessage::withTarget('token', $deviceToken)->withNotification(['title' => $title, 'body' => $body])->withDefaultSounds();
 
-                  //  ->withApnsConfig(['payload' => ['aps' => [ 'sound' =>'default']]]);
-
                 $messaging->send($message);
                 return $this->sendResponse(['message' => $message], 'Notification send successfully');
             } catch (NotFound $exception) {

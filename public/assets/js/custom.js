@@ -188,6 +188,8 @@ $(window).on('hashchange', function () {
 
 
 $('.select2').select2({
+    language: "ar",
+    dir: "rtl",
     theme: 'bootstrap-5',
     width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
 });

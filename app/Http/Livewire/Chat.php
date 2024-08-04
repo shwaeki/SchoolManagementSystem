@@ -5,30 +5,39 @@ namespace App\Http\Livewire;
 use App\Models\GroupChat;
 use App\Models\SchoolClass;
 use App\Models\Student;
+use App\Models\Chat as ChatModel;
+use App\Models\YearClass;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Chat extends Component
 {
-
     public $chatType = 'student';
-    public $newChat;
+    public $newChat = false;
     public $selectedStudent;
-    public $chats;
-    public $classes;
-    public $message;
-    public $userType = "admin";
     public $selectedClass;
+    public $message = '';
+    public $userType = 'admin';
+    public $chats;
+    public $year_classes;
 
     protected $listeners = ['start-chat' => 'startNewChat'];
 
+    public function mount()
+    {
+        $this->userType = Auth::guard('teacher')->check() ? 'teacher' : 'admin';
+        $this->refreshChats();
+    }
+
+    public function render()
+    {
+        return view('livewire.chat');
+    }
 
     public function startNewChat($student_id)
     {
-        $studentId5NotInList = $this->chats->where('student_id', $student_id)->isEmpty();
-
-        if ($studentId5NotInList) {
+        if ($this->chats->where('student_id', $student_id)->isEmpty()) {
             $this->newChat = true;
         }
 
@@ -40,39 +49,56 @@ class Chat extends Component
     public function refreshChats()
     {
         if ($this->userType == 'admin') {
-            $this->chats = \App\Models\Chat::select('chats.*')
-                ->join(DB::raw('(SELECT MAX(id) as id FROM chats GROUP BY student_id) as latest_messages'), 'chats.id', '=', 'latest_messages.id')
-                ->latest('chats.created_at')
-                ->with('student', 'teacher')
-                ->limit(30)
-                ->get();
-
-            $this->classes = SchoolClass::whereHas('yearClasses', function ($query) {
-                $query->whereHas('students')->where('academic_year_id', getAdminActiveAcademicYearID());
-            })->with(['yearClasses.students'])->get();
-
-
+            $this->loadAdminChats();
         } else {
-            $latestMessagesSubquery = DB::table('chats')->select(DB::raw('MAX(id) as id'))->groupBy('student_id');
-
-
-            $this->chats = \App\Models\Chat::select('chats.*')
-                ->joinSub($latestMessagesSubquery, 'latest_messages', function ($join) {
-                    $join->on('chats.id', '=', 'latest_messages.id');
-                })
-                ->join('student_classes', 'student_classes.student_id', '=', 'chats.student_id')
-                ->join('year_classes', 'year_classes.id', '=', 'student_classes.year_class_id')
-                ->where('year_classes.academic_year_id', getAdminActiveAcademicYearID())
-                ->where('year_classes.supervisor', auth()->id())
-                ->latest('chats.created_at')
-                ->with('student', 'teacher')
-                ->distinct('chats.id')
-                ->limit(30)
-                ->get();
-
+            $this->loadTeacherChats();
         }
+    }
+
+    private function loadAdminChats()
+    {
+        $this->chats = ChatModel::select('chats.*')
+            ->join(DB::raw('(SELECT MAX(id) as id FROM chats GROUP BY student_id) as latest_messages'), 'chats.id', '=', 'latest_messages.id')
+            ->latest('chats.created_at')
+            ->with(['student', 'teacher'])
+            ->limit(30)
+            ->get();
+
+        $this->year_classes = YearClass::whereHas('students', function ($query) {
+            $query->where('academic_year_id', getAdminActiveAcademicYearID());
+        })->whereHas('schoolClass', function ($query) {
+            $query->whereNull('deleted_at');
+        })->with([
+            'schoolClass',
+            'students',
+            'chats' => function ($query) {
+                $query->latest('created_at');
+            }
+        ])->get()
+            ->sortByDesc(function ($class) {
+                return $class->chats?->max('created_at');
+            });
 
 
+    }
+
+    private function loadTeacherChats()
+    {
+        $latestMessagesSubquery = DB::table('chats')->select(DB::raw('MAX(id) as id'))->groupBy('student_id');
+
+        $this->chats = ChatModel::select('chats.*')
+            ->joinSub($latestMessagesSubquery, 'latest_messages', function ($join) {
+                $join->on('chats.id', '=', 'latest_messages.id');
+            })
+            ->join('student_classes', 'student_classes.student_id', '=', 'chats.student_id')
+            ->join('year_classes', 'year_classes.id', '=', 'student_classes.year_class_id')
+            ->where('year_classes.academic_year_id', getAdminActiveAcademicYearID())
+            ->where('year_classes.supervisor', auth()->id())
+            ->latest('chats.created_at')
+            ->with(['student', 'teacher'])
+            ->distinct('chats.id')
+            ->limit(30)
+            ->get();
     }
 
     public function selectStudent($id)
@@ -87,86 +113,52 @@ class Chat extends Component
     public function selectClass($id)
     {
         $this->selectedStudent = null;
-        $this->selectedClass = SchoolClass::findOrFail($id);
+        $this->selectedClass = YearClass::findOrFail($id);
         $this->message = '';
         $this->chatType = 'class';
         $this->emit('chat-select-class');
     }
 
-
     public function sendStudentMessage()
     {
-        $this->validate([
-            'message' => 'required|min:2',
-        ]);
+        $this->validate(['message' => 'required|min:2']);
 
-        $message = \App\Models\Chat::create([
+        $message = ChatModel::create([
             'teacher_id' => Auth::id(),
             'student_id' => $this->selectedStudent->id,
             'message' => $this->message,
             'sender' => 'teacher',
         ]);
-        $this->message = '';
-        $this->newChat = false;
-        $this->refreshChats();
+
+        $this->resetChat();
         $this->emit('chat-new-message', $message);
-
-
-        $deviceToken = $this->selectedStudent->device_token;
-
-        if ($deviceToken) {
-            sendNotification(
-                $deviceToken,
-                'New Message',
-                'You have a new message from Riad Majd.'
-            );
+        $token = $this->selectedStudent->device_token;
+        if ($token) {
+            sendNotification($token, 'رسالة جديدة', 'تم ارسال رسالة جديدة');
         }
+
     }
 
     public function sendClassMessage()
     {
-        $this->validate([
-            'message' => 'required|min:2',
-        ]);
+        $this->validate(['message' => 'required|min:2']);
 
         $message = GroupChat::create([
             'teacher_id' => Auth::id(),
-            'school_class_id' => $this->selectedClass->id,
+            'year_class_id' => $this->selectedClass->id,
             'message' => $this->message,
             'sender' => 'teacher',
         ]);
+
+        $this->resetChat();
+        $this->emit('chat-new-message', $message);
+    }
+
+    private function resetChat()
+    {
         $this->message = '';
         $this->newChat = false;
         $this->refreshChats();
-        $this->emit('chat-new-message', $message);
-
-/*
-        $deviceToken = $this->selectedStudent->device_token;
-
-        if ($deviceToken) {
-            sendNotification(
-                $deviceToken,
-                'New Message',
-                'You have a new message from Riad Majd.'
-            );
-        }*/
     }
 
-    public function mount()
-    {
-
-        if (Auth::guard('teacher')->check()) {
-            $this->userType = 'teacher';
-        } else {
-            $this->userType = 'admin';
-        }
-
-
-        $this->refreshChats();
-    }
-
-    public function render()
-    {
-        return view('livewire.chat');
-    }
 }

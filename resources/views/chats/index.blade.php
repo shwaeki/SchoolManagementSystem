@@ -41,9 +41,9 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="student" class="form-label"> الطالب </label>
-                        <select class="form-select"
+                        <select class="form-select select2" data-placeholder="اختر ..."
                                 id="student" name="student" required>
-                            <option selected disabled value="">اختر ...</option>
+                            <option></option>
                             @foreach($students as $student)
                                 <option
                                     {{old('student') == $student->name ? 'selected' : '' }} value="{{$student->id}}">
@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
+                    <button type="button" class="btn" data-bs-dismiss="modal">اغلاق</button>
                     <button type="button" class="btn btn-primary" id="startChat">بدء</button>
                 </div>
             </div>
@@ -86,10 +86,19 @@
 
     <script src="{{ asset("assets/js/apps/chat.js")  }}"></script>
     <script>
-    //    new PerfectScrollbar('.people', {suppressScrollX: true});
+        //    new PerfectScrollbar('.people', {suppressScrollX: true});
 
         $("#startChat").click(function () {
             var student_id = $('#student').val()
+
+            if (!student_id) {
+                swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: 'الرجاء تحديد الطالب',
+                })
+                return;
+            }
             Livewire.emit('start-chat', student_id);
             $("#newChatModal").modal("hide");
 
@@ -129,8 +138,8 @@
         });
 
         function scrollToBottom() {
-       //     new PerfectScrollbar('.people', {suppressScrollX: true});
-       //     new PerfectScrollbar('.chat-conversation-box', {suppressScrollX: true});
+            //     new PerfectScrollbar('.people', {suppressScrollX: true});
+            //     new PerfectScrollbar('.chat-conversation-box', {suppressScrollX: true});
             var getScrollContainer = $('.chat-conversation-box');
             getScrollContainer.scrollTop(getScrollContainer.get(0).scrollHeight);
         }

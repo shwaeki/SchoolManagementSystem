@@ -7,6 +7,9 @@ use App\Models\SchoolClass;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
+use Kreait\Firebase\Exception\Messaging\NotFound;
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\Messaging\CloudMessage;
 
 if (!function_exists('sendSms')) {
     function sendSms($message, $phone_number, $name = null)
@@ -130,23 +133,40 @@ if (!function_exists('getAdminActiveAcademicYearID')) {
 if (!function_exists('sendNotification')) {
     function sendNotification($deviceToken, $title, $body)
     {
-        $client = new Client();
+        if ($deviceToken) {
+            try {
+                $factory = (new Factory)->withServiceAccount(public_path('firebase-configuration.json'));
+                $messaging = $factory->createMessaging();
+                $message = CloudMessage::withTarget('token', $deviceToken)->withNotification(['title' => $title, 'body' => $body])->withDefaultSounds();
 
-        $response = $client->post('https://fcm.googleapis.com/fcm/send', [
-            'headers' => [
-                'Authorization' => 'key=' . config('services.fcm.key'),
-                'Content-Type' => 'application/json',
-            ],
-            'json' => [
-                'to' => $deviceToken,
-                'notification' => [
-                    'title' => $title,
-                    'body' => $body,
-                ],
-            ],
-        ]);
+                $messaging->send($message);
+                return $message;
+            } catch (NotFound $exception) {
+                return 'Device Token Not Found .';
+            }
+        } else {
+            return 'Device Token is empty .';
+        }
+    }
+}
 
-        return $response->getStatusCode() == 200;
+if (!function_exists('sendNotificationToGroup')) {
+    function sendNotification($group, $title, $body)
+    {
+        if ($group) {
+            try {
+                $factory = (new Factory)->withServiceAccount(public_path('firebase-configuration.json'));
+                $messaging = $factory->createMessaging();
+                $message = CloudMessage::withTarget('token', $group)->withNotification(['title' => $title, 'body' => $body])->withDefaultSounds();
+
+                $messaging->send($message);
+                return $message;
+            } catch (NotFound $exception) {
+                return 'Device Token Not Found .';
+            }
+        } else {
+            return 'Device Token is empty .';
+        }
     }
 }
 

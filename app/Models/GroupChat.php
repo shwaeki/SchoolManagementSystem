@@ -25,9 +25,9 @@ class GroupChat extends Model
         return $this->belongsTo(Teacher::class, 'teacher_id');
     }
 
-    public function class(): belongsTo
+    public function YearClass(): belongsTo
     {
-        return $this->belongsTo(SchoolClass::class, 'school_class_id');
+        return $this->belongsTo(YearClass::class, 'year_class_id');
     }
 
 

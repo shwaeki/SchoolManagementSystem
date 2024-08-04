@@ -66,4 +66,9 @@ class YearClass extends Model
         return $this->hasMany(StudentAttendance::class);
     }
 
+    public function chats(): hasMany
+    {
+        return $this->hasMany(GroupChat::class, 'year_class_id');
+    }
+
 }

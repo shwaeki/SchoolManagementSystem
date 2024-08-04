@@ -118,33 +118,33 @@
 
         <hr>
         <div class="col-12 mb-3">
-            <div class="row">
-                <div class="col-2">
+            <div class="row cols-4 cols-md-2 g-2">
+                <div class="col">
                     <a href="{{ route('students.create') }}" class="btn btn-primary btn-lg w-100 h-100 ">
                         اضافة طالب جديد
                     </a>
                 </div>
-                <div class="col-2">
+                <div class="col">
                     <a href="{{ route('teachers.create') }}" class="btn btn-primary btn-lg w-100 h-100 ">
                         اضافة معلمة جديد
                     </a>
                 </div>
-                <div class="col-2">
+                <div class="col">
                     <a href="{{ route('workers.create') }}" class="btn btn-primary btn-lg w-100 h-100 ">
                         اضافة موظف جديد
                     </a>
                 </div>
-                <div class="col-2">
+                <div class="col">
                     <a href="{{ route('assistants.create') }}" class="btn btn-primary btn-lg w-100 h-100 ">
                         اضافة مساعدة جديد
                     </a>
                 </div>
-                <div class="col-2">
+                <div class="col">
                     <a href="{{ route('products.create') }}" class="btn btn-primary btn-lg w-100 h-100 ">
                         اضافة منتج جديد
                     </a>
                 </div>
-                <div class="col-2">
+                <div class="col">
                     <a href="{{ route('messages.index') }}" class="btn btn-primary btn-lg w-100 h-100 ">
                         ارسال رسالة
                     </a>
