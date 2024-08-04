@@ -123,3 +123,18 @@ body.dark .table .btn-dismiss {
 .object-fit{
     object-fit: contain;
 }
+
+
+.dt-buttons .dt-button-collection {
+    padding-top: 5px;
+    margin-top: 0 !important;
+}
+
+.dt-buttons .buttons-columnVisibility {
+    font-size: 12px;
+    background-color:#00000063 !important;
+}
+
+.buttons-columnVisibility.active {
+    background-color:#4361ee !important;
+}

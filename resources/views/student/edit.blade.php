@@ -3,7 +3,7 @@
 @section('content')
 
     <form action="{{ route('students.update',['student'=>$student]) }}" method="POST"
-          class="mb-5" enctype="multipart/form-data">
+          class="mb-5" enctype="multipart/form-data" id="updateStudentForm">
         @method('PUT')
         @csrf
 
@@ -30,13 +30,42 @@
                     </div>
 
 
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-3">
                         <div class="mb-3">
                             <label for="identification" class="form-label">رقم الهوية</label>
                             <input type="text" id="identification" name="identification"
                                    class="form-control only-integer @error('identification') is-invalid @enderror"
-                                   maxlength="9" value="{{old('identification',$student->identification)}}">
+                                   value="{{old('identification',$student->identification)}}" required>
                             @error('identification')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <div class="mb-3">
+                            <label for="identification_type" class="form-label"> نوع رقم الهوية </label>
+                            <select class="form-select @error('identification_type') is-invalid @enderror"
+                                    id="identification_type" name="identification_type" required>
+                                <option selected disabled value="">اختر ...</option>
+                                <option
+                                    {{old('identification_type',$student->identification_type) == 'israel_id' ? 'selected' : '' }} value="israel_id">
+                                    هوية إسرائيلية
+                                </option>
+                                <option
+                                    {{old('identification_type',$student->identification_type) == 'palestinian_id' ? 'selected' : '' }} value="palestinian_id">
+                                    هوية فلسطنية
+                                </option>
+                                <option
+                                    {{old('identification_type',$student->identification_type) == 'birth_report' ? 'selected' : '' }} value="birth_report">
+                                    جواز سفر
+                                </option>
+                                <option
+                                    {{old('identification_type',$student->identification_type) == 'passport' ? 'selected' : '' }} value="passport">
+                                    تبليغ الولادة
+                                </option>
+                            </select>
+                            @error('identification_type')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>
@@ -160,6 +189,28 @@
                                    type="file" name="personal_photo" id="personal_photo">
                             @error('personal_photo')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <div class="mb-3">
+                            <label for="transportation_type" class="form-label"> طريقة النقل </label>
+                            <select class="form-select @error('transportation_type') is-invalid @enderror"
+                                    id="transportation_type" name="transportation_type" required>
+                                <option selected disabled value="">اختر ...</option>
+                                <option
+                                    {{old('transportation_type',$student->transportation_type) == 'parents' ? 'selected' : '' }} value="parents">
+                                    مع ألأهل
+                                </option>
+                                <option
+                                    {{old('transportation_type',$student->transportation_type) == 'bus' ? 'selected' : '' }} value="bus">
+                                    باستخدام الباص
+                                </option>
+                            </select>
+                            @error('transportation_type')
+                            <span class="transportation_type-feedback"
+                                  role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>
                     </div>
@@ -344,6 +395,28 @@
 
 @push('scripts')
     <script>
+        $('#updateStudentForm').on('submit', function (e) {
+
+            var originalIdNumber = "{{ $student->identification }}";
+            var currentIdNumber = $('#identification').val();
+
+            if (originalIdNumber !== currentIdNumber) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'تأكيد',
+                    text: `هل أنت متأكد من  رقم الهوية  ${currentIdNumber}?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'نعم',
+                    cancelButtonText: 'لا'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#updateStudentForm').off('submit').submit();
+                    }
+                });
+            }
+        });
+
         $("#birth_date").datepicker({
             dateFormat: 'dd/mm/yy',
         });

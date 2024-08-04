@@ -169,14 +169,25 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12 col-md-3">
                                             <div class="mb-3">
                                                 <label for="identification" class="form-label">رقم الهوية</label>
                                                 <input type="text" id="identification" class="form-control"
                                                        value="{{$student->identification}}" disabled>
-
                                             </div>
                                         </div>
+
+
+                                        <div class="col-6 col-md-3">
+                                            <div class="mb-3">
+                                                <label for="identification_type" class="form-label"> نوع رقم
+                                                    الهوية </label>
+                                                <input type="text" id="identification_type" class="form-control"
+                                                       value="{{ trans('options.'.$student->identification_type) }}"
+                                                       disabled>
+                                            </div>
+                                        </div>
+
 
                                         <div class="col-12 col-md-3">
                                             <div class="mb-3">
@@ -246,6 +257,17 @@
                                             </div>
                                         </div>
 
+                                        @if($student->transportation_type)
+                                            <div class="col-6 col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="transportation_type" class="form-label">طريقة
+                                                        النقل </label>
+                                                    <input type="text" id="transportation_type" class="form-control"
+                                                           value="{{ trans('options.'.$student->transportation_type) }}"
+                                                           disabled>
+                                                </div>
+                                            </div>
+                                        @endif
 
                                         <div class="col-12">
                                             <div class="mb-3">
@@ -779,7 +801,7 @@
                             <form class="section general-info">
                                 <div class="info">
 
-                                    <h6> الرسال التي تم ارسائلها الى الطالب  </h6>
+                                    <h6> الرسال التي تم ارسائلها الى الطالب </h6>
 
                                     <div class="table-responsive">
                                         <table class="table table-hover table-striped table-bordered">
@@ -811,7 +833,7 @@
                     </div>
                 </div>
 
-            @if($current_student_class != null)
+                @if($current_student_class != null)
                     <div class="tab-pane fade" id="student-attendance" role="tabpanel"
                          aria-labelledby="student-attendance-tab">
 

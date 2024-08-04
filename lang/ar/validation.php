@@ -244,6 +244,8 @@ return [
         'slug'                  => '',
         'can_login'             => 'امكانية تسجيل الدخول',
         'balance'               => 'الرصيد',
+        'identification_type'   => 'نوع رقم الهوية',
+        'transportation_type'   => 'طريقة النقل',
     ],
 
 ];

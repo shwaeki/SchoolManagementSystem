@@ -2,7 +2,7 @@
 
 @section('content')
     <form action="{{ route('students.store') }}" method="POST"
-          class="mb-5" enctype="multipart/form-data">
+          class="mb-5" enctype="multipart/form-data" id="storeStudentForm">
         @csrf
         <div class="statbox widget box box-shadow mb-3">
             <div class="widget-header">
@@ -27,13 +27,42 @@
                     </div>
 
 
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-3">
                         <div class="mb-3">
                             <label for="identification" class="form-label">رقم الهوية</label>
                             <input type="text" id="identification" name="identification"
                                    class="form-control only-integer @error('identification') is-invalid @enderror"
-                                   maxlength="9" value="{{old('identification')}}">
+                                   value="{{old('identification')}}" required>
                             @error('identification')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <div class="mb-3">
+                            <label for="identification_type" class="form-label"> نوع رقم الهوية </label>
+                            <select class="form-select @error('identification_type') is-invalid @enderror"
+                                    id="identification_type" name="identification_type" required>
+                                <option selected disabled value="">اختر ...</option>
+                                <option
+                                    {{old('identification_type') == 'israel_id' ? 'selected' : '' }} value="israel_id">
+                                    هوية إسرائيلية
+                                </option>
+                                <option
+                                    {{old('identification_type') == 'palestinian_id' ? 'selected' : '' }} value="palestinian_id">
+                                    هوية فلسطنية
+                                </option>
+                                <option
+                                    {{old('identification_type') == 'birth_report' ? 'selected' : '' }} value="birth_report">
+                                    جواز سفر
+                                </option>
+                                <option
+                                    {{old('identification_type') == 'passport' ? 'selected' : '' }} value="passport">
+                                    تبليغ الولادة
+                                </option>
+                            </select>
+                            @error('identification_type')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>
@@ -46,7 +75,7 @@
                             <input type="text" id="birth_date" name="birth_date"
                                    class="form-control  @error('birth_date') is-invalid @enderror"
                                    value="{{date('d/m/Y', strtotime(old('birth_date')))}}"
-                                {{--   min="{{ date("Y") - 5 }}-01-01" max="{{ date("Y")  }}-12-31"--}} required>
+                                   {{--   min="{{ date("Y") - 5 }}-01-01" max="{{ date("Y")  }}-12-31"--}} required>
                             @error('birth_date')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
@@ -140,7 +169,6 @@
                     </div>
 
 
-
                     <div class="col-6 col-md-3">
                         <div class="mb-3">
                             <label for="gender" class="form-label"> الجنس </label>
@@ -164,6 +192,28 @@
                                    value="{{old('postal_code')}}">
                             @error('postal_code')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <div class="mb-3">
+                            <label for="transportation_type" class="form-label"> طريقة النقل </label>
+                            <select class="form-select @error('transportation_type') is-invalid @enderror"
+                                    id="transportation_type" name="transportation_type" required>
+                                <option selected disabled value="">اختر ...</option>
+                                <option
+                                    {{old('transportation_type') == 'parents' ? 'selected' : '' }} value="parents">
+                                    مع ألأهل
+                                </option>
+                                <option
+                                    {{old('transportation_type') == 'bus' ? 'selected' : '' }} value="bus">
+                                    باستخدام الباص
+                                </option>
+                            </select>
+                            @error('transportation_type')
+                            <span class="transportation_type-feedback"
+                                  role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>
                     </div>
@@ -195,129 +245,129 @@
                 </div>
             </div>
             <div class="widget-content widget-content-area-normal">
-              <div class="row">
-                  <div class="col-6 col-md-4">
-                      <div class="mb-3">
-                          <label for="mother_name" class="form-label"> اسم الام </label>
-                          <input type="text" id="mother_name" name="mother_name"
-                                 class="form-control  @error('mother_name') is-invalid @enderror"
-                                 value="{{old('mother_name')}}" required>
-                          @error('mother_name')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                          @enderror
-                      </div>
-                  </div>
+                <div class="row">
+                    <div class="col-6 col-md-4">
+                        <div class="mb-3">
+                            <label for="mother_name" class="form-label"> اسم الام </label>
+                            <input type="text" id="mother_name" name="mother_name"
+                                   class="form-control  @error('mother_name') is-invalid @enderror"
+                                   value="{{old('mother_name')}}" required>
+                            @error('mother_name')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
 
-                  <div class="col-6 col-md-4">
-                      <div class="mb-3">
-                          <label for="mother_phone" class="form-label"> رقم هاتف الام </label>
-                          <input type="text" id="mother_phone" name="mother_phone"
-                                 class="form-control only-integer @error('mother_phone') is-invalid @enderror"
-                                 value="{{old('mother_phone')}}" maxlength="10" required>
-                          @error('mother_phone')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                          @enderror
-                      </div>
-                  </div>
+                    <div class="col-6 col-md-4">
+                        <div class="mb-3">
+                            <label for="mother_phone" class="form-label"> رقم هاتف الام </label>
+                            <input type="text" id="mother_phone" name="mother_phone"
+                                   class="form-control only-integer @error('mother_phone') is-invalid @enderror"
+                                   value="{{old('mother_phone')}}" maxlength="10" required>
+                            @error('mother_phone')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
 
-                  <div class="col-6 col-md-4">
-                      <div class="mb-3">
-                          <label for="mother_id" class="form-label"> رقم هوية الام </label>
-                          <input type="text" id="mother_id" name="mother_id"
-                                 class="form-control only-integer @error('mother_id') is-invalid @enderror"
-                                 value="{{old('mother_id')}}" required>
-                          @error('mother_id')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                          @enderror
-                      </div>
-                  </div>
+                    <div class="col-6 col-md-4">
+                        <div class="mb-3">
+                            <label for="mother_id" class="form-label"> رقم هوية الام </label>
+                            <input type="text" id="mother_id" name="mother_id"
+                                   class="form-control only-integer @error('mother_id') is-invalid @enderror"
+                                   value="{{old('mother_id')}}" required>
+                            @error('mother_id')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
 
-                  <div class="col-6 col-md-4">
-                      <div class="mb-3">
-                          <label for="father_name" class="form-label"> اسم الاب </label>
-                          <input type="text" id="father_name" name="father_name"
-                                 class="form-control  @error('father_name') is-invalid @enderror"
-                                 value="{{old('father_name')}}"  required>
-                          @error('father_name')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                          @enderror
-                      </div>
-                  </div>
+                    <div class="col-6 col-md-4">
+                        <div class="mb-3">
+                            <label for="father_name" class="form-label"> اسم الاب </label>
+                            <input type="text" id="father_name" name="father_name"
+                                   class="form-control  @error('father_name') is-invalid @enderror"
+                                   value="{{old('father_name')}}" required>
+                            @error('father_name')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
 
-                  <div class="col-6 col-md-4">
-                      <div class="mb-3">
-                          <label for="father_phone" class="form-label"> رقم هاتف الاب </label>
-                          <input type="text" id="father_phone" name="father_phone"
-                                 class="form-control only-integer @error('father_phone') is-invalid @enderror"
-                                 value="{{old('father_phone')}}" maxlength="10" required>
-                          @error('father_phone')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                          @enderror
-                      </div>
-                  </div>
+                    <div class="col-6 col-md-4">
+                        <div class="mb-3">
+                            <label for="father_phone" class="form-label"> رقم هاتف الاب </label>
+                            <input type="text" id="father_phone" name="father_phone"
+                                   class="form-control only-integer @error('father_phone') is-invalid @enderror"
+                                   value="{{old('father_phone')}}" maxlength="10" required>
+                            @error('father_phone')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
 
-                  <div class="col-6 col-md-4">
-                      <div class="mb-3">
-                          <label for="father_id" class="form-label"> رقم هوية الاب </label>
-                          <input type="text" id="father_id" name="father_id"
-                                 class="form-control only-integer @error('father_id') is-invalid @enderror"
-                                 value="{{old('father_id')}}" required>
-                          @error('father_id')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                          @enderror
-                      </div>
-                  </div>
+                    <div class="col-6 col-md-4">
+                        <div class="mb-3">
+                            <label for="father_id" class="form-label"> رقم هوية الاب </label>
+                            <input type="text" id="father_id" name="father_id"
+                                   class="form-control only-integer @error('father_id') is-invalid @enderror"
+                                   value="{{old('father_id')}}" required>
+                            @error('father_id')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
 
-                  <div class="col-6 col-md-4">
-                      <div class="mb-3">
-                          <label for="family_status" class="form-label"> الحالة الاجتماعية للعائلة </label>
-                          <select class="form-select @error('family_status') is-invalid @enderror"
-                                  id="family_status" name="family_status" required>
-                              <option selected disabled value="">اختر ...</option>
-                              <option
-                                  {{old('family_status') == 'unspecified' ? 'selected' : '' }} value="unspecified">غير
-                                  محدد
-                              </option>
-                              <option {{old('family_status') == 'divorced' ? 'selected' : '' }} value="divorced">
-                                  مطلقين
-                              </option>
-                          </select>
-                          @error('family_status')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                          @enderror
-                      </div>
-                  </div>
+                    <div class="col-6 col-md-4">
+                        <div class="mb-3">
+                            <label for="family_status" class="form-label"> الحالة الاجتماعية للعائلة </label>
+                            <select class="form-select @error('family_status') is-invalid @enderror"
+                                    id="family_status" name="family_status" required>
+                                <option selected disabled value="">اختر ...</option>
+                                <option
+                                    {{old('family_status') == 'unspecified' ? 'selected' : '' }} value="unspecified">غير
+                                    محدد
+                                </option>
+                                <option {{old('family_status') == 'divorced' ? 'selected' : '' }} value="divorced">
+                                    مطلقين
+                                </option>
+                            </select>
+                            @error('family_status')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
 
-                  <div class="col-6 col-md-4">
-                      <div class="mb-3">
-                          <label for="custody" class="form-label"> حضانة الطالب </label>
-                          <select class="form-select @error('custody') is-invalid @enderror"
-                                  id="custody" name="custody" required>
-                              <option selected disabled value="">اختر ...</option>
-                              <option {{old('custody') == 'unspecified' ? 'selected' : '' }} value="unspecified">غير
-                                  محدد
-                              </option>
-                              <option {{old('custody') == 'mother' ? 'selected' : '' }} value="mother">الام</option>
-                              <option {{old('custody') == 'father' ? 'selected' : '' }} value="father">الاب</option>
-                          </select>
-                          @error('custody')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                          @enderror
-                      </div>
-                  </div>
+                    <div class="col-6 col-md-4">
+                        <div class="mb-3">
+                            <label for="custody" class="form-label"> حضانة الطالب </label>
+                            <select class="form-select @error('custody') is-invalid @enderror"
+                                    id="custody" name="custody" required>
+                                <option selected disabled value="">اختر ...</option>
+                                <option {{old('custody') == 'unspecified' ? 'selected' : '' }} value="unspecified">غير
+                                    محدد
+                                </option>
+                                <option {{old('custody') == 'mother' ? 'selected' : '' }} value="mother">الام</option>
+                                <option {{old('custody') == 'father' ? 'selected' : '' }} value="father">الاب</option>
+                            </select>
+                            @error('custody')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
 
-                  <div class="col-6 col-md-4">
-                      <div class="mb-3">
-                          <label for="family_members" class="form-label"> عدد افراد العائلة </label>
-                          <input type="text" id="family_members" name="family_members"
-                                 class="form-control only-integer @error('family_members') is-invalid @enderror"
-                                 value="{{old('family_members')}}">
-                          @error('family_members')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                          @enderror
-                      </div>
-                  </div>
-              </div>
+                    <div class="col-6 col-md-4">
+                        <div class="mb-3">
+                            <label for="family_members" class="form-label"> عدد افراد العائلة </label>
+                            <input type="text" id="family_members" name="family_members"
+                                   class="form-control only-integer @error('family_members') is-invalid @enderror"
+                                   value="{{old('family_members')}}">
+                            @error('family_members')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -327,7 +377,24 @@
 
 @push('scripts')
     <script>
-        $( "#birth_date" ).datepicker({
+        $('#storeStudentForm').on('submit', function (e) {
+            var currentIdNumber = $('#identification').val();
+            e.preventDefault();
+            Swal.fire({
+                title: 'تأكيد',
+                text: `هل أنت متأكد من  رقم الهوية  ${currentIdNumber}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'نعم',
+                cancelButtonText: 'لا'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#storeStudentForm').off('submit').submit();
+                }
+            });
+        });
+
+        $("#birth_date").datepicker({
             dateFormat: 'dd/mm/yy',
         });
     </script>

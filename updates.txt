@@ -1,0 +1,8 @@
+#   01/06/2024
+ALTER TABLE `students` ADD `balance` DOUBLE NOT NULL DEFAULT '0' AFTER `notes`;
+
+
+#   04/08/2024
+ALTER TABLE `students` CHANGE `identification` `identification` VARCHAR(225) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
+ALTER TABLE `students` ADD `identification_type` ENUM('israel_id','palestinian_id','passport','birth_report') NOT NULL DEFAULT 'israel_id' AFTER `identification`;
+ALTER TABLE `students` ADD `transportation_type` ENUM('parents','bus') NULL AFTER `notes`;

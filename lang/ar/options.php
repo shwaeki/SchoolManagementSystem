@@ -21,4 +21,12 @@ return [
     'Rarely' => 'نادراً',
     'student' => 'طالب',
     'teacher' => 'مدرس',
+
+    'israel_id' => 'هوية إسرائيلية',
+    'palestinian_id' => 'هوية فلسطنية',
+    'birth_report' => 'جواز سفر',
+    'passport' => 'تبليغ الولادة',
+    'parents' => 'مع ألأهل',
+    'bus' => 'باستخدام الباص',
 ];
+

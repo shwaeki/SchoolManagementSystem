@@ -22,7 +22,7 @@ class StoreStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'identification' => 'nullable|string|digits:9|regex:/^[0-9]+$/|unique:student_requests',
+            'identification' => 'required|string|regex:/^[0-9]+$/|unique:student_requests|unique:students',
 
             'name' => 'required|string|max:225',
             'birth_date' => 'required|date_format:d/m/Y|max:225',
