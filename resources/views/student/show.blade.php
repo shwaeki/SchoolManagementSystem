@@ -512,6 +512,13 @@
                                                     <td>{{$class->addedBy->name}}</td>
                                                     <td>{{$class->created_at->format('d/m/Y')}}</td>
                                                     <td>
+
+                                                        @if($current_student_class->year_class_id == $class->year_class_id)
+                                                            <button type="button"
+                                                                    class="btn btn-light-warning text-warning">
+                                                                <i class="far fa-edit"></i>
+                                                            </button>
+                                                        @endif
                                                         <button type="button" class="btn btn-light-danger text-danger"
                                                                 onclick="deleteItem(this)"
                                                                 data-item="{{route('student-classes.destroy', $class)}}">

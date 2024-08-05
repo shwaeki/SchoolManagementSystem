@@ -8,8 +8,10 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Kreait\Firebase\Exception\Messaging\NotFound;
+use Kreait\Firebase\Exception\MessagingException;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification;
 
 if (!function_exists('sendSms')) {
     function sendSms($message, $phone_number, $name = null)
@@ -139,8 +141,7 @@ if (!function_exists('sendNotification')) {
                 $messaging = $factory->createMessaging();
                 $message = CloudMessage::withTarget('token', $deviceToken)->withNotification(['title' => $title, 'body' => $body])->withDefaultSounds();
 
-                $messaging->send($message);
-                return $message;
+                return $messaging->send($message);
             } catch (NotFound $exception) {
                 return 'Device Token Not Found .';
             }
@@ -150,22 +151,25 @@ if (!function_exists('sendNotification')) {
     }
 }
 
-if (!function_exists('sendNotificationToGroup')) {
-    function sendNotification($group, $title, $body)
+if (!function_exists('sendNotificationToTopic')) {
+    function sendNotificationToTopic($topic, $title, $body)
     {
-        if ($group) {
+        if ($topic) {
             try {
                 $factory = (new Factory)->withServiceAccount(public_path('firebase-configuration.json'));
                 $messaging = $factory->createMessaging();
-                $message = CloudMessage::withTarget('token', $group)->withNotification(['title' => $title, 'body' => $body])->withDefaultSounds();
 
-                $messaging->send($message);
-                return $message;
-            } catch (NotFound $exception) {
-                return 'Device Token Not Found .';
+                $message = CloudMessage::withTarget('topic', $topic)
+                    ->withNotification(['title' => $title, 'body' => $body])->withDefaultSounds();
+
+                return $messaging->send($message);
+            } catch (MessagingException $exception) {
+                return 'Messaging Exception: ' . $exception->getMessage();
+            } catch (\Exception $exception) {
+                return 'General Exception: ' . $exception->getMessage();
             }
         } else {
-            return 'Device Token is empty .';
+            return 'Topic is empty.';
         }
     }
 }

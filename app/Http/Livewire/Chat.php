@@ -99,6 +99,23 @@ class Chat extends Component
             ->distinct('chats.id')
             ->limit(30)
             ->get();
+
+
+        $this->year_classes = YearClass::whereHas('students', function ($query) {
+            $query->where('supervisor', auth()->id());
+            $query->where('academic_year_id', getUserActiveAcademicYearID());
+        })->whereHas('schoolClass', function ($query) {
+            $query->whereNull('deleted_at');
+        })->with([
+            'schoolClass',
+            'students',
+            'chats' => function ($query) {
+                $query->latest('created_at');
+            }
+        ])->get()
+            ->sortByDesc(function ($class) {
+                return $class->chats?->max('created_at');
+            });
     }
 
     public function selectStudent($id)
@@ -132,11 +149,11 @@ class Chat extends Component
 
         $this->resetChat();
         $this->emit('chat-new-message', $message);
+
         $token = $this->selectedStudent->device_token;
         if ($token) {
             sendNotification($token, 'رسالة جديدة', 'تم ارسال رسالة جديدة');
         }
-
     }
 
     public function sendClassMessage()
@@ -152,6 +169,9 @@ class Chat extends Component
 
         $this->resetChat();
         $this->emit('chat-new-message', $message);
+        $topic = 'year_class_' . $this->selectedClass->id;
+
+        sendNotificationToTopic($topic, 'رسالة جديدة', 'تم ارسال رسالة جديدة');
     }
 
     private function resetChat()
