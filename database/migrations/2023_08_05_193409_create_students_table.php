@@ -36,6 +36,7 @@ return new class extends Migration {
             $table->string('family_members')->nullable();
             $table->enum('transportation_type', ['parents','bus'])->nullable();
             $table->text('notes')->nullable();
+            $table->string('device_token')->nullable()->unique();
             $table->foreignId('added_by')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();

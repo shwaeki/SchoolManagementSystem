@@ -40,7 +40,6 @@ class StudentClassController extends Controller
         foreach ($students as $student) {
             $data = [
                 'student_id' => $student,
-                'teacher_id' => $yearClass->supervisor,
                 'year_class_id' => $yearClass->id,
                 'added_by' => auth()->id(),
             ];

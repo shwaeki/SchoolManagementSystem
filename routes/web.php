@@ -97,6 +97,9 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
     Route::middleware(['auth:web', 'check.year'])->group(function () {
         Route::resource('roles', RoleController::class);
 
+        Route::get('students/archives', [StudentController::class, 'archives'])->name('students.archives');
+        Route::put('students/archive/{student}', [StudentController::class, 'archive'])->name('students.archive');
+        Route::put('students/restore/{student}', [StudentController::class, 'restore'])->name('students.restore');
         Route::resource('students', StudentController::class);
 
         Route::put('students-request/accept/{students_request}', [StudentRequestController::class, 'accept'])->name('students-request.accept');

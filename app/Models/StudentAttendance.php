@@ -21,9 +21,9 @@ class StudentAttendance extends Model
         return $this->belongsTo(User::class,'added_by');
     }
 
-    public function studentClass()
+    public function student(): belongsTo
     {
-        return $this->belongsTo(StudentClass::class, 'student_class_id');
+        return $this->belongsTo(Student::class);
     }
 
 }

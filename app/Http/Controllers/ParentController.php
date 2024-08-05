@@ -96,6 +96,11 @@ class ParentController extends Controller
                 return back();
             }
 
+            if ($student->archived) {
+                Session::flash('error', 'لا يمكن تسجيل الدخول !.');
+                return back();
+            }
+
             Session::put('otpVerifyID', $student->id);
             Session::put('otpVerifyPhone', request('phone'));
          //   Session::put('otpVerifyPhone', "0548331236");

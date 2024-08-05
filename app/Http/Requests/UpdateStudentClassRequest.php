@@ -22,8 +22,9 @@ class UpdateStudentClassRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'register_fees' => 'required|numeric',
-            'study_fees' => 'required|numeric',
+            'register_fees' => 'nullable|numeric',
+            'study_fees' => 'nullable|numeric',
+            'year_class_id' => 'nullable|exists:year_classes,id',
         ];
     }
 }

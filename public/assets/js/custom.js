@@ -111,6 +111,42 @@ function deleteItem(e) {
     })
 }
 
+function restoreItem(e) {
+    Swal.fire({
+        title: 'هل انت متأكد؟',
+        text: "سوف يتم استرجاع البيانات من الارشيف!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'نعم',
+        cancelButtonText: 'الغاء'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let url = $(e).data('item');
+            $('#put-form').attr('action', url).submit();
+        }
+    })
+}
+
+function archiveItem(e) {
+    Swal.fire({
+        title: 'هل انت متأكد؟',
+        text: "سوف يتم نققل العنصر و كل ما يخصه الى الارشيف!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'نعم',
+        cancelButtonText: 'الغاء'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let url = $(e).data('item');
+            $('#put-form').attr('action', url).submit();
+        }
+    })
+}
+
 if (jQuery().dataTable) {
     $('.dataTableConfigNoData').DataTable({
         "dom": "<'dt--top-section'<'row'<'col-12 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +

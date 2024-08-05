@@ -16,6 +16,8 @@ return new class extends Migration {
             $table->date('start_date');
             $table->date('end_date');
             $table->boolean('status')->default(true);
+            $table->double('register_fees')->default(200);
+            $table->double('study_fees')->default(500);
             $table->foreignId('added_by')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();

@@ -927,6 +927,11 @@
     @method('DELETE')
 </form>
 
+<form method="post" id="put-form" style="display: none;">
+    @csrf
+    @method('PUT')
+</form>
+
 @livewireScripts
 <script src="{{ asset("assets/plugins/src/global/vendors.min.js") }}"></script>
 <script src="{{ asset("assets/bootstrap/js/bootstrap.bundle.min.js") }}"></script>

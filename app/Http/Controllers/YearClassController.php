@@ -167,8 +167,6 @@ class YearClassController extends Controller
 
     public function updateStudentAttendance(UpdateStudentAttendanceRequest $request, YearClass $yearClass)
     {
-
-
         DB::transaction(function () use ($yearClass) {
             $students = request('students', []);
             $date = request('date', now());
@@ -177,7 +175,6 @@ class YearClassController extends Controller
             foreach ($students as $student => $status) {
                 StudentAttendance::updateOrCreate(
                     [
-                        'year_class_id' => $yearClass->id,
                         'student_id' => $student,
                         'date' => $date,
                     ],

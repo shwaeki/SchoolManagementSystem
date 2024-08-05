@@ -42,6 +42,10 @@ class StudentController extends BaseController
 
 
         if ($student) {
+            if ($student->archived) {
+                return $this->sendError([], 'Student is archived', 401);
+            }
+
             // $student->generateCode($phone);
             $code = 123456;
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\StudentsArchiveDataTable;
 use App\DataTables\StudentsDataTable;
 use App\Models\AcademicYear;
 use App\Models\Message;
@@ -12,6 +13,7 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Models\StudentCertificate;
 use App\Models\StudentClass;
+use App\Models\YearClass;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -25,6 +27,11 @@ class StudentController extends Controller
     public function index(StudentsDataTable $dataTable)
     {
         return $dataTable->render('student.index');
+    }
+
+    public function archives(StudentsArchiveDataTable $dataTable)
+    {
+        return $dataTable->render('student.archives');
     }
 
     public function create()
@@ -110,6 +117,7 @@ class StudentController extends Controller
             "products" => Product::where('status', true)?->get(),
             "current_student_class" => $current_student_class,
             "attendanceData" => $attendanceData,
+            "year_classes" => YearClass::where('academic_year_id', getUserActiveAcademicYearID())->get(),
             "student_messages" => Message::where('phone', $student->mother_phone)->orWhere('phone', $student->father_phone)->get(),
         ];
 
@@ -161,6 +169,22 @@ class StudentController extends Controller
         $student->delete();
 
         Session::flash('message', 'تم حذف الطالب بنجاح!');
+        return redirect()->route('students.index');
+    }
+
+    public function archive( Request $request, Student $student)
+    {
+        $student->archived = true;
+        $student->save();
+        Session::flash('message', 'تم ارشفة الطالب بنجاح!');
+        return redirect()->route('students.index');
+    }
+
+    public function restore( Request $request, Student $student)
+    {
+        $student->archived = false;
+        $student->save();
+        Session::flash('message', 'تم استعادة الطالب بنجاح!');
         return redirect()->route('students.index');
     }
 
@@ -413,4 +437,5 @@ class StudentController extends Controller
         }
 
     }
+
 }

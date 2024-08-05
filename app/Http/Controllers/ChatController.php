@@ -30,10 +30,10 @@ class ChatController extends Controller
                 ->where('year_classes.academic_year_id', getAdminActiveAcademicYearID())
                 ->pluck('student_classes.student_id');
 
-            $students = Student::whereIn('id', $studentIds)->get();
+            $students = Student::whereIn('id', $studentIds)->where('archived',false)->get();
 
         } else {
-            $students = Student::all();
+            $students = Student::where('archived',false)->get();
         }
 
         $data = [

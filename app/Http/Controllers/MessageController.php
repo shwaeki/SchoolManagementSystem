@@ -26,7 +26,7 @@ class MessageController extends Controller
 
         $data = [
             "schoolClasses" => SchoolClass::all(),
-            "students" => Student::all(),
+            "students" => Student::where('archived',false)->get(),
             "teachers" => Teacher::all(),
             "messages" => $messages->get()
         ];
@@ -63,11 +63,13 @@ class MessageController extends Controller
                 })->with('student')->get();
 
                 foreach ($year_class_students as $student) {
-                    if ($student?->student?->mother_phone != null) {
-                        $phones[] =['phone' => $student?->student?->mother_phone, 'name' => $student?->student?->name];
-                    }
-                    if ($student?->student?->father_phone != null) {
-                        $phones[] = ['phone' => $student?->student?->father_phone, 'name' => $student?->student?->name];
+                    if ($student?->student?->archived == false) {
+                        if ($student?->student?->mother_phone != null) {
+                            $phones[] = ['phone' => $student?->student?->mother_phone, 'name' => $student?->student?->name];
+                        }
+                        if ($student?->student?->father_phone != null) {
+                            $phones[] = ['phone' => $student?->student?->father_phone, 'name' => $student?->student?->name];
+                        }
                     }
                 }
             }
@@ -106,11 +108,13 @@ class MessageController extends Controller
 
 
             foreach ($year_class_students as $student) {
-                if ($student?->student?->mother_phone != null) {
-                    $phones[] = ['phone' => $student?->student?->mother_phone, 'name' => $student?->student?->name];
-                }
-                if ($student?->student?->father_phone != null) {
-                    $phones[] = ['phone' => $student?->student?->father_phone, 'name' => $student?->student?->name];
+                if ($student?->student?->archived == false) {
+                    if ($student?->student?->mother_phone != null) {
+                        $phones[] = ['phone' => $student?->student?->mother_phone, 'name' => $student?->student?->name];
+                    }
+                    if ($student?->student?->father_phone != null) {
+                        $phones[] = ['phone' => $student?->student?->father_phone, 'name' => $student?->student?->name];
+                    }
                 }
             }
         }

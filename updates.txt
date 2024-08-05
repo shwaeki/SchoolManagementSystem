@@ -6,3 +6,14 @@ ALTER TABLE `students` ADD `balance` DOUBLE NOT NULL DEFAULT '0' AFTER `notes`;
 ALTER TABLE `students` CHANGE `identification` `identification` VARCHAR(225) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
 ALTER TABLE `students` ADD `identification_type` ENUM('israel_id','palestinian_id','passport','birth_report') NOT NULL DEFAULT 'israel_id' AFTER `identification`;
 ALTER TABLE `students` ADD `transportation_type` ENUM('parents','bus') NULL AFTER `notes`;
+
+#   05/08/2024
+ALTER TABLE `schoolmanagementsystem`.`student_classes` DROP FOREIGN KEY `student_classes_teacher_id_foreign`;
+ALTER TABLE `student_classes` DROP `teacher_id`;
+
+ALTER TABLE `schoolmanagementsystem`.`student_attendances` DROP FOREIGN KEY `student_attendances_year_class_id_foreign`;
+ALTER TABLE `student_attendances` DROP `year_class_id`;
+
+ALTER TABLE `students` ADD `archived` TINYINT(1) NOT NULL DEFAULT '0' AFTER `can_login`;
+ALTER TABLE `teachers` ADD `archived` TINYINT(1) NOT NULL DEFAULT '0' AFTER `school_class_id`;
+ALTER TABLE `student_classes` ADD `archived` TINYINT(1) NOT NULL DEFAULT '0' AFTER `added_by`;

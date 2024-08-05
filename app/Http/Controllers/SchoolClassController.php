@@ -57,9 +57,9 @@ class SchoolClassController extends Controller
     {
         $attendanceDate = request('date', now());
 
-        $weekDate = Carbon::parse(request('weekSelect',Carbon::now()));
+        $weekDate = Carbon::parse(request('weekSelect', Carbon::now()));
 
-        $weekStartDate  = $weekDate->startOfWeek(Carbon::SUNDAY)->toDateString();
+        $weekStartDate = $weekDate->startOfWeek(Carbon::SUNDAY)->toDateString();
         $weekEndDate = $weekDate->endOfWeek(Carbon::SATURDAY)->toDateString();
 
 
@@ -94,28 +94,27 @@ class SchoolClassController extends Controller
                 })
                 ->get();
 
-            // Get student attendance
-            $studentsAttendance = StudentAttendance::where('year_class_id', $current_year_class->id)
-                ->whereDate('date', $attendanceDate)
-                ->pluck('status', 'student_id')
-                ->toArray();
-
             // Get class year students with their related data
             $class_year_students = $current_year_class->students()
                 ->whereHas('student', function ($query) {
                     $query->whereNull('deleted_at');
+                    $query->where('students.archived', false);
                 })
                 ->with('student', 'addedBy')
                 ->get();
 
+            // Get student attendance
+            $studentIds = $class_year_students->pluck('student_id')->toArray();
+            $studentsAttendance = StudentAttendance::whereIn('student_id', $studentIds)
+                ->whereDate('date', $attendanceDate)
+                ->pluck('status', 'student_id')
+                ->toArray();
 
             $weeklyPrograms = $current_year_class->weeklyPrograms
                 ->where('start_date', $weekStartDate)
                 ->groupBy('subject')
                 ->toArray();
         }
-
-
 
 
         $data = [
@@ -126,7 +125,7 @@ class SchoolClassController extends Controller
             'assistants' => $assistants,
             'studentsAttendance' => $studentsAttendance,
             'certificates' => Certificate::all(),
-            'students' => Student::whereNotIn('id', $all_students)->orderBy('name', 'asc')->get(),
+            'students' => Student::whereNotIn('id', $all_students)->where('students.archived', false)->orderBy('name', 'asc')->get(),
             'class_year_students' => $class_year_students,
             'weekFirstDate' => $weekStartDate,
             'weekLastDate' => $weekEndDate,
@@ -135,7 +134,6 @@ class SchoolClassController extends Controller
 
         return view('classes.show', $data);
     }
-
 
 
     public function edit(SchoolClass $schoolClass)
@@ -159,8 +157,8 @@ class SchoolClassController extends Controller
 
     public function destroy(SchoolClass $schoolClass)
     {
-/*        $schoolClass->delete();
-        Session::flash('message', 'تم حذف الفصل التعليمي بنجاح!');*/
+        $schoolClass->delete();
+        Session::flash('message', 'تم حذف الفصل التعليمي بنجاح!');
         return redirect()->route('school-classes.index');
     }
 

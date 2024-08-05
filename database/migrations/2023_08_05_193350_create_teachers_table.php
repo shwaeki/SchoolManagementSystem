@@ -30,7 +30,8 @@ return new class extends Migration {
             $table->string('bank_branch')->nullable();
             $table->string('bank_account')->nullable();
             $table->text('id_photo')->nullable();
-
+            $table->unique('email');
+            $table->string('password')->nullable()->after('email');
             $table->text('notes')->nullable();
             $table->foreignId('school_class_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('added_by')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('cascade');

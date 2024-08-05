@@ -23,14 +23,16 @@ class ClassesDataTable extends DataTable
     public function dataTable($query)
     {
 
-
         return datatables()
             ->eloquent($query)
             ->addColumn('Settings', function ($query) {
-                return '<a href="' . route('school-classes.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>
-                    <a href="' . route('school-classes.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
-                    <button class="btn btn-light-danger text-danger  d-none" onclick="deleteItem(this)"
+                $buttons = '<a href="' . route('school-classes.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>
+                    <a href="' . route('school-classes.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>';
+                if ($query->yearClasses->count() == 0) {
+                    $buttons .= '<button class="btn btn-light-danger text-danger ms-1" onclick="deleteItem(this)"
                     data-item="' . route('school-classes.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
+                }
+                return $buttons;
             })
             ->addColumn('YearCode', function ($query) {
                 $current_year_class = $query?->yearClasses()?->where('academic_year_id', $this->activeAcademicYear->id)?->get()?->first();

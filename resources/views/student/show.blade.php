@@ -65,6 +65,33 @@
                         @endpush
                     @endif
 
+                    @if($student->archived)
+                        @push('warnings')
+                            <div class="alert alert-dismissible alert-icon-left alert-light-warning fade mb-4 show"
+                                 role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <svg xmlns="http://www.w3.org/2000/svg" data-bs-dismiss="alert" width="24"
+                                         height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                         class="feather feather-x close">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-alert-triangle">
+                                    <path
+                                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12" y2="17"></line>
+                                </svg>
+                                تمت ارشفة بيانات هذا الطالب
+
+                            </div>
+                        @endpush
+                    @endif
+
 
                     <ul class="nav nav-pills" id="animateLine" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -422,7 +449,7 @@
                                                 <div class="mb-3">
                                                     <label for="name" class="form-label">المدرس المشرف</label>
                                                     <input type="text" id="name" class="form-control"
-                                                           value="{{$current_student_class->teacher->name}}"
+                                                           value="{{ $current_student_class->YearClass->supervisorTeacher->name }}"
                                                            disabled>
                                                 </div>
                                             </div>
@@ -508,13 +535,13 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{$class->yearClass?->schoolClass?->name}}</td>
                                                     <td>{{$class->yearClass?->academicYear?->name}}</td>
-                                                    <td>{{$class->teacher->name}}</td>
+                                                    <td>{{$class->YearClass?->supervisorTeacher?->name}}</td>
                                                     <td>{{$class->addedBy->name}}</td>
                                                     <td>{{$class->created_at->format('d/m/Y')}}</td>
                                                     <td>
-
                                                         @if($current_student_class->year_class_id == $class->year_class_id)
-                                                            <button type="button"
+                                                            <button type="button" data-bs-toggle="modal"
+                                                                    data-bs-target="#editYearClassModal"
                                                                     class="btn btn-light-warning text-warning">
                                                                 <i class="far fa-edit"></i>
                                                             </button>
@@ -898,8 +925,7 @@
                       method="post">
                     @method('PUT')
                     @csrf
-                    <input type="hidden" name="student_id" value="{{ $student->id }}">
-                    <input type="hidden" name="student_class" value="{{ $current_student_class->id }}">
+
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel"> تعديل الرسوم</h5>
@@ -918,6 +944,45 @@
                                 <label for="study_fees" class="form-label">القسط الدراسي :</label>
                                 <input type="text" class="form-control only-integer" id="study_fees" name="study_fees"
                                        value="{{ $current_student_class->study_fees }}" required>
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-bs-dismiss="modal">اغلاق</button>
+                            <button type="submit" class="btn btn-primary">حفظ</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editYearClassModal">
+            <div class="modal-dialog">
+                <form action="{{ route('student-classes.update',['student_class'=>$current_student_class]) }}"
+                      method="post">
+                    @method('PUT')
+                    @csrf
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel"> تعديل الفصل الدراسي </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+
+                            <div class="mb-3">
+                                <label for="year_class_id" class="form-label">الفصل الدراسي :</label>
+                                <select name="year_class_id" id="year_class_id" class="form-select select2" required>
+                                    <option value="" disabled selected>اختر الفصل الدراسي</option>
+                                    @foreach($year_classes as $class)
+                                        <option value="{{ $class->id }}"
+                                                @if($class->id == $current_student_class->year_class_id) selected @endif>
+                                            {{ $class->SchoolClass?->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
 
 
