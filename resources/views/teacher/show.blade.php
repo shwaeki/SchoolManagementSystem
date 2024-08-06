@@ -283,7 +283,16 @@
                         <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
                             <form class="section general-info">
                                 <div class="info">
-                                    <h6> قسائم الرواتب </h6>
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <h6> قسائم الرواتب </h6>
+                                        </div>
+                                        <div class="col-3 text-end">
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#addSalarySlap"
+                                               class="btn btn-primary"> اضافة </button>
+                                        </div>
+                                    </div>
+
                                     <div class="table-responsive">
                                         <table class="table table-hover table-striped table-bordered">
                                             <thead>
@@ -432,14 +441,38 @@
 
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
-    <div class="modal fade" id="attributeModal" tabindex="-1" aria-labelledby="attributeModalLabel" aria-hidden="true">
+
+    <div class="modal fade" id="addSalarySlap">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="attributeModalLabel">اضافة قسيمة راتب جديدة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">التاريخ</label>
+                        <input type="file" id="file" name="date" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">قسيمة الراتب</label>
+                        <input type="text" id="file" name="date" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-dismiss="modal">غلاق</button>
+                    <button type="button" class="btn btn-primary" id="reportDynamicExport">اضافة</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="attributeModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateTeacherRequest;
 use App\Models\Message;
 use App\Models\Report;
 use App\Models\SalarySlip;
+use App\Models\SalarySlipFile;
 use App\Models\SchoolClass;
 use App\Models\Teacher;
 use Illuminate\Http\Client\Response;
@@ -71,7 +72,7 @@ class TeacherController extends Controller
         $data = [
             "salaries" => SalarySlip::where('identification', $teacher->identification)->get(),
             "teacher" => $teacher,
-            "reports" => Report::where('type','teacher')->get(),
+            "reports" => Report::where('type', 'teacher')->get(),
             "teacher_reports" => $teacher->reports,
             "teacher_messages" => Message::where('phone', $teacher->phone)->get(),
         ];
@@ -129,14 +130,32 @@ class TeacherController extends Controller
         return redirect()->back();
     }
 
+    public function storeSlip(Request $request)
+    {
+        $date = request('date');
+        $teacher_id = request('teacher');
+        $teacher = Teacher::findOrFail($teacher_id);
+
+        $file = $request->file('file');
+        $file_path = $date . '.' . $file->getClientOriginalExtension();
+        $file->storeAs('public/salariesSlaps', $file_path);
+
+        SalarySlip::create([
+            'date' => $date,
+            'identification' => $teacher->identification,
+            'file_path' => $file_path,
+        ]);
+
+        Session::flash('message', 'تم اضافة قسيمة راتب بنجاح!');
+        return redirect()->back();
+    }
+
     public function passwordUpdate(Request $request, Teacher $teacher)
     {
-
         $request->validate([
             'new_password' => ['required'],
             'new_confirm_password' => ['same:new_password'],
         ]);
-
 
         $teacher->update(['password' => Hash::make($request->new_password)]);
         Session::flash('message', 'تم تعديل كلمة المرور  بنجاح.');
@@ -146,7 +165,7 @@ class TeacherController extends Controller
 
     public function downloadSlip(SalarySlip $salarySlip)
     {
-        $path = public_path('storage/'.$salarySlip->file_path);
+        $path = public_path('storage/' . $salarySlip->file_path);
         return response()->file($path);
     }
 }
