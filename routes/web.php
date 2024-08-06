@@ -8,7 +8,6 @@ use App\Http\Controllers\CertificateCategoryController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CertificateFieldController;
 use App\Http\Controllers\ChatController;
-use App\Http\Controllers\DailyProgramController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ParentController;
@@ -49,6 +48,11 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
     Route::get('/myreports', [HomeController::class, 'myReports'])->name('myreports');
     Route::get('show-salary/{salarySlip}', [HomeController::class, 'showSalary'])->name('show.salary');
 
+
+    Route::get('school-classes/archives', [SchoolClassController::class, 'archives'])->name('school-classes.archives');
+    Route::put('school-classes/archive/{school_class}', [SchoolClassController::class, 'archive'])->name('school-classes.archive');
+    Route::put('school-classes/restore/{school_class}', [SchoolClassController::class, 'restore'])->name('school-classes.restore');
+
     Route::resource('school-classes', SchoolClassController::class);
     Route::resource('student-classes', StudentClassController::class);
     Route::resource('student-marks', StudentMarkController::class);
@@ -85,7 +89,6 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
     Route::delete('year-classes/destroy-daily-program/{day}', [YearClassController::class, 'destroyDailyProgram'])->name('year-classes.dailyProgram.destroy');
 
     Route::put('students/updataImage/{student}', [StudentController::class, 'updatePersonalPhoto'])->name('students.image.update');
-
 
     Route::group(['prefix' => 'filemanager'], function () {
         Lfm::routes();

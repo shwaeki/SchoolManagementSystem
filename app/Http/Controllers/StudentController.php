@@ -39,12 +39,10 @@ class StudentController extends Controller
         return view('student.create');
     }
 
-
     public function report()
     {
         return view('student.report');
     }
-
 
     public function store(StoreStudentRequest $request)
     {
@@ -77,7 +75,6 @@ class StudentController extends Controller
         Session::flash('message', 'تم اضافة الطالب بنجاح.');
         return redirect()->route('students.index');
     }
-
 
     public function show(Student $student)
     {
@@ -125,7 +122,6 @@ class StudentController extends Controller
         return view('student.show', $data);
     }
 
-
     public function edit(Student $student)
     {
         $data = [
@@ -134,7 +130,6 @@ class StudentController extends Controller
 
         return view('student.edit', $data);
     }
-
 
     public function update(UpdateStudentRequest $request, Student $student)
     {
@@ -162,7 +157,6 @@ class StudentController extends Controller
         Session::flash('message', 'تم تعديل معلومات الطالب بنجاح.');
         return redirect()->route('students.show', $student);
     }
-
 
     public function destroy(Student $student)
     {
@@ -293,7 +287,6 @@ class StudentController extends Controller
         //  return view('student.marks', $data);
     }
 
-
     public function getStudentMarks(StudentClass $studentClass)
     {
 
@@ -308,7 +301,6 @@ class StudentController extends Controller
         return response()->json(['result' => true, 'studentCertificate' => $studentCertificate, 'marks' => $organizedMarks]);
 
     }
-
 
     public function yearlyFile(StudentClass $studentClass)
     {

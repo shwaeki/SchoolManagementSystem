@@ -22,19 +22,19 @@
 
 
     <link href="{{ asset("assets/css/light/structure.css")  }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset("assets/css/dark/structure.css")  }}" rel="stylesheet" type="text/css"/>
+{{--    <link href="{{ asset("assets/css/dark/structure.css")  }}" rel="stylesheet" type="text/css"/>--}}
 
 
 
     <link href="{{ asset("assets/css/light/main.css")  }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset("assets/css/dark/main.css")  }}" rel="stylesheet" type="text/css"/>
+{{--    <link href="{{ asset("assets/css/dark/main.css")  }}" rel="stylesheet" type="text/css"/>--}}
 
     <link href="{{ asset("assets/css/light/structure.css")  }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset("assets/css/dark/structure.css")  }}" rel="stylesheet" type="text/css"/>
+{{--    <link href="{{ asset("assets/css/dark/structure.css")  }}" rel="stylesheet" type="text/css"/>--}}
 
 
     <link href="{{ asset("assets/css/light/pages/error/error.css")  }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset("assets/css/dark/pages/error/error.css")  }}" rel="stylesheet" type="text/css"/>
+{{--    <link href="{{ asset("assets/css/dark/pages/error/error.css")  }}" rel="stylesheet" type="text/css"/>--}}
     <style>
         body.dark .theme-logo.dark-element {
             display: inline-block;

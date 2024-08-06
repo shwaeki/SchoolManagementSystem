@@ -23,7 +23,7 @@ class StudentsDataTable extends DataTable
             ->addColumn('Settings', function ($query) {
                 return '<a href="' . route('students.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>
                     <a href="' . route('students.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
-                    <button class="btn btn-light-danger text-danger" onclick="archiveItem(this)"
+                    <button class="btn btn-light-secondary text-secondary" onclick="archiveItem(this)"
                     data-item="' . route('students.archive', $query) . '"><i class="fas fa-archive"></i></button>
                     <button class="btn btn-light-danger text-danger  d-none" onclick="deleteItem(this)"
                     data-item="' . route('students.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';

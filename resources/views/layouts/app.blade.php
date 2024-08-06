@@ -810,7 +810,7 @@
                     </li>
 
                     @foreach(auth()->user()->supervisorYearClasses()->where('academic_year_id',$activeAcademicYear->id)->get() ?? [] as $yearClass)
-                        @if($yearClass->schoolClass)
+                        @if($yearClass->schoolClass && $yearClass->schoolClass->archived == false)
 
                             <li class="menu">
                                 <a href="{{route('school-classes.show', $yearClass->schoolClass)  }}"

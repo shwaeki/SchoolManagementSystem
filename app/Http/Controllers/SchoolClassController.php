@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\ClassesArchiveDataTable;
 use App\DataTables\ClassesDataTable;
+use App\DataTables\StudentsArchiveDataTable;
 use App\Models\AcademicYear;
 use App\Models\Certificate;
 use App\Models\SchoolClass;
@@ -13,6 +15,7 @@ use App\Models\StudentAttendance;
 use App\Models\Teacher;
 use Carbon\Carbon;
 use Dflydev\DotAccessData\Data;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -28,10 +31,14 @@ class SchoolClassController extends Controller
         $this->middleware('auth:web')->except(['show']);
     }
 
-
     public function index(ClassesDataTable $dataTable)
     {
         return $dataTable->render('classes.index');
+    }
+
+    public function archives(ClassesArchiveDataTable $dataTable)
+    {
+        return $dataTable->render('classes.archives');
     }
 
     public function create()
@@ -43,7 +50,6 @@ class SchoolClassController extends Controller
         return view('classes.create', $data);
     }
 
-
     public function store(StoreSchoolClassRequest $request)
     {
         $data = request()->all() + ['added_by' => auth()->id()];
@@ -51,7 +57,6 @@ class SchoolClassController extends Controller
         Session::flash('message', 'تم اضافة فصل التعليمي جديد بنجاح.');
         return redirect()->route('school-classes.index');
     }
-
 
     public function show(SchoolClass $schoolClass)
     {
@@ -135,7 +140,6 @@ class SchoolClassController extends Controller
         return view('classes.show', $data);
     }
 
-
     public function edit(SchoolClass $schoolClass)
     {
         $data = [
@@ -146,14 +150,12 @@ class SchoolClassController extends Controller
         return view('classes.edit', $data);
     }
 
-
     public function update(UpdateSchoolClassRequest $request, SchoolClass $schoolClass)
     {
         $schoolClass->update(request()->all());
         Session::flash('message', 'تم تعديل معلومات الفصل التعليمي بنجاح.');
         return redirect()->route('school-classes.index');
     }
-
 
     public function destroy(SchoolClass $schoolClass)
     {
@@ -162,5 +164,20 @@ class SchoolClassController extends Controller
         return redirect()->route('school-classes.index');
     }
 
+    public function archive( Request $request, SchoolClass $schoolClass)
+    {
+        $schoolClass->archived = true;
+        $schoolClass->save();
+        Session::flash('message', 'تم ارشفة الفصل الدراسي بنجاح!');
+        return redirect()->route('school-classes.index');
+    }
+
+    public function restore( Request $request, SchoolClass $schoolClass)
+    {
+        $schoolClass->archived = false;
+        $schoolClass->save();
+        Session::flash('message', 'تم استعادة الفصل الدراسي بنجاح!');
+        return redirect()->route('students.index');
+    }
 
 }

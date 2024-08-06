@@ -1,17 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-
     <div class="statbox widget box box-shadow">
         <div class="widget-header">
             <div class="row">
                 <div class="col-8">
-                    <h4> قائمة الفصول التعليمية</h4>
-                </div>
-
-                <div class="col-4 text-end align-self-center">
-                    <a href="{{route('school-classes.create')}}" class="btn btn-primary"> اضافة </a>
-                    <a href="{{route('school-classes.archives')}}" class="btn btn-primary"> الارشيف </a>
+                    <h4> ارشيف الفصول الدراسية</h4>
                 </div>
             </div>
         </div>

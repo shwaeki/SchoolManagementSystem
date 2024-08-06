@@ -94,6 +94,7 @@ class Chat extends Component
             ->join('year_classes', 'year_classes.id', '=', 'student_classes.year_class_id')
             ->where('year_classes.academic_year_id', getAdminActiveAcademicYearID())
             ->where('year_classes.supervisor', auth()->id())
+
             ->latest('chats.created_at')
             ->with(['student', 'teacher'])
             ->distinct('chats.id')
@@ -105,6 +106,7 @@ class Chat extends Component
             $query->where('supervisor', auth()->id());
             $query->where('academic_year_id', getUserActiveAcademicYearID());
         })->whereHas('schoolClass', function ($query) {
+            $query->where('archived',false);
             $query->whereNull('deleted_at');
         })->with([
             'schoolClass',

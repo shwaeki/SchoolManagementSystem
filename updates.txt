@@ -16,4 +16,4 @@ ALTER TABLE `student_attendances` DROP `year_class_id`;
 
 ALTER TABLE `students` ADD `archived` TINYINT(1) NOT NULL DEFAULT '0' AFTER `can_login`;
 ALTER TABLE `teachers` ADD `archived` TINYINT(1) NOT NULL DEFAULT '0' AFTER `school_class_id`;
-ALTER TABLE `student_classes` ADD `archived` TINYINT(1) NOT NULL DEFAULT '0' AFTER `added_by`;
+ALTER TABLE `school_classes` ADD `archived` TINYINT(1) NOT NULL DEFAULT '0' AFTER `added_by`;

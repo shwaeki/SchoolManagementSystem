@@ -26,6 +26,8 @@ class ChatController extends Controller
         if (Auth::guard('teacher')->check()) {
 
             $studentIds = StudentClass::join('year_classes', 'student_classes.year_class_id', '=', 'year_classes.id')
+                ->join('school_classes', 'school_classes.id', '=', 'year_classes.school_class_id')
+                ->where('school_classes.archived', false)
                 ->where('year_classes.supervisor', auth()->id())
                 ->where('year_classes.academic_year_id', getAdminActiveAcademicYearID())
                 ->pluck('student_classes.student_id');

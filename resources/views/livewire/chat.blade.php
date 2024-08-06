@@ -57,26 +57,25 @@
                             @endif
 
                             @foreach($chats as $chat)
-                                <div
-                                    class="person selectStudent {{ $chat->student_id == $selectedStudent?->id ? 'bg-light-primary' : '' }}"
-                                    wire:click="selectStudent({{$chat->student_id}})">
-                                    <div class="user-info">
-                                        <div class="f-head">
-                                            <img src="{{$chat->student->photo}}" alt="avatar">
-                                        </div>
-                                        <div class="f-body">
-                                            <div class="meta-info">
-                                <span class="user-name">
-                                    {{$chat->student->name}}
-                                </span>
-                                                <span class="user-meta-time">
-                                    {{$chat->created_at?->diffForHumans()}}
-                                </span>
+                                @if($chat->student->archived == false)
+                                    <div
+                                        class="person selectStudent {{ $chat->student_id == $selectedStudent?->id ? 'bg-light-primary' : '' }}"
+                                        wire:click="selectStudent({{$chat->student_id}})">
+                                        <div class="user-info">
+                                            <div class="f-head">
+                                                <img src="{{$chat->student->photo}}" alt="avatar">
                                             </div>
-                                            <span class="preview">{{$chat->message}}</span>
+                                            <div class="f-body">
+                                                <div class="meta-info">
+                                                    <span class="user-name">{{$chat->student->name}}</span>
+                                                    <span
+                                                        class="user-meta-time">{{$chat->created_at?->diffForHumans()}}</span>
+                                                </div>
+                                                <span class="preview">{{$chat->message}}</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                @endif
                             @endforeach
 
 

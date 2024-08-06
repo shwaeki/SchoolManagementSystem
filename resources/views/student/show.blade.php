@@ -533,7 +533,14 @@
                                             @foreach($student_classes as $class)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
-                                                    <td>{{$class->yearClass?->schoolClass?->name}}</td>
+                                                    <td>
+                                                        {{$class->yearClass?->schoolClass?->name}}
+
+                                                        @if($class->yearClass?->schoolClass?->archived)
+                                                            <span class="badge badge-warning px-2 ms-1">مؤرشف</span>
+                                                        @endif
+
+                                                    </td>
                                                     <td>{{$class->yearClass?->academicYear?->name}}</td>
                                                     <td>{{$class->YearClass?->supervisorTeacher?->name}}</td>
                                                     <td>{{$class->addedBy->name}}</td>

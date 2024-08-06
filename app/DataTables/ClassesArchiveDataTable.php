@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Services\DataTable;
 
-class ClassesDataTable extends DataTable
+class ClassesArchiveDataTable extends DataTable
 {
 
     private $activeAcademicYear;
@@ -26,19 +26,9 @@ class ClassesDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('Settings', function ($query) {
-                $buttons = '<a href="' . route('school-classes.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>
-                    <a href="' . route('school-classes.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>';
-                if ($query->yearClasses->count() == 0) {
-                    $buttons .= '<button class="btn btn-light-danger text-danger ms-1" onclick="deleteItem(this)"
-                    data-item="' . route('school-classes.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
-                }
-                $buttons .= '<button class="btn btn-light-secondary text-secondary ms-1" onclick="archiveItem(this)"
-                    data-item="' . route('school-classes.archive', $query) . '"><i class="fas fa-archive"></i></button>';
-                return $buttons;
-            })
-            ->addColumn('YearCode', function ($query) {
-                $current_year_class = $query?->yearClasses()?->where('academic_year_id', $this->activeAcademicYear->id)?->get()?->first();
-                return '<span class="badge badge-light-info">' . $current_year_class?->code . '</span>';
+                return '<a href="' . route('school-classes.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>
+                    <button class="btn btn-light-success text-success" onclick="restoreItem(this)"
+                    data-item="' . route('school-classes.restore', $query) . '"><i class="fas fa-arrow-left-rotate"></i></button>';
             })
             ->setRowId('id')
             ->rawColumns(['Settings', 'YearCode']);
@@ -51,7 +41,7 @@ class ClassesDataTable extends DataTable
      */
     public function query(SchoolClass $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->where('archived',true);
     }
 
     /**
@@ -95,7 +85,6 @@ class ClassesDataTable extends DataTable
                 'capacity' => ['title' => 'الطاقة الاستيعابة'],
                 'alphabetical_name' => ['title' => 'الكود الابجدي'],
                 'address' => ['title' => 'العنوان'],
-                'YearCode' => ['title' => 'الكود', 'orderable' => false],
                 'Settings' => ['title' => 'خيارات', 'orderable' => false],
             ];
     }
