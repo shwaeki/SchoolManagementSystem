@@ -64,7 +64,7 @@
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-3">
                         <div class="mb-3">
                             <label for="bank_name" class="form-label"> اسم البنك </label>
                             <input type="text" id="bank_name" name="bank_name"
@@ -76,7 +76,7 @@
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-3">
                         <div class="mb-3">
                             <label for="bank_branch" class="form-label"> فرع البنك </label>
                             <input type="text" id="bank_branch" name="bank_branch"
@@ -89,13 +89,29 @@
                     </div>
 
 
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-3">
                         <div class="mb-3">
                             <label for="bank_account" class="form-label"> رقم الحساب </label>
                             <input type="text" id="bank_account" name="bank_account"
                                    class="form-control  @error('bank_account') is-invalid @enderror"
                                    value="{{old('bank_account',$teacher->bank_account)}}">
                             @error('bank_account')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-3">
+                        <div class="mb-3">
+                            <label for="teacher_type" class="form-label"> النوع </label>
+                            <select class="form-select @error('teacher_type') is-invalid @enderror"
+                                    id="teacher_type" name="teacher_type" required>
+                                <option selected disabled value="">اختر ...</option>
+                                <option {{old('teacher_type',$teacher->teacher_type) == 'teacher' ? 'selected' : '' }} value="teacher">معلمة</option>
+                                <option {{old('teacher_type',$teacher->teacher_type) == 'assistant' ? 'selected' : '' }} value="assistant">مساعدة</option>
+                                <option {{old('teacher_type',$teacher->teacher_type) == 'worker' ? 'selected' : '' }} value="worker">موظف</option>
+                            </select>
+                            @error('teacher_type')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>
@@ -216,7 +232,7 @@
 
                     <div class="col-6 col-md-3">
                         <div class="mb-3">
-                            <label for="status" class="form-label"> حالة المعلم </label>
+                            <label for="status" class="form-label">  الحالة </label>
                             <select class="form-select @error('status') is-invalid @enderror"
                                     id="status" name="status" required>
                                 <option selected disabled value="">اختر ...</option>
@@ -238,7 +254,7 @@
                                 </option>
                                 <option
                                     {{old('status',$teacher->status) == 'substitute_teacher' ? 'selected' : '' }} value="substitute_teacher">
-                                    معلم بديل
+                                     بديل
                                 </option>
                                 <option
                                     {{old('status',$teacher->status) == 'quit_working' ? 'selected' : '' }} value="quit_working">

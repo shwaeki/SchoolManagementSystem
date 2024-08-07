@@ -20,7 +20,9 @@ return [
     'Sometimes' => 'أحياناً',
     'Rarely' => 'نادراً',
     'student' => 'طالب',
-    'teacher' => 'مدرس',
+    'teacher' => 'معلمة',
+    'assistant' => 'مساعدة',
+    'worker' => 'موظف',
 
     'israel_id' => 'هوية إسرائيلية',
     'palestinian_id' => 'هوية فلسطنية',

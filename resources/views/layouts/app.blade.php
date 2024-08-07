@@ -378,7 +378,7 @@
                                     <line x1="1" y1="9" x2="4" y2="9"></line>
                                     <line x1="1" y1="14" x2="4" y2="14"></line>
                                 </svg>
-                                <span>المعلمات</span>
+                                <span>الموظفين</span>
                             </div>
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -392,97 +392,13 @@
                             id="teachers"
                             data-bs-parent="#accordionExample">
                             <li class="{{ Route::is('teachers.index') ? 'active' : '' }}">
-                                <a href="{{route('teachers.index')}}"> قائمة المعلمين </a>
+                                <a href="{{route('teachers.index')}}"> قائمة الموظفين </a>
                             </li>
                             <li class="{{ Route::is('teachers.create') ? 'active' : '' }}">
                                 <a href="{{route('teachers.create')}}"> اضافة </a>
                             </li>
                         </ul>
                     </li>
-
-                    <li class="menu">
-                        <a href="#assistants" data-bs-toggle="collapse"
-                           aria-expanded="{{ Route::is('assistants.index','assistants.edit','assistants.create','assistants.show') ? 'true' : 'false' }}"
-                           class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-cpu">
-                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                    <rect x="9" y="9" width="6" height="6"></rect>
-                                    <line x1="9" y1="1" x2="9" y2="4"></line>
-                                    <line x1="15" y1="1" x2="15" y2="4"></line>
-                                    <line x1="9" y1="20" x2="9" y2="23"></line>
-                                    <line x1="15" y1="20" x2="15" y2="23"></line>
-                                    <line x1="20" y1="9" x2="23" y2="9"></line>
-                                    <line x1="20" y1="14" x2="23" y2="14"></line>
-                                    <line x1="1" y1="9" x2="4" y2="9"></line>
-                                    <line x1="1" y1="14" x2="4" y2="14"></line>
-                                </svg>
-                                <span>المساعدات</span>
-                            </div>
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-chevron-right">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </div>
-                        </a>
-                        <ul class="submenu list-unstyled {{ Route::is('assistants.index','assistants.edit','assistants.create','assistants.show') ? 'show' : 'collapse' }}"
-                            id="assistants"
-                            data-bs-parent="#accordionExample">
-                            <li class="{{ Route::is('assistants.index') ? 'active' : '' }}">
-                                <a href="{{route('assistants.index')}}"> قائمة المساعدات </a>
-                            </li>
-                            <li class="{{ Route::is('assistants.create') ? 'active' : '' }}">
-                                <a href="{{route('assistants.create')}}"> اضافة </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="menu">
-                        <a href="#workers" data-bs-toggle="collapse"
-                           aria-expanded="{{ Route::is('workers.index','workers.edit','workers.create','workers.show') ? 'true' : 'false' }}"
-                           class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-cpu">
-                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                    <rect x="9" y="9" width="6" height="6"></rect>
-                                    <line x1="9" y1="1" x2="9" y2="4"></line>
-                                    <line x1="15" y1="1" x2="15" y2="4"></line>
-                                    <line x1="9" y1="20" x2="9" y2="23"></line>
-                                    <line x1="15" y1="20" x2="15" y2="23"></line>
-                                    <line x1="20" y1="9" x2="23" y2="9"></line>
-                                    <line x1="20" y1="14" x2="23" y2="14"></line>
-                                    <line x1="1" y1="9" x2="4" y2="9"></line>
-                                    <line x1="1" y1="14" x2="4" y2="14"></line>
-                                </svg>
-                                <span>الموظفين</span>
-                            </div>
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-chevron-right">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </div>
-                        </a>
-
-                        <ul class="submenu list-unstyled {{ Route::is('workers.index','workers.edit','workers.create','workers.show') ? 'show' : 'collapse' }}"
-                            id="workers"
-                            data-bs-parent="#accordionExample">
-                            <li class="{{ Route::is('workers.index') ? 'active' : '' }}">
-                                <a href="{{route('workers.index')}}"> قائمة الموظفين </a>
-                            </li>
-                            <li class="{{ Route::is('workers.create') ? 'active' : '' }}">
-                                <a href="{{route('workers.create')}}"> اضافة </a>
-                            </li>
-                        </ul>
-                    </li>
-
 
                     <li class="menu">
                         <a href="#users" data-bs-toggle="collapse"

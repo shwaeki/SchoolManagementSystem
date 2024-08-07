@@ -2,26 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\TeachersArchiveDataTable;
 use App\DataTables\TeachersDataTable;
 use App\Http\Requests\StoreTeacherRequest;
 use App\Http\Requests\UpdateTeacherRequest;
 use App\Models\Message;
 use App\Models\Report;
 use App\Models\SalarySlip;
-use App\Models\SalarySlipFile;
 use App\Models\SchoolClass;
 use App\Models\Teacher;
-use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class TeacherController extends Controller
 {
-
     public function index(TeachersDataTable $dataTable)
     {
         return $dataTable->render('teacher.index');
+    }
+
+    public function archives(TeachersArchiveDataTable $dataTable)
+    {
+        return $dataTable->render('teacher.archives');
     }
 
     public function create()
@@ -33,11 +36,9 @@ class TeacherController extends Controller
         return view('teacher.create', $data);
     }
 
-
     public function store(StoreTeacherRequest $request)
     {
         $addedData = [
-            'teacher_type' => 'teacher',
             'added_by' => auth()->id(),
             'work_afternoon' => request()->has('work_afternoon') ? 1 : 0,
             'show_salary_slip' => request()->has('show_salary_slip') ? 1 : 0,
@@ -62,10 +63,9 @@ class TeacherController extends Controller
         }
 
 
-        Session::flash('message', 'تم اضافة معلم جديد بنجاح.');
+        Session::flash('message', 'تم اضافة موظف جديد بنجاح.');
         return redirect()->route('teachers.index');
     }
-
 
     public function show(Teacher $teacher)
     {
@@ -81,7 +81,6 @@ class TeacherController extends Controller
         return view('teacher.show', $data);
     }
 
-
     public function edit(Teacher $teacher)
     {
         $data = [
@@ -91,7 +90,6 @@ class TeacherController extends Controller
 
         return view('teacher.edit', $data);
     }
-
 
     public function update(UpdateTeacherRequest $request, Teacher $teacher)
     {
@@ -111,15 +109,14 @@ class TeacherController extends Controller
 
 
         $teacher->update($data);
-        Session::flash('message', 'تم تعديل معلومات المعلم بنجاح.');
+        Session::flash('message', 'تم تعديل معلومات الموظف بنجاح.');
         return redirect()->route('teachers.show', $teacher);
     }
-
 
     public function destroy(Teacher $teacher)
     {
         $teacher->delete();
-        Session::flash('message', 'تم حذف المعلم بنجاح!');
+        Session::flash('message', 'تم حذف الموظف بنجاح!');
         return redirect()->route('teachers.index');
     }
 
@@ -164,10 +161,25 @@ class TeacherController extends Controller
         return redirect()->route('teachers.show', $teacher);
     }
 
-
     public function downloadSlip(SalarySlip $salarySlip)
     {
         $path = public_path('storage/' . $salarySlip->file_path);
         return response()->file($path);
+    }
+
+    public function archive( Request $request, Teacher $teacher)
+    {
+        $teacher->archived = true;
+        $teacher->save();
+        Session::flash('message', 'تم ارشفة الموظف بنجاح!');
+        return redirect()->route('teachers.index');
+    }
+
+    public function restore( Request $request,Teacher $teacher)
+    {
+        $teacher->archived = false;
+        $teacher->save();
+        Session::flash('message', 'تم استعادة الموظف بنجاح!');
+        return redirect()->route('teachers.index');
     }
 }

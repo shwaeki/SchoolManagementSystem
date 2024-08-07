@@ -22,12 +22,41 @@
 
 @section('content')
 
+    @if($teacher->archived)
+        @push('warnings')
+            <div class="alert alert-dismissible alert-icon-left alert-light-warning fade mb-4 show"
+                 role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" data-bs-dismiss="alert" width="24"
+                         height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="feather feather-x close">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                     stroke-linejoin="round" class="feather feather-alert-triangle">
+                    <path
+                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12" y2="17"></line>
+                </svg>
+                تمت ارشفة بيانات هذا الطالب
+
+            </div>
+        @endpush
+    @endif
+
     <div class="account-settings-container layout-top-spacing">
 
         <div class="account-content">
             <div class="row mb-3">
                 <div class="col-md-12">
-                    <h2 class="mb-3"> معلومات المعلم - {{$teacher->name}}</h2>
+                    <h2 class="mb-3"> معلومات الموظف - {{$teacher->name}}
+                        <span class="badge badge-info mb-2 me-4"> {{ trans('options.'.$teacher->teacher_type) }}</span>
+                    </h2>
 
                     <ul class="nav nav-pills" id="animateLine" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -42,7 +71,7 @@
                             <button class="nav-link" id="teacher-files-tab" data-bs-toggle="tab" href="#teacher-files"
                                     role="tab" aria-controls="teacher-files" aria-selected="false" tabindex="-1">
                                 <i class="fas fa-folder-open"></i>
-                                ملفات المعلم
+                                الملفات
                             </button>
                         </li>
 
@@ -69,7 +98,7 @@
                                     href="#teacher-messages"
                                     role="tab" aria-controls="teacher-messages" aria-selected="false" tabindex="-1">
                                 <i class="fas fa-sms"></i>
-                                الرسائل
+                                الرسائل
                             </button>
                         </li>
 
@@ -218,7 +247,7 @@
 
                                         <div class="col-6 col-md-3">
                                             <div class="mb-3">
-                                                <label for="status" class="form-label"> حالة المعلم </label>
+                                                <label for="status" class="form-label"> الحالة </label>
                                                 <input type="text" id="status" class="form-control"
                                                        value="{{trans('options.'.$teacher->status)}}" disabled>
                                             </div>
@@ -263,7 +292,7 @@
                         <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
                             <form class="section general-info">
                                 <div class="info">
-                                    <h6> ملفات خاصبة بالمعلم </h6>
+                                    <h6> ملفات خاصبة بالموظف </h6>
                                     <div class="row">
                                         <div class="col-12">
                                             <iframe src="/filemanager"></iframe>
@@ -368,7 +397,7 @@
                                         </div>
                                     </div>
                                     <hr>
-                                    <h6> تقارير المعلمة </h6>
+                                    <h6> تقارير الموظف </h6>
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
                                             <thead>
@@ -413,7 +442,7 @@
                             <form class="section general-info">
                                 <div class="info">
 
-                                    <h6> الرسال التي تم ارسائلها الى المعلمة </h6>
+                                    <h6> الرسال التي تم ارسائلها الى الموظف </h6>
 
                                     <div class="table-responsive">
                                         <table class="table table-hover table-striped table-bordered">

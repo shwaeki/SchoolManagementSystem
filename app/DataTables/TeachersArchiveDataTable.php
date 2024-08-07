@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Services\DataTable;
 
-class AssistantDataTable extends DataTable
+class TeachersArchiveDataTable extends DataTable
 {
 
     public function dataTable($query)
@@ -17,10 +17,9 @@ class AssistantDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('Settings', function ($query) {
-                return '<a href="' . route('assistants.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>
-                    <a href="' . route('assistants.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
-                    <button class="btn btn-light-danger text-danger  d-none" onclick="deleteItem(this)"
-                    data-item="' . route('assistants.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
+                return '<a href="' . route('teachers.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>
+                    <button class="btn btn-light-success text-success" onclick="restoreItem(this)"
+                    data-item="' . route('teachers.restore', $query) . '"><i class="fas fa-arrow-left-rotate"></i></button>';
             })->editColumn('gender', function ($query) {
                 if ($query->gender === 'female')
                     return '<span class="badge badge-light-danger">انثى</span>';
@@ -28,6 +27,8 @@ class AssistantDataTable extends DataTable
                     return '<span class="badge badge-light-info">ذكر</span>';
             })->editColumn('status', function ($query) {
                 return trans('options.' . $query->status);
+            })->editColumn('teacher_type', function ($query) {
+                return trans('options.' . $query->teacher_type);
             })
             ->setRowId('id')
             ->rawColumns(['Settings', 'gender']);
@@ -40,7 +41,7 @@ class AssistantDataTable extends DataTable
      */
     public function query(Teacher $model): QueryBuilder
     {
-        return $model->newQuery()->where('teacher_type','assistant');
+        return $model->newQuery()->where('archived',true);
     }
 
     /**
@@ -57,7 +58,7 @@ class AssistantDataTable extends DataTable
                 ],
 
                 'buttons' => [
-                    "excel",'print'
+                    "excel", 'print'
                 ],
             ])
             ->columns($this->getColumns())
@@ -84,6 +85,7 @@ class AssistantDataTable extends DataTable
                 'birth_date' => ['title' => 'تاريخ الميلاد'],
                 'gender' => ['title' => 'الجنس '],
                 'star_work_date' => ['title' => 'تاريخ بدأ العمل '],
+                'teacher_type' => ['title' => 'النوع '],
                 'status' => ['title' => 'الحالة '],
                 'Settings' => ['title' => 'خيارات', 'orderable' => false],
             ];

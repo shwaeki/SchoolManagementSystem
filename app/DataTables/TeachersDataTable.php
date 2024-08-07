@@ -19,6 +19,8 @@ class TeachersDataTable extends DataTable
             ->addColumn('Settings', function ($query) {
                 return '<a href="' . route('teachers.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>
                     <a href="' . route('teachers.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
+                    <button class="btn btn-light-secondary text-secondary" onclick="archiveItem(this)"
+                    data-item="' . route('teachers.archive', $query) . '"><i class="fas fa-archive"></i></button>
                     <button class="btn btn-light-danger text-danger  d-none" onclick="deleteItem(this)"
                     data-item="' . route('teachers.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
             })->editColumn('gender', function ($query) {
@@ -28,6 +30,8 @@ class TeachersDataTable extends DataTable
                     return '<span class="badge badge-light-info">ذكر</span>';
             })->editColumn('status', function ($query) {
                 return trans('options.' . $query->status);
+            })->editColumn('teacher_type', function ($query) {
+                return trans('options.' . $query->teacher_type);
             })
             ->setRowId('id')
             ->rawColumns(['Settings', 'gender']);
@@ -40,7 +44,7 @@ class TeachersDataTable extends DataTable
      */
     public function query(Teacher $model): QueryBuilder
     {
-        return $model->newQuery()->where('teacher_type', 'teacher');
+        return $model->newQuery()->where('archived',false);
     }
 
     /**
@@ -84,6 +88,7 @@ class TeachersDataTable extends DataTable
                 'birth_date' => ['title' => 'تاريخ الميلاد'],
                 'gender' => ['title' => 'الجنس '],
                 'star_work_date' => ['title' => 'تاريخ بدأ العمل '],
+                'teacher_type' => ['title' => 'النوع '],
                 'status' => ['title' => 'الحالة '],
                 'Settings' => ['title' => 'خيارات', 'orderable' => false],
             ];

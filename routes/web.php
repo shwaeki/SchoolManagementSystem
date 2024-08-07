@@ -3,7 +3,6 @@
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\AdvertiseController;
 use App\Http\Controllers\ApplicationController;
-use App\Http\Controllers\AssistantController;
 use App\Http\Controllers\CertificateCategoryController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CertificateFieldController;
@@ -26,9 +25,7 @@ use App\Http\Controllers\StudentRequestController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TeacherReportController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\WorkerController;
 use App\Http\Controllers\YearClassController;
-use App\Models\Purchases;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use UniSharp\LaravelFilemanager\Lfm;
@@ -108,19 +105,16 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
         Route::put('students-request/accept/{students_request}', [StudentRequestController::class, 'accept'])->name('students-request.accept');
         Route::resource('students-request', StudentRequestController::class);
 
+
+        Route::get('teachers/archives', [TeacherController::class, 'archives'])->name('teachers.archives');
+        Route::put('teachers/archive/{teacher}', [TeacherController::class, 'archive'])->name('teachers.archive');
+        Route::put('teachers/restore/{teacher}', [TeacherController::class, 'restore'])->name('teachers.restore');
         Route::get('teachers/downloadSlip/{salarySlip}', [TeacherController::class, 'downloadSlip'])->name('teachers.downloadSlip');
         Route::delete('teachers/deleteSlip/{salarySlip}', [TeacherController::class, 'deleteSlip'])->name('teachers.deleteSlip');
         Route::post('teachers/storeSlip', [TeacherController::class, 'storeSlip'])->name('teachers.storeSlip');
         Route::put('teachers/change-password/{teacher}', [TeacherController::class, 'passwordUpdate'])->name('teachers.password');
         Route::resource('teachers', TeacherController::class);
 
-        Route::get('workers/downloadSlip/{salarySlip}', [WorkerController::class, 'downloadSlip'])->name('workers.downloadSlip');
-        Route::put('workers/change-password/{worker}', [WorkerController::class, 'passwordUpdate'])->name('workers.password');
-        Route::resource('workers', WorkerController::class);
-
-        Route::get('assistants/downloadSlip/{salarySlip}', [AssistantController::class, 'downloadSlip'])->name('assistants.downloadSlip');
-        Route::put('assistants/change-password/{assistant}', [AssistantController::class, 'passwordUpdate'])->name('assistants.password');
-        Route::resource('assistants', AssistantController::class);
 
         Route::delete('year-classes/destroy-assistant/{yearClass}/{assistant}', [YearClassController::class, 'destroyAssistant'])->name('year-classes.destroyAssistant');
         Route::post('year-classes/store-assistant/{yearClass}', [YearClassController::class, 'storeAssistant'])->name('year-classes.storeAssistant');
