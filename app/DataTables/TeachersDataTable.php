@@ -31,10 +31,10 @@ class TeachersDataTable extends DataTable
             })->editColumn('status', function ($query) {
                 return trans('options.' . $query->status);
             })->editColumn('teacher_type', function ($query) {
-                return trans('options.' . $query->teacher_type);
+                return trans('options.' . $query->teacher_type . '_badge');
             })
             ->setRowId('id')
-            ->rawColumns(['Settings', 'gender']);
+            ->rawColumns(['Settings', 'teacher_type', 'gender']);
 
     }
 
@@ -44,7 +44,7 @@ class TeachersDataTable extends DataTable
      */
     public function query(Teacher $model): QueryBuilder
     {
-        return $model->newQuery()->where('archived',false);
+        return $model->newQuery()->where('archived', false);
     }
 
     /**

@@ -34,8 +34,8 @@ class HomeController extends Controller
 
         // Last 5 SMS Messages
         $data['last_smss'] = Message::orderBy('id', 'desc')->limit(5)->get();
-        $data['students_count'] = Student::count();
-        $data['teachers_count'] = Teacher::count();
+        $data['students_count'] = Student::where('archived',false)->count();
+        $data['teachers_count'] = Teacher::where('archived',false)->count();
 
 
         $activeAcademicYear = getUserActiveAcademicYearID();

@@ -43,7 +43,7 @@
                     <line x1="12" y1="9" x2="12" y2="13"></line>
                     <line x1="12" y1="17" x2="12" y2="17"></line>
                 </svg>
-                تمت ارشفة بيانات هذا الطالب
+                تمت ارشفة بيانات هذا الموظف
 
             </div>
         @endpush
@@ -55,7 +55,7 @@
             <div class="row mb-3">
                 <div class="col-md-12">
                     <h2 class="mb-3"> معلومات الموظف - {{$teacher->name}}
-                        <span class="badge badge-info mb-2 me-4"> {{ trans('options.'.$teacher->teacher_type) }}</span>
+                        {!! trans('options.'.$teacher->teacher_type.'_badge') !!}
                     </h2>
 
                     <ul class="nav nav-pills" id="animateLine" role="tablist">

@@ -44,7 +44,7 @@ class SchoolClassController extends Controller
     public function create()
     {
         $data = [
-            "teachers" => Teacher::all(),
+            "teachers" => Teacher::where('archived',false)->get(),
         ];
 
         return view('classes.create', $data);
@@ -126,7 +126,7 @@ class SchoolClassController extends Controller
             'class' => $schoolClass,
             'class_years' => $schoolClass->yearClasses,
             'current_year_class' => $current_year_class,
-            'teachers' => Teacher::where('teacher_type', 'teacher')->get(),
+            'teachers' => Teacher::where('teacher_type', 'teacher')->where('archived',false)->get(),
             'assistants' => $assistants,
             'studentsAttendance' => $studentsAttendance,
             'certificates' => Certificate::all(),
@@ -144,7 +144,7 @@ class SchoolClassController extends Controller
     {
         $data = [
             "class" => $schoolClass,
-            "teachers" => Teacher::all(),
+            "teachers" => Teacher::where('archived',false)->get(),
         ];
 
         return view('classes.edit', $data);

@@ -27,8 +27,8 @@ class MessageController extends Controller
         $data = [
             "schoolClasses" => SchoolClass::all(),
             "students" => Student::where('archived',false)->get(),
-            "teachers" => Teacher::all(),
-            "messages" => $messages->get()
+            "teachers" => Teacher::where('archived',false)->get(),
+            "messages" => $messages->get(),
         ];
 
         return view('messages.index', $data);
@@ -74,7 +74,7 @@ class MessageController extends Controller
                 }
             }
         } elseif ($message_to == "all_teachers") {
-            $teachers = Teacher::all();
+            $teachers = Teacher::where('archived',false)->get();
             foreach ($teachers as $teacher) {
                 if ($teacher->phone != null) {
                     $phones[] = ['phone' => $teacher->phone, 'name' => $teacher->name];

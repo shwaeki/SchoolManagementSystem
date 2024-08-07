@@ -126,17 +126,7 @@
                 </div>
                 <div class="col">
                     <a href="{{ route('teachers.create') }}" class="btn btn-primary btn-lg w-100 h-100 ">
-                        اضافة معلمة جديد
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="{{ route('workers.create') }}" class="btn btn-primary btn-lg w-100 h-100 ">
                         اضافة موظف جديد
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="{{ route('assistants.create') }}" class="btn btn-primary btn-lg w-100 h-100 ">
-                        اضافة مساعدة جديد
                     </a>
                 </div>
                 <div class="col">

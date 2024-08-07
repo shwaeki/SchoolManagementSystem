@@ -20,9 +20,6 @@ return [
     'Sometimes' => 'أحياناً',
     'Rarely' => 'نادراً',
     'student' => 'طالب',
-    'teacher' => 'معلمة',
-    'assistant' => 'مساعدة',
-    'worker' => 'موظف',
 
     'israel_id' => 'هوية إسرائيلية',
     'palestinian_id' => 'هوية فلسطنية',
@@ -30,5 +27,14 @@ return [
     'passport' => 'تبليغ الولادة',
     'parents' => 'مع ألأهل',
     'bus' => 'باستخدام الباص',
+
+    'teacher' => 'معلمة',
+    'assistant' => 'مساعدة',
+    'worker' => 'موظف',
+
+
+    'teacher_badge' => '<span class="badge badge-light-info mb-2 me-4">معلمة</span>',
+    'assistant_badge' => '<span class="badge badge-light-secondary mb-2 me-4">مساعدة</span>',
+    'worker_badge' => ' <span class="badge badge-light-warning mb-2 me-4">موظف</span>',
 ];
 
