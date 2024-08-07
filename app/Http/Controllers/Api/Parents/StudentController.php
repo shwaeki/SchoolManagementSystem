@@ -46,6 +46,17 @@ class StudentController extends BaseController
                 return $this->sendError([], 'Student is archived', 401);
             }
 
+            $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) {
+                $query->where('academic_year_id', getAdminActiveAcademicYearID())
+                    ->whereHas('schoolClass', function ($query) {
+                        $query->where('archived', false);
+                    });
+            })->get()->first();
+
+            if (!$currentClass) {
+                return $this->sendError([], 'Student is not register to any class', 401);
+            }
+
             // $student->generateCode($phone);
             $code = 123456;
 
