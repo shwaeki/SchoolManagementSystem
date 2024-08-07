@@ -37,6 +37,8 @@ Route::prefix('parents')->group(function () {
 
         Route::post('/logout', [StudentController::class, 'logout']);
         Route::get('/getAdvertises', [GeneralController::class, 'getAdvertises']);
+        Route::post('/sendMassage', [ChatController::class, 'sendMassage']);
+        Route::get('/getMessages', [ChatController::class, 'getMessages']);
         Route::post('/sendGroupMassage', [ChatController::class, 'sendGroupMassage']);
         Route::get('/getGroupMessages', [ChatController::class, 'getGroupMessages']);
     });
