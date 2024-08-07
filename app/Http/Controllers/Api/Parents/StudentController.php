@@ -165,10 +165,17 @@ class StudentController extends BaseController
         $student = $request->user();
 
         $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) {
-            $query->where('academic_year_id', getAdminActiveAcademicYearID());
+            $query->where('academic_year_id', getAdminActiveAcademicYearID())
+                ->whereHas('schoolClass', function ($query) {
+                    $query->where('archived', false);
+                });
         })->get()->first();
 
-        $classes = $student->studentClasses;
+        $classes = $student->studentClasses()->whereHas('yearClass', function ($query) {
+            $query->whereHas('schoolClass', function ($query) {
+                $query->where('archived', false);
+            });
+        })->get();
 
         if ($currentClass == null) {
             $currentClassData = null;

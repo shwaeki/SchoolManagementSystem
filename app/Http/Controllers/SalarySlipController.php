@@ -92,7 +92,7 @@ class SalarySlipController extends Controller
 
     private function processUploadedPDF($uploadedFilePath)
     {
-        $outputPath = 'salariesSlaps/';
+        $outputPath = 'salariesSlaps';
 
         $parser2 = new Parser();
         $pdfParsed = $parser2->parseFile($uploadedFilePath);

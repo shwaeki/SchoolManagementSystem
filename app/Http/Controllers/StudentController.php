@@ -338,7 +338,7 @@ class StudentController extends Controller
         $schoolNum = $studentClass->yearClass?->code;
 
 
-        $imagePath = public_path('assets/img/sign.png');
+        $imagePath = public_path('assets/img/sign.png8');
 
         foreach ($pdfParsed->getPages() as $pageNumber => $page) {
             $text = $page->getText();

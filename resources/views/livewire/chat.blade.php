@@ -93,9 +93,9 @@
                                             <div class="meta-info">
                                                 <span class="user-name">{{$class->schoolClass?->name}}</span>
                                                 <span
-                                                    class="user-meta-time">{{$class->chats?->last()?->created_at?->diffForHumans()}}</span>
+                                                    class="user-meta-time">{{$class->chats()?->latest()->first()?->created_at?->diffForHumans()}}</span>
                                             </div>
-                                            <span class="preview">{{ $class->chats?->last()?->message }}  </span>
+                                            <span class="preview">{{ $class->chats()?->latest()->first()?->message }}  </span>
                                         </div>
                                     </div>
                                 </div>
@@ -112,7 +112,7 @@
 
         </div>
 
-        <div class="chat-box" wire:poll.5000s="refreshChats">
+        <div class="chat-box" wire:poll.5s="refreshChats">
 
             @if($chatType == 'student')
                 @if(empty($selectedStudent))
@@ -162,7 +162,7 @@
                         </div>
                         <div class="chat-footer chat-active">
                             <div class="chat-input">
-                                <form class="chat-form" wire:submit.prevent="sendStudentMessage">
+                                <form class="chat-form" id="chat-form" wire:submit.prevent="sendClassMessage">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                          stroke-linecap="round" stroke-linejoin="round"
@@ -171,7 +171,7 @@
                                             d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                                     </svg>
                                     <input type="text" class="mail-write-box form-control"
-                                           wire:model.defer="message"
+                                           wire:model.defer="message" id="message-input"
                                            data-student="" placeholder="الرسالة"/>
                                 </form>
                             </div>
@@ -206,7 +206,10 @@
                                             {{$message->message}}
                                         </div>
                                         <p class="mt-1 ms-2 small {{ $message->sender == "student" ? 'text-start' : 'text-end' }}">
-                                            {{$message->created_at_human}}
+                                            @if($message->sender == "student")
+                                                {{ $message->student->name }} -
+                                            @endif
+                                           <span class="small fst-italic"> {{$message->created_at_human}}</span>
                                         </p>
                                     </div>
                                 @endforeach
@@ -215,7 +218,7 @@
                     </div>
                     <div class="chat-footer chat-active">
                         <div class="chat-input">
-                            <form class="chat-form" wire:submit.prevent="sendClassMessage">
+                            <form class="chat-form" id="chat-form" wire:submit.prevent="sendClassMessage">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                      stroke-linecap="round" stroke-linejoin="round"
@@ -224,7 +227,7 @@
                                         d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                                 </svg>
                                 <input type="text" class="mail-write-box form-control"
-                                       wire:model.defer="message"
+                                       wire:model.defer="message" id="message-input"
                                        data-student="" placeholder="الرسالة"/>
                             </form>
                         </div>

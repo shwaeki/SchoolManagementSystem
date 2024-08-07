@@ -289,7 +289,8 @@
                                         </div>
                                         <div class="col-3 text-end">
                                             <button type="button" data-bs-toggle="modal" data-bs-target="#addSalarySlap"
-                                               class="btn btn-primary"> اضافة </button>
+                                                    class="btn btn-primary"> اضافة
+                                            </button>
                                         </div>
                                     </div>
 
@@ -313,7 +314,8 @@
                                                             <i class="far fa-eye"></i>
                                                         </a>
 
-                                                        <button class="btn btn-light-danger text-danger " onclick="deleteItem(this)"
+                                                        <button class="btn btn-light-danger text-danger "
+                                                                onclick="deleteItem(this)"
                                                                 data-item="{{route('teachers.deleteSlip',$salary)}}">
                                                             <i class="far fa-trash-alt"></i>
                                                         </button>
@@ -404,13 +406,14 @@
 
                     </div>
                 </div>
-                <div class="tab-pane fade " id="teacher-messages" role="tabpanel" aria-labelledby="teacher-messages-tab">
+                <div class="tab-pane fade " id="teacher-messages" role="tabpanel"
+                     aria-labelledby="teacher-messages-tab">
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
                             <form class="section general-info">
                                 <div class="info">
 
-                                    <h6> الرسال التي تم ارسائلها الى المعلمة  </h6>
+                                    <h6> الرسال التي تم ارسائلها الى المعلمة </h6>
 
                                     <div class="table-responsive">
                                         <table class="table table-hover table-striped table-bordered">
@@ -447,29 +450,36 @@
 
 
     <div class="modal fade" id="addSalarySlap">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="attributeModalLabel">اضافة قسيمة راتب جديدة</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">التاريخ</label>
-                        <input type="file" id="file" name="date" class="form-control" required>
-                    </div>
+        <form action="{{ route('teachers.storeSlip') }}" method="POST" enctype="multipart/form-data">
+            @csrf
 
-                    <div class="mb-3">
-                        <label class="form-label">قسيمة الراتب</label>
-                        <input type="text" id="file" name="date" class="form-control" required>
+            <input type="hidden" name="teacher" value="{{$teacher->id}}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="attributeModalLabel">اضافة قسيمة راتب جديدة</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn" data-bs-dismiss="modal">غلاق</button>
-                    <button type="button" class="btn btn-primary" id="reportDynamicExport">اضافة</button>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label"> التاريخ </label>
+                            <input type="text" id="date" name="date" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">قسيمة الراتب</label>
+                            <input type="file" id="file" name="file" class="form-control" accept="application/pdf"
+                                   required>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-bs-dismiss="modal">غلاق</button>
+                        <button type="submit" class="btn btn-primary">اضافة</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 
     <div class="modal fade" id="attributeModal">
@@ -515,7 +525,7 @@
                 $("#attributeModal").modal('show');
             } else {
 
-/*                var showTeacherReportRoute = '{{route('reports.show',['report'=> ':id', 'teacher'=> $teacher])}}';
+                /*                var showTeacherReportRoute = '{{route('reports.show',['report'=> ':id', 'teacher'=> $teacher])}}';
                 var showTeacherReportUrl = showTeacherReportRoute.replace(':id', selectedReportId);
                 window.open(showTeacherReportUrl, '_blank');*/
 

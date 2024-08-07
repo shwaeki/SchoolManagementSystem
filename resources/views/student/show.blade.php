@@ -546,7 +546,7 @@
                                                     <td>{{$class->addedBy->name}}</td>
                                                     <td>{{$class->created_at->format('d/m/Y')}}</td>
                                                     <td>
-                                                        @if($current_student_class->year_class_id == $class->year_class_id)
+                                                        @if($current_student_class?->year_class_id == $class?->year_class_id)
                                                             <button type="button" data-bs-toggle="modal"
                                                                     data-bs-target="#editYearClassModal"
                                                                     class="btn btn-light-warning text-warning">

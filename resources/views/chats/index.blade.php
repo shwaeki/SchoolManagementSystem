@@ -81,6 +81,13 @@
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
         }
+
+
+        $('#chat-form').on('submit', function (event) {
+            event.preventDefault();
+            console.log("test");
+            $('#message-input').val('');
+        });
     </script>
 
 

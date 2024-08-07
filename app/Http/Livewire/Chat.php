@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Jobs\SendNotificationJob;
 use App\Models\GroupChat;
 use App\Models\SchoolClass;
 use App\Models\Student;
@@ -154,7 +155,7 @@ class Chat extends Component
 
         $token = $this->selectedStudent->device_token;
         if ($token) {
-            sendNotification($token, 'رسالة جديدة', 'تم ارسال رسالة جديدة');
+            SendNotificationJob::dispatch('token', $token, 'رسالة جديدة', 'تم ارسال رسالة جديدة');
         }
     }
 
@@ -171,9 +172,9 @@ class Chat extends Component
 
         $this->resetChat();
         $this->emit('chat-new-message', $message);
-        $topic = 'year_class_' . $this->selectedClass->id;
 
-        sendNotificationToTopic($topic, 'رسالة جديدة', 'تم ارسال رسالة جديدة');
+        $topic = 'year_class_' . $this->selectedClass->id;
+        SendNotificationJob::dispatch('topic', $topic, 'رسالة جديدة', 'تم ارسال رسالة جديدة');
     }
 
     private function resetChat()

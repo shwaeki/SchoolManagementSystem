@@ -51,7 +51,7 @@ class ClassesDataTable extends DataTable
      */
     public function query(SchoolClass $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->where('archived',false);
     }
 
     /**

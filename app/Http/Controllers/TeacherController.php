@@ -134,11 +134,13 @@ class TeacherController extends Controller
     {
         $date = request('date');
         $teacher_id = request('teacher');
+
         $teacher = Teacher::findOrFail($teacher_id);
 
         $file = $request->file('file');
-        $file_path = $date . '.' . $file->getClientOriginalExtension();
+        $file_path = 'salariesSlaps/' . $date . '/'.$teacher->identification.'.' . $file->getClientOriginalExtension();
         $file->storeAs('public/salariesSlaps', $file_path);
+
 
         SalarySlip::create([
             'date' => $date,
