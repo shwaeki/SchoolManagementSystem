@@ -136,7 +136,7 @@ class TeacherController extends Controller
 
         $file = $request->file('file');
         $file_path = 'salariesSlaps/' . $date . '/'.$teacher->identification.'.' . $file->getClientOriginalExtension();
-        $file->storeAs('public/salariesSlaps', $file_path);
+        $file->storeAs('public', $file_path);
 
 
         SalarySlip::create([
