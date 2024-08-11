@@ -191,9 +191,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">تسجل الطلاب في السنة الحالية</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                X
-                            </button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <p>قائمة الطلاب .</p>
@@ -215,17 +213,29 @@
                                     @foreach($students as $student)
                                         <tr>
                                             <td>
+                                                @if($student->age >= $class->student_start_age && $student->age <= $class->student_end_age)
                                                 <div class="form-check form-check-primary">
                                                     <input class="form-check-input checkbox_child striped_child"
                                                            type="checkbox" name="students[]"
                                                            value="{{$student->id}}">
                                                 </div>
+                                                @endif
                                             </td>
-                                            <td>
+                                            <td class="d-flex align-items-center">
                                                 <img src=" {{$student->photo}}"
                                                      class="me-2 rounded-circle border border-primary object-fit"
                                                      width="35px" height="35px">
-                                                {{$student->name}}
+                                                <div>
+                                                    {{$student->name}}
+
+                                                    @if($student->age > $class->student_end_age || $student->age < $class->student_start_age)
+                                                        <p class="text-danger mb-0 small">
+                                                            عمر الطالب ({{$student->age}}) غير مناسب للفصل. يجب أن يكون
+                                                            بين {{ $class->student_start_age }}
+                                                            و {{ $class->student_end_age }} سنوات.
+                                                        </p>
+                                                    @endif
+                                                </div>
                                             </td>
                                             <td>{{$student->identification}}</td>
                                             <td>{{$student->address}}</td>

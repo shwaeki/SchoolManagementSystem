@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -19,7 +20,7 @@ class Student extends Authenticatable
     use HasFactory, SoftDeletes, LogsActivity, HasApiTokens;
 
     protected $guarded = [];
-    protected $appends = ['photo'];
+    protected $appends = ['photo', 'age'];
 
     public function addedBy(): belongsTo
     {
@@ -111,6 +112,16 @@ class Student extends Authenticatable
         $message = "رمز التحقق الخاص بك هو " . $code;
         return sendSms($message, $phone);
 
+    }
+
+
+    public function getAgeAttribute()
+    {
+        if (!$this->birth_date || $this->birth_date == '1970-01-01') {
+            return 0;
+        }
+
+        return Carbon::parse($this->birth_date)->age ?? 0;
     }
 
     public function getPhotoAttribute()
