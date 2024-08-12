@@ -63,6 +63,7 @@ class SchoolClassController extends Controller
         $attendanceDate = request('date', now());
 
         $weekDate = Carbon::parse(request('weekSelect', Carbon::now()));
+        $monthDate = request('monthSelect', Carbon::now()->format('Y-m'));
 
         $weekStartDate = $weekDate->startOfWeek(Carbon::SUNDAY)->toDateString();
         $weekEndDate = $weekDate->endOfWeek(Carbon::SATURDAY)->toDateString();
@@ -81,6 +82,7 @@ class SchoolClassController extends Controller
         $studentsAttendance = [];
         $class_year_students = [];
         $weeklyPrograms = [];
+        $monthlyPlans = [];
 
         if ($current_year_class) {
             // Get all student IDs
@@ -119,6 +121,11 @@ class SchoolClassController extends Controller
                 ->where('start_date', $weekStartDate)
                 ->groupBy('subject')
                 ->toArray();
+
+            $monthlyPlans = $current_year_class->studentMonthlyPlans
+                ->where('month', $monthDate)
+                ->groupBy('subject')
+                ->toArray();
         }
 
 
@@ -135,6 +142,7 @@ class SchoolClassController extends Controller
             'weekFirstDate' => $weekStartDate,
             'weekLastDate' => $weekEndDate,
             'weeklyPrograms' => $weeklyPrograms,
+            'monthlyPlans' => $monthlyPlans,
         ];
 
         return view('classes.show', $data);

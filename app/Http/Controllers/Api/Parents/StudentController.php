@@ -8,6 +8,7 @@ use App\Models\AcademicYear;
 use App\Models\DailyProgram;
 use App\Models\Otp;
 use App\Models\Student;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Kreait\Firebase\Exception\Messaging\NotFound;
@@ -206,17 +207,28 @@ class StudentController extends BaseController
 
     public function getDailyProgram(Request $request)
     {
-
         $student = $request->user();
-
 
         $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) {
             $query->where('academic_year_id', getAdminActiveAcademicYearID());
         })->get()->first();
 
-
         $data = $currentClass?->yearClass?->dailyPrograms;
 
         return $this->sendResponse([$data], 'Daily Program Data');
+    }
+
+    public function getStudentMonthlyPlan(Request $request)
+    {
+        $student = $request->user();
+
+        $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) {
+            $query->where('academic_year_id', getAdminActiveAcademicYearID());
+        })->get()->first();
+
+        $month = request('month', Carbon::now()->format('Y-m'));
+        $data = $currentClass?->yearClass?->studentMonthlyPlans->where('month', $month)->groupBy('subject');
+
+        return $this->sendResponse([$data], 'Monthly Plan Data');
     }
 }

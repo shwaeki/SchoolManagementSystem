@@ -34,6 +34,7 @@ Route::prefix('parents')->group(function () {
         Route::post('/update-device-token', [StudentController::class, 'updateDeviceToken']);
         Route::post('/send-test-notification', [StudentController::class, 'sendTestNotification']);
         Route::get('/daily-program', [StudentController::class, 'getDailyProgram']);
+        Route::get('/monthly-plan', [StudentController::class, 'getStudentMonthlyPlan']);
 
         Route::post('/logout', [StudentController::class, 'logout']);
         Route::get('/getAdvertises', [GeneralController::class, 'getAdvertises']);

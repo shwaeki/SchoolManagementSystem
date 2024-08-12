@@ -50,6 +50,7 @@
     @includeWhen($current_year_class != null, 'classes.tabs.class-student-attendance')
     @includeWhen($current_year_class != null, 'classes.tabs.class-daily-program')
     @includeWhen($current_year_class != null, 'classes.tabs.class-weekly-program')
+    @includeWhen($current_year_class != null, 'classes.tabs.class-monthly-plan')
 
     <div class="account-settings-container layout-top-spacing">
         <div class="account-content">

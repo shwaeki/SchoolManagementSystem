@@ -56,6 +56,12 @@ class YearClass extends Model
         return $this->hasMany(WeeklyProgram::class);
     }
 
+
+    public function studentMonthlyPlans(): hasMany
+    {
+        return $this->hasMany(StudentMonthlyPlan::class);
+    }
+
     public function assistants()
     {
         return $this->belongsToMany(Teacher::class,'year_class_assistants','year_class_id','assistant_id');

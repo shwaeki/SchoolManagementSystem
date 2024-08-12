@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateStudentAttendanceRequest;
 use App\Models\DailyProgram;
 use App\Models\SchoolClass;
 use App\Models\StudentAttendance;
+use App\Models\StudentMonthlyPlan;
 use App\Models\Teacher;
 use App\Models\WeeklyProgram;
 use App\Models\YearClass;
@@ -136,7 +137,7 @@ class YearClassController extends Controller
             }
         }
 
-        Session::flash('message', 'تم إنشاء الخطوة الاسبوعية  بنجاح.');
+        Session::flash('message', 'تم إنشاء الخطة الاسبوعية  بنجاح.');
         return redirect()->back();
     }
 
@@ -153,7 +154,7 @@ class YearClassController extends Controller
             'content' => request('content'),
         ]);
 
-        Session::flash('message', 'تم تعديل الخطوة الاسبوعية  بنجاح.');
+        Session::flash('message', 'تم تعديل الخطة الاسبوعية  بنجاح.');
         return redirect()->back();
     }
 
@@ -161,6 +162,44 @@ class YearClassController extends Controller
     {
         $week->delete();
         Session::flash('message', 'تم حذف الخطة الاسبوعية بنجاح.');
+        return redirect()->back();
+    }
+
+
+    public function storeMonthlyPlan(StoreWeeklyProgramRequest $request, YearClass $yearClass)
+    {
+
+        $month = request('month');
+        $method = request('methods');
+        foreach (request('objectives') as $subject => $objectives) {
+            $data = [
+                'objectives' => $objectives,
+                'methods' => $method[$subject],
+                'subject' => $subject,
+                'month' => $month,
+            ];
+            $yearClass->studentMonthlyPlans()->create($data);
+        }
+
+        Session::flash('message', 'تم إنشاء الخطة الشهرية  بنجاح.');
+        return redirect()->back();
+    }
+
+
+    public function updateMonthlyPlan(StoreWeeklyProgramRequest $request, StudentMonthlyPlan $studentMonthlyPlan)
+    {
+        if (Auth::guard('teacher')->check()) {
+            if ($studentMonthlyPlan->yearClass->supervisor != auth()->id()) {
+                abort(404);
+            }
+        }
+
+        $studentMonthlyPlan->update([
+            'objectives' => request('objectives'),
+            'methods' => request('methods'),
+        ]);
+
+        Session::flash('message', 'تم تعديل الخطة الشهرية  بنجاح.');
         return redirect()->back();
     }
 
