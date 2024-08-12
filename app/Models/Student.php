@@ -20,7 +20,7 @@ class Student extends Authenticatable
     use HasFactory, SoftDeletes, LogsActivity, HasApiTokens;
 
     protected $guarded = [];
-    protected $appends = ['photo', 'age'];
+    protected $appends = ['photo', 'age', 'approx_age'];
 
     public function addedBy(): belongsTo
     {
@@ -123,6 +123,29 @@ class Student extends Authenticatable
 
         return Carbon::parse($this->birth_date)->age ?? 0;
     }
+
+
+
+    function getApproxAgeAttribute() {
+
+        if (!$this->birth_date || $this->birth_date == '1970-01-01') {
+            return 0;
+        }
+
+        $dateOfBirth =  Carbon::parse($this->birth_date);
+        $today = Carbon::now();
+
+        $age = $today->diffInYears($dateOfBirth);
+        $startOfYear = $today->copy()->startOfYear();
+        $monthsDifference = $today->diffInMonths($startOfYear->copy()->setDate($today->year, $dateOfBirth->month, $dateOfBirth->day));
+
+        if ($monthsDifference >= 0 && $monthsDifference <= 2) {
+            $age += 1;
+        }
+
+        return $age;
+    }
+
 
     public function getPhotoAttribute()
     {

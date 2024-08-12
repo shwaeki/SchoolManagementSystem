@@ -213,7 +213,7 @@
                                     @foreach($students as $student)
                                         <tr>
                                             <td>
-                                                @if($student->age >= $class->student_start_age && $student->age <= $class->student_end_age)
+                                                @if($student->approx_age >= $class->student_start_age && $student->approx_age <= $class->student_end_age)
                                                 <div class="form-check form-check-primary">
                                                     <input class="form-check-input checkbox_child striped_child"
                                                            type="checkbox" name="students[]"
@@ -228,9 +228,9 @@
                                                 <div>
                                                     {{$student->name}}
 
-                                                    @if($student->age > $class->student_end_age || $student->age < $class->student_start_age)
+                                                    @if($student->approx_age > $class->student_end_age || $student->approx_age < $class->student_start_age)
                                                         <p class="text-danger mb-0 small">
-                                                            عمر الطالب ({{$student->age}}) غير مناسب للفصل. يجب أن يكون
+                                                            عمر الطالب ({{$student->approx_age}}) غير مناسب للفصل. يجب أن يكون
                                                             بين {{ $class->student_start_age }}
                                                             و {{ $class->student_end_age }} سنوات.
                                                         </p>
