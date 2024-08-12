@@ -127,23 +127,14 @@ class Student extends Authenticatable
 
 
     function getApproxAgeAttribute() {
-
         if (!$this->birth_date || $this->birth_date == '1970-01-01') {
             return 0;
         }
 
-        $dateOfBirth =  Carbon::parse($this->birth_date);
+        $dateOfBirth = Carbon::parse($this->birth_date);
         $today = Carbon::now();
 
-        $age = $today->diffInYears($dateOfBirth);
-        $startOfYear = $today->copy()->startOfYear();
-        $monthsDifference = $today->diffInMonths($startOfYear->copy()->setDate($today->year, $dateOfBirth->month, $dateOfBirth->day));
-
-        if ($monthsDifference >= 0 && $monthsDifference <= 2) {
-            $age += 1;
-        }
-
-        return $age;
+        return $today->year - $dateOfBirth->year;
     }
 
 
