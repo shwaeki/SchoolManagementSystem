@@ -248,9 +248,7 @@
     <div class="overlay"></div>
     <div class="search-overlay"></div>
 
-
     <div class="sidebar-wrapper sidebar-theme">
-
         <nav id="sidebar">
 
             <div class="navbar-nav theme-brand flex-row  text-center">
@@ -754,8 +752,9 @@
 
                     <div class="col-12">
                         @if (session('message'))
-                            <div class="alert alert-icon-left alert-light-success alert-dismissible fade show mb-4"
-                                 role="alert">
+                            <div
+                                class="alert alert-icon-left alert-light-success alert-dismissible fade show mb-4  d-print-none"
+                                role="alert">
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                                     <svg xmlns="http://www.w3.org/2000/svg" data-bs-dismiss="alert" width="24"
                                          height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -776,8 +775,9 @@
                         @endif
 
                         @if ($adminActiveAcademicYear->id != $activeAcademicYear->id)
-                            <div class="alert alert-dismissible alert-icon-left alert-light-warning fade mb-4 show"
-                                 role="alert">
+                            <div
+                                class="alert alert-dismissible alert-icon-left alert-light-warning fade mb-4 show  d-print-none"
+                                role="alert">
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                                     <svg xmlns="http://www.w3.org/2000/svg" data-bs-dismiss="alert" width="24"
                                          height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -801,10 +801,12 @@
                             </div>
                         @endif
 
-                        @stack('warnings')
+                        <div class="d-print-none">
+                            @stack('warnings')
+                        </div>
 
                         @error('ActiveAcademicYear')
-                        <div class="alert alert-light--danger" role="alert">
+                        <div class="alert alert-light--danger d-print-none" role="alert">
                             انت تتصفح سنة دراسية غير مفعلة! لا يمكن تعديل أو أصافة بيانات في الوقت الحالي.
                         </div>
                         @enderror
