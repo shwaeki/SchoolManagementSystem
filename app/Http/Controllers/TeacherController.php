@@ -11,6 +11,7 @@ use App\Models\Report;
 use App\Models\SalarySlip;
 use App\Models\SchoolClass;
 use App\Models\Teacher;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -69,12 +70,15 @@ class TeacherController extends Controller
 
     public function show(Teacher $teacher)
     {
+        $monthDate = request('monthSelect', Carbon::now()->format('Y-m'));
+
         $data = [
             "salaries" => SalarySlip::where('identification', $teacher->identification)->get(),
             "teacher" => $teacher,
             "reports" => Report::where('type', 'teacher')->get(),
             "teacher_reports" => $teacher->reports,
             "teacher_messages" => Message::where('phone', $teacher->phone)->get(),
+            "monthly_plans" => $teacher->monthlyPlans->where('month', $monthDate)->groupBy('subject')->toArray(),
         ];
 
         Session::put('fileManagerConfig', "Teacher_" . $teacher->id);

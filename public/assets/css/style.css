@@ -205,3 +205,8 @@ body.dark .table .btn-dismiss {
         font-size: 1.05rem !important;
     }
 }
+
+
+.preserveLines {
+    white-space: pre-wrap;
+}

@@ -102,6 +102,18 @@
                             </button>
                         </li>
 
+                        @if($teacher->teacher_type == "teacher")
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="teacher-monthly-plan-tab" data-bs-toggle="tab"
+                                        href="#monthly-plan-messages"
+                                        role="tab" aria-controls="monthly-plan-messages" aria-selected="false"
+                                        tabindex="-1">
+                                    <i class="fas fa-calendar-days"></i>
+                                    الخطة الشهرية
+                                </button>
+                            </li>
+                        @endif
+
                     </ul>
                 </div>
             </div>
@@ -287,7 +299,8 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade " id="teacher-files" role="tabpanel" aria-labelledby="teacher-files-tab">
+                <div class="tab-pane fade " id="teacher-files" role="tabpanel"
+                     aria-labelledby="teacher-files-tab">
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
                             <form class="section general-info">
@@ -304,7 +317,6 @@
 
                     </div>
                 </div>
-
 
                 <div class="tab-pane fade " id="teacher-salaries" role="tabpanel"
                      aria-labelledby="teacher-salaries-tab">
@@ -360,7 +372,9 @@
 
                     </div>
                 </div>
-                <div class="tab-pane fade " id="teacher-reports" role="tabpanel" aria-labelledby="teacher-reports-tab">
+
+                <div class="tab-pane fade " id="teacher-reports" role="tabpanel"
+                     aria-labelledby="teacher-reports-tab">
                     <div class="row">
                         <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
                             <form class="section general-info">
@@ -435,6 +449,7 @@
 
                     </div>
                 </div>
+
                 <div class="tab-pane fade " id="teacher-messages" role="tabpanel"
                      aria-labelledby="teacher-messages-tab">
                     <div class="row">
@@ -473,6 +488,73 @@
 
                     </div>
                 </div>
+
+                @if($teacher->teacher_type == "teacher")
+                    <div class="tab-pane fade " id="monthly-plan-messages" role="tabpanel"
+                     aria-labelledby="teacher-messages-tab">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                            <div class="section general-info">
+                                <div class="info">
+
+                                    @php($monthlySubjects = ["غايات في مجال التنوير اللغوي", "غايات في مجال التفكير الرياضي", "غايات في مجال العلوم", "غايات في مجال الفنون", "غايات في مجال المهارات الحياتية", "غايات في مجال التراث والحضارة", "غايات في مجال ادب الاطفال", "غايات في المجال الحركي", "غايات في مجال اللغة الانجليزية" ])
+
+
+                                    <form method="GET" id="monthSelectForm" class="d-print-none">
+                                        <div class="mb-3">
+                                            <label for="monthSelect" class="form-label">التاريخ</label>
+                                            <input type="month" id="monthSelect" name="monthSelect"
+                                                   class="form-control custom-date"
+                                                   value="{{ request('monthSelect', Carbon\Carbon::now()->format('Y-m')) }}">
+                                        </div>
+                                    </form>
+
+                                    <hr>
+                                    @if(count($monthly_plans) > 0)
+
+                                        <div class="row">
+                                            @foreach ( $monthlySubjects as $key)
+
+                                                @if ( !isset($monthly_plans[$key]))
+                                                    @continue
+                                                @endif
+
+
+                                                <div class="col-12 col-md-6 mb-3">
+                                                    <div class="card">
+                                                        <div class="card-header py-2 bg-transparent d-flex justify-content-between">
+                                                            <p class="fs-5 mb-0">{{ $key }}</p>
+                                                        </div>
+                                                        <div class="card-body">
+
+                                                            <p class="mb-1 fw-bold fs-6">الأهداف:</p>
+                                                            <p class="preserveLines"> {!! $monthly_plans[$key][0]['objectives'] !!}</p>
+                                                            <hr>
+                                                            <p class="mb-1 fw-bold fs-6">الفعاليات:</p>
+                                                            <p class="preserveLines">{!! $monthly_plans[$key][0]['methods'] !!}</p>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+
+
+                                        </div>
+                                    @else
+
+                                        <h4 class="text-center py-5">
+                                            لا يوجد خطة شهرية لهذا الشهر
+                                        </h4>
+                                    @endif
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                @endif
+
             </div>
         </div>
     </div>
@@ -534,7 +616,6 @@
     <script>
         var attributes = {!! json_encode($attributes ?? []) !!};
 
-
         $("#reportExportButton").on("click", function () {
             var selectedReportId = $("#reportSelect").val();
 
@@ -583,7 +664,6 @@
             }
         });
 
-
         $("#reportDynamicExport").on("click", function () {
             var selectedReportId = $("#reportSelect").val();
             var allInputsFilled = true;
@@ -631,6 +711,10 @@
                 }
             });
 
+        });
+
+        $("#monthSelect").change(function () {
+            $("#monthSelectForm").submit();
         });
     </script>
 @endpush

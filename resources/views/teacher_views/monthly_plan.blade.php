@@ -1,124 +1,112 @@
-@push("tab_button")
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="class-monthly-plan-tab" data-bs-toggle="tab"
-                href="#class-monthly-plan"
-                role="tab" aria-controls="class-monthly-plan" aria-selected="false"
-                tabindex="-1">
-            <i class="fas fa-calendar-day"></i>
-            الخطة الشهرية
-        </button>
-    </li>
+@extends('layouts.app')
+
+@push('styles')
+    <style>
+        iframe {
+            width: 100%;
+            height: 700px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 0 2rem 0 rgb(136 152 170 / 15%);
+            border-radius: 0.375rem;
+        }
+    </style>
 @endpush
 
-@php($monthlySubjects = [ "غايات في مجال القيم التربية الاسلامية والاجتماعية", "التنوير اللغوي", "العلوم", "التفكير الرياضي", "الحسي الحركي", "اللغة الانجليزية"])
+@section('content')
+
+    @php($monthlySubjects = ["غايات في مجال التنوير اللغوي", "غايات في مجال التفكير الرياضي", "غايات في مجال العلوم", "غايات في مجال الفنون", "غايات في مجال المهارات الحياتية", "غايات في مجال التراث والحضارة", "غايات في مجال ادب الاطفال", "غايات في المجال الحركي", "غايات في مجال اللغة الانجليزية" ])
 
 
-@push("tab_content")
-    <div class="tab-pane fade" id="class-monthly-plan" role="tabpanel"
-         aria-labelledby="class-students-tab">
+    @if (session('status'))
+        <div class="alert alert-success" role="alert">
+            {{ session('status') }}
+        </div>
+    @endif
 
 
-        <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
-
-                <div class="section general-info">
-                    <div class="info">
-                        <div class="text-center d-none d-print-block">
-                            <img src="{{ asset('assets/img/logo.png') }}" height="150px" alt="logo">
-                            <h6 class="mb-1">الخطة الشهرية</h6>
-                            <h6 class="mb-1">{{ $class->name }}</h6>
-                        </div>
-
-                        <div class="row mb-4 d-print-none">
-                            <div class="col-9">
-                                <h6 class="mb-0 ">الخطة الشهرية</h6>
-                            </div>
-                            <div class="col-3 text-end">
-                                <button type="button" class="btn btn-warning" onclick="window.print()">
-                                    طباعة
-                                </button>
-                                @if(count($monthlyPlans) == 0)
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#addMonthlyPlanModal">
-                                    اضافة
-                                </button>
-                                @endif
-                            </div>
-                        </div>
-
-                        <form method="GET" id="monthSelectForm" class="d-print-none">
-                            <div class="mb-3">
-                                <label for="monthSelect" class="form-label">التاريخ</label>
-                                <input type="month" id="monthSelect" name="monthSelect"
-                                       class="form-control custom-date"
-                                       value="{{ request('monthSelect', Carbon\Carbon::now()->format('Y-m')) }}">
-                            </div>
-                        </form>
-
-                        <hr>
-                        @if(count($monthlyPlans) > 0)
-
-                            <div class="row">
-                                @foreach ( $monthlySubjects as $key)
-
-                                    @if ( !isset($monthlyPlans[$key]))
-                                        @continue
-                                    @endif
-
-
-                                    <div class="col-12 col-md-6 mb-3">
-                                        <div class="card">
-                                            <div class="card-header py-2 bg-transparent d-flex justify-content-between">
-                                                <p class="fs-5 mb-0">{{ $key }}</p>
-                                                <div class="d-print-none">
-                                                    <button type="button"
-                                                            data-id="{{ $monthlyPlans[$key][0]['id']  }}"
-                                                            data-title="{{ $key }}"
-                                                            data-objectives=" {!! $monthlyPlans[$key][0]['objectives'] !!}"
-                                                            data-methods=" {!! $monthlyPlans[$key][0]['methods'] !!}"
-                                                            class="btn btn-light-warning text-warning rounded-circle editMonthlyPlan">
-                                                        <i class="far fa-edit"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="card-body">
-
-                                                <p class="mb-1 fw-bold fs-6">الأهداف:</p>
-                                                <p class="preserveLines"> {!! $monthlyPlans[$key][0]['objectives'] !!}</p>
-                                                <hr>
-                                                <p class="mb-1 fw-bold fs-6">الوسائل:</p>
-                                                <p class="preserveLines">{!! $monthlyPlans[$key][0]['methods'] !!}</p>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-
-
-                            </div>
-                        @else
-
-                            <h4 class="text-center py-5">
-                                لا يوجد خطة شهرية لهذا الشهر
-                            </h4>
-                        @endif
-
-                    </div>
+    <div class="statbox widget box box-shadow">
+        <div class="widget-header px-3 pt-3">
+            <div class="row mb-4 d-print-none">
+                <div class="col-9">
+                    <h4 class="mb-0 ">الخطة الشهرية</h4>
                 </div>
-
-
+                <div class="col-3 text-end">
+                    @if(count($monthly_plans) == 0)
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#addMonthlyPlanModal">
+                            اضافة
+                        </button>
+                    @endif
+                </div>
             </div>
         </div>
+        <div class="widget-content widget-content-area  px-3">
 
+
+            <form method="GET" id="monthSelectForm" class="d-print-none">
+                <div class="mb-3">
+                    <label for="monthSelect" class="form-label">التاريخ</label>
+                    <input type="month" id="monthSelect" name="monthSelect"
+                           class="form-control custom-date"
+                           value="{{ request('monthSelect', Carbon\Carbon::now()->format('Y-m')) }}">
+                </div>
+            </form>
+
+            <hr>
+
+            @if( count($monthly_plans) > 0)
+
+                <div class="row">
+                    @foreach ( $monthlySubjects as $key)
+
+                        @if ( !isset($monthly_plans[$key]))
+                            @continue
+                        @endif
+
+
+                        <div class="col-12 col-md-6 mb-3">
+                            <div class="card">
+                                    <div class="card-header py-2 bg-transparent d-flex justify-content-between">
+                                        <p class="fs-5 mb-0">{{ $key }}</p>
+                                        <div class="d-print-none">
+                                            <button type="button"
+                                                    data-id="{{ $monthly_plans[$key][0]['id']  }}"
+                                                    data-title="{{ $key }}"
+                                                    data-objectives=" {!! $monthly_plans[$key][0]['objectives'] !!}"
+                                                    data-methods=" {!! $monthly_plans[$key][0]['methods'] !!}"
+                                                    class="btn btn-light-warning text-warning rounded-circle editMonthlyPlan">
+                                                <i class="far fa-edit"></i>
+                                            </button>
+                                        </div>
+                                </div>
+                                <div class="card-body">
+
+                                    <p class="mb-1 fw-bold fs-6">الأهداف:</p>
+                                    <p class="preserveLines"> {!! $monthly_plans[$key][0]['objectives'] !!}</p>
+                                    <hr>
+                                    <p class="mb-1 fw-bold fs-6">الفعاليات:</p>
+                                    <p class="preserveLines">{!! $monthly_plans[$key][0]['methods'] !!}</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+
+
+                </div>
+            @else
+
+                <h4 class="text-center py-5">
+                    لا يوجد خطة شهرية لهذا الشهر
+                </h4>
+            @endif
+        </div>
     </div>
-@endpush
 
-
-
-@push("html")
     <div class="modal fade" id="addMonthlyPlanModal">
         <div class="modal-dialog modal-lg" role="document">
-            <form action="{{ route('year-classes.monthlyPlan.store',$current_year_class) }}"
+            <form action="{{ route('teacher-plan.store') }}"
                   method="POST" enctype="multipart/form-data">
                 @csrf
 
@@ -147,6 +135,8 @@
                                 <div class="col-12">
                                     <div class="mb-3">
                                         <p class="fs-5">{{ $subject  }} </p>
+
+
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="mb-3">
@@ -157,7 +147,7 @@
                                             </div>
                                             <div class="col-6">
                                                 <div class="mb-3">
-                                                    <label for="methods">الوسائل </label>
+                                                    <label for="methods">الفعاليات </label>
                                                     <textarea id="methods" name="methods[{{$subject}}]"
                                                               class="form-control preserveLines" rows="2"></textarea>
                                                 </div>
@@ -222,7 +212,8 @@
             </form>
         </div>
     </div>
-@endpush
+
+@endsection
 
 
 @push("scripts")
@@ -238,7 +229,7 @@
             $("#editMonthPlanObjectives").val(objectives);
             $("#editMonthPlanMethods").val(methods);
 
-            var url = '{{ route("year-classes.monthlyPlan.update", ":ID") }}';
+            var url = '{{ route("teacher-plan.update", ['teacher_plan' => ":ID"]) }}';
             url = url.replace(':ID', id);
             $('#editMonthlyPlanModal form').attr('action', url);
             $('#editMonthlyPlanModal').modal('show');
@@ -251,12 +242,4 @@
 
 
     </script>
-
-    @if ($errors->has('methods') || $errors->has('month') || $errors->has('objectives'))
-        <script>
-            $(document).ready(function () {
-                $('#addMonthlyPlanModal').modal('show');
-            });
-        </script>
-    @endif
 @endpush

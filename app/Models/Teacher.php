@@ -18,6 +18,7 @@ class Teacher extends Authenticatable
     ];
 
     protected $guarded = [];
+
     public function addedBy(): belongsTo
     {
         return $this->belongsTo(User::class);
@@ -57,6 +58,12 @@ class Teacher extends Authenticatable
     public function chats()
     {
         return $this->hasMany(Chat::class, 'teacher_id');
+    }
+
+
+    public function monthlyPlans()
+    {
+        return $this->hasMany(TeacherMonthlyPlan::class, 'teacher_id');
     }
 
 }

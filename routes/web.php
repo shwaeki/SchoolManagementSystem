@@ -23,6 +23,7 @@ use App\Http\Controllers\StudentMarkController;
 use App\Http\Controllers\StudentReportController;
 use App\Http\Controllers\StudentRequestController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TeacherMonthlyPlanController;
 use App\Http\Controllers\TeacherReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\YearClassController;
@@ -73,6 +74,7 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
     Route::post('chats/sendMessage', [ChatController::class, 'sendMessage'])->name('chats.message.send');
 
     Route::resource('chats', ChatController::class);
+    Route::resource('teacher-plan', TeacherMonthlyPlanController::class)->only(['index','store','update']);
 
 
     Route::post('year-classes/update-attendance/{yearClass}', [YearClassController::class, 'updateStudentAttendance'])->name('year-classes.attendance.update');
