@@ -234,3 +234,11 @@ $('.select2').select2({
 flatpickr($('input[type="date"]:not(.custom-date)'), {
     static: true
 })
+
+flatpickr($('input[type="time"]:not(.custom-time)'), {
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "H:i",
+    time_24hr: false,
+    static: true
+});

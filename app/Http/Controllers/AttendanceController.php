@@ -2,58 +2,53 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\AttendancesDataTable;
 use App\Models\Attendance;
 use App\Http\Requests\StoreAttendanceRequest;
 use App\Http\Requests\UpdateAttendanceRequest;
+use App\Models\Teacher;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Session;
 
 class AttendanceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(AttendancesDataTable $dataTable)
     {
-        //
+        $data = [
+            'teachers' => Teacher::where('archived', 0)->get(),
+        ];
+
+        return $dataTable->render('attendances.index',$data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreAttendanceRequest $request)
     {
-        //
+        $data = request()->all();
+        $checkInTime = Carbon::parse($data['check_in']);
+        $checkOutTime = Carbon::now();
+        $totalHours = $checkOutTime->diffInMinutes($checkInTime) / 60;
+
+        $data['check_in_location'] = 'Add Manually By: '.auth()->user()->name;
+        $data['check_out_location'] = 'Add Manually By: '.auth()->user()->name;
+        $data['total_hours'] = $totalHours;
+        Attendance::create($data);
+
+        Session::flash('message', 'تم تسجيل الحضور بنجاح.');
+        return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Attendance $attendance)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Attendance $attendance)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateAttendanceRequest $request, Attendance $attendance)
     {
-        //
+        $data = request()->all();
+        $checkInTime = Carbon::parse($data['check_in']);
+        $checkOutTime = Carbon::now();
+        $totalHours = $checkOutTime->diffInMinutes($checkInTime) / 60;
+
+        $data['total_hours'] = $totalHours;
+        $attendance->update($data);
+        Session::flash('message', 'تم تعديل الحضور بنجاح.');
+        return redirect()->back();
     }
 
     /**

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\AdvertiseController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CertificateCategoryController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CertificateFieldController;
@@ -44,6 +45,7 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
     Route::get('/mysalries', [HomeController::class, 'mysalries'])->name('mysalries');
     Route::get('/myfiles', [HomeController::class, 'myFiles'])->name('myfiles');
     Route::get('/myreports', [HomeController::class, 'myReports'])->name('myreports');
+    Route::get('/myattendances', [HomeController::class, 'myAttendances'])->name('myattendances');
     Route::get('show-salary/{salarySlip}', [HomeController::class, 'showSalary'])->name('show.salary');
 
 
@@ -142,8 +144,8 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
         Route::resource('certificate-categories', CertificateCategoryController::class);
 
 
+        Route::resource('attendances', AttendanceController::class);
         Route::resource('users', UserController::class);
-
         Route::resource('academic-years', AcademicYearController::class);
         Route::resource('salaries', SalarySlipController::class);
 
