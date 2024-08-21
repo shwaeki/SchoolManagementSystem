@@ -1,5 +1,7 @@
 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
 
+
+
     <div class="widget widget-card-four">
         <div class="widget-content">
             <div class="w-header">
@@ -21,7 +23,11 @@
                         @endif
                     </p>
                 </div>
+
             </div>
+            @if( session('error'))
+                <p class="text-danger small mb-0" >{{ session('error') }}</p>
+            @endif
         </div>
     </div>
 

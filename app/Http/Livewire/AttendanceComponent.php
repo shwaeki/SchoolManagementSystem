@@ -12,9 +12,11 @@ class AttendanceComponent extends Component
     public $location;
     public $checkInTime;
     public $checkOutTime;
+    public $allowedIp;
 
     public function mount()
     {
+        $this->allowedIp = '81.218.183.126';
         $this->teacherId = auth()->user()->id;
 
         $attendance = Attendance::where('teacher_id', $this->teacherId)
@@ -29,10 +31,10 @@ class AttendanceComponent extends Component
     public function checkIn()
     {
 
-/*        $allowedIp = '192.168.1.1';
-        if (request()->ip() !== $allowedIp) {
+        if (request()->ip() != $this->allowedIp) {
+            session()->flash('error', 'الرجاء التأكد من الاتصال بشبكة الروضة');
             return false;
-        }*/
+        }
 
         $attendance = Attendance::create([
             'teacher_id' => $this->teacherId,
@@ -47,6 +49,11 @@ class AttendanceComponent extends Component
 
     public function checkOut()
     {
+
+        if (request()->ip() != $this->allowedIp) {
+            session()->flash('error', 'الرجاء التأكد من الاتصال بشبكة الروضة');
+            return false;
+        }
 
         $attendance = Attendance::where('teacher_id', $this->teacherId)
             ->where('date', now()->toDateString())
