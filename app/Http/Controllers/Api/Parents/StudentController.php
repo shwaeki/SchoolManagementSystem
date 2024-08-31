@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Parents;
 
 use App\Http\Controllers\Api\BaseController;
+use App\Http\Resources\DailyProgramResource;
 use App\Http\Resources\StudentClassResource;
 use App\Models\AcademicYear;
 use App\Models\DailyProgram;
@@ -214,8 +215,8 @@ class StudentController extends BaseController
         })->get()->first();
 
         $data = $currentClass?->yearClass?->dailyPrograms;
-
-        return $this->sendResponse([$data], 'Daily Program Data');
+        $programsData = DailyProgramResource::collection($data);
+        return $this->sendResponse([$programsData], 'Daily Program Data');
     }
 
     public function getStudentMonthlyPlan(Request $request)
