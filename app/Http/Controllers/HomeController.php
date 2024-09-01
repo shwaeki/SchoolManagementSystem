@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use App\Models\Message;
 use App\Models\SalarySlip;
 use App\Models\SchoolClass;
@@ -30,6 +31,37 @@ class HomeController extends Controller
                 })
                 ->where('academic_year_id', $activeAcademicYear->id)
                 ->get();
+
+
+            $startOfMonth = Carbon::now()->startOfMonth()->toDateString();
+            $endOfMonth = Carbon::now()->endOfMonth()->toDateString();
+
+            $data['totalHoursThisMonth'] = Attendance::where('teacher_id', auth()->user()->id) ->whereBetween('date', [$startOfMonth,$endOfMonth])->sum('total_hours');
+
+
+            $attendances = Attendance::where('teacher_id', auth()->user()->id)
+                ->whereBetween('date', [$startOfMonth, $endOfMonth])
+                ->select('date', DB::raw('SUM(total_hours) as total_hours'))
+                ->groupBy('date')
+                ->orderBy('date')
+                ->get();
+
+            $dates = [];
+            $totalHours = [];
+
+            $period = Carbon::parse($startOfMonth)->daysUntil($endOfMonth);
+
+            foreach ($period as $date) {
+                $formattedDate = $date->format('Y-m-d');
+                $dates[] = $formattedDate;
+                $attendance = $attendances->firstWhere('date', $formattedDate);
+                $totalHours[] = $attendance ? $attendance->total_hours : 0;
+            }
+
+            $data['dates'] = $dates;
+            $data['totalHours'] = $totalHours;
+
+            return view('teacher_views.home', $data);
         }
 
         // Last 5 SMS Messages
@@ -45,7 +77,6 @@ class HomeController extends Controller
                 $query->whereNull('deleted_at');
             }])
             ->get()->sum('students_count');
-
 
 
 
@@ -112,7 +143,6 @@ class HomeController extends Controller
 
     public function mysalries()
     {
-
         if(!auth()->user()->show_salary_slip){
             return redirect()->route('home');
         }
@@ -123,6 +153,22 @@ class HomeController extends Controller
         }
 
         return view('teacher_views.mysalries', $data);
+    }
+
+
+    public function myAttendances()
+    {
+        $date = Carbon::parse(request('date', Carbon::now()));
+        $data = [];
+        if (Auth::guard('teacher')->check()) {
+            $data['attendances'] = Attendance::where('teacher_id', auth()->user()->id)
+                ->whereYear('date', $date->year)
+                ->whereMonth('date', $date->month)
+                ->get();
+        }
+
+
+        return view('teacher_views.attendance', $data);
     }
 
 
