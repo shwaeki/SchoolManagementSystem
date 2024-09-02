@@ -219,7 +219,7 @@ class YearClassController extends Controller
                     ],
                     [
                         'status' => $status,
-                        'added_by' => auth()->id(),
+                      /*  'added_by' => auth()->id(),*/
                     ]);
             }
         });

@@ -73,7 +73,8 @@ class SchoolClassController extends Controller
             ->where('academic_year_id', getUserActiveAcademicYearID())
             ->first();
 
-        if (Auth::guard('teacher')->check() && $current_year_class && $current_year_class->supervisor != auth()->id()) {
+
+        if (Auth::guard('teacher')->check() && $current_year_class && ( $current_year_class->supervisor != auth()->id()  &&  !$current_year_class->assistants->contains('id', auth()->id()) )) {
             return redirect()->route('home');
         }
 

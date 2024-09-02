@@ -25,6 +25,7 @@ class HomeController extends Controller
 
             $activeAcademicYear = Session::get('activeAcademicYear');
 
+
             $data['teacherClasses'] = auth()->user()->supervisorYearClasses()->with('schoolClass')
                 ->whereHas('schoolClass', function ($query) {
                     $query->whereNull('deleted_at');

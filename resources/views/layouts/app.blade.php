@@ -383,7 +383,8 @@
 
                     <li class="menu">
                         <a href="{{route('attendances.index')}}"
-                           aria-expanded="{{ Route::is('attendances.index') ? 'true' : 'false' }}" class="dropdown-toggle">
+                           aria-expanded="{{ Route::is('attendances.index') ? 'true' : 'false' }}"
+                           class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -704,28 +705,28 @@
                         </li>
                     @endif
 
-                        <li class="menu">
-                            <a href="{{route('myattendances')}}"
-                               aria-expanded="{{ Route::is('myattendances') ? 'true' : 'false' }}" class="dropdown-toggle">
-                                <div class="">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                         stroke-linejoin="round" class="feather feather-cpu">
-                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                        <rect x="9" y="9" width="6" height="6"></rect>
-                                        <line x1="9" y1="1" x2="9" y2="4"></line>
-                                        <line x1="15" y1="1" x2="15" y2="4"></line>
-                                        <line x1="9" y1="20" x2="9" y2="23"></line>
-                                        <line x1="15" y1="20" x2="15" y2="23"></line>
-                                        <line x1="20" y1="9" x2="23" y2="9"></line>
-                                        <line x1="20" y1="14" x2="23" y2="14"></line>
-                                        <line x1="1" y1="9" x2="4" y2="9"></line>
-                                        <line x1="1" y1="14" x2="4" y2="14"></line>
-                                    </svg>
-                                    <span> تقارير الحضور </span>
-                                </div>
-                            </a>
-                        </li>
+                    <li class="menu">
+                        <a href="{{route('myattendances')}}"
+                           aria-expanded="{{ Route::is('myattendances') ? 'true' : 'false' }}" class="dropdown-toggle">
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="feather feather-cpu">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                    <rect x="9" y="9" width="6" height="6"></rect>
+                                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                                    <line x1="9" y1="20" x2="9" y2="23"></line>
+                                    <line x1="15" y1="20" x2="15" y2="23"></line>
+                                    <line x1="20" y1="9" x2="23" y2="9"></line>
+                                    <line x1="20" y1="14" x2="23" y2="14"></line>
+                                    <line x1="1" y1="9" x2="4" y2="9"></line>
+                                    <line x1="1" y1="14" x2="4" y2="14"></line>
+                                </svg>
+                                <span> تقارير الحضور </span>
+                            </div>
+                        </a>
+                    </li>
 
                     <li class="menu">
                         <a href="{{route('myfiles')}}" aria-expanded="{{ Route::is('myfiles') ? 'true' : 'false' }}"
@@ -773,42 +774,11 @@
                         </a>
                     </li>
 
-                    <li class="menu menu-heading">
-                        <div class="heading"><span> فصولي الدراسية </span></div>
-                    </li>
 
-                    @foreach(auth()->user()->supervisorYearClasses()->where('academic_year_id',$activeAcademicYear->id)->get() ?? [] as $yearClass)
-                        @if($yearClass->schoolClass && $yearClass->schoolClass->archived == false)
-                            <li class="menu">
-                                <a href="{{route('school-classes.show', $yearClass->schoolClass)  }}"
-                                   aria-expanded="{{ Route::is('school-classes.show', $yearClass->schoolClass) ? 'true' : 'false' }}"
-                                   class="dropdown-toggle">
-                                    <div class="">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                             viewBox="0 0 24 24"
-                                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                             stroke-linejoin="round" class="feather feather-cpu">
-                                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                            <rect x="9" y="9" width="6" height="6"></rect>
-                                            <line x1="9" y1="1" x2="9" y2="4"></line>
-                                            <line x1="15" y1="1" x2="15" y2="4"></line>
-                                            <line x1="9" y1="20" x2="9" y2="23"></line>
-                                            <line x1="15" y1="20" x2="15" y2="23"></line>
-                                            <line x1="20" y1="9" x2="23" y2="9"></line>
-                                            <line x1="20" y1="14" x2="23" y2="14"></line>
-                                            <line x1="1" y1="9" x2="4" y2="9"></line>
-                                            <line x1="1" y1="14" x2="4" y2="14"></line>
-                                        </svg>
-                                        <span>{{$yearClass->schoolClass?->name}}</span>
-                                    </div>
-                                </a>
-                            </li>
-                        @endif
-                    @endforeach
-
+                    @if(auth()->user()->teacher_type == 'teacher')
 
                         <li class="menu menu-heading">
-                            <div class="heading"><span>  فصولي الدراسية للمساعدة</span></div>
+                            <div class="heading"><span> فصولي الدراسية </span></div>
                         </li>
 
                         @foreach(auth()->user()->supervisorYearClasses()->where('academic_year_id',$activeAcademicYear->id)->get() ?? [] as $yearClass)
@@ -820,7 +790,8 @@
                                         <div class="">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                  viewBox="0 0 24 24"
-                                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                 fill="none" stroke="currentColor" stroke-width="2"
+                                                 stroke-linecap="round"
                                                  stroke-linejoin="round" class="feather feather-cpu">
                                                 <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
                                                 <rect x="9" y="9" width="6" height="6"></rect>
@@ -840,6 +811,43 @@
                             @endif
                         @endforeach
 
+                    @elseif(auth()->user()->teacher_type == 'assistant')
+
+                        <li class="menu menu-heading">
+                            <div class="heading"><span>  فصول المساعدة الدراسية</span></div>
+                        </li>
+
+                        @foreach(auth()->user()->yearClassAssistants()->where('academic_year_id',$activeAcademicYear->id)->get() ?? [] as $yearClass)
+                            @if($yearClass->schoolClass && $yearClass->schoolClass->archived == false)
+                                <li class="menu">
+                                    <a href="{{route('school-classes.show', $yearClass->school_class_id)  }}"
+                                       aria-expanded="{{ Route::is('school-classes.show', $yearClass->school_class_id) ? 'true' : 'false' }}"
+                                       class="dropdown-toggle">
+                                        <div class="">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                 viewBox="0 0 24 24"
+                                                 fill="none" stroke="currentColor" stroke-width="2"
+                                                 stroke-linecap="round"
+                                                 stroke-linejoin="round" class="feather feather-cpu">
+                                                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                                <rect x="9" y="9" width="6" height="6"></rect>
+                                                <line x1="9" y1="1" x2="9" y2="4"></line>
+                                                <line x1="15" y1="1" x2="15" y2="4"></line>
+                                                <line x1="9" y1="20" x2="9" y2="23"></line>
+                                                <line x1="15" y1="20" x2="15" y2="23"></line>
+                                                <line x1="20" y1="9" x2="23" y2="9"></line>
+                                                <line x1="20" y1="14" x2="23" y2="14"></line>
+                                                <line x1="1" y1="9" x2="4" y2="9"></line>
+                                                <line x1="1" y1="14" x2="4" y2="14"></line>
+                                            </svg>
+                                            <span>{{$yearClass->schoolClass?->name}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endif
+                        @endforeach
+
+                    @endif
                 @endauth
 
             </ul>
