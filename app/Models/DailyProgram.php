@@ -27,7 +27,7 @@ class DailyProgram extends Model
     public function getImagePathAttribute()
     {
         if (!empty($this->image) && Storage::disk()->exists($this->image)) {
-            return Storage::url($this->image);
+            return url(Storage::url($this->image));
         }
         return 'https://placehold.co/100x100/f9f9f9/4361ee.png?text=?';
     }
