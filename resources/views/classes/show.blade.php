@@ -54,8 +54,10 @@
     @endif
     @includeWhen($current_year_class != null, 'classes.tabs.class-weekly-program')
     @includeWhen($current_year_class != null, 'classes.tabs.class-monthly-plan')
-    @includeWhen($current_year_class != null, 'classes.tabs.class-posts')
 
+    @if(Auth::guard('web')->check()  && ( auth()->id() == 5 || auth()->id() == 1 ) )
+        @includeWhen($current_year_class != null, 'classes.tabs.class-posts')
+    @endif
 
 
 
