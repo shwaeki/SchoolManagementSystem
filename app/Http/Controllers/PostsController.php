@@ -8,28 +8,11 @@ use App\Http\Requests\UpdatePostsRequest;
 use App\Models\PostPhotos;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StorePostsRequest $request)
     {
         $user = Auth::user();
@@ -53,31 +36,11 @@ class PostsController extends Controller
             }
         }
 
-
-
         Session::flash('message', 'تم اضافة منشور جديد بنجاح');
         return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Post $post)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Post $post)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdatePostsRequest $request, Post $post)
     {
         $post->update([
@@ -101,11 +64,22 @@ class PostsController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        Session::flash('message', 'تم حذف المنشور بنجاح');
+        return redirect()->back();
+    }
+
+
+    public function destroyImage(PostPhotos $postPhoto)
+    {
+
+        Storage::disk('public')->delete($postPhoto->image);
+        $postPhoto->delete();
+
+        Session::flash('message', 'تم حذف الصورة بنجاح');
+        return redirect()->back();
+
     }
 }

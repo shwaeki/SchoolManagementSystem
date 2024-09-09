@@ -84,6 +84,7 @@ class SchoolClassController extends Controller
         $class_year_students = [];
         $weeklyPrograms = [];
         $monthlyPlans = [];
+        $posts = [];
 
         if ($current_year_class) {
             // Get all student IDs
@@ -127,6 +128,8 @@ class SchoolClassController extends Controller
                 ->where('month', $monthDate)
                 ->groupBy('subject')
                 ->toArray();
+
+            $posts = $current_year_class->posts;
         }
 
 
@@ -144,6 +147,7 @@ class SchoolClassController extends Controller
             'weekLastDate' => $weekEndDate,
             'weeklyPrograms' => $weeklyPrograms,
             'monthlyPlans' => $monthlyPlans,
+            'posts' => $posts,
         ];
 
         return view('classes.show', $data);

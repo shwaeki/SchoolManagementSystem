@@ -76,7 +76,8 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
     Route::post('chats/getMessages', [ChatController::class, 'getMessages'])->name('chats.messages.get');
     Route::post('chats/sendMessage', [ChatController::class, 'sendMessage'])->name('chats.message.send');
 
-    Route::resource('posts', PostsController::class);
+    Route::delete('posts/image/destroy/{postPhoto}', [PostsController::class, 'destroyImage'])->name('posts.image.destroy');
+    Route::resource('posts', PostsController::class)->only(['store','update','destroy']);
     Route::resource('chats', ChatController::class);
     Route::resource('teacher-plan', TeacherMonthlyPlanController::class)->only(['index','store','update']);
 

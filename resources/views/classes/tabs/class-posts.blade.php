@@ -36,9 +36,59 @@
 
                         <hr>
 
-                        <h4 class="text-center py-5">
-                            لا يوجد خطة شهرية لهذا الشهر
-                        </h4>
+                        <div class="table-responsive">
+                            <table
+                                class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">المحتوى</th>
+                                    <th scope="col">الصور</th>
+                                    <th scope="col">اضيف بواسطة</th>
+                                    <th scope="col">تاريخ الاضافة</th>
+                                    <th scope="col"> خيارات</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+
+                                @foreach($posts as $post)
+
+                                    <tr>
+                                        <td>{{ $post->id }}</td>
+                                        <td>{{ $post->content }}</td>
+                                        <td>
+                                            @if($post->photos->count() > 0)
+                                                @foreach( $post->photos as $photo)
+                                                    <div style="cursor: pointer" onclick="deleteItem(this)"
+                                                         class="delete-image d-inline-block"
+                                                         data-item="{{ route('posts.image.destroy', $photo->id) }}">
+                                                        <img src="{{ asset($photo->image_path) }}" width="100"
+                                                             alt="imgate">
+                                                    </div>
+                                                @endforeach
+                                            @endif
+                                        </td>
+                                        <td>{{ $post->postable->name }}</td>
+                                        <td>{{ $post->created_at->format('Y-m-d') }}</td>
+                                        <td>
+                                            <button class="btn btn-light-warning text-warning edit-post-btn"
+                                                    data-id="{{ $post->id }}"
+                                                    data-content="{{ $post->content }}">
+                                                <i class="far fa-edit"></i>
+                                            </button>
+
+                                            <button class="btn btn-light-danger text-danger" onclick="deleteItem(this)"
+                                                    data-item=" {{ route('posts.destroy', $post) }} ">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
 
                     </div>
                 </div>
@@ -87,10 +137,51 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="editPostModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="editPostForm" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-header">
+                        <h5 class="modal-title">تعديل المنشور</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="editContentText" class="form-label">المحتوى</label>
+                            <textarea class="form-control" id="editContentText" name="content" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editImages" class="form-label">صور جديدة</label>
+                            <input class="form-control" type="file" id="editImages" name="images[]" multiple>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-bs-dismiss="modal">إغلاق</button>
+                        <button type="submit" class="btn btn-primary">تحديث المنشور</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endpush
 
 
 @push("scripts")
+
+    <script>
+        $(document).on('click', '.edit-post-btn', function () {
+            var postId = $(this).data('id');
+            var postContent = $(this).data('content');
+            $('#editPostForm').attr('action', '/posts/' + postId);
+            $('#editContentText').val(postContent);
+            $('#editPostModal').modal('show');
+        });
+    </script>
 
     @if ($errors->has('methods') || $errors->has('month') || $errors->has('objectives'))
         <script>
