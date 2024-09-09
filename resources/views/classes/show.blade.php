@@ -48,10 +48,12 @@
         @include('classes.tabs.class-years')
         @includeWhen($current_year_class != null, 'classes.tabs.class-students')
     @endif
+
     @includeWhen($current_year_class != null, 'classes.tabs.class-student-attendance')
     @if(!(Auth::guard('teacher')->check() && auth()->user()->teacher_type == 'assistant'))
         @includeWhen($current_year_class != null, 'classes.tabs.class-daily-program')
     @endif
+
     @includeWhen($current_year_class != null, 'classes.tabs.class-weekly-program')
     @includeWhen($current_year_class != null, 'classes.tabs.class-monthly-plan')
 
