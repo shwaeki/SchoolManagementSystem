@@ -38,6 +38,11 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function posts()
+    {
+        return $this->morphMany(Post::class, 'postable');
+    }
+
     public function academicYears(): HasMany
     {
         return $this->hasMany(AcademicYear::class);

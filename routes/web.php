@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ParentController;
 use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchasesController;
 use App\Http\Controllers\ReportController;
@@ -75,6 +76,7 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
     Route::post('chats/getMessages', [ChatController::class, 'getMessages'])->name('chats.messages.get');
     Route::post('chats/sendMessage', [ChatController::class, 'sendMessage'])->name('chats.message.send');
 
+    Route::resource('posts', PostsController::class);
     Route::resource('chats', ChatController::class);
     Route::resource('teacher-plan', TeacherMonthlyPlanController::class)->only(['index','store','update']);
 

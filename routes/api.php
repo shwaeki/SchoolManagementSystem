@@ -42,6 +42,10 @@ Route::prefix('parents')->group(function () {
         Route::get('/getMessages', [ChatController::class, 'getMessages']);
         Route::post('/sendGroupMassage', [ChatController::class, 'sendGroupMassage']);
         Route::get('/getGroupMessages', [ChatController::class, 'getGroupMessages']);
+
+        Route::get('/getPosts', [StudentController::class, 'getClassPosts']);
+        Route::post('/posts/like', [StudentController::class, 'likePost'])->name('posts.like');
+        Route::post('/posts/unlike', [StudentController::class, 'unlikePost'])->name('posts.unlike');
     });
 
 });

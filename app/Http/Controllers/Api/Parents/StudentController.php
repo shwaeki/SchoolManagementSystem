@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api\Parents;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\DailyProgramResource;
+use App\Http\Resources\PostResource;
 use App\Http\Resources\StudentClassResource;
 use App\Models\AcademicYear;
 use App\Models\DailyProgram;
 use App\Models\Otp;
+use App\Models\Post;
 use App\Models\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -232,4 +234,67 @@ class StudentController extends BaseController
 
         return $this->sendResponse([$data], 'Monthly Plan Data');
     }
+
+    public function getClassPosts(Request $request)
+    {
+        $student = $request->user();
+
+        $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) {
+            $query->where('academic_year_id', getAdminActiveAcademicYearID());
+        })->get()->first();
+
+        $data = $currentClass?->yearClass?->posts;
+        $programsData = PostResource::collection($data);
+        return $this->sendResponse([$programsData], 'Class Posts Data');
+    }
+
+    public function unlikePost(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'post_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $student = $request->user();
+        $postId = request('post_id');
+        $post = Post::findOrFail($postId);
+
+
+        if (!$student->likedPosts()->where('post_id', $postId)->exists()) {
+            return $this->sendError('You havent liked this post yet.', []);
+        }
+
+        $student->likedPosts()->detach($post);
+
+        return $this->sendResponse([], 'The post has been unliked.');
+    }
+
+    public function likePost(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'post_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $student = $request->user();
+        $postId = request('post_id');
+        $post = Post::findOrFail($postId);
+
+
+        if ($student->likedPosts()->where('post_id', $postId)->exists()) {
+            return $this->sendError('You have already liked this post.', []);
+        }
+
+
+        $student->likedPosts()->attach($post);
+        return $this->sendResponse([], 'The post was successfully liked.');
+
+    }
+
 }

@@ -19,6 +19,12 @@ class Teacher extends Authenticatable
 
     protected $guarded = [];
 
+
+    public function posts()
+    {
+        return $this->morphMany(Post::class, 'postable');
+    }
+
     public function addedBy(): belongsTo
     {
         return $this->belongsTo(User::class);

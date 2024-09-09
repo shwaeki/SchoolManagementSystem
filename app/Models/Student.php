@@ -124,7 +124,10 @@ class Student extends Authenticatable
         return Carbon::parse($this->birth_date)->age ?? 0;
     }
 
-
+    public function likedPosts()
+    {
+        return $this->belongsToMany(Post::class, 'post_likes');
+    }
 
     function getApproxAgeAttribute() {
         if (!$this->birth_date || $this->birth_date == '1970-01-01') {
