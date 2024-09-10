@@ -21,6 +21,7 @@ class PostResource extends JsonResource
                 return $photo->image_path;
             }),
             'likes_count ' => $this->likes->count(),
+            'is_liked' => auth()->user()->likes()->where('post_id', $this->id)->exists(),
             'created_at ' => $this->created_at ,
         ];
     }

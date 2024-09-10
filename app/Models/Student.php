@@ -150,4 +150,9 @@ class Student extends Authenticatable
         //    return asset("assets/img/90x90.jpg");
         return 'https://placehold.co/100x100/f9f9f9/4361ee.png?text=?';
     }
+
+    public function likes()
+    {
+        return $this->belongsToMany(Post::class, 'post_likes');
+    }
 }
