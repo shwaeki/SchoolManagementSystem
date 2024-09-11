@@ -20,9 +20,9 @@ class PostResource extends JsonResource
             'images' => $this->photos->map(function ($photo) {
                 return $photo->image_path;
             }),
-            'likes_count ' => $this->likes->count(),
+            'likes_count' => $this->likes->count(),
             'is_liked' => auth()->user()->likes()->where('post_id', $this->id)->exists(),
-            'created_at ' => $this->created_at ,
+            'created_at' => $this->created_at ,
         ];
     }
 }

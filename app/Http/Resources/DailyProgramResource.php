@@ -22,7 +22,7 @@ class DailyProgramResource extends JsonResource
             'end_time' => $this->end_time,
             'day' => $this->day,
             'year_class_id ' => $this->year_class_id ,
-            'created_at ' => $this->created_at ,
+            'created_at' => $this->created_at ,
         ];
     }
 }
