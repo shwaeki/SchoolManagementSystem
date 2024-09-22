@@ -494,93 +494,93 @@
 
                 @if($teacher->teacher_type == "teacher")
                     <div class="tab-pane fade " id="monthly-plan-messages" role="tabpanel"
-                     aria-labelledby="teacher-messages-tab">
+                         aria-labelledby="teacher-messages-tab">
 
 
-                    <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
-                            <div class="section general-info">
-                                <div class="info">
-
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <h6>الخطة الشهرية</h6>
-                                        </div>
-                                        <div class="col-3 text-end">
-                                            @if(count($monthly_plans) == 0)
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#addMonthlyPlanModal">
-                                                    اضافة
-                                                </button>
-                                            @endif
-                                        </div>
-                                    </div>
-
-
-
-                                    <form method="GET" id="monthSelectForm" class="d-print-none">
-                                        <div class="mb-3">
-                                            <label for="monthSelect" class="form-label">التاريخ</label>
-                                            <input type="month" id="monthSelect" name="monthSelect"
-                                                   class="form-control custom-date"
-                                                   value="{{ request('monthSelect', Carbon\Carbon::now()->format('Y-m')) }}">
-                                        </div>
-                                    </form>
-
-                                    <hr>
-                                    @if(count($monthly_plans) > 0)
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                                <div class="section general-info">
+                                    <div class="info">
 
                                         <div class="row">
-                                            @foreach ( $monthlySubjects as $key)
-
-                                                @if ( !isset($monthly_plans[$key]))
-                                                    @continue
+                                            <div class="col-9">
+                                                <h6>الخطة الشهرية</h6>
+                                            </div>
+                                            <div class="col-3 text-end">
+                                                @if(count($monthly_plans) == 0)
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                            data-bs-target="#addMonthlyPlanModal">
+                                                        اضافة
+                                                    </button>
                                                 @endif
+                                            </div>
+                                        </div>
 
 
-                                                <div class="col-12 col-md-6 mb-3">
-                                                    <div class="card">
-                                                        <div class="card-header py-2 bg-transparent d-flex justify-content-between">
-                                                            <p class="fs-5 mb-0">{{ $key }}</p>
-                                                            <div class="d-print-none">
-                                                                <button type="button"
-                                                                        data-id="{{ $monthly_plans[$key][0]['id']  }}"
-                                                                        data-title="{{ $key }}"
-                                                                        data-objectives=" {!! $monthly_plans[$key][0]['objectives'] !!}"
-                                                                        data-methods=" {!! $monthly_plans[$key][0]['methods'] !!}"
-                                                                        class="btn btn-light-warning text-warning rounded-circle editMonthlyPlan">
-                                                                    <i class="far fa-edit"></i>
-                                                                </button>
+                                        <form method="GET" id="monthSelectForm" class="d-print-none">
+                                            <div class="mb-3">
+                                                <label for="monthSelect" class="form-label">التاريخ</label>
+                                                <input type="month" id="monthSelect" name="monthSelect"
+                                                       class="form-control custom-date"
+                                                       value="{{ request('monthSelect', Carbon\Carbon::now()->format('Y-m')) }}">
+                                            </div>
+                                        </form>
+
+                                        <hr>
+                                        @if(count($monthly_plans) > 0)
+
+                                            <div class="row">
+                                                @foreach ( $monthlySubjects as $key)
+
+                                                    @if ( !isset($monthly_plans[$key]))
+                                                        @continue
+                                                    @endif
+
+
+                                                    <div class="col-12 col-md-6 mb-3">
+                                                        <div class="card">
+                                                            <div
+                                                                class="card-header py-2 bg-transparent d-flex justify-content-between">
+                                                                <p class="fs-5 mb-0">{{ $key }}</p>
+                                                                <div class="d-print-none">
+                                                                    <button type="button"
+                                                                            data-id="{{ $monthly_plans[$key][0]['id']  }}"
+                                                                            data-title="{{ $key }}"
+                                                                            data-objectives=" {!! $monthly_plans[$key][0]['objectives'] !!}"
+                                                                            data-methods=" {!! $monthly_plans[$key][0]['methods'] !!}"
+                                                                            class="btn btn-light-warning text-warning rounded-circle editMonthlyPlan">
+                                                                        <i class="far fa-edit"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-body">
+
+                                                                <p class="mb-1 fw-bold fs-6">الأهداف:</p>
+                                                                <p class="preserveLines"> {!! $monthly_plans[$key][0]['objectives'] !!}</p>
+                                                                <hr>
+                                                                <p class="mb-1 fw-bold fs-6">الفعاليات:</p>
+                                                                <p class="preserveLines">{!! $monthly_plans[$key][0]['methods'] !!}</p>
+
                                                             </div>
                                                         </div>
-                                                        <div class="card-body">
-
-                                                            <p class="mb-1 fw-bold fs-6">الأهداف:</p>
-                                                            <p class="preserveLines"> {!! $monthly_plans[$key][0]['objectives'] !!}</p>
-                                                            <hr>
-                                                            <p class="mb-1 fw-bold fs-6">الفعاليات:</p>
-                                                            <p class="preserveLines">{!! $monthly_plans[$key][0]['methods'] !!}</p>
-
-                                                        </div>
                                                     </div>
-                                                </div>
-                                            @endforeach
+                                                @endforeach
 
 
-                                        </div>
-                                    @else
+                                            </div>
+                                        @else
 
-                                        <h4 class="text-center py-5">
-                                            لا يوجد خطة شهرية لهذا الشهر
-                                        </h4>
-                                    @endif
+                                            <h4 class="text-center py-5">
+                                                لا يوجد خطة شهرية لهذا الشهر
+                                            </h4>
+                                        @endif
 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
-                </div>
                 @endif
 
             </div>
@@ -614,7 +614,8 @@
 
                         <div class="mb-3">
                             <label for="editMonthPlanMethods">الوسائل </label>
-                            <textarea id="editMonthPlanMethods" name="methods" class="form-control preserveLines" rows="3"></textarea>
+                            <textarea id="editMonthPlanMethods" name="methods" class="form-control preserveLines"
+                                      rows="3"></textarea>
                         </div>
 
                     </div>
@@ -749,7 +750,6 @@
         </div>
     </div>
 
-
 @endsection
 
 @push('scripts')
@@ -877,7 +877,6 @@
         $("#monthSelect").change(function () {
             $("#monthSelectForm").submit();
         });
-
 
 
     </script>
