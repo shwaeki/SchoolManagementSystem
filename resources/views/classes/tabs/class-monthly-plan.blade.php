@@ -58,7 +58,7 @@
                         <hr>
                         @if(count($monthlyPlans) > 0)
 
-                            <div class="row">
+                            <div class="row d-print-none">
                                 @foreach ( $monthlySubjects as $key)
 
                                     @if ( !isset($monthlyPlans[$key]))
@@ -96,6 +96,33 @@
 
 
                             </div>
+
+                            <div class="row d-none d-print-block">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>المادة</th>
+                                        <th>الأهداف</th>
+                                        <th>الوسائل</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($monthlySubjects as $key)
+                                        @if (!isset($monthlyPlans[$key]))
+                                            @continue
+                                        @endif
+
+                                        <tr>
+                                            <td>{{ $key }}</td>
+                                            <td>{!! $monthlyPlans[$key][0]['objectives'] !!}</td>
+                                            <td>{!! $monthlyPlans[$key][0]['methods'] !!}</td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
+
                         @else
 
                             <h4 class="text-center py-5">
