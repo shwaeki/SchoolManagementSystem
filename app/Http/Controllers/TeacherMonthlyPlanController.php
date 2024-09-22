@@ -29,6 +29,7 @@ class TeacherMonthlyPlanController extends Controller
     {
         $month = request('month');
         $methods = request('methods');
+        $teacher_id = request('teacher' , auth()->user()->id);
 
         foreach (request('objectives') as $subject => $objectives) {
             $data = [
@@ -36,8 +37,10 @@ class TeacherMonthlyPlanController extends Controller
                 'methods' => $methods[$subject],
                 'subject' => $subject,
                 'month' => $month,
+                'teacher_id' => $teacher_id,
             ];
-            auth()->user()->monthlyPlans()->create($data);
+          //  auth()->user()->monthlyPlans()->create($data);
+            TeacherMonthlyPlan::create($data);
         }
 
         Session::flash('message', 'تم إنشاء الخطة الشهرية  بنجاح.');

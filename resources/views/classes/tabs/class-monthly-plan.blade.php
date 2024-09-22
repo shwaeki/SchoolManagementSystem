@@ -38,10 +38,10 @@
                                     طباعة
                                 </button>
                                 @if(count($monthlyPlans) == 0)
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#addMonthlyPlanModal">
-                                    اضافة
-                                </button>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#addMonthlyPlanModal">
+                                        اضافة
+                                    </button>
                                 @endif
                             </div>
                         </div>
@@ -121,7 +121,6 @@
                                     </tbody>
                                 </table>
                             </div>
-
 
                         @else
 
@@ -235,7 +234,8 @@
 
                         <div class="mb-3">
                             <label for="editMonthPlanMethods">الوسائل </label>
-                            <textarea id="editMonthPlanMethods" name="methods" class="form-control preserveLines" rows="3"></textarea>
+                            <textarea id="editMonthPlanMethods" name="methods" class="form-control preserveLines"
+                                      rows="3"></textarea>
                         </div>
 
                     </div>
