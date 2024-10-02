@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use App\Models\Message;
+use App\Models\NotifcationMessage;
 use App\Models\SalarySlip;
 use App\Models\SchoolClass;
 use App\Models\Student;
@@ -138,7 +139,9 @@ class HomeController extends Controller
             ->whereYear('created_at', Carbon::now()->year)
             ->sum('price');
 
+        //get all recount ccreated today
 
+        $data['notifications'] = NotifcationMessage::whereDate('created_at', Carbon::today())->get();
         return view('home', $data);
     }
 
