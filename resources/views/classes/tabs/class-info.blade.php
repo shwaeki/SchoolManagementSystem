@@ -290,6 +290,16 @@
                                            value="{{$current_year_class->code}}">
                                 </div>
 
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="1" id="chat_active"
+                                               name="chat_active" {{old('chat_active', $current_year_class->chat_active) == 1 ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="chat_active">
+                                        تفعيل الشات
+                                        </label>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">

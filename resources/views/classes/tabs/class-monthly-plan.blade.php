@@ -98,28 +98,31 @@
                             </div>
 
                             <div class="row d-none d-print-block">
-                                <table class="table table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th>المادة</th>
-                                        <th>الأهداف</th>
-                                        <th>الوسائل</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($monthlySubjects as $key)
-                                        @if (!isset($monthlyPlans[$key]))
-                                            @continue
-                                        @endif
 
-                                        <tr>
-                                            <td>{{ $key }}</td>
-                                            <td>{!! $monthlyPlans[$key][0]['objectives'] !!}</td>
-                                            <td>{!! $monthlyPlans[$key][0]['methods'] !!}</td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
+
+                                @foreach($monthlySubjects as $key)
+                                    @if (!isset($monthlyPlans[$key]))
+                                        @continue
+                                    @endif
+
+                                    <div class="col-12 mb-3 border rounded p-3">
+                                        <div class="row" style="page-break-inside:avoid">
+                                            <div class="col-12 fs-5 fw-bold">
+                                                {{ $key }}
+                                            </div>
+                                            <div class="col-6" style="white-space: pre-line;">
+                                                <small class="fw-bold mb-2">الاهداف :</small>
+                                                {!! $monthlyPlans[$key][0]['objectives'] !!}
+                                            </div>
+                                            <div class="col-6 border-left" style="white-space: pre-line;">
+                                                <small class="fw-bold mb-2">الوسائل :</small>
+                                                {!! $monthlyPlans[$key][0]['methods'] !!}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                @endforeach
+
                             </div>
 
                         @else

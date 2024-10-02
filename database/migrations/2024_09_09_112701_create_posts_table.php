@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('postable_id');
             $table->string('postable_type');
             $table->text('content')->nullable();
-            $table->foreignId('year_class_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('year_class_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

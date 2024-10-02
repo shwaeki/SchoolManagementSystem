@@ -50,7 +50,7 @@ class StudentController extends BaseController
                 return $this->sendError([], 'Student is archived', 401);
             }
 
-            $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) {
+            $currentClass = $student->studentClasses()->whereHas('YearClass', function ($query) {
                 $query->where('academic_year_id', getAdminActiveAcademicYearID())
                     ->whereHas('schoolClass', function ($query) {
                         $query->where('archived', false);
@@ -62,12 +62,12 @@ class StudentController extends BaseController
             }
 
             $student->generateCode($phone);
- /*           $code = 123456;
+            /*           $code = 123456;
 
-            Otp::updateOrCreate(
-                ['student_id' => $student->id],
-                ['phone' => $phone, 'code' => $code],
-            );*/
+                       Otp::updateOrCreate(
+                           ['student_id' => $student->id],
+                           ['phone' => $phone, 'code' => $code],
+                       );*/
             return $this->sendResponse([], 'Otp code send successfully');
         }
         return $this->sendError([], 'Unauthorized', 401);
@@ -179,14 +179,14 @@ class StudentController extends BaseController
 
         $student = $request->user();
 
-        $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) {
+        $currentClass = $student->studentClasses()->whereHas('YearClass', function ($query) {
             $query->where('academic_year_id', getAdminActiveAcademicYearID())
                 ->whereHas('schoolClass', function ($query) {
                     $query->where('archived', false);
                 });
         })->get()->first();
 
-        $classes = $student->studentClasses()->whereHas('yearClass', function ($query) {
+        $classes = $student->studentClasses()->whereHas('YearClass', function ($query) {
             $query->whereHas('schoolClass', function ($query) {
                 $query->where('archived', false);
             });
@@ -212,11 +212,11 @@ class StudentController extends BaseController
     {
         $student = $request->user();
 
-        $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) {
+        $currentClass = $student->studentClasses()->whereHas('YearClass', function ($query) {
             $query->where('academic_year_id', getAdminActiveAcademicYearID());
         })->get()->first();
 
-        $data = $currentClass?->yearClass?->dailyPrograms;
+        $data = $currentClass?->YearClass?->dailyPrograms;
         $programsData = DailyProgramResource::collection($data);
         return $this->sendResponse([$programsData], 'Daily Program Data');
     }
@@ -225,12 +225,12 @@ class StudentController extends BaseController
     {
         $student = $request->user();
 
-        $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) {
+        $currentClass = $student->studentClasses()->whereHas('YearClass', function ($query) {
             $query->where('academic_year_id', getAdminActiveAcademicYearID());
         })->get()->first();
 
         $month = request('month', Carbon::now()->format('Y-m'));
-        $data = $currentClass?->yearClass?->studentMonthlyPlans->where('month', $month)->groupBy('subject');
+        $data = $currentClass?->YearClass?->studentMonthlyPlans->where('month', $month)->groupBy('subject');
 
         return $this->sendResponse([$data], 'Monthly Plan Data');
     }
@@ -239,14 +239,16 @@ class StudentController extends BaseController
     {
         $student = $request->user();
 
-        $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) {
+        $currentClass = $student->studentClasses()->whereHas('YearClass', function ($query) {
             $query->where('academic_year_id', getAdminActiveAcademicYearID());
         })->get()->first();
 
-        $data = $currentClass?->yearClass?->posts;
+        //   $data = $currentClass?->YearClass?->posts;
+        $data = Post::where('year_class_id', $currentClass?->YearClass?->id)->orWhereNull('year_class_id')->get();
         $programsData = PostResource::collection($data);
         return $this->sendResponse([$programsData], 'Class Posts Data');
     }
+
 
     public function unlikePost(Request $request)
     {

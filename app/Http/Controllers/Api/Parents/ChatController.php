@@ -34,7 +34,7 @@ class ChatController extends BaseController
 
         $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
 
-        $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) {
+        $currentClass = $student->studentClasses()->whereHas('YearClass', function ($query) {
             $query->where('academic_year_id', getAdminActiveAcademicYearID())
                 ->whereHas('schoolClass', function ($query) {
                     $query->where('archived', false);
@@ -73,7 +73,7 @@ class ChatController extends BaseController
 
         $student = $request->user();
 
-        $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) {
+        $currentClass = $student->studentClasses()->whereHas('YearClass', function ($query) {
             $query->where('academic_year_id', getAdminActiveAcademicYearID())
                 ->whereHas('schoolClass', function ($query) {
                     $query->where('archived', false);
@@ -100,7 +100,7 @@ class ChatController extends BaseController
     {
         $student = $request->user();
 
-        $currentClass = $student->studentClasses()->whereHas('yearClass', function ($query) {
+        $currentClass = $student->studentClasses()->whereHas('YearClass', function ($query) {
             $query->where('academic_year_id', getAdminActiveAcademicYearID());
         })->get()->first();
 
@@ -108,6 +108,22 @@ class ChatController extends BaseController
 
         $messages = ChatResource::collection($chats);
         return $this->sendResponse([$messages], 'Messages Data');
+    }
+
+
+    public function isChatActive(Request $request)
+    {
+        $student = $request->user();
+
+        $currentClass = $student->studentClasses()->whereHas('YearClass', function ($query) {
+            $query->where('academic_year_id', getAdminActiveAcademicYearID());
+        })->get()->first();
+
+        //   $data = $currentClass?->YearClass?->posts;
+        $data = [
+            'chat_active' => $currentClass?->YearClass?->chat_active
+        ];
+        return $this->sendResponse([$data], 'Class Posts Data');
     }
 
 

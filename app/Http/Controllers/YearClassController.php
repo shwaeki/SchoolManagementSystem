@@ -71,7 +71,10 @@ class YearClassController extends Controller
      */
     public function update(UpdateYearClassRequest $request, YearClass $yearClass)
     {
-        $yearClass->update(request()->all());
+        $data = request()->all() ;
+        $chat_active = request()->has('chat_active') ? 1 : 0;
+        $data['chat_active'] = $chat_active;
+        $yearClass->update($data);
         Session::flash('message', 'تم تعديل معلومات الفصل التعليمي بنجاح.');
         return redirect()->back();
     }

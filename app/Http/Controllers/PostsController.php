@@ -17,12 +17,24 @@ class PostsController extends Controller
     {
         $user = Auth::user();
 
-        $post = Post::create([
-            'postable_id' => $user->id,
-            'postable_type' => get_class($user),
-            'content' => request('content'),
-            'year_class_id' => request('year_class_id'),
-        ]);
+        $add_all_classes = request()->has('add_all_classes');
+        if ($add_all_classes) {
+            $post = Post::create([
+                'postable_id' => $user->id,
+                'postable_type' => get_class($user),
+                'content' => request('content'),
+                'year_class_id' => null,
+            ]);
+        }else{
+            $post = Post::create([
+                'postable_id' => $user->id,
+                'postable_type' => get_class($user),
+                'content' => request('content'),
+                'year_class_id' => request('year_class_id'),
+            ]);
+        }
+
+
 
 
         if ($request->hasFile('images')) {

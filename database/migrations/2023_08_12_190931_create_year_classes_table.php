@@ -17,7 +17,8 @@ return new class extends Migration
             $table->foreignId('school_class_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('supervisor')->nullable()->constrained('teachers')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('added_by')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('code')->nullable()->after('added_by');
+            $table->string('code')->nullable();
+            $table->boolean('chat_active')->default(1);
             $table->foreignId('certificate_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();

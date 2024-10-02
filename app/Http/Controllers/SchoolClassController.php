@@ -7,6 +7,7 @@ use App\DataTables\ClassesDataTable;
 use App\DataTables\StudentsArchiveDataTable;
 use App\Models\AcademicYear;
 use App\Models\Certificate;
+use App\Models\Post;
 use App\Models\SchoolClass;
 use App\Http\Requests\StoreSchoolClassRequest;
 use App\Http\Requests\UpdateSchoolClassRequest;
@@ -129,7 +130,7 @@ class SchoolClassController extends Controller
                 ->groupBy('subject')
                 ->toArray();
 
-            $posts = $current_year_class->posts;
+            $posts = Post::where('year_class_id', $current_year_class->id)->orWhereNull('year_class_id')->get();
         }
 
 

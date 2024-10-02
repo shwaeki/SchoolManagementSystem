@@ -127,6 +127,15 @@
                             <input class="form-control" type="file" id="images" name="images[]" multiple>
                         </div>
 
+                        @if(Auth::guard('web')->check() )
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="1" id="add_all_classes"
+                                   name="add_all_classes">
+                            <label class="form-check-label" for="add_all_classes">
+                                اضافة الى جميع الفصول الدراسية
+                            </label>
+                        </div>
+                        @endif
 
                     </div>
                     <div class="modal-footer">

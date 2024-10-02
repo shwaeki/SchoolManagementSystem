@@ -99,7 +99,7 @@ class Student extends Authenticatable
 
     public function generateCode($phone = null)
     {
-        $code = rand(1000, 9999);
+        $code = rand(100000, 999999);
 
         if ($phone == null) {
             $phone = session('otpVerifyPhone');

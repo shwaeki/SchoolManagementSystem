@@ -42,6 +42,7 @@ Route::prefix('parents')->group(function () {
         Route::get('/getMessages', [ChatController::class, 'getMessages']);
         Route::post('/sendGroupMassage', [ChatController::class, 'sendGroupMassage']);
         Route::get('/getGroupMessages', [ChatController::class, 'getGroupMessages']);
+        Route::get('/isChatActive', [ChatController::class, 'isChatActive']);
 
         Route::get('/getPosts', [StudentController::class, 'getClassPosts']);
         Route::post('/posts/like', [StudentController::class, 'likePost'])->name('posts.like');
