@@ -977,10 +977,10 @@
     }, 3000);
 
     $(document).ready(function () {
-        Echo.channel('test-channel')
-            .listen('MessageSent', (e) => {
-                console.log(e);
-            });
+        console.log("ready!");
+        Echo.channel('test-channel').listen('MessageSent', (e) => {
+            console.log(e);
+        });
     });
 </script>
 @stack('scripts')

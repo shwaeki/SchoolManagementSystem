@@ -124,6 +124,10 @@ class Chat extends Component
 
     public function selectStudent($id)
     {
+
+        $message = ChatModel::first();
+        MessageSent::dispatch($message->toArray(), "student");
+
         $this->selectedStudent = Student::findOrFail($id);
         $this->selectedClass = null;
         $this->message = '';
