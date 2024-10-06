@@ -54,9 +54,9 @@
 
     <div class="account-settings-container layout-top-spacing">
 
-        <div class="account-content">
-            <div class="row mb-3">
-                <div class="col-md-12">
+        <div class="account-content ">
+            <div class="row mb-3  d-print-none">
+                <div class="col-md-12 ">
                     <h2 class="mb-3"> معلومات الموظف - {{$teacher->name}}
                         {!! trans('options.'.$teacher->teacher_type.'_badge') !!}
                     </h2>
@@ -502,11 +502,20 @@
                                 <div class="section general-info">
                                     <div class="info">
 
-                                        <div class="row">
+                                        <div class="text-center d-none d-print-block">
+                                            <img src="{{ asset('assets/img/logo.png') }}" height="150px" alt="logo">
+                                            <h6 class="mb-1">الخطة الشهرية</h6>
+                                            <h6 class="mb-1">{{ $teacher->name }}</h6>
+                                        </div>
+
+                                        <div class="row  d-print-none">
                                             <div class="col-9">
                                                 <h6>الخطة الشهرية</h6>
                                             </div>
                                             <div class="col-3 text-end">
+                                                <button type="button" class="btn btn-warning" onclick="window.print()">
+                                                    طباعة
+                                                </button>
                                                 @if(count($monthly_plans) == 0)
                                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                                             data-bs-target="#addMonthlyPlanModal">
@@ -529,7 +538,7 @@
                                         <hr>
                                         @if(count($monthly_plans) > 0)
 
-                                            <div class="row">
+                                            <div class="row d-print-none">
                                                 @foreach ( $monthlySubjects as $key)
 
                                                     @if ( !isset($monthly_plans[$key]))
@@ -568,6 +577,36 @@
 
 
                                             </div>
+
+
+                                            <div class="row d-none d-print-block">
+
+                                                @foreach ( $monthlySubjects as $key)
+
+                                                    @if ( !isset($monthly_plans[$key]))
+                                                        @continue
+                                                    @endif
+
+                                                    <div class="col-12 mb-3 border rounded p-3">
+                                                        <div class="row" style="page-break-inside:avoid">
+                                                            <div class="col-12 fs-5 fw-bold">
+                                                                {{ $key }}
+                                                            </div>
+                                                            <div class="col-6" style="white-space: pre-line;">
+                                                                <small class="fw-bold mb-2">الاهداف :</small>
+                                                                {!! $monthly_plans[$key][0]['objectives'] !!}
+                                                            </div>
+                                                            <div class="col-6 border-left" style="white-space: pre-line;">
+                                                                <small class="fw-bold mb-2">الوسائل :</small>
+                                                                {!! $monthly_plans[$key][0]['methods'] !!}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                @endforeach
+
+                                            </div>
+
                                         @else
 
                                             <h4 class="text-center py-5">
