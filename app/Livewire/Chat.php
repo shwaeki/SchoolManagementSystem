@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
+use App\Events\MessageSent;
+use App\Jobs\SendMessage;
 use App\Jobs\SendNotificationJob;
 use App\Models\GroupChat;
 use App\Models\SchoolClass;
@@ -44,7 +46,7 @@ class Chat extends Component
 
         $this->selectedStudent = Student::findOrFail($student_id);
         $this->message = '';
-        $this->emit('chat-select-student');
+        $this->dispatch('chat-select-student');
     }
 
     public function refreshChats()
@@ -95,7 +97,6 @@ class Chat extends Component
             ->join('year_classes', 'year_classes.id', '=', 'student_classes.year_class_id')
             ->where('year_classes.academic_year_id', getAdminActiveAcademicYearID())
             ->where('year_classes.supervisor', auth()->id())
-
             ->latest('chats.created_at')
             ->with(['student', 'teacher'])
             ->distinct('chats.id')
@@ -107,7 +108,7 @@ class Chat extends Component
             $query->where('supervisor', auth()->id());
             $query->where('academic_year_id', getUserActiveAcademicYearID());
         })->whereHas('schoolClass', function ($query) {
-            $query->where('archived',false);
+            $query->where('archived', false);
             $query->whereNull('deleted_at');
         })->with([
             'schoolClass',
@@ -127,7 +128,7 @@ class Chat extends Component
         $this->selectedClass = null;
         $this->message = '';
         $this->chatType = 'student';
-        $this->emit('chat-select-student');
+        $this->dispatch('chat-select-student');
     }
 
     public function selectClass($id)
@@ -136,7 +137,7 @@ class Chat extends Component
         $this->selectedClass = YearClass::findOrFail($id);
         $this->message = '';
         $this->chatType = 'class';
-        $this->emit('chat-select-class');
+        $this->dispatch('chat-select-class');
     }
 
     public function sendStudentMessage()
@@ -151,7 +152,9 @@ class Chat extends Component
         ]);
 
         $this->resetChat();
-        $this->emit('chat-new-message', $message);
+        $this->dispatch('chat-new-message', $message);
+
+        broadcast(new MessageSent($message->toArray(), "student"));
 
         $token = $this->selectedStudent->device_token;
         if ($token) {
@@ -171,8 +174,9 @@ class Chat extends Component
         ]);
 
         $this->resetChat();
-        $this->emit('chat-new-message', $message);
+        $this->dispatch('chat-new-message', $message);
 
+        broadcast(new MessageSent($message->toArray(), "class"));
         $topic = 'year_class_' . $this->selectedClass->id;
         SendNotificationJob::dispatch('topic', $topic, 'رسالة جديدة', 'تم ارسال رسالة جديدة');
     }

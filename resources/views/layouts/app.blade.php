@@ -85,9 +85,6 @@
 
     <link href="{{ asset("assets/css/style.css?v=1.0")  }}" rel="stylesheet" type="text/css"/>
 
-
-    @livewireStyles
-
     @stack('styles')
 
     <style>
@@ -948,7 +945,7 @@
     @method('PUT')
 </form>
 
-@livewireScripts
+
 <script src="{{ asset("assets/plugins/src/global/vendors.min.js") }}"></script>
 <script src="{{ asset("assets/bootstrap/js/bootstrap.bundle.min.js") }}"></script>
 <script src="{{ asset("assets/plugins/src/perfect-scrollbar/perfect-scrollbar.min.js") }}"></script>
@@ -968,6 +965,9 @@
 <script src="{{ asset("assets/js/custom.js")  }}"></script>
 <script src="{{ asset("assets/loader.js")  }}"></script>
 <script src="{{ asset("assets/app.js")}}"></script>
+
+@vite(['resources/js/app.js'])
+
 <script>
     setTimeout(function () {
         var $loadScreen = $("#load_screen");
@@ -975,6 +975,13 @@
             $loadScreen.remove();
         }
     }, 3000);
+
+    $(document).ready(function () {
+        Echo.channel('test-channel')
+            .listen('MessageSent', (e) => {
+                console.log(e);
+            });
+    });
 </script>
 @stack('scripts')
 

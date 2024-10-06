@@ -45,12 +45,12 @@ function multiCheck(tb_var) {
 
 var $activeIndex = -1;
 $("#search").focus(function () {
-    window.livewire.emit('changeStatus', true);
+    Livewire.dispatch('changeStatus', { status: true });
     $activeIndex = -1;
 });
 
 $("#search").focusout(function () {
-    window.livewire.emit('changeStatus', false);
+    Livewire.dispatch('changeStatus', { status: false });
     $activeIndex = -1;
 });
 

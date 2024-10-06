@@ -67,7 +67,7 @@
 @push('scripts')
 
     <script>
-        document.addEventListener('livewire:load', function () {
+        document.addEventListener('livewire:init', function () {
             scrollChatToBottom();
         });
 

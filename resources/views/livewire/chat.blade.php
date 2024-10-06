@@ -162,7 +162,7 @@
                         </div>
                         <div class="chat-footer chat-active">
                             <div class="chat-input">
-                                <form class="chat-form" id="chat-form" wire:submit.prevent="sendStudentMessage">
+                                <form class="chat-form" id="chat-form" wire:submit="sendStudentMessage">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                          stroke-linecap="round" stroke-linejoin="round"
@@ -171,7 +171,7 @@
                                             d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                                     </svg>
                                     <input type="text" class="mail-write-box form-control"
-                                           wire:model.defer="message" id="message-input"
+                                           wire:model="message" id="message-input"
                                            data-student="" placeholder="الرسالة"/>
                                 </form>
                             </div>
@@ -218,7 +218,7 @@
                     </div>
                     <div class="chat-footer chat-active">
                         <div class="chat-input">
-                            <form class="chat-form" id="chat-form" wire:submit.prevent="sendClassMessage">
+                            <form class="chat-form" id="chat-form" wire:submit="sendClassMessage">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                      stroke-linecap="round" stroke-linejoin="round"
@@ -227,7 +227,7 @@
                                         d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                                 </svg>
                                 <input type="text" class="mail-write-box form-control"
-                                       wire:model.defer="message" id="message-input"
+                                       wire:model="message" id="message-input"
                                        data-student="" placeholder="الرسالة"/>
                             </form>
                         </div>
