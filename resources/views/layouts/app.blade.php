@@ -981,6 +981,19 @@
         Echo.channel('test-channel').listen('MessageSent', (e) => {
             console.log(e);
         });
+
+/*
+
+        Echo.private(`chat.student.${studentId}`)
+            .listen('MessageSent', (e) => {
+                console.log("Student" + e);
+            });
+
+        Echo.private(`chat.class.${classId}`).listen('MessageSent', (e) => {
+            console.log("Class" + e);
+        });
+*/
+
     });
 </script>
 @stack('scripts')

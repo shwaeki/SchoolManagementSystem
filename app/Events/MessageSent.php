@@ -26,7 +26,12 @@ class MessageSent  implements ShouldBroadcastNow
 
     public function broadcastOn()
     {
-        return new Channel('test-channel');
+        if ($this->type === "student") {
+            return new PrivateChannel('chat.student.' . $this->data['student_id']);
+        } elseif ($this->type === "class") {
+            return new PrivateChannel('chat.class.' . $this->data['year_class_id']);
+        }
+
     }
 
     public function broadcastWith()

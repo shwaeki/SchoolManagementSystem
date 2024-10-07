@@ -96,6 +96,12 @@ class Student extends Authenticatable
         return $this->hasMany(StudentAttendance::class);
     }
 
+    public function isStudentOfClass($yearClassId)
+    {
+        return $this->whereHas('yearClasses', function ($query) use ($yearClassId) {
+            $query->where('id', $yearClassId);
+        })->exists();
+    }
 
     public function generateCode($phone = null)
     {

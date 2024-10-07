@@ -39,6 +39,7 @@ class Teacher extends Authenticatable
     {
         return $this->hasMany(SchoolClass::class, 'supervisor');
     }
+
     public function supervisorYearClasses(): hasMany
     {
         return $this->hasMany(YearClass::class, 'supervisor');
@@ -53,7 +54,7 @@ class Teacher extends Authenticatable
 
     public function yearClassAssistants()
     {
-        return $this->belongsToMany(YearClass::class,'year_class_assistants','assistant_id','year_class_id');
+        return $this->belongsToMany(YearClass::class, 'year_class_assistants', 'assistant_id', 'year_class_id');
     }
 
     public function reports(): hasMany
@@ -70,6 +71,23 @@ class Teacher extends Authenticatable
     public function monthlyPlans()
     {
         return $this->hasMany(TeacherMonthlyPlan::class, 'teacher_id');
+    }
+
+
+    public function isTeacherOfStudent($studentId)
+    {
+
+        return $this->supervisorYearClasses()->where('academic_year_id', getAdminActiveAcademicYearID())
+            ->whereHas('students', function ($query) use ($studentId) {
+                $query->where('student_id', $studentId);
+            })->exists();
+    }
+
+    public function isTeacherOfClass($classId)
+    {
+
+        return $this->supervisorYearClasses()->where('academic_year_id', getAdminActiveAcademicYearID())
+            ->where('id', $classId)->exists(); // id = year_class_id
     }
 
 }

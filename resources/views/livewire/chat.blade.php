@@ -95,7 +95,8 @@
                                                 <span
                                                     class="user-meta-time">{{$class->chats()?->latest()->first()?->created_at?->diffForHumans()}}</span>
                                             </div>
-                                            <span class="preview">{{ $class->chats()?->latest()->first()?->message }}  </span>
+                                            <span
+                                                class="preview">{{ $class->chats()?->latest()->first()?->message }}  </span>
                                         </div>
                                     </div>
                                 </div>
@@ -209,7 +210,7 @@
                                             @if($message->sender == "student")
                                                 {{ $message->student->name }} -
                                             @endif
-                                           <span class="small fst-italic"> {{$message->created_at_human}}</span>
+                                            <span class="small fst-italic"> {{$message->created_at_human}}</span>
                                         </p>
                                     </div>
                                 @endforeach
@@ -239,3 +240,5 @@
         </div>
     </div>
 </div>
+
+
