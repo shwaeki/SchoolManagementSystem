@@ -23,22 +23,9 @@ Broadcast::channel('test-channel', function() {
 });
 
 
-// Private channel for student chat
-Broadcast::channel('chat.student.{studentId}', function ($user, $studentId) {
-    if (Auth::guard('web')->check()) {
+
+Broadcast::channel('chat.student.{studentId}', function ($user, $studentId=null) {
         return true;
-    }
-
-    if (Auth::guard('teacher')->check()) {
-        return true;
-    }
-
-    return Auth::check() && $user->id === (int) $studentId;
-});
-
-
-
-Broadcast::channel('chat.student.{studentId}', function ($user, $studentId) {
     if (Auth::guard('web')->check()) {
         return true;
     } elseif (Auth::guard('teacher')->check()) {
@@ -61,3 +48,5 @@ Broadcast::channel('chat.class.{classId}', function ($user, $yearClassId) {
     }
     return false;
 });
+
+

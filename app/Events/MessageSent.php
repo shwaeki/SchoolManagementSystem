@@ -11,14 +11,14 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MessageSent  implements ShouldBroadcastNow
+class MessageSent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    public function __construct( public array $data, public string $type)
+    public function __construct(public array $data, public string $type)
     {
         //
     }
@@ -27,9 +27,17 @@ class MessageSent  implements ShouldBroadcastNow
     public function broadcastOn()
     {
         if ($this->type === "student") {
-            return new PrivateChannel('chat.student.' . $this->data['student_id']);
+            return [
+            //    new PrivateChannel('chat.student.' . $this->data['student_id']),
+                new PrivateChannel('chat.student.1'),
+                new Channel('test-channel'),
+             //   new Channel('chat.student'),
+            ];
         } elseif ($this->type === "class") {
-            return new PrivateChannel('chat.class.' . $this->data['year_class_id']);
+            return [
+                new PrivateChannel('chat.class.' . $this->data['year_class_id']),
+                new Channel('chat.class'),
+            ];
         }
 
     }

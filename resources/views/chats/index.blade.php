@@ -94,6 +94,7 @@
     <script src="{{ asset("assets/js/apps/chat.js")  }}"></script>
     <script>
 
+
         $("#startChat").click(function () {
             var student_id = $('#student').val()
 
@@ -105,7 +106,7 @@
                 })
                 return;
             }
-            Livewire.dispatch('start-chat', { student_id: student_id });
+            Livewire.dispatch('start-chat', {student_id: student_id});
             $("#newChatModal").modal("hide");
 
         });
@@ -122,7 +123,9 @@
 
         function scrollToBottom() {
             var getScrollContainer = $('.chat-conversation-box');
-            getScrollContainer.scrollTop(getScrollContainer.get(0).scrollHeight);
+            if(getScrollContainer.length > 0){
+                getScrollContainer.scrollTop(getScrollContainer.get(0).scrollHeight);
+            }
         }
 
 
@@ -137,17 +140,17 @@
                 <div class="${bubbleClass} mb-0">${message.message}</div>
                 <p class="mt-1 ms-2 small ${dateAlignmentClass}">${message.created_at_human}</p>
             </div>`);
-           //     scrollToBottom();
+                scrollToBottom();
             });
 
             Livewire.on('chat-select-student', () => {
                 $("#loading-indicator").hide();
-            //    scrollToBottom();
+                scrollToBottom();
             });
 
             Livewire.on('chat-select-class', () => {
                 $("#loading-indicator").hide();
-            //    scrollToBottom();
+                scrollToBottom();
             });
 
         });

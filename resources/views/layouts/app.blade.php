@@ -944,7 +944,7 @@
     @csrf
     @method('PUT')
 </form>
-
+@vite(['resources/js/app.js'])
 
 <script src="{{ asset("assets/plugins/src/global/vendors.min.js") }}"></script>
 <script src="{{ asset("assets/bootstrap/js/bootstrap.bundle.min.js") }}"></script>
@@ -966,7 +966,7 @@
 <script src="{{ asset("assets/loader.js")  }}"></script>
 <script src="{{ asset("assets/app.js")}}"></script>
 
-@vite(['resources/js/app.js'])
+
 
 <script>
     setTimeout(function () {
@@ -977,22 +977,18 @@
     }, 3000);
 
     $(document).ready(function () {
+
         console.log("ready!");
-        Echo.channel('test-channel').listen('MessageSent', (e) => {
+        Echo.channel('chat.student.1').listen('MessageSent', (e) => {
             console.log(e);
         });
 
+
 /*
-
-        Echo.private(`chat.student.${studentId}`)
-            .listen('MessageSent', (e) => {
-                console.log("Student" + e);
-            });
-
         Echo.private(`chat.class.${classId}`).listen('MessageSent', (e) => {
             console.log("Class" + e);
-        });
-*/
+        });*/
+
 
     });
 </script>
