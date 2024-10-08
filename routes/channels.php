@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,16 +26,16 @@ Broadcast::channel('test-channel', function() {
 
 
 
-Broadcast::channel('chat.student.{studentId}', function ($user, $studentId=null) {
-        return true;
-    if (Auth::guard('web')->check()) {
+
+Broadcast::channel('chat.student.{studentId}', function ($user, $studentId) {
+/*    if (Auth::guard('web')->check()) {
         return true;
     } elseif (Auth::guard('teacher')->check()) {
         return $user->isTeacherOfStudent($studentId);
     } elseif (Auth::guard('parent')->check()) {
         return  $user->id === (int) $studentId;
-    }
-    return false;
+    }*/
+    return true;
 });
 
 

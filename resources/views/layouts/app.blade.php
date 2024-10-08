@@ -977,10 +977,14 @@
     }, 3000);
 
     $(document).ready(function () {
-
+        var classId = 33;
         console.log("ready!");
-        Echo.channel('chat.student.1').listen('MessageSent', (e) => {
-            console.log(e);
+        Echo.channel('test-channel').listen('MessageSent', (e) => {
+            console.log("Test" + e);
+        });
+
+        Echo.channel(`chat.student.${classId}`).listen('MessageSent', (e) => {
+            console.log("student " + e);
         });
 
 
