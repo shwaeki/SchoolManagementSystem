@@ -27,7 +27,9 @@ Broadcast::channel('test-channel', function() {
 
 
 
-Broadcast::channel('chat.student.{studentId}', function ($user, $studentId) {
+Broadcast::channel('chat.{studentId}', function ($user, $studentId) {
+
+    Log::info("channel :" . $studentId);
 /*    if (Auth::guard('web')->check()) {
         return true;
     } elseif (Auth::guard('teacher')->check()) {
@@ -35,7 +37,7 @@ Broadcast::channel('chat.student.{studentId}', function ($user, $studentId) {
     } elseif (Auth::guard('parent')->check()) {
         return  $user->id === (int) $studentId;
     }*/
-    return true;
+    return false;
 });
 
 

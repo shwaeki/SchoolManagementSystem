@@ -10,6 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class MessageSent implements ShouldBroadcastNow
 {
@@ -24,13 +25,16 @@ class MessageSent implements ShouldBroadcastNow
     }
 
 
+
+
     public function broadcastOn()
     {
         if ($this->type === "student") {
 
+            Log::info( $this->data['student_id']);
             return [
-                new PrivateChannel('chat.student.' . $this->data['student_id']),
-                new Channel('chat.student.33'),
+                new PrivateChannel("chat.{$this->data["student_id"]}"),
+              //  new Channel('chat.student.33'),
              //   new Channel('test-channel'),
             ];
         } elseif ($this->type === "class") {
@@ -42,11 +46,11 @@ class MessageSent implements ShouldBroadcastNow
 
     }
 
-    public function broadcastWith()
+/*    public function broadcastWith()
     {
         return [
             'data' => $this->data,
             'type' => $this->type,
         ];
-    }
+    }*/
 }
