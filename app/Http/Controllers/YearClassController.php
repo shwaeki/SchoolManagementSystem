@@ -209,8 +209,10 @@ class YearClassController extends Controller
 
     public function updateStudentAttendance(UpdateStudentAttendanceRequest $request, YearClass $yearClass)
     {
+      //  dd(request()->all());
         DB::transaction(function () use ($yearClass) {
             $students = request('students', []);
+            $notes = request('notes', []);
             $date = request('date', now());
 
 
@@ -222,6 +224,7 @@ class YearClassController extends Controller
                     ],
                     [
                         'status' => $status,
+                        'notes' => $notes[$student],
                       /*  'added_by' => auth()->id(),*/
                     ]);
             }

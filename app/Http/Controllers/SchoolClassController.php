@@ -117,7 +117,8 @@ class SchoolClassController extends Controller
             $studentIds = $class_year_students->pluck('student_id')->toArray();
             $studentsAttendance = StudentAttendance::whereIn('student_id', $studentIds)
                 ->whereDate('date', $attendanceDate)
-                ->pluck('status', 'student_id')
+                ->get(['student_id', 'status', 'notes'])
+                ->keyBy('student_id')
                 ->toArray();
 
             $weeklyPrograms = $current_year_class->weeklyPrograms
