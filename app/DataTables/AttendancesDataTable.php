@@ -21,9 +21,9 @@ class AttendancesDataTable extends DataTable
                 return '
                 <button type="button" class="btn btn-light-warning text-warning edit-attendance"
                 data-date="' . $query->date . '"
-                data-check_in="' . $query->check_in->format('h:i') . '"
+                data-check_in="' . $query->check_in?->format('h:i') . '"
 
-                data-check_out="' . $query->check_out->format('h:i') . '"
+                data-check_out="' . $query->check_out?->format('h:i') . '"
                 data-id="' . $query->id . '" data-bs-toggle="modal" data-bs-target="#editAttendanceModal"><i class="far fa-edit"></i></button>';
             })
             ->editColumn('teacher_id', function ($query) {

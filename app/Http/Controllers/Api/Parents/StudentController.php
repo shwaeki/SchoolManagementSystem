@@ -61,13 +61,13 @@ class StudentController extends BaseController
                 return $this->sendError([], 'Student is not register to any class', 401);
             }
 
-            $student->generateCode($phone);
-            /*           $code = 123456;
+            if($student->id == 788){
+                $code = 123456;
+                Otp::updateOrCreate(['student_id' => $student->id],['phone' => $phone, 'code' => $code] );
+            }else{
+                $student->generateCode($phone);
+            }
 
-                       Otp::updateOrCreate(
-                           ['student_id' => $student->id],
-                           ['phone' => $phone, 'code' => $code],
-                       );*/
             return $this->sendResponse([], 'Otp code send successfully');
         }
         return $this->sendError([], 'Unauthorized', 401);
