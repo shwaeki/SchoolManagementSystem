@@ -22,35 +22,111 @@ class ChatController extends BaseController
 
     public function sendMassage(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
-            'massage' => 'required|min:2',
+            'massage' => 'nullable|min:2',
+            'file' => 'nullable|file|max:10240',
         ]);
 
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
+        if (!$request->has('massage') && !$request->hasFile('file')) {
+            return $this->sendError('Validation Error.', ['massage' => 'Please provide a message or upload a file.']);
+        }
+
         $student = $request->user();
 
-        $adminActiveAcademicYear = AcademicYear::where('status', true)->get()->first();
+        $adminActiveAcademicYear = AcademicYear::where('status', true)->first();
 
         $currentClass = $student->studentClasses()->whereHas('YearClass', function ($query) {
             $query->where('academic_year_id', getAdminActiveAcademicYearID())
                 ->whereHas('schoolClass', function ($query) {
                     $query->where('archived', false);
                 });
-        })->get()->first();
+        })->first();
+
+
+        $filePath = null;
+        $fileType = null;
+        $originalFileName = null;
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filePath = $file->store('chat_files', 'public');
+            $fileType = $file->getMimeType();
+            $originalFileName = $file->getClientOriginalName();
+        }
+
 
         $message = Chat::create([
             'teacher_id' => $currentClass?->teacher_id,
             'student_id' => $student->id,
             'message' => $request->input('massage'),
+            'file_path' => $filePath,
+            'file_type' => $fileType,
+            'original_file_name' => $originalFileName,
             'sender' => 'student',
         ]);
 
-        return $this->sendResponse([], 'Message send successfully');
-
+        return $this->sendResponse([], 'Message sent successfully');
     }
+
+
+    public function sendGroupMassage(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'massage' => 'nullable|min:2',
+            'file' => 'nullable|file|max:10240',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        if (!$request->has('massage') && !$request->hasFile('file')) {
+            return $this->sendError('Validation Error.', ['massage' => 'Please provide a message or upload a file.']);
+        }
+
+        $student = $request->user();
+
+        $currentClass = $student->studentClasses()->whereHas('YearClass', function ($query) {
+            $query->where('academic_year_id', getAdminActiveAcademicYearID())
+                ->whereHas('schoolClass', function ($query) {
+                    $query->where('archived', false);
+                });
+        })->first();
+
+        if (!$currentClass) {
+            return $this->sendError('The student is not registered in any class this year.');
+        }
+
+
+        $filePath = null;
+        $fileType = null;
+        $originalFileName = null;
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filePath = $file->store('chat_files', 'public');
+            $fileType = $file->getMimeType();
+            $originalFileName = $file->getClientOriginalName();
+        }
+
+        $message = GroupChat::create([
+            'student_id' => $student->id,
+            'year_class_id' => $currentClass->year_class_id,
+            'message' => $request->input('massage'),
+            'file_path' => $filePath,
+            'file_type' => $fileType,
+            'original_file_name' => $originalFileName,
+            'sender' => 'student',
+        ]);
+
+        return $this->sendResponse([], 'Message sent successfully');
+    }
+
 
     public function getMessages(Request $request)
     {
@@ -58,43 +134,6 @@ class ChatController extends BaseController
         $skip = $request->input('skip', 0);
         $messages = $student->chats()->latest()->skip($skip)->take(20)->get();
         return $this->sendResponse(ChatResource::collection($messages), 'Messages Data');
-    }
-
-
-
-    public function sendGroupMassage(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'massage' => 'required|min:2',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
-
-        $student = $request->user();
-
-        $currentClass = $student->studentClasses()->whereHas('YearClass', function ($query) {
-            $query->where('academic_year_id', getAdminActiveAcademicYearID())
-                ->whereHas('schoolClass', function ($query) {
-                    $query->where('archived', false);
-                });
-        })->get()->first();
-
-        if (!$currentClass) {
-            return $this->sendError('The Student Not Register To Any Class This Year.');
-        }
-
-        $message = GroupChat::create([
-            'student_id' => $student->id,
-            'year_class_id' => $currentClass->year_class_id,
-            'message' => $request->input('massage'),
-            'sender' => 'student',
-        ]);
-
-
-        return $this->sendResponse([], 'Message send successfully');
-
     }
 
     public function getGroupMessages(Request $request)
@@ -110,7 +149,6 @@ class ChatController extends BaseController
         $messages = ChatResource::collection($chats);
         return $this->sendResponse([$messages], 'Messages Data');
     }
-
 
     public function isChatActive(Request $request)
     {

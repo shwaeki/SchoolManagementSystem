@@ -95,7 +95,8 @@
                                                 <span
                                                     class="user-meta-time">{{$class->chats()?->latest()->first()?->created_at?->diffForHumans()}}</span>
                                             </div>
-                                            <span class="preview">{{ $class->chats()?->latest()->first()?->message }}  </span>
+                                            <span
+                                                class="preview">{{ $class->chats()?->latest()->first()?->message }}  </span>
                                         </div>
                                     </div>
                                 </div>
@@ -146,11 +147,61 @@
 
                             <div id="chat-conversation-box-scroll" class="chat-conversation-box-scroll">
                                 <div class="chat active-chat" id="main-chat">
-                                    @foreach($selectedStudent?->chats as $message)
+                                    @if(count($messages) >= $messageLimit)
+                                        <div class="text-center mb-3">
+                                            <button class="btn btn-link" wire:click="loadMore">عرض المزيد</button>
+                                        </div>
+                                    @endif
+
+                                    @foreach($messages as $message)
                                         <div class="d-flex flex-column">
                                             <div
                                                 class="{{ $message->sender == "student" ? 'bubble you' : 'bubble me' }} mb-0">
                                                 {{$message->message}}
+
+                                                @if($message->file_path)
+                                                    @if(strpos($message->file_type, 'image') !== false)
+                                                        <!-- Image: Display in Lightbox -->
+                                                        <div>
+                                                            <a href="{{ asset(Storage::url($message->file_path)) }}"
+                                                               data-lightbox="chat-images">
+                                                                <img
+                                                                    src="{{ asset(Storage::url($message->file_path)) }}"
+                                                                    alt="Image" style="max-width: 200px;">
+                                                            </a>
+                                                        </div>
+                                                    @elseif(strpos($message->file_type, 'pdf') !== false)
+                                                        <div>
+                                                            <a href="{{ Storage::url($message->file_path) }}"
+                                                               class="text-white" download>
+                                                                <i class="fas fa-file-pdf"></i> {{ $message->original_file_name ?? 'Show File' }}
+                                                            </a>
+                                                        </div>
+                                                    @elseif(strpos($message->file_type, 'word') !== false || strpos($message->file_type, 'document') !== false)
+                                                        <div>
+                                                            <a href="{{ Storage::url($message->file_path) }}"
+                                                               class="text-white" download>
+                                                                <i class="fas fa-file-word"></i> {{ $message->original_file_name ?? 'Download File' }}
+                                                            </a>
+                                                        </div>
+                                                    @elseif(strpos($message->file_type, 'excel') !== false || strpos($message->file_type, 'spreadsheet') !== false)
+                                                        <div>
+                                                            <a href="{{ Storage::url($message->file_path) }}"
+                                                               class="text-white" download>
+                                                                <i class="fas fa-file-excel"></i> {{ $message->original_file_name ?? 'Download File' }}
+                                                            </a>
+                                                        </div>
+                                                    @else
+                                                        <div>
+                                                            <a href="{{ Storage::url($message->file_path) }}"
+                                                               class="text-white" download>
+                                                                <i class="fas fa-file-alt"></i> {{ $message->original_file_name ?? 'Download File' }}
+                                                            </a>
+                                                        </div>
+                                                    @endif
+                                                @endif
+
+
                                             </div>
                                             <p class="mt-1 ms-2 small {{ $message->sender == "student" ? 'text-start' : 'text-end' }}">
                                                 {{$message->created_at_human}}
@@ -163,18 +214,50 @@
                         <div class="chat-footer chat-active">
                             <div class="chat-input">
                                 <form class="chat-form" id="chat-form" wire:submit.prevent="sendStudentMessage">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                         stroke-linecap="round" stroke-linejoin="round"
-                                         class="feather feather-message-square">
-                                        <path
-                                            d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                                    </svg>
-                                    <input type="text" class="mail-write-box form-control"
-                                           wire:model.defer="message" id="message-input"
-                                           data-student="" placeholder="الرسالة"/>
+                                    <div class="d-flex align-items-center">
+
+                                        <div class="flex-grow-0  me-2">
+                                            <div class="btn btn-light">
+                                                <label for="file-input" class="file-upload-label mb-0">
+                                                    <i class="fas fa-paperclip fa-lg"></i>
+                                                </label>
+                                                <input type="file" id="file-input" wire:model="file"
+                                                       class="file-upload-input"/>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="flex-grow-1 me-2">
+                                            <input type="text" class="mail-write-box form-control"
+                                                   wire:model.defer="message" placeholder="اكتب رسالة"/>
+                                            @error('message')
+                                            <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="flex-grow-0">
+                                            <button type="submit" class="btn btn-primary btn-lg">ارسال</button>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            @if($file)
+                                                <p class="mt-2">الملف المرفق : {{ $file->getClientOriginalName() }}</p>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <!-- Loading Indicator -->
+                                    <div wire:loading wire:target="file" class="mt-2">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
+
                         </div>
                     </div>
                 @endif
@@ -199,17 +282,65 @@
 
                         <div id="chat-conversation-box-scroll" class="chat-conversation-box-scroll">
                             <div class="chat active-chat" id="main-chat">
-                                @foreach($selectedClass?->chats ?? [] as $message)
+                                @if(count($messages) >= $messageLimit)
+                                    <div class="text-center mb-3">
+                                        <button class="btn btn-link" wire:click="loadMore">عرض المزيد</button>
+                                    </div>
+                                @endif
+
+                                    @foreach($messages as $message)
                                     <div class="d-flex flex-column">
                                         <div
                                             class="{{ $message->sender == "student" ? 'bubble you' : 'bubble me' }} mb-0">
                                             {{$message->message}}
+                                            @if($message->file_path)
+                                                @if(strpos($message->file_type, 'image') !== false)
+                                                    <!-- Image: Display in Lightbox -->
+                                                    <div>
+                                                        <a href="{{ asset(Storage::url($message->file_path)) }}"
+                                                           data-lightbox="chat-images">
+                                                            <img
+                                                                src="{{ asset(Storage::url($message->file_path)) }}"
+                                                                alt="Image" style="max-width: 200px;">
+                                                        </a>
+                                                    </div>
+                                                @elseif(strpos($message->file_type, 'pdf') !== false)
+                                                    <div>
+                                                        <a href="{{ Storage::url($message->file_path) }}"
+                                                           class="text-white" download>
+                                                            <i class="fas fa-file-pdf"></i> {{ $message->original_file_name ?? 'Show File' }}
+                                                        </a>
+                                                    </div>
+                                                @elseif(strpos($message->file_type, 'word') !== false || strpos($message->file_type, 'document') !== false)
+                                                    <div>
+                                                        <a href="{{ Storage::url($message->file_path) }}"
+                                                           class="text-white" download>
+                                                            <i class="fas fa-file-word"></i> {{ $message->original_file_name ?? 'Download File' }}
+                                                        </a>
+                                                    </div>
+                                                @elseif(strpos($message->file_type, 'excel') !== false || strpos($message->file_type, 'spreadsheet') !== false)
+                                                    <div>
+                                                        <a href="{{ Storage::url($message->file_path) }}"
+                                                           class="text-white" download>
+                                                            <i class="fas fa-file-excel"></i> {{ $message->original_file_name ?? 'Download File' }}
+                                                        </a>
+                                                    </div>
+                                                @else
+                                                    <div>
+                                                        <a href="{{ Storage::url($message->file_path) }}"
+                                                           class="text-white" download>
+                                                            <i class="fas fa-file-alt"></i> {{ $message->original_file_name ?? 'Download File' }}
+                                                        </a>
+                                                    </div>
+                                                @endif
+                                            @endif
+
                                         </div>
                                         <p class="mt-1 ms-2 small {{ $message->sender == "student" ? 'text-start' : 'text-end' }}">
                                             @if($message->sender == "student")
                                                 {{ $message->student->name }} -
                                             @endif
-                                           <span class="small fst-italic"> {{$message->created_at_human}}</span>
+                                            <span class="small fst-italic"> {{$message->created_at_human}}</span>
                                         </p>
                                     </div>
                                 @endforeach
@@ -217,18 +348,50 @@
                         </div>
                     </div>
                     <div class="chat-footer chat-active">
+
                         <div class="chat-input">
                             <form class="chat-form" id="chat-form" wire:submit.prevent="sendClassMessage">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                     stroke-linecap="round" stroke-linejoin="round"
-                                     class="feather feather-message-square">
-                                    <path
-                                        d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                                </svg>
-                                <input type="text" class="mail-write-box form-control"
-                                       wire:model.defer="message" id="message-input"
-                                       data-student="" placeholder="الرسالة"/>
+                                <div class="d-flex align-items-center">
+
+                                    <div class="flex-grow-0  me-2">
+                                        <div class="btn btn-light">
+                                            <label for="file-input" class="file-upload-label mb-0">
+                                                <i class="fas fa-paperclip fa-lg"></i>
+                                            </label>
+                                            <input type="file" id="file-input" wire:model="file"
+                                                   class="file-upload-input"/>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="flex-grow-1 me-2">
+                                        <input type="text" class="mail-write-box form-control"
+                                               wire:model.defer="message" placeholder="اكتب رسالة"/>
+                                        @error('message')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="flex-grow-0">
+                                        <button type="submit" class="btn btn-primary btn-lg">ارسال</button>
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        @if($file)
+                                            <p class="mt-2">الملف المرفق : {{ $file->getClientOriginalName() }}</p>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <!-- Loading Indicator -->
+                                <div wire:loading wire:target="file" class="mt-2">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>

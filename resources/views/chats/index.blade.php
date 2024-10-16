@@ -3,6 +3,8 @@
 @push('styles')
     <link href="{{ asset("assets/css/light/apps/chat.css")  }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset("assets/css/dark/apps/chat.css")  }}" rel="stylesheet" type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+
     <style>
         #loading-indicator {
             position: absolute;
@@ -17,6 +19,19 @@
             justify-content: center;
             align-items: center;
         }
+
+        .file-upload-input {
+            display: none;
+        }
+
+        .file-upload-label {
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #4361ee;
+        }
+
+
+
     </style>
 @endpush
 
@@ -65,6 +80,8 @@
 
 
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+
 
     <script>
         document.addEventListener('livewire:load', function () {

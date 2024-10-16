@@ -17,3 +17,19 @@ ALTER TABLE `student_attendances` DROP `year_class_id`;
 ALTER TABLE `students` ADD `archived` TINYINT(1) NOT NULL DEFAULT '0' AFTER `can_login`;
 ALTER TABLE `teachers` ADD `archived` TINYINT(1) NOT NULL DEFAULT '0' AFTER `school_class_id`;
 ALTER TABLE `school_classes` ADD `archived` TINYINT(1) NOT NULL DEFAULT '0' AFTER `added_by`;
+
+#   16/10/2024
+ALTER TABLE `chats` ADD `file_type` VARCHAR(255) NULL AFTER `sender`, ADD `file_path` VARCHAR(255) NULL AFTER `file_type`;
+ALTER TABLE `group_chats` ADD `file_type` VARCHAR(255) NULL AFTER `sender`, ADD `file_path` VARCHAR(255) NULL AFTER `file_type`;
+ALTER TABLE `chats` ADD `original_file_name` VARCHAR(255) NULL AFTER `file_path`;
+ALTER TABLE `group_chats` ADD `original_file_name` VARCHAR(255) NULL AFTER `file_path`;
+
+
+
+
+
+
+
+
+
+
