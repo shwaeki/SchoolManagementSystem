@@ -55,10 +55,11 @@ class ChatController extends BaseController
     public function getMessages(Request $request)
     {
         $student = $request->user();
-
-        $messages = ChatResource::collection($student->chats);
-        return $this->sendResponse([$messages], 'Messages Data');
+        $skip = $request->input('skip', 0);
+        $messages = $student->chats()->latest()->skip($skip)->take(20)->get();
+        return $this->sendResponse(ChatResource::collection($messages), 'Messages Data');
     }
+
 
 
     public function sendGroupMassage(Request $request)
