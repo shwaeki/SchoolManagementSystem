@@ -71,7 +71,9 @@
                                                     <span
                                                         class="user-meta-time">{{$chat->created_at?->diffForHumans()}}</span>
                                                 </div>
-                                                <span class="preview">{{$chat->message}}</span>
+                                                <span class="preview">
+                                                    {{ Str::limit(str_replace(["\r", "\n"], '', $chat->message), 40) }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -95,8 +97,10 @@
                                                 <span
                                                     class="user-meta-time">{{$class->chats()?->latest()->first()?->created_at?->diffForHumans()}}</span>
                                             </div>
-                                            <span
-                                                class="preview">{{ $class->chats()?->latest()->first()?->message }}  </span>
+                                            <span class="preview">
+                                                {{ Str::limit(str_replace(["\r", "\n"], '', $class->chats()?->latest()->first()?->message), 40) }}
+                                            </span>
+
                                         </div>
                                     </div>
                                 </div>
@@ -229,14 +233,20 @@
 
                                         <div class="flex-grow-1 me-2">
                                             <input type="text" class="mail-write-box form-control"
-                                                   wire:model.defer="message" placeholder="اكتب رسالة"/>
+                                                   wire:model.defer="message"
+                                                   @keydown.enter.prevent="sendStudentMessage"
+                                                   placeholder="اكتب رسالة"/>
                                             @error('message')
                                             <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
 
                                         <div class="flex-grow-0">
-                                            <button type="submit" class="btn btn-primary btn-lg">ارسال</button>
+                                            <button type="submit"
+                                                    wire:loading.attr="disabled"
+                                                    wire:target="file"
+                                                    class="btn btn-primary btn-lg">ارسال
+                                            </button>
                                         </div>
 
 
@@ -288,7 +298,7 @@
                                     </div>
                                 @endif
 
-                                    @foreach($messages as $message)
+                                @foreach($messages as $message)
                                     <div class="d-flex flex-column">
                                         <div
                                             class="{{ $message->sender == "student" ? 'bubble you' : 'bubble me' }} mb-0">
@@ -366,14 +376,20 @@
 
                                     <div class="flex-grow-1 me-2">
                                         <input type="text" class="mail-write-box form-control"
-                                               wire:model.defer="message" placeholder="اكتب رسالة"/>
+                                               wire:model.defer="message"
+                                               @keydown.enter.prevent="sendClassMessage"
+                                               placeholder="اكتب رسالة"/>
                                         @error('message')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <div class="flex-grow-0">
-                                        <button type="submit" class="btn btn-primary btn-lg">ارسال</button>
+                                        <button type="submit"
+                                                wire:loading.attr="disabled"
+                                                wire:target="file"
+                                                class="btn btn-primary btn-lg">ارسال
+                                        </button>
                                     </div>
 
 
