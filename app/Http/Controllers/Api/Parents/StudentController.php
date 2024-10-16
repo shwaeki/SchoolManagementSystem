@@ -8,9 +8,13 @@ use App\Http\Resources\PostResource;
 use App\Http\Resources\StudentClassResource;
 use App\Models\AcademicYear;
 use App\Models\DailyProgram;
+use App\Models\Message;
 use App\Models\Otp;
 use App\Models\Post;
+use App\Models\Product;
+use App\Models\Report;
 use App\Models\Student;
+use App\Models\YearClass;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -61,10 +65,10 @@ class StudentController extends BaseController
                 return $this->sendError([], 'Student is not register to any class', 401);
             }
 
-            if($student->id == 788){
+            if ($student->id == 788) {
                 $code = 123456;
-                Otp::updateOrCreate(['student_id' => $student->id],['phone' => $phone, 'code' => $code] );
-            }else{
+                Otp::updateOrCreate(['student_id' => $student->id], ['phone' => $phone, 'code' => $code]);
+            } else {
                 $student->generateCode($phone);
             }
 
@@ -297,6 +301,34 @@ class StudentController extends BaseController
         $student->likedPosts()->attach($post);
         return $this->sendResponse([], 'The post was successfully liked.');
 
+    }
+
+
+    public function financialStatistics(Request $request)
+    {
+        $student = $request->user();
+
+        $current_student_class = $student->studentClasses()->whereHas('yearClass', function ($query) {
+            $query->where('academic_year_id', getAdminActiveAcademicYearID());
+        })->get()->first();
+
+
+        $student_purchases = $student->purchasesCurrentYear;
+        $student_payments = $student->paymentsCurrentYear;
+
+        $data = [
+            "total_student_purchases" => $student_purchases?->sum('price'),
+            "total_student_payments" => $student_payments?->sum('amount'),
+            "register_fees" =>  $current_student_class?->register_fees ,
+            "study_fees" =>  $current_student_class?->study_fees ,
+            "student_balance" => ($student_purchases?->sum('price') + $current_student_class?->register_fees + $current_student_class?->study_fees) - $student_payments?->sum('amount'),
+            "student_purchases" => $student_purchases,
+            "student_payments" => $student_payments,
+        ];
+
+
+
+        return $this->sendResponse($data, 'Student Financial Statistics Data');
     }
 
 }

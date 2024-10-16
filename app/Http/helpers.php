@@ -121,7 +121,11 @@ if (!function_exists('sendSmsBulk')) {
 if (!function_exists('getUserActiveAcademicYearID')) {
     function getUserActiveAcademicYearID()
     {
-        return Session::get('activeAcademicYear')->id;
+        if (Session::get('activeAcademicYear') != null && Session::get('activeAcademicYear')->id != null) {
+            return Session::get('activeAcademicYear')->id;
+        }
+        return getAdminActiveAcademicYearID();
+
     }
 }
 
