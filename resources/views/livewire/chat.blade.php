@@ -117,7 +117,7 @@
 
         </div>
 
-        <div class="chat-box" wire:poll.5s="refreshChats">
+        <div class="chat-box" wire:poll.500s="refreshChats">
 
             @if($chatType == 'student')
                 @if(empty($selectedStudent))
@@ -220,25 +220,30 @@
                                 <form class="chat-form" id="chat-form" wire:submit.prevent="sendStudentMessage">
                                     <div class="d-flex align-items-center">
 
-                                        <div class="flex-grow-0  me-2">
-                                            <div class="btn btn-light">
-                                                <label for="file-input" class="file-upload-label mb-0">
+                                        <div class="flex-grow-0 me-2">
+                                            <div class="btn btn-light p-0" wire:target="file"
+                                                 wire:loading.attr="disabled">
+                                                <label for="file-input" class="file-upload-label p-2 mb-0">
+                                                <span wire:loading.remove wire:target="file">
                                                     <i class="fas fa-paperclip fa-lg"></i>
+                                                </span>
+                                                    <span wire:loading wire:target="file">
+                                                    <span class="spinner-border text-primary" role="status"></span>
+                                                </span>
+
                                                 </label>
                                                 <input type="file" id="file-input" wire:model="file"
-                                                       class="file-upload-input"/>
+                                                       class="file-upload-input" wire:target="file"
+                                                       wire:loading.attr="disabled"/>
                                             </div>
-
                                         </div>
+
 
                                         <div class="flex-grow-1 me-2">
                                             <input type="text" class="mail-write-box form-control"
                                                    wire:model.defer="message"
                                                    @keydown.enter.prevent="sendStudentMessage"
                                                    placeholder="اكتب رسالة"/>
-                                            @error('message')
-                                            <span class="text-danger">{{ $message }}</span>
-                                            @enderror
                                         </div>
 
                                         <div class="flex-grow-0">
@@ -254,20 +259,24 @@
                                     <div class="row">
                                         <div class="col-12">
                                             @if($file)
-                                                <p class="mt-2">الملف المرفق : {{ $file->getClientOriginalName() }}</p>
-                                            @endif
-                                        </div>
-                                    </div>
+                                                <p class="mt-1 mb-0">
+                                                    <button type="button"
+                                                            class="btn btn-danger py-0 px-1 rounded-pill me-2"
+                                                            wire:click="removeFile">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
 
-                                    <!-- Loading Indicator -->
-                                    <div wire:loading wire:target="file" class="mt-2">
-                                        <div class="spinner-border text-primary" role="status">
-                                            <span class="visually-hidden">Loading...</span>
+                                                    الملف المرفق : {{ $file->getClientOriginalName() }}
+                                                </p>
+                                            @endif
+
+                                            @error('message')
+                                                <p class="mt-1 mb-0 text-danger">{{ $message }}</p>
+                                            @enderror
                                         </div>
                                     </div>
                                 </form>
                             </div>
-
                         </div>
                     </div>
                 @endif
@@ -358,30 +367,34 @@
                         </div>
                     </div>
                     <div class="chat-footer chat-active">
-
                         <div class="chat-input">
                             <form class="chat-form" id="chat-form" wire:submit.prevent="sendClassMessage">
                                 <div class="d-flex align-items-center">
 
-                                    <div class="flex-grow-0  me-2">
-                                        <div class="btn btn-light">
-                                            <label for="file-input" class="file-upload-label mb-0">
-                                                <i class="fas fa-paperclip fa-lg"></i>
+                                    <div class="flex-grow-0 me-2">
+                                        <div class="btn btn-light p-0" wire:target="file"
+                                             wire:loading.attr="disabled">
+                                            <label for="file-input" class="file-upload-label p-2 mb-0">
+                                                <span wire:loading.remove wire:target="file">
+                                                    <i class="fas fa-paperclip fa-lg"></i>
+                                                </span>
+                                                <span wire:loading wire:target="file">
+                                                    <span class="spinner-border text-primary" role="status"></span>
+                                                </span>
+
                                             </label>
                                             <input type="file" id="file-input" wire:model="file"
-                                                   class="file-upload-input"/>
+                                                   class="file-upload-input" wire:target="file"
+                                                   wire:loading.attr="disabled"/>
                                         </div>
-
                                     </div>
+
 
                                     <div class="flex-grow-1 me-2">
                                         <input type="text" class="mail-write-box form-control"
                                                wire:model.defer="message"
                                                @keydown.enter.prevent="sendClassMessage"
                                                placeholder="اكتب رسالة"/>
-                                        @error('message')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
                                     </div>
 
                                     <div class="flex-grow-0">
@@ -397,15 +410,20 @@
                                 <div class="row">
                                     <div class="col-12">
                                         @if($file)
-                                            <p class="mt-2">الملف المرفق : {{ $file->getClientOriginalName() }}</p>
-                                        @endif
-                                    </div>
-                                </div>
+                                            <p class="mt-1 mb-0">
+                                                <button type="button"
+                                                        class="btn btn-danger py-0 px-1 rounded-pill me-2"
+                                                        wire:click="removeFile">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
 
-                                <!-- Loading Indicator -->
-                                <div wire:loading wire:target="file" class="mt-2">
-                                    <div class="spinner-border text-primary" role="status">
-                                        <span class="visually-hidden">Loading...</span>
+                                                الملف المرفق : {{ $file->getClientOriginalName() }}
+                                            </p>
+                                        @endif
+
+                                        @error('message')
+                                        <p class="mt-1 mb-0 text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                             </form>

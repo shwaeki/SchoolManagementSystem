@@ -99,18 +99,11 @@
             }
         }
 
-
-        $('#chat-form').on('submit', function (event) {
-            event.preventDefault();
-            console.log("test");
-            $('#message-input').val('');
-        });
     </script>
 
 
     <script src="{{ asset("assets/js/apps/chat.js")  }}"></script>
     <script>
-        //    new PerfectScrollbar('.people', {suppressScrollX: true});
 
         $("#startChat").click(function () {
             var student_id = $('#student').val()
@@ -140,14 +133,6 @@
 
 
         Livewire.on('chat-new-message', message => {
-            let bubbleClass = message.sender === 'student' ? 'bubble you' : 'bubble me';
-            let dateAlignmentClass = message.sender === 'student' ? 'text-start' : 'text-end';
-
-            $('#main-chat').append(`
-            <div class="d-flex flex-column">
-                <div class="${bubbleClass} mb-0">${message.message}</div>
-                <p class="mt-1 ms-2 small ${dateAlignmentClass}">${message.created_at_human}</p>
-            </div>`);
             scrollToBottom();
         });
 
@@ -162,8 +147,6 @@
         });
 
         function scrollToBottom() {
-            //     new PerfectScrollbar('.people', {suppressScrollX: true});
-            //     new PerfectScrollbar('.chat-conversation-box', {suppressScrollX: true});
             var getScrollContainer = $('.chat-conversation-box');
             getScrollContainer.scrollTop(getScrollContainer.get(0).scrollHeight);
         }

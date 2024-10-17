@@ -266,6 +266,13 @@ class Chat extends Component
         SendNotificationJob::dispatch('topic', $topic, 'رسالة جديدة', 'تم ارسال رسالة جديدة');
     }
 
+    public function removeFile()
+    {
+        $this->file = null;
+        $this->reset('file');
+    }
+
+
     private function resetChat()
     {
         $this->messages = [];
