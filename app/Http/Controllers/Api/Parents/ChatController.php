@@ -133,7 +133,7 @@ class ChatController extends BaseController
         $student = $request->user();
         $skip = $request->input('skip', 0);
         $messages = $student->chats()->latest()->skip($skip)->take(20)->get();
-        return $this->sendResponse(ChatResource::collection($messages), 'Messages Data');
+        return $this->sendResponse([ChatResource::collection($messages)], 'Messages Data');
     }
 
     public function getGroupMessages(Request $request)
@@ -144,7 +144,9 @@ class ChatController extends BaseController
             $query->where('academic_year_id', getAdminActiveAcademicYearID());
         })->get()->first();
 
-        $chats = $currentClass->YearClass->chats;
+
+        $skip = $request->input('skip', 0);
+        $chats = $currentClass->YearClass->chats()->latest()->skip($skip)->take(20)->get();
 
         $messages = ChatResource::collection($chats);
         return $this->sendResponse([$messages], 'Messages Data');
