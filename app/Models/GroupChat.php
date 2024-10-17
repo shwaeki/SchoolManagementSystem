@@ -36,7 +36,7 @@ class GroupChat extends Model
         if (!empty($this->file_path)) {
             return url(Storage::url($this->file_path));
         }
-        return false;
+        return null;
     }
 
     public function getCreatedAtHumanAttribute()
