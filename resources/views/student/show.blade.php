@@ -772,6 +772,7 @@
                                                 <th scope="col">السعر</th>
                                                 <th scope="col">اضيف بواسطة</th>
                                                 <th scope="col">تاريخ الاضافة</th>
+                                                <th scope="col"> خيارات</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -781,6 +782,17 @@
                                                     <td>{{$purchases->price}}₪</td>
                                                     <td>{{$purchases->addedBy->name}}</td>
                                                     <td>{{$purchases->created_at->format('Y-m-d')}}</td>
+                                                    <td>
+                                                        <button type="button" data-bs-toggle="modal"
+                                                                data-bs-target="#editYearClassModal"
+                                                                class="btn btn-light-warning text-warning">
+                                                            <i class="far fa-edit"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-light-danger text-danger"
+                                                                onclick="deleteItem(this)"
+                                                                data-item="{{route('purchases.destroy', $purchases)}}">
+                                                            <i class="far fa-trash-alt"></i></button>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                             </tbody>
@@ -1342,7 +1354,7 @@
                     <input type="text" class="form-control barcode" name="order[` + index + `][barcode]" placeholder="الباركود" value="` + barcode + `" required readonly>
                 </div>
                 <div class="col-3">
-                    <input type="text" class="form-control price" name="order[` + index + `][price]" placeholder="السعر" value="` + price + `" required readonly>
+                    <input type="text" class="form-control price" name="order[` + index + `][price]" placeholder="السعر" value="` + price + `" required>
                 </div>
                 <div class="col-2">
                     <button type="button" class="btn btn-danger w-100 h-100 delete">

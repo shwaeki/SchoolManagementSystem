@@ -25,6 +25,10 @@ ALTER TABLE `chats` ADD `original_file_name` VARCHAR(255) NULL AFTER `file_path`
 ALTER TABLE `group_chats` ADD `original_file_name` VARCHAR(255) NULL AFTER `file_path`;
 
 
+#   17/10/2024
+ALTER TABLE `payments` ADD `deleted_at` TIMESTAMP NULL AFTER `added_by`;
+ALTER TABLE `purchases` ADD `deleted_at` TIMESTAMP NULL AFTER `added_by`;
+
 
 
 

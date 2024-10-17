@@ -322,7 +322,7 @@ class StudentController extends BaseController
             "register_fees" =>  $current_student_class?->register_fees ,
             "study_fees" =>  $current_student_class?->study_fees ,
             "student_balance" => ($student_purchases?->sum('price') + $current_student_class?->register_fees + $current_student_class?->study_fees) - $student_payments?->sum('amount'),
-            "student_purchases" => $student_purchases,
+            "student_purchases" => $student->purchasesCurrentYear()->with(['product:id,name,description'])->get(),
             "student_payments" => $student_payments,
         ];
 

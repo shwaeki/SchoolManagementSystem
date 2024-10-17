@@ -12,29 +12,19 @@ use Illuminate\Support\Facades\Session;
 
 class PurchasesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StorePurchasesRequest $request)
     {
-
-
 
         DB::Transaction(function () {
             $products = request('order');
@@ -61,35 +51,29 @@ class PurchasesController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Purchases $purchases)
+
+    public function show(Purchases $purchase)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Purchases $purchases)
+
+    public function edit(Purchases $purchase)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePurchasesRequest $request, Purchases $purchases)
+
+    public function update(UpdatePurchasesRequest $request, Purchases $purchase)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Purchases $purchases)
+
+    public function destroy(Purchases $purchase)
     {
-        //
+        $purchase->delete();
+        Session::flash('message', 'تم حذف عملية الشراء بنجاح');
+        return redirect()->back();
     }
 }
