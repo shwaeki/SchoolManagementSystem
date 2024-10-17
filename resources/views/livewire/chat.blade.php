@@ -117,7 +117,7 @@
 
         </div>
 
-        <div class="chat-box" wire:poll.500s="refreshChats">
+        <div class="chat-box" wire:poll.5s="refreshChats">
 
             @if($chatType == 'student')
                 @if(empty($selectedStudent))
