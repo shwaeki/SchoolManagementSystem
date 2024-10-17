@@ -783,11 +783,6 @@
                                                     <td>{{$purchases->addedBy->name}}</td>
                                                     <td>{{$purchases->created_at->format('Y-m-d')}}</td>
                                                     <td>
-                                                        <button type="button" data-bs-toggle="modal"
-                                                                data-bs-target="#editYearClassModal"
-                                                                class="btn btn-light-warning text-warning">
-                                                            <i class="far fa-edit"></i>
-                                                        </button>
                                                         <button type="button" class="btn btn-light-danger text-danger"
                                                                 onclick="deleteItem(this)"
                                                                 data-item="{{route('purchases.destroy', $purchases)}}">
