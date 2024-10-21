@@ -1,26 +1,25 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\Jobs\SendNotificationJob;
+use App\Models\Chat as ChatModel;
 use App\Models\GroupChat;
 use App\Models\Student;
-use App\Models\Chat as ChatModel;
 use App\Models\YearClass;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Livewire\Attributes\On;
 
 class Chat extends Component
 {
-    use WithFileUploads;
-    use WithPagination;
+    use WithFileUploads, WithPagination;
 
     public $messages = [];
     public $messageLimit = 30; // Start by loading 30 messages
-
 
     public $chatType = 'student';
     public $newChat = false;
@@ -32,14 +31,25 @@ class Chat extends Component
     public $year_classes;
     public $file;
 
-    protected $listeners = ['start-chat' => 'startNewChat'];
+    // Replaced $listeners array with #[On] attribute
+    #[On('start-chat')]
+    public function startNewChat($student_id)
+    {
+        if ($this->chats->where('student_id', $student_id)->isEmpty()) {
+            $this->newChat = true;
+        }
+
+        $this->selectedStudent = Student::findOrFail($student_id);
+        $this->message = '';
+        $this->resetChat();
+        $this->dispatch('chat-select-student');
+    }
 
     public function mount()
     {
         $this->userType = Auth::guard('teacher')->check() ? 'teacher' : 'admin';
         $this->refreshChats();
     }
-
 
     public function loadMessages()
     {
@@ -69,17 +79,7 @@ class Chat extends Component
         return view('livewire.chat');
     }
 
-    public function startNewChat($student_id)
-    {
-        if ($this->chats->where('student_id', $student_id)->isEmpty()) {
-            $this->newChat = true;
-        }
 
-        $this->selectedStudent = Student::findOrFail($student_id);
-        $this->message = '';
-        $this->resetChat();
-        $this->emit('chat-select-student');
-    }
 
     public function refreshChats()
     {
@@ -113,8 +113,6 @@ class Chat extends Component
             ->sortByDesc(function ($class) {
                 return $class->chats?->max('created_at');
             });
-
-
     }
 
     private function loadTeacherChats()
@@ -134,7 +132,6 @@ class Chat extends Component
             ->distinct('chats.id')
             ->limit(30)
             ->get();
-
 
         $this->year_classes = YearClass::whereHas('students', function ($query) {
             $query->where('supervisor', auth()->id());
@@ -161,7 +158,7 @@ class Chat extends Component
         $this->selectedClass = null;
         $this->message = '';
         $this->chatType = 'student';
-        $this->emit('chat-select-student');
+        $this->dispatch('chat-select-student');
         $this->loadMessages();
     }
 
@@ -172,7 +169,7 @@ class Chat extends Component
         $this->selectedClass = YearClass::findOrFail($id);
         $this->message = '';
         $this->chatType = 'class';
-        $this->emit('chat-select-class');
+        $this->dispatch('chat-select-class');
         $this->loadMessages();
     }
 
@@ -190,7 +187,6 @@ class Chat extends Component
             $this->addError('message', 'يرجى إدخال رسالة أو تحميل ملف.');
             return;
         }
-
 
         $filePath = null;
         $originalFileName = null;
@@ -214,7 +210,7 @@ class Chat extends Component
 
         $this->resetChat();
         $this->loadMessages();
-        $this->emit('chat-new-message', $message);
+        $this->dispatch('chat-new-message', $message);
 
         $token = $this->selectedStudent->device_token;
         if ($token) {
@@ -236,7 +232,6 @@ class Chat extends Component
             $this->addError('message', 'يرجى إدخال رسالة أو تحميل ملف.');
             return;
         }
-
 
         $filePath = null;
         $originalFileName = null;
@@ -260,7 +255,7 @@ class Chat extends Component
 
         $this->resetChat();
         $this->loadMessages();
-        $this->emit('chat-new-message', $message);
+        $this->dispatch('chat-new-message', $message);
 
         $topic = 'year_class_' . $this->selectedClass->id;
         SendNotificationJob::dispatch('topic', $topic, 'رسالة جديدة', 'تم ارسال رسالة جديدة');
@@ -272,7 +267,6 @@ class Chat extends Component
         $this->reset('file');
     }
 
-
     private function resetChat()
     {
         $this->messages = [];
@@ -283,5 +277,4 @@ class Chat extends Component
         $this->reset('file');
         $this->refreshChats();
     }
-
 }

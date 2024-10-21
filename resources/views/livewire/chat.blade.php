@@ -12,7 +12,6 @@
         <div class="user-list-box">
 
             <div class="simple-tab h-100">
-
                 <ul class="nav nav-tabs" wire:ignore>
                     <li class="nav-item flex-grow-1 d-flex" role="presentation">
                         <button class="nav-link flex-grow-1 py-3 rounded-0 active" data-bs-toggle="tab"
@@ -79,12 +78,9 @@
                                     </div>
                                 @endif
                             @endforeach
-
-
                         </div>
                     </div>
                     <div class="tab-pane fade h-100" id="group-tab-pane" wire:ignore.self>
-
                         <div class="people classes">
                             @foreach($year_classes as $class)
                                 <div
@@ -100,25 +96,17 @@
                                             <span class="preview">
                                                 {{ Str::limit(str_replace(["\r", "\n"], '', $class->chats()?->latest()->first()?->message), 40) }}
                                             </span>
-
                                         </div>
                                     </div>
                                 </div>
                             @endforeach
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
-
         </div>
 
         <div class="chat-box" wire:poll.5s="refreshChats">
-
             @if($chatType == 'student')
                 @if(empty($selectedStudent))
                     <div class="chat-not-selected">
@@ -135,12 +123,11 @@
                     <div class="chat-box-inner h-100">
                         <div class="chat-meta-user chat-active">
                             <div class="current-chat-user-name">
-                        <span>
-                            <img src="{{$selectedStudent->photo}}" alt="dynamic-image">
-                            <span class="name">{{$selectedStudent->name}}</span>
-                        </span>
+                                <span>
+                                    <img src="{{$selectedStudent->photo}}" alt="dynamic-image">
+                                    <span class="name">{{$selectedStudent->name}}</span>
+                                </span>
                             </div>
-
                         </div>
                         <div class="chat-conversation-box">
                             <div id="loading-indicator" style="display: none">
@@ -204,8 +191,6 @@
                                                         </div>
                                                     @endif
                                                 @endif
-
-
                                             </div>
                                             <p class="mt-1 ms-2 small {{ $message->sender == "student" ? 'text-start' : 'text-end' }}">
                                                 {{$message->created_at_human}}
@@ -217,20 +202,18 @@
                         </div>
                         <div class="chat-footer chat-active">
                             <div class="chat-input">
-                                <form class="chat-form" id="chat-form" wire:submit.prevent="sendStudentMessage">
+                                <form class="chat-form" wire:submit="sendStudentMessage">
                                     <div class="d-flex align-items-center">
-
                                         <div class="flex-grow-0 me-2">
                                             <div class="btn btn-light p-0" wire:target="file"
                                                  wire:loading.attr="disabled">
                                                 <label for="file-input" class="file-upload-label p-2 mb-0">
-                                                <span wire:loading.remove wire:target="file">
-                                                    <i class="fas fa-paperclip fa-lg"></i>
-                                                </span>
+                                                    <span wire:loading.remove wire:target="file">
+                                                        <i class="fas fa-paperclip fa-lg"></i>
+                                                    </span>
                                                     <span wire:loading wire:target="file">
-                                                    <span class="spinner-border text-primary" role="status"></span>
-                                                </span>
-
+                                                        <span class="spinner-border text-primary" role="status"></span>
+                                                    </span>
                                                 </label>
                                                 <input type="file" id="file-input" wire:model="file"
                                                        class="file-upload-input" wire:target="file"
@@ -238,11 +221,9 @@
                                             </div>
                                         </div>
 
-
                                         <div class="flex-grow-1 me-2">
                                             <input type="text" class="mail-write-box form-control"
                                                    wire:model.defer="message"
-                                                   @keydown.enter.prevent="sendStudentMessage"
                                                    placeholder="اكتب رسالة"/>
                                         </div>
 
@@ -253,8 +234,6 @@
                                                     class="btn btn-primary btn-lg">ارسال
                                             </button>
                                         </div>
-
-
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
@@ -265,13 +244,12 @@
                                                             wire:click="removeFile">
                                                         <i class="fas fa-times"></i>
                                                     </button>
-
                                                     الملف المرفق : {{ $file->getClientOriginalName() }}
                                                 </p>
                                             @endif
 
                                             @error('message')
-                                                <p class="mt-1 mb-0 text-danger">{{ $message }}</p>
+                                            <p class="mt-1 mb-0 text-danger">{{ $message }}</p>
                                             @enderror
                                         </div>
                                     </div>
@@ -282,15 +260,13 @@
                 @endif
 
             @else
-
                 <div class="chat-box-inner h-100">
                     <div class="chat-meta-user chat-active">
                         <div class="current-chat-user-name">
-                        <span>
-                            <span class="name">{{$selectedClass->schoolClass?->name}}</span>
-                        </span>
+                            <span>
+                                <span class="name">{{$selectedClass->schoolClass?->name}}</span>
+                            </span>
                         </div>
-
                     </div>
                     <div class="chat-conversation-box">
                         <div id="loading-indicator" style="display: none">
@@ -353,7 +329,6 @@
                                                     </div>
                                                 @endif
                                             @endif
-
                                         </div>
                                         <p class="mt-1 ms-2 small {{ $message->sender == "student" ? 'text-start' : 'text-end' }}">
                                             @if($message->sender == "student")
@@ -368,9 +343,8 @@
                     </div>
                     <div class="chat-footer chat-active">
                         <div class="chat-input">
-                            <form class="chat-form" id="chat-form" wire:submit.prevent="sendClassMessage">
+                            <form class="chat-form"  wire:submit="sendClassMessage">
                                 <div class="d-flex align-items-center">
-
                                     <div class="flex-grow-0 me-2">
                                         <div class="btn btn-light p-0" wire:target="file"
                                              wire:loading.attr="disabled">
@@ -381,7 +355,6 @@
                                                 <span wire:loading wire:target="file">
                                                     <span class="spinner-border text-primary" role="status"></span>
                                                 </span>
-
                                             </label>
                                             <input type="file" id="file-input" wire:model="file"
                                                    class="file-upload-input" wire:target="file"
@@ -389,11 +362,9 @@
                                         </div>
                                     </div>
 
-
                                     <div class="flex-grow-1 me-2">
                                         <input type="text" class="mail-write-box form-control"
                                                wire:model.defer="message"
-                                               @keydown.enter.prevent="sendClassMessage"
                                                placeholder="اكتب رسالة"/>
                                     </div>
 
@@ -404,8 +375,6 @@
                                                 class="btn btn-primary btn-lg">ارسال
                                         </button>
                                     </div>
-
-
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
@@ -416,7 +385,6 @@
                                                         wire:click="removeFile">
                                                     <i class="fas fa-times"></i>
                                                 </button>
-
                                                 الملف المرفق : {{ $file->getClientOriginalName() }}
                                             </p>
                                         @endif
@@ -431,8 +399,6 @@
                     </div>
                 </div>
             @endif
-
-
         </div>
     </div>
 </div>

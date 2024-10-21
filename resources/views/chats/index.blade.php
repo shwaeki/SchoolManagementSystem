@@ -29,17 +29,12 @@
             font-size: 1.2rem;
             color: #4361ee;
         }
-
-
-
     </style>
 @endpush
-
 
 @section('content')
     <div class="chat-section layout-top-spacing">
         <div class="row">
-
             <div class="col-xl-12 col-lg-12 col-md-12">
                 @livewire('chat')
             </div>
@@ -66,7 +61,6 @@
                                 </option>
                             @endforeach
                         </select>
-
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -78,14 +72,28 @@
     </div>
 @endsection
 
-
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
-
+    <script src="{{ asset("assets/js/apps/chat.js") }}"></script>
 
     <script>
         document.addEventListener('livewire:load', function () {
             scrollChatToBottom();
+
+            Livewire.on('chat-new-message', message => {
+                scrollToBottom();
+            });
+
+            Livewire.on('chat-select-student', () => {
+                $("#loading-indicator").hide();
+                scrollToBottom();
+            });
+
+            Livewire.on('chat-select-class', () => {
+                $("#loading-indicator").hide();
+                scrollToBottom();
+            });
+
         });
 
         document.addEventListener('livewire:update', function () {
@@ -99,26 +107,20 @@
             }
         }
 
-    </script>
-
-
-    <script src="{{ asset("assets/js/apps/chat.js")  }}"></script>
-    <script>
-
         $("#startChat").click(function () {
-            var student_id = $('#student').val()
+            var student_id = $('#student').val();
 
             if (!student_id) {
                 swal.fire({
                     icon: 'error',
-                    title: 'خطأ',
+                    title: 'خطأ',
                     text: 'الرجاء تحديد الطالب',
-                })
+                });
                 return;
             }
-            Livewire.emit('start-chat', student_id);
-            $("#newChatModal").modal("hide");
 
+            Livewire.dispatch('start-chat', {student_id: student_id});
+            $("#newChatModal").modal("hide");
         });
 
         $(document).on('click', '.selectStudent', function (event) {
@@ -131,20 +133,6 @@
             $('#main-chat').empty();
         });
 
-
-        Livewire.on('chat-new-message', message => {
-            scrollToBottom();
-        });
-
-        Livewire.on('chat-select-student', () => {
-            $("#loading-indicator").hide();
-            scrollToBottom();
-        });
-
-        Livewire.on('chat-select-class', () => {
-            $("#loading-indicator").hide();
-            scrollToBottom();
-        });
 
         function scrollToBottom() {
             var getScrollContainer = $('.chat-conversation-box');

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
+
+use App\Models\Attendance;
 use Carbon\Carbon;
 use Livewire\Component;
-use App\Models\Attendance;
 
 class AttendanceComponent extends Component
 {

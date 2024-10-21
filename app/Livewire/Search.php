@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\Models\Student;
 use App\Models\StudentRequest;
 use App\Models\Teacher;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Search extends Component
 {
-
-
-    protected $listeners = ['changeStatus'];
     public $searchStatus = true;
     public $query;
     public $data;
@@ -30,7 +28,7 @@ class Search extends Component
         $this->data['teachers'] = [];
     }
 
-
+    #[On('changeStatus')]
     function changeStatus($status)
     {
         $this->searchStatus = $status;
@@ -69,7 +67,7 @@ class Search extends Component
 
     public function searchForm()
     {
-      //  return redirect()->route('search',['q'=> $this->query]);
+        //  return redirect()->route('search',['q'=> $this->query]);
         return '';
     }
 

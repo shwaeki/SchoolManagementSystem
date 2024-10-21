@@ -86,8 +86,6 @@
     <link href="{{ asset("assets/css/style.css?v=1.0")  }}" rel="stylesheet" type="text/css"/>
 
 
-    @livewireStyles
-
     @stack('styles')
 
     <style>
@@ -948,7 +946,6 @@
     @method('PUT')
 </form>
 
-@livewireScripts
 <script src="{{ asset("assets/plugins/src/global/vendors.min.js") }}"></script>
 <script src="{{ asset("assets/bootstrap/js/bootstrap.bundle.min.js") }}"></script>
 <script src="{{ asset("assets/plugins/src/perfect-scrollbar/perfect-scrollbar.min.js") }}"></script>

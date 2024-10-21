@@ -32,7 +32,7 @@
     </div>
 
 
-    <input type="hidden" wire:model="location" id="location">
+    <input type="hidden" wire:model.live="location" id="location">
 
     <script>
         function getLocation() {
@@ -63,7 +63,7 @@
             }
         }
 
-        document.addEventListener("livewire:load", function () {
+        document.addEventListener("livewire:init", function () {
             getLocation();
         });
     </script>
