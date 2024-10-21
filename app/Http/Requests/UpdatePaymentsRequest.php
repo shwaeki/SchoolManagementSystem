@@ -24,7 +24,6 @@ class UpdatePaymentsRequest extends FormRequest
         return [
             'payment_way' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
-            'data' => 'required|data',
         ];
     }
 }

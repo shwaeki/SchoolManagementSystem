@@ -55,11 +55,9 @@ class PaymentsController extends Controller
             ]);
 
 
-
-            $current_student_class = $student->studentClasses()->whereHas('yearClass', function ($query)  {
+            $current_student_class = $student->studentClasses()->whereHas('yearClass', function ($query) {
                 $query->where('academic_year_id', getAdminActiveAcademicYearID());
             })->get()->first();
-
 
 
             $mother_phone = $student->mother_phone;
@@ -92,35 +90,42 @@ class PaymentsController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Payments $payments)
+
+    public function update(UpdatePaymentsRequest $request, Payments $payment)
     {
-        //
+
+        DB::Transaction(function () use ($payment) {
+            $payment->update([
+                'payment_for' => request('payment_for'),
+                'payment_way' => request('payment_way'),
+                'amount' => request('amount'),
+                'payment_date' => request('payment_date'),
+            ]);
+
+
+            $payment->student->update([
+                'balance' => (($payment->student->balance - $payment->amount) + request('amount')),
+            ]);
+
+        });
+
+
+        Session::flash('message', 'تم تعديل الدفعة بنجاح');
+        return redirect()->back();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Payments $payments)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePaymentsRequest $request, Payments $payments)
+    public function destroy(Payments $payment)
     {
-        //
-    }
+        DB::Transaction(function () use ($payment) {
+            $payment->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Payments $payments)
-    {
-        //
+            $payment->student->update([
+                'balance' => ($payment->student->balance - $payment->amount),
+            ]);
+        });
+
+        Session::flash('message', 'تم حذف الدفة بنجاح');
+        return redirect()->back();
     }
 }

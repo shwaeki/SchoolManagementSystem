@@ -749,7 +749,7 @@
 
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 layout-spacing">
+                        <div class="col-12 col-md-12 layout-spacing">
                             <form class="section general-info">
                                 <div class="info">
 
@@ -783,6 +783,13 @@
                                                     <td>{{$purchases->addedBy->name}}</td>
                                                     <td>{{$purchases->created_at->format('Y-m-d')}}</td>
                                                     <td>
+                                                        <button type="button" data-id="{{ $purchases->id }}"
+                                                                data-product="{{ $purchases->product->name }}"
+                                                                data-price="{{ $purchases->price }}"
+                                                                class="btn btn-light-warning text-warning edit-purchase">
+                                                            <i class="far fa-edit"></i>
+                                                        </button>
+
                                                         <button type="button" class="btn btn-light-danger text-danger"
                                                                 onclick="deleteItem(this)"
                                                                 data-item="{{route('purchases.destroy', $purchases)}}">
@@ -797,7 +804,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="col-12 col-md-6 layout-spacing">
+                        <div class="col-12 col-md-12 layout-spacing">
                             <form class="section general-info">
                                 <div class="info">
 
@@ -821,6 +828,7 @@
                                                 <th scope="col"> نوع الدفع</th>
                                                 <th scope="col">اضيف بواسطة</th>
                                                 <th scope="col">تاريخ الاضافة</th>
+                                                <th scope="col"> خيارات</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -831,6 +839,23 @@
                                                     <td>{{$payment->payment_for}}</td>
                                                     <td>{{$payment->payment_date}}</td>
                                                     <td>{{$payment->addedBy->name}}</td>
+                                                    <td>
+                                                        <button type="button"
+                                                                class="btn btn-light-warning text-warning btn-edit-payment"
+                                                                data-id="{{ $payment->id }}"
+                                                                data-amount="{{ $payment->amount }}"
+                                                                data-payment-way="{{ $payment->payment_way }}"
+                                                                data-payment-for="{{ $payment->payment_for }}"
+                                                                data-payment-date="{{ $payment->payment_date }}">
+                                                            <i class="far fa-edit"></i>
+                                                        </button>
+
+                                                        <button type="button" class="btn btn-light-danger text-danger"
+                                                                onclick="deleteItem(this)"
+                                                                data-item="{{ route('payments.destroy', $payment) }}">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                             </tbody>
@@ -1089,6 +1114,58 @@
         </div>
     </div>
 
+    <div class="modal fade" id="editPaymentModal" data-bs-backdrop="static">
+        <div class="modal-dialog">
+            <form id="editPaymentForm" method="post">
+                @csrf
+                @method('PUT')
+                <input type="hidden" name="payment_id" id="editPaymentId">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">تعديل الدفعة</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="edit_payment_way" class="form-label">طريقة الدفع:</label>
+                            <select class="form-select" id="edit_payment_way" name="payment_way" required>
+                                <option selected disabled value="">اختر ...</option>
+                                <option value="cash">كاش</option>
+                                <option value="check">شيك</option>
+                                <option value="transfer">تحويل</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit_payment_for" class="form-label">نوع الدفع:</label>
+                            <select class="form-select" id="edit_payment_for" name="payment_for" required>
+                                <option selected disabled value="">اختر ...</option>
+                                <option>رسوم التسجيل</option>
+                                <option>القسط الدراسي</option>
+                                <option>مبيعات</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit_amount" class="form-label">المبلغ:</label>
+                            <input type="text" class="form-control" id="edit_amount" name="amount" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit_payment_date" class="form-label">تاريخ الدفع:</label>
+                            <input type="date" class="form-control" id="edit_payment_date" name="payment_date" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-bs-dismiss="modal">اغلاق</button>
+                        <button type="submit" class="btn btn-primary">حفظ</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
     <div class="modal fade" id="purchasesModal" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <form action="{{ route('purchases.store') }}" method="post">
@@ -1118,6 +1195,39 @@
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editPurchasesModal" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+
+            <div class="modal-content">
+                <form id="editPurchaseForm" method="post">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="purchase_id" id="editPurchaseId">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">تعديل عملية شراء</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="editProduct" class="form-label">المنتج</label>
+                            <input type="text" class="form-control" id="editProduct" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPrice" class="form-label">السعر</label>
+                            <input type="text" class="form-control" id="editPrice" name="price" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-bs-dismiss="modal">إغلاق</button>
+                        <button type="submit" class="btn btn-primary">حفظ</button>
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
 
@@ -1189,6 +1299,42 @@
     <script>
 
         var attributes = {!! json_encode($attributes ?? []) !!};
+
+        $('.btn-edit-payment').on('click', function () {
+
+            var paymentId = $(this).data('id');
+            var amount = $(this).data('amount');
+            var paymentWay = $(this).data('payment-way');
+            var paymentFor = $(this).data('payment-for');
+            var paymentDate = $(this).data('payment-date');
+
+            $('#editPaymentId').val(paymentId);
+            $('#edit_amount').val(amount);
+            $('#edit_payment_way').val(paymentWay).change();
+            $('#edit_payment_for').val(paymentFor).change();
+            $('#edit_payment_date').val(paymentDate);
+
+            var routeUrl = "{{ route('payments.update', ':id') }}";
+            routeUrl = routeUrl.replace(':id', paymentId);
+            $('#editPaymentForm').attr('action', routeUrl);
+
+
+            $('#editPaymentModal').modal('show');
+        });
+
+        $('.edit-purchase').on('click', function () {
+            var purchaseId = $(this).data('id');
+            var productName = $(this).data('product');
+            var price = $(this).data('price');
+
+
+            $('#editProduct').val(productName);
+            $('#editPrice').val(price);
+
+            $('#editPurchaseForm').attr('action', '/purchases/' + purchaseId);
+            $('#editPurchasesModal').modal('show');
+        });
+
 
         $("#reportExportButton").on("click", function () {
             var selectedReportId = $("#reportSelect").val();

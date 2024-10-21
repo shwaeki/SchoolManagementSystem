@@ -13,16 +13,6 @@ use Illuminate\Support\Facades\Session;
 class PurchasesController extends Controller
 {
 
-    public function index()
-    {
-        //
-    }
-
-    public function create()
-    {
-        //
-    }
-
     public function store(StorePurchasesRequest $request)
     {
 
@@ -52,21 +42,14 @@ class PurchasesController extends Controller
     }
 
 
-    public function show(Purchases $purchase)
-    {
-        //
-    }
-
-
-    public function edit(Purchases $purchase)
-    {
-        //
-    }
-
-
     public function update(UpdatePurchasesRequest $request, Purchases $purchase)
     {
-        //
+        $purchase->update([
+            'price' => request("price"),
+        ]);
+
+        Session::flash('message', 'تم تعديل عملية الشراء بنجاح');
+        return redirect()->back();
     }
 
 
