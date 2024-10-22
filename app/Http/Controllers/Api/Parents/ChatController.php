@@ -119,6 +119,8 @@ class ChatController extends BaseController
             'sender' => 'student',
         ]);
 
+        $message = ChatResource::collection($message);
+
         return $this->sendResponse($message, 'Message sent successfully');
     }
 
