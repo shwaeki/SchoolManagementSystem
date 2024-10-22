@@ -4,15 +4,10 @@ namespace App\Http\Controllers\Api\Parents;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\ChatResource;
-use App\Http\Resources\StudentClassResource;
 use App\Models\AcademicYear;
 use App\Models\Chat;
 use App\Models\GroupChat;
-use App\Models\Message;
-use App\Models\Otp;
-use App\Models\Student;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -56,7 +51,7 @@ class ChatController extends BaseController
             $file = $request->file('file');
             $filePath = $file->store('chat_files', 'public');
             $fileType = $file->getMimeType();
-            $originalFileName = $file->getClientOriginalName();
+            $originalFileName = request('original_file_name', 'No Name');
         }
 
 
@@ -70,7 +65,7 @@ class ChatController extends BaseController
             'sender' => 'student',
         ]);
 
-        return $this->sendResponse([], 'Message sent successfully');
+        return $this->sendResponse($message, 'Message sent successfully');
     }
 
 
@@ -111,7 +106,7 @@ class ChatController extends BaseController
             $file = $request->file('file');
             $filePath = $file->store('chat_files', 'public');
             $fileType = $file->getMimeType();
-            $originalFileName = $file->getClientOriginalName();
+            $originalFileName = request('original_file_name', 'No Name');
         }
 
         $message = GroupChat::create([
@@ -124,7 +119,7 @@ class ChatController extends BaseController
             'sender' => 'student',
         ]);
 
-        return $this->sendResponse([], 'Message sent successfully');
+        return $this->sendResponse($message, 'Message sent successfully');
     }
 
 
@@ -160,7 +155,6 @@ class ChatController extends BaseController
             $query->where('academic_year_id', getAdminActiveAcademicYearID());
         })->get()->first();
 
-        //   $data = $currentClass?->YearClass?->posts;
         $data = [
             'chat_active' => $currentClass?->YearClass?->chat_active
         ];
