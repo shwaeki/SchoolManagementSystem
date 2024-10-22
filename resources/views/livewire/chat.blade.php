@@ -296,7 +296,7 @@
                                 @endif
 
                                 @foreach($messages as $message)
-                                    <div class="d-flex flex-column">
+                                        <div class="d-flex flex-column" wire:ignore>
                                         <div
                                             class="{{ $message->sender == "student" ? 'bubble you' : 'bubble me' }} mb-0">
                                             {{$message->message}}
