@@ -10,7 +10,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            background-color: #ffffff96;
+            background-color: #ffffff;
             padding: 10px;
             height: 100%;
             width: 100%;
@@ -77,35 +77,7 @@
     <script src="{{ asset("assets/js/apps/chat.js") }}"></script>
 
     <script>
-        document.addEventListener('livewire:load', function () {
-            scrollChatToBottom();
 
-            Livewire.on('chat-new-message', message => {
-                scrollToBottom();
-            });
-
-            Livewire.on('chat-select-student', () => {
-                $("#loading-indicator").hide();
-                scrollToBottom();
-            });
-
-            Livewire.on('chat-select-class', () => {
-                $("#loading-indicator").hide();
-                scrollToBottom();
-            });
-
-        });
-
-        document.addEventListener('livewire:update', function () {
-            scrollChatToBottom();
-        });
-
-        function scrollChatToBottom() {
-            var chatBox = document.getElementById('chat-conversation-box-scroll');
-            if (chatBox) {
-                chatBox.scrollTop = chatBox.scrollHeight;
-            }
-        }
 
         $("#startChat").click(function () {
             var student_id = $('#student').val();
@@ -134,9 +106,5 @@
         });
 
 
-        function scrollToBottom() {
-            var getScrollContainer = $('.chat-conversation-box');
-            getScrollContainer.scrollTop(getScrollContainer.get(0).scrollHeight);
-        }
     </script>
 @endpush

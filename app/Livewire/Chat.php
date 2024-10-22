@@ -9,10 +9,10 @@ use App\Models\Student;
 use App\Models\YearClass;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
-use Livewire\Attributes\On;
 
 class Chat extends Component
 {
@@ -54,17 +54,25 @@ class Chat extends Component
     public function loadMessages()
     {
         if ($this->chatType === 'student') {
-            $this->messages = ChatModel::where('student_id', $this->selectedStudent->id)
-                ->latest()
-                ->take($this->messageLimit)
-                ->get()
-                ->reverse();
+            if ($this->selectedStudent) {
+                $this->messages = ChatModel::where('student_id', $this->selectedStudent->id)
+                    ->latest()
+                    ->take($this->messageLimit)
+                    ->get()
+                    ->reverse();
+            } else {
+                $this->messages = [];
+            }
         } elseif ($this->chatType === 'class') {
-            $this->messages = GroupChat::where('year_class_id', $this->selectedClass->id)
-                ->latest()
-                ->take($this->messageLimit)
-                ->get()
-                ->reverse();
+            if ($this->selectedClass) {
+                $this->messages = GroupChat::where('year_class_id', $this->selectedClass->id)
+                    ->latest()
+                    ->take($this->messageLimit)
+                    ->get()
+                    ->reverse();
+            } else {
+                $this->messages = [];
+            }
         }
     }
 
@@ -80,7 +88,6 @@ class Chat extends Component
     }
 
 
-
     public function refreshChats()
     {
         if ($this->userType == 'admin') {
@@ -88,6 +95,7 @@ class Chat extends Component
         } else {
             $this->loadTeacherChats();
         }
+        $this->loadMessages();
     }
 
     private function loadAdminChats()

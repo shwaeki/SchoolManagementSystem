@@ -129,8 +129,8 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="chat-conversation-box">
-                            <div id="loading-indicator" style="display: none">
+                        <div class="chat-conversation-box" id="chat-conversation-box">
+                            <div id="loading-indicator" style="display: none" wire:ignore.self>
                                 <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
@@ -161,6 +161,18 @@
                                                                     alt="Image" style="max-width: 200px;">
                                                             </a>
                                                         </div>
+
+                                                    @elseif(strpos($message->file_type, 'video') !== false)
+                                                        <!-- Video: Display in Video Player -->
+                                                        <div>
+                                                            <video controls style="max-width: 300px;">
+                                                                <source
+                                                                    src="{{ asset(Storage::url($message->file_path)) }}"
+                                                                    type="{{ $message->file_type }}">
+                                                                Your browser does not support the video tag.
+                                                            </video>
+                                                        </div>
+
                                                     @elseif(strpos($message->file_type, 'pdf') !== false)
                                                         <div>
                                                             <a href="{{ Storage::url($message->file_path) }}"
@@ -268,14 +280,14 @@
                             </span>
                         </div>
                     </div>
-                    <div class="chat-conversation-box">
-                        <div id="loading-indicator" style="display: none">
+                    <div class="chat-conversation-box" id="chat-conversation-box-class">
+                        <div id="loading-indicator" style="display: none" wire:ignore.self>
                             <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
                         </div>
 
-                        <div id="chat-conversation-box-scroll" class="chat-conversation-box-scroll">
+                        <div id="chat-conversation-box-scroll-class" class="chat-conversation-box-scroll">
                             <div class="chat active-chat" id="main-chat">
                                 @if(count($messages) >= $messageLimit)
                                     <div class="text-center mb-3">
@@ -299,6 +311,17 @@
                                                                 alt="Image" style="max-width: 200px;">
                                                         </a>
                                                     </div>
+
+                                                @elseif(strpos($message->file_type, 'video') !== false)
+                                                    <!-- Video: Display in Video Player -->
+                                                    <div>
+                                                        <video controls style="max-width: 300px;">
+                                                            <source src="{{ asset(Storage::url($message->file_path)) }}"
+                                                                    type="{{ $message->file_type }}">
+                                                            Your browser does not support the video tag.
+                                                        </video>
+                                                    </div>
+
                                                 @elseif(strpos($message->file_type, 'pdf') !== false)
                                                     <div>
                                                         <a href="{{ Storage::url($message->file_path) }}"
@@ -343,7 +366,7 @@
                     </div>
                     <div class="chat-footer chat-active">
                         <div class="chat-input">
-                            <form class="chat-form"  wire:submit="sendClassMessage">
+                            <form class="chat-form" wire:submit="sendClassMessage">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-0 me-2">
                                         <div class="btn btn-light p-0" wire:target="file"
@@ -402,3 +425,41 @@
         </div>
     </div>
 </div>
+
+@script
+<script>
+
+    Livewire.on('chat-new-message', message => {
+        scrollToBottom();
+    });
+
+    Livewire.on('chat-select-student', () => {
+        $("#loading-indicator").hide();
+        console.log('chat-select-student');
+        scrollToBottom();
+    });
+
+    Livewire.on('chat-select-class', () => {
+        $("#loading-indicator").hide();
+        console.log('chat-select-class');
+        scrollToBottom();
+    });
+
+
+    function scrollToBottom(retryCount = 5, delay = 100) {
+        var getScrollContainer = $('.chat-conversation-box');
+
+
+        if (getScrollContainer.length > 0) {
+            var scrollHeight = getScrollContainer.get(0).scrollHeight;
+            getScrollContainer.scrollTop(scrollHeight);
+        }
+        if (retryCount > 0) {
+            setTimeout(function () {
+                scrollToBottom(retryCount - 1, delay);
+            }, delay);
+        }
+    }
+
+</script>
+@endscript
