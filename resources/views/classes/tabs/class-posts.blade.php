@@ -25,11 +25,12 @@
                                 <h6 class="mb-0 ">المنشورات</h6>
                             </div>
                             <div class="col-3 text-end">
-
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#createPostModal">
-                                    اضافة
-                                </button>
+                                @can('create-school-class-post')
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#createPostModal">
+                                        اضافة
+                                    </button>
+                                @endcan
                             </div>
                         </div>
 
@@ -72,16 +73,21 @@
                                         <td>{{ $post->postable->name }}</td>
                                         <td>{{ $post->created_at->format('Y-m-d') }}</td>
                                         <td>
-                                            <button class="btn btn-light-warning text-warning edit-post-btn"
-                                                    data-id="{{ $post->id }}"
-                                                    data-content="{{ $post->content }}">
-                                                <i class="far fa-edit"></i>
-                                            </button>
+                                            @can('update-school-class-post')
+                                                <button class="btn btn-light-warning text-warning edit-post-btn"
+                                                        data-id="{{ $post->id }}"
+                                                        data-content="{{ $post->content }}">
+                                                    <i class="far fa-edit"></i>
+                                                </button>
 
-                                            <button class="btn btn-light-danger text-danger" onclick="deleteItem(this)"
-                                                    data-item=" {{ route('posts.destroy', $post) }} ">
-                                                <i class="far fa-trash-alt"></i>
-                                            </button>
+                                            @endcan
+                                            @can('destroy-school-class-post')
+                                                <button class="btn btn-light-danger text-danger"
+                                                        onclick="deleteItem(this)"
+                                                        data-item=" {{ route('posts.destroy', $post) }} ">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </button>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach
@@ -103,80 +109,84 @@
 
 
 @push("html")
-    <div class="modal fade" id="createPostModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="year_class_id" value="{{ $current_year_class->id }}">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="createPostModalLabel">إضافة منشور جديد</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
-                    </div>
-                    <div class="modal-body">
-
-
-                        <div class="mb-3">
-                            <label for="contentText" class="form-label">المحتوى</label>
-                            <textarea class="form-control" id="contentText" name="content" rows="3"
-                                      placeholder="اكتب المحتوى هنا..."></textarea>
+    @can('create-school-class-post')
+        <div class="modal fade" id="createPostModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="year_class_id" value="{{ $current_year_class->id }}">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createPostModalLabel">إضافة منشور جديد</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
                         </div>
+                        <div class="modal-body">
 
-                        <div class="mb-3">
-                            <label for="images" class="form-label">صور</label>
-                            <input class="form-control" type="file" id="images" name="images[]" multiple>
+
+                            <div class="mb-3">
+                                <label for="contentText" class="form-label">المحتوى</label>
+                                <textarea class="form-control" id="contentText" name="content" rows="3"
+                                          placeholder="اكتب المحتوى هنا..."></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="images" class="form-label">صور</label>
+                                <input class="form-control" type="file" id="images" name="images[]" multiple>
+                            </div>
+
+                            @can('create-school-class-post-for-all')
+                                @if(Auth::guard('web')->check() )
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="1" id="add_all_classes"
+                                               name="add_all_classes">
+                                        <label class="form-check-label" for="add_all_classes">
+                                            اضافة الى جميع الفصول الدراسية
+                                        </label>
+                                    </div>
+                                @endif
+                            @endcan
                         </div>
-
-                        @if(Auth::guard('web')->check() )
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="add_all_classes"
-                                   name="add_all_classes">
-                            <label class="form-check-label" for="add_all_classes">
-                                اضافة الى جميع الفصول الدراسية
-                            </label>
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-bs-dismiss="modal">إغلاق</button>
+                            <button type="submit" class="btn btn-primary">إضافة المنشور</button>
                         </div>
-                        @endif
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn" data-bs-dismiss="modal">إغلاق</button>
-                        <button type="submit" class="btn btn-primary">إضافة المنشور</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    @endcan
 
-    <div class="modal fade" id="editPostModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form id="editPostForm" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
-                    <div class="modal-header">
-                        <h5 class="modal-title">تعديل المنشور</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="editContentText" class="form-label">المحتوى</label>
-                            <textarea class="form-control" id="editContentText" name="content" rows="3"></textarea>
+    @can('update-school-class-post')
+        <div class="modal fade" id="editPostModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="editPostForm" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-header">
+                            <h5 class="modal-title">تعديل المنشور</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
                         </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="editContentText" class="form-label">المحتوى</label>
+                                <textarea class="form-control" id="editContentText" name="content" rows="3"></textarea>
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="editImages" class="form-label">صور جديدة</label>
-                            <input class="form-control" type="file" id="editImages" name="images[]" multiple>
+                            <div class="mb-3">
+                                <label for="editImages" class="form-label">صور جديدة</label>
+                                <input class="form-control" type="file" id="editImages" name="images[]" multiple>
+                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn" data-bs-dismiss="modal">إغلاق</button>
-                        <button type="submit" class="btn btn-primary">تحديث المنشور</button>
-                    </div>
-                </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-bs-dismiss="modal">إغلاق</button>
+                            <button type="submit" class="btn btn-primary">تحديث المنشور</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-
+    @endcan
 @endpush
 
 

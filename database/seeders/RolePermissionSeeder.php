@@ -66,6 +66,7 @@ class RolePermissionSeeder extends Seeder
             'view-teacher-files' => 'عرض ملفات المعلم',
             'view-teacher-sms' => 'عرض رسائل المعلم',
             'view-teacher-reports' => 'عرض تقارير المعلم',
+            'view-teacher-report' => 'عرض تقارير المعلم',
             'create-teacher-report' => 'اضافة تقرير جديد',
             'view-teacher-salary-sheet' => 'عرض  قسيمة الراتب للمعلم',
             'destroy-teacher-salary-sheet' => 'حذف قسيمة الراتب للمعلم',
@@ -75,6 +76,11 @@ class RolePermissionSeeder extends Seeder
             'update-teacher' => 'تحديث معلم',
             'destroy-teacher' => 'حذف معلم',
             'archive-teacher' => 'ارشفة معلم',
+            'view-teacher-monthly-reports' => 'عرض تقارير الشهرية للمعلم',
+            'create-teacher-monthly-report' => 'اضافة تقرير الشهرية للمعلم',
+            'update-teacher-monthly-report' => 'تحديث تقرير الشهرية للمعلم',
+            'destroy-teacher-monthly-report' => 'حذف تقرير الشهرية للمعلم',
+
 
             'view-list-academic-year' => 'عرض قائمة السنوات الدراسية',
             'view-academic-year' => 'عرض سنة دراسية',
@@ -114,6 +120,8 @@ class RolePermissionSeeder extends Seeder
             'create-school-class-student' => 'اضافة طالب للفصل',
             'destroy-school-class-student' => 'حذف طالب من الفصل',
             'update-school-class-student' => 'تعديل طالب في الفصل',
+
+            'create-school-class' => 'اضافة فصل دراسي',
             'update-school-class' => 'تحديث فصل دراسي',
             'destroy-school-class' => 'حذف فصل دراسي',
             'archive-school-class' => 'ارشفة فصل دراسي',

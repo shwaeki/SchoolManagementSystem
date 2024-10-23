@@ -290,312 +290,351 @@
 
                 @auth("web")
 
-                    <li class="menu">
-                        <a href="{{route('school-classes.index')}}"
-                           aria-expanded="{{ Route::is('school-classes.index','school-classes.edit','school-classes.create','school-classes.show') ? 'true' : 'false' }}"
-                           class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-zap">
-                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                                </svg>
-                                <span>الفصول الدراسية</span>
-                            </div>
-                        </a>
-                    </li>
+                    @can('view-list-school-class')
+                        <li class="menu">
+                            <a href="{{route('school-classes.index')}}"
+                               aria-expanded="{{ Route::is('school-classes.index','school-classes.edit','school-classes.create','school-classes.show') ? 'true' : 'false' }}"
+                               class="dropdown-toggle">
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-zap">
+                                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                                    </svg>
+                                    <span>الفصول الدراسية</span>
+                                </div>
+                            </a>
+                        </li>
+                    @endcan
 
+                    @can(['view-list-student','create-student','view-list-student-requests'])
+                        <li class="menu">
+                            <a href="#students" data-bs-toggle="collapse"
+                               aria-expanded="{{ Route::is('students.index','students.edit','students.create','students-request.index','students.show') ? 'true' : 'false' }}"
+                               class="dropdown-toggle">
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-cpu">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                        <rect x="9" y="9" width="6" height="6"></rect>
+                                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                                    </svg>
+                                    <span>الطلاب</span>
+                                </div>
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-chevron-right">
+                                        <polyline points="9 18 15 12 9 6"></polyline>
+                                    </svg>
+                                </div>
+                            </a>
 
-                    <li class="menu">
-                        <a href="#students" data-bs-toggle="collapse"
-                           aria-expanded="{{ Route::is('students.index','students.edit','students.create','students-request.index','students.show') ? 'true' : 'false' }}"
-                           class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-cpu">
-                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                    <rect x="9" y="9" width="6" height="6"></rect>
-                                    <line x1="9" y1="1" x2="9" y2="4"></line>
-                                    <line x1="15" y1="1" x2="15" y2="4"></line>
-                                    <line x1="9" y1="20" x2="9" y2="23"></line>
-                                    <line x1="15" y1="20" x2="15" y2="23"></line>
-                                    <line x1="20" y1="9" x2="23" y2="9"></line>
-                                    <line x1="20" y1="14" x2="23" y2="14"></line>
-                                    <line x1="1" y1="9" x2="4" y2="9"></line>
-                                    <line x1="1" y1="14" x2="4" y2="14"></line>
-                                </svg>
-                                <span>الطلاب</span>
-                            </div>
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-chevron-right">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </div>
-                        </a>
-                        <ul class="submenu list-unstyled  {{ Route::is('students.index','students.edit','students.create','students-request.index','students.show') ? 'show' : 'collapse' }}"
-                            id="students"
-                            data-bs-parent="#accordionExample">
-                            <li class="{{ Route::is('students.index') ? 'active' : '' }}">
-                                <a href="{{route('students.index')}}"> قائمة الطلاب </a>
-                            </li>
-                            <li class="{{ Route::is('students.create') ? 'active' : '' }}">
-                                <a href="{{route('students.create')}}"> اضافة </a>
-                            </li>
-                            <li class="{{ Route::is('students-request.index') ? 'active' : '' }}">
-                                <a href="{{route('students-request.index')}}"> طلبات الطلاب </a>
-                            </li>
-                        </ul>
-                    </li>
+                            <ul class="submenu list-unstyled  {{ Route::is('students.index','students.edit','students.create','students-request.index','students.show') ? 'show' : 'collapse' }}"
+                                id="students"
+                                data-bs-parent="#accordionExample">
+                                @can('view-list-student')
+                                    <li class="{{ Route::is('students.index') ? 'active' : '' }}">
+                                        <a href="{{route('students.index')}}"> قائمة الطلاب </a>
+                                    </li>
+                                @endcan
+                                @can('create-student')
+                                    <li class="{{ Route::is('students.create') ? 'active' : '' }}">
+                                        <a href="{{route('students.create')}}"> اضافة </a>
+                                    </li>
+                                @endcan
 
+                                @can('view-list-student-requests')
+                                    <li class="{{ Route::is('students-request.index') ? 'active' : '' }}">
+                                        <a href="{{route('students-request.index')}}"> طلبات الطلاب </a>
+                                    </li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcan
 
                     <li class="menu menu-heading">
                         <div class="heading"><span>الموظفين و المستخدمين</span></div>
                     </li>
 
-                    <li class="menu">
-                        <a href="{{route('teachers.index')}}"
-                           aria-expanded="{{ Route::is('teachers.index','teachers.edit','teachers.create','teachers.show') ? 'true' : 'false' }}"
-                           class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-cpu">
-                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                    <rect x="9" y="9" width="6" height="6"></rect>
-                                    <line x1="9" y1="1" x2="9" y2="4"></line>
-                                    <line x1="15" y1="1" x2="15" y2="4"></line>
-                                    <line x1="9" y1="20" x2="9" y2="23"></line>
-                                    <line x1="15" y1="20" x2="15" y2="23"></line>
-                                    <line x1="20" y1="9" x2="23" y2="9"></line>
-                                    <line x1="20" y1="14" x2="23" y2="14"></line>
-                                    <line x1="1" y1="9" x2="4" y2="9"></line>
-                                    <line x1="1" y1="14" x2="4" y2="14"></line>
-                                </svg>
-                                <span> قائمة الموظفين</span>
-                            </div>
-                        </a>
-                    </li>
+                    @can('view-list-teacher-list')
+                        <li class="menu">
+                            <a href="{{route('teachers.index')}}"
+                               aria-expanded="{{ Route::is('teachers.index','teachers.edit','teachers.create','teachers.show') ? 'true' : 'false' }}"
+                               class="dropdown-toggle">
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-cpu">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                        <rect x="9" y="9" width="6" height="6"></rect>
+                                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                                    </svg>
+                                    <span> قائمة الموظفين</span>
+                                </div>
+                            </a>
+                        </li>
+                    @endcan
 
-                    <li class="menu">
-                        <a href="{{route('attendances.index')}}"
-                           aria-expanded="{{ Route::is('attendances.index') ? 'true' : 'false' }}"
-                           class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-cpu">
-                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                    <rect x="9" y="9" width="6" height="6"></rect>
-                                    <line x1="9" y1="1" x2="9" y2="4"></line>
-                                    <line x1="15" y1="1" x2="15" y2="4"></line>
-                                    <line x1="9" y1="20" x2="9" y2="23"></line>
-                                    <line x1="15" y1="20" x2="15" y2="23"></line>
-                                    <line x1="20" y1="9" x2="23" y2="9"></line>
-                                    <line x1="20" y1="14" x2="23" y2="14"></line>
-                                    <line x1="1" y1="9" x2="4" y2="9"></line>
-                                    <line x1="1" y1="14" x2="4" y2="14"></line>
-                                </svg>
-                                <span> تقارير الحضور </span>
-                            </div>
-                        </a>
-                    </li>
+                    @can('view-list-teachers-attendances')
+                        <li class="menu">
+                            <a href="{{route('attendances.index')}}"
+                               aria-expanded="{{ Route::is('attendances.index') ? 'true' : 'false' }}"
+                               class="dropdown-toggle">
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-cpu">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                        <rect x="9" y="9" width="6" height="6"></rect>
+                                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                                    </svg>
+                                    <span> تقارير الحضور </span>
+                                </div>
+                            </a>
+                        </li>
+                    @endcan
 
+                    @can(['view-list-user','create-user','view-list-role','view-list-permission'])
+                        <li class="menu">
+                            <a href="#users" data-bs-toggle="collapse"
+                               aria-expanded="{{ Route::is('users.index','users.edit','users.create','users.show','roles.create') ? 'true' : 'false' }}"
+                               class="dropdown-toggle">
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-cpu">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                        <rect x="9" y="9" width="6" height="6"></rect>
+                                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                                    </svg>
+                                    <span>مستخدمي النظام</span>
+                                </div>
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-chevron-right">
+                                        <polyline points="9 18 15 12 9 6"></polyline>
+                                    </svg>
+                                </div>
+                            </a>
+                            <ul class="submenu list-unstyled  {{ Route::is('users.index','users.edit','users.create','users.show','roles.create') ? 'show' : 'collapse' }}"
+                                id="users"
+                                data-bs-parent="#accordionExample">
+                                @can('view-list-user')
+                                    <li class="{{ Route::is('users.index') ? 'active' : '' }}">
+                                        <a href="{{route('users.index')}}"> مستخدمي النظام </a>
+                                    </li>
+                                @endcan
 
-                    <li class="menu">
-                        <a href="#users" data-bs-toggle="collapse"
-                           aria-expanded="{{ Route::is('users.index','users.edit','users.create','users.show','roles.create') ? 'true' : 'false' }}"
-                           class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-cpu">
-                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                    <rect x="9" y="9" width="6" height="6"></rect>
-                                    <line x1="9" y1="1" x2="9" y2="4"></line>
-                                    <line x1="15" y1="1" x2="15" y2="4"></line>
-                                    <line x1="9" y1="20" x2="9" y2="23"></line>
-                                    <line x1="15" y1="20" x2="15" y2="23"></line>
-                                    <line x1="20" y1="9" x2="23" y2="9"></line>
-                                    <line x1="20" y1="14" x2="23" y2="14"></line>
-                                    <line x1="1" y1="9" x2="4" y2="9"></line>
-                                    <line x1="1" y1="14" x2="4" y2="14"></line>
-                                </svg>
-                                <span>مستخدمي النظام</span>
-                            </div>
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-chevron-right">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </div>
-                        </a>
-                        <ul class="submenu list-unstyled  {{ Route::is('users.index','users.edit','users.create','users.show','roles.create') ? 'show' : 'collapse' }}"
-                            id="users"
-                            data-bs-parent="#accordionExample">
-                            <li class="{{ Route::is('users.index') ? 'active' : '' }}">
-                                <a href="{{route('users.index')}}"> مستخدمي النظام </a>
-                            </li>
-                            <li class="{{ Route::is('roles.index') ? 'active' : '' }}">
-                                <a href="{{route('roles.index')}}"> قائمة الادوار </a>
-                            </li>
-                            <li class="{{ Route::is('permissions.index') ? 'active' : '' }}">
-                                <a href="{{route('permissions.index')}}"> قائمة الصلاحيات </a>
-                            </li>
-                            <li class="{{ Route::is('users.create') ? 'active' : '' }}">
-                                <a href="{{route('users.create')}}"> مستخدم جديد </a>
-                            </li>
-                        </ul>
-                    </li>
-
+                                @can('view-list-role')
+                                    <li class="{{ Route::is('roles.index') ? 'active' : '' }}">
+                                        <a href="{{route('roles.index')}}"> قائمة الادوار </a>
+                                    </li>
+                                @endcan
+                                @can('view-list-permission')
+                                    <li class="{{ Route::is('permissions.index') ? 'active' : '' }}">
+                                        <a href="{{route('permissions.index')}}"> قائمة الصلاحيات </a>
+                                    </li>
+                                @endcan
+                                @can('create-user')
+                                    <li class="{{ Route::is('users.create') ? 'active' : '' }}">
+                                        <a href="{{route('users.create')}}"> مستخدم جديد </a>
+                                    </li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcan
 
                     <li class="menu menu-heading">
                         <div class="heading"><span> إعدادات </span></div>
                     </li>
-                    <li class="menu">
-                        <a href="{{route('academic-years.index')}}"
-                           aria-expanded="{{ Route::is('academic-years.index','academic-years.edit','academic-years.create','academic-years.show') ? 'true' : 'false' }}"
-                           class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-cpu">
-                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                    <rect x="9" y="9" width="6" height="6"></rect>
-                                    <line x1="9" y1="1" x2="9" y2="4"></line>
-                                    <line x1="15" y1="1" x2="15" y2="4"></line>
-                                    <line x1="9" y1="20" x2="9" y2="23"></line>
-                                    <line x1="15" y1="20" x2="15" y2="23"></line>
-                                    <line x1="20" y1="9" x2="23" y2="9"></line>
-                                    <line x1="20" y1="14" x2="23" y2="14"></line>
-                                    <line x1="1" y1="9" x2="4" y2="9"></line>
-                                    <line x1="1" y1="14" x2="4" y2="14"></line>
-                                </svg>
-                                <span>السنوات الدراسية</span>
-                            </div>
-                        </a>
-                    </li>
 
-                    <li class="menu">
-                        <a href="{{route('reports.index')}}"
-                           aria-expanded="{{ Route::is('reports.index','reports.edit','reports.create','reports.show') ? 'true' : 'false' }}"
-                           class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-cpu">
-                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                    <rect x="9" y="9" width="6" height="6"></rect>
-                                    <line x1="9" y1="1" x2="9" y2="4"></line>
-                                    <line x1="15" y1="1" x2="15" y2="4"></line>
-                                    <line x1="9" y1="20" x2="9" y2="23"></line>
-                                    <line x1="15" y1="20" x2="15" y2="23"></line>
-                                    <line x1="20" y1="9" x2="23" y2="9"></line>
-                                    <line x1="20" y1="14" x2="23" y2="14"></line>
-                                    <line x1="1" y1="9" x2="4" y2="9"></line>
-                                    <line x1="1" y1="14" x2="4" y2="14"></line>
-                                </svg>
-                                <span>التقارير</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu">
-                        <a href="{{route('messages.index')}}"
-                           aria-expanded="{{ Route::is('messages.index','messages.edit','messages.create','messages.show') ? 'true' : 'false' }}"
-                           class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-cpu">
-                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                    <rect x="9" y="9" width="6" height="6"></rect>
-                                    <line x1="9" y1="1" x2="9" y2="4"></line>
-                                    <line x1="15" y1="1" x2="15" y2="4"></line>
-                                    <line x1="9" y1="20" x2="9" y2="23"></line>
-                                    <line x1="15" y1="20" x2="15" y2="23"></line>
-                                    <line x1="20" y1="9" x2="23" y2="9"></line>
-                                    <line x1="20" y1="14" x2="23" y2="14"></line>
-                                    <line x1="1" y1="9" x2="4" y2="9"></line>
-                                    <line x1="1" y1="14" x2="4" y2="14"></line>
-                                </svg>
-                                <span>ارسال رسالة </span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu">
-                        <a href="{{route('certificates.index')}}"
-                           aria-expanded="{{ Route::is('certificates.index','certificates.edit','certificates.create','certificates.show') ? 'true' : 'false' }}"
-                           class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-cpu">
-                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                    <rect x="9" y="9" width="6" height="6"></rect>
-                                    <line x1="9" y1="1" x2="9" y2="4"></line>
-                                    <line x1="15" y1="1" x2="15" y2="4"></line>
-                                    <line x1="9" y1="20" x2="9" y2="23"></line>
-                                    <line x1="15" y1="20" x2="15" y2="23"></line>
-                                    <line x1="20" y1="9" x2="23" y2="9"></line>
-                                    <line x1="20" y1="14" x2="23" y2="14"></line>
-                                    <line x1="1" y1="9" x2="4" y2="9"></line>
-                                    <line x1="1" y1="14" x2="4" y2="14"></line>
-                                </svg>
-                                <span> انوع الشهادات</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu">
-                        <a href="{{route('salaries.index')}}"
-                           aria-expanded="{{ Route::is('salaries.index','salaries.edit','salaries.create','salaries.show') ? 'true' : 'false' }}"
-                           class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-cpu">
-                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                    <rect x="9" y="9" width="6" height="6"></rect>
-                                    <line x1="9" y1="1" x2="9" y2="4"></line>
-                                    <line x1="15" y1="1" x2="15" y2="4"></line>
-                                    <line x1="9" y1="20" x2="9" y2="23"></line>
-                                    <line x1="15" y1="20" x2="15" y2="23"></line>
-                                    <line x1="20" y1="9" x2="23" y2="9"></line>
-                                    <line x1="20" y1="14" x2="23" y2="14"></line>
-                                    <line x1="1" y1="9" x2="4" y2="9"></line>
-                                    <line x1="1" y1="14" x2="4" y2="14"></line>
-                                </svg>
-                                <span>قسيمة الراتب</span>
-                            </div>
-                        </a>
-                    </li>
+                    @can('view-list-academic-year')
+                        <li class="menu">
+                            <a href="{{route('academic-years.index')}}"
+                               aria-expanded="{{ Route::is('academic-years.index','academic-years.edit','academic-years.create','academic-years.show') ? 'true' : 'false' }}"
+                               class="dropdown-toggle">
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-cpu">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                        <rect x="9" y="9" width="6" height="6"></rect>
+                                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                                    </svg>
+                                    <span>السنوات الدراسية</span>
+                                </div>
+                            </a>
+                        </li>
+                    @endcan
 
+                    @can('view-list-reports')
+                        <li class="menu">
+                            <a href="{{route('reports.index')}}"
+                               aria-expanded="{{ Route::is('reports.index','reports.edit','reports.create','reports.show') ? 'true' : 'false' }}"
+                               class="dropdown-toggle">
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-cpu">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                        <rect x="9" y="9" width="6" height="6"></rect>
+                                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                                    </svg>
+                                    <span>التقارير</span>
+                                </div>
+                            </a>
+                        </li>
+                    @endcan
 
-                    <li class="menu">
-                        <a href="{{route('products.index')}}"
-                           aria-expanded="{{ Route::is('products.index','products.edit','products.create','products.show') ? 'true' : 'false' }}"
-                           class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-cpu">
-                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                    <rect x="9" y="9" width="6" height="6"></rect>
-                                    <line x1="9" y1="1" x2="9" y2="4"></line>
-                                    <line x1="15" y1="1" x2="15" y2="4"></line>
-                                    <line x1="9" y1="20" x2="9" y2="23"></line>
-                                    <line x1="15" y1="20" x2="15" y2="23"></line>
-                                    <line x1="20" y1="9" x2="23" y2="9"></line>
-                                    <line x1="20" y1="14" x2="23" y2="14"></line>
-                                    <line x1="1" y1="9" x2="4" y2="9"></line>
-                                    <line x1="1" y1="14" x2="4" y2="14"></line>
-                                </svg>
-                                <span>المنتجات</span>
-                            </div>
-                        </a>
-                    </li>
+                    @can('send-sms')
+                        <li class="menu">
+                            <a href="{{route('messages.index')}}"
+                               aria-expanded="{{ Route::is('messages.index','messages.edit','messages.create','messages.show') ? 'true' : 'false' }}"
+                               class="dropdown-toggle">
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-cpu">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                        <rect x="9" y="9" width="6" height="6"></rect>
+                                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                                    </svg>
+                                    <span>ارسال رسالة </span>
+                                </div>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('view-list-certificates')
+                        <li class="menu">
+                            <a href="{{route('certificates.index')}}"
+                               aria-expanded="{{ Route::is('certificates.index','certificates.edit','certificates.create','certificates.show') ? 'true' : 'false' }}"
+                               class="dropdown-toggle">
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-cpu">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                        <rect x="9" y="9" width="6" height="6"></rect>
+                                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                                    </svg>
+                                    <span> انوع الشهادات</span>
+                                </div>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('view-list-salary-sheet')
+                        <li class="menu">
+                            <a href="{{route('salaries.index')}}"
+                               aria-expanded="{{ Route::is('salaries.index','salaries.edit','salaries.create','salaries.show') ? 'true' : 'false' }}"
+                               class="dropdown-toggle">
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-cpu">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                        <rect x="9" y="9" width="6" height="6"></rect>
+                                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                                    </svg>
+                                    <span>قسيمة الراتب</span>
+                                </div>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('view-list-products')
+                        <li class="menu">
+                            <a href="{{route('products.index')}}"
+                               aria-expanded="{{ Route::is('products.index','products.edit','products.create','products.show') ? 'true' : 'false' }}"
+                               class="dropdown-toggle">
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-cpu">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                        <rect x="9" y="9" width="6" height="6"></rect>
+                                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                                    </svg>
+                                    <span>المنتجات</span>
+                                </div>
+                            </a>
+                        </li>
+                    @endcan
+
                 @endauth
 
                 @auth("teacher")
@@ -624,34 +663,11 @@
                     </li>
                 @endauth
 
-                <li class="menu">
-                    <a href="{{route('chats.index')}}"
-                       aria-expanded="{{ Route::is('chats.index','chats.edit','chats.create','chats.show') ? 'true' : 'false' }}"
-                       class="dropdown-toggle">
-                        <div class="">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                 stroke-linejoin="round" class="feather feather-cpu">
-                                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                                <rect x="9" y="9" width="6" height="6"></rect>
-                                <line x1="9" y1="1" x2="9" y2="4"></line>
-                                <line x1="15" y1="1" x2="15" y2="4"></line>
-                                <line x1="9" y1="20" x2="9" y2="23"></line>
-                                <line x1="15" y1="20" x2="15" y2="23"></line>
-                                <line x1="20" y1="9" x2="23" y2="9"></line>
-                                <line x1="20" y1="14" x2="23" y2="14"></line>
-                                <line x1="1" y1="9" x2="4" y2="9"></line>
-                                <line x1="1" y1="14" x2="4" y2="14"></line>
-                            </svg>
-                            <span>الدردشات</span>
-                        </div>
-                    </a>
-                </li>
 
-                @auth("web")
+                @can('chats')
                     <li class="menu">
-                        <a href="{{route('advertises.index')}}"
-                           aria-expanded="{{ Route::is('advertises.index','advertises.edit','advertises.create','advertises.show') ? 'true' : 'false' }}"
+                        <a href="{{route('chats.index')}}"
+                           aria-expanded="{{ Route::is('chats.index','chats.edit','chats.create','chats.show') ? 'true' : 'false' }}"
                            class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -668,10 +684,39 @@
                                     <line x1="1" y1="9" x2="4" y2="9"></line>
                                     <line x1="1" y1="14" x2="4" y2="14"></line>
                                 </svg>
-                                <span>الاعلانات</span>
+                                <span>الدردشات</span>
                             </div>
                         </a>
                     </li>
+                @endcan
+
+                @auth("web")
+                    @can('advertising')
+                        <li class="menu">
+                            <a href="{{route('advertises.index')}}"
+                               aria-expanded="{{ Route::is('advertises.index','advertises.edit','advertises.create','advertises.show') ? 'true' : 'false' }}"
+                               class="dropdown-toggle">
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                         viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="feather feather-cpu">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                        <rect x="9" y="9" width="6" height="6"></rect>
+                                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                                    </svg>
+                                    <span>الاعلانات</span>
+                                </div>
+                            </a>
+                        </li>
+                    @endcan
 
                     @if(auth()->id() == 1 || auth()->id() == 5)
                         <li class="menu menu-heading">
@@ -679,7 +724,6 @@
                         </li>
 
                     @endif
-
                 @endauth
 
                 @auth("teacher")
@@ -687,9 +731,11 @@
                     @if(auth()->user()->show_salary_slip == true)
                         <li class="menu">
                             <a href="{{route('mysalries')}}"
-                               aria-expanded="{{ Route::is('mysalries') ? 'true' : 'false' }}" class="dropdown-toggle">
+                               aria-expanded="{{ Route::is('mysalries') ? 'true' : 'false' }}"
+                               class="dropdown-toggle">
                                 <div class="">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                         viewBox="0 0 24 24"
                                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                          stroke-linejoin="round" class="feather feather-cpu">
                                         <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
@@ -711,7 +757,8 @@
 
                     <li class="menu">
                         <a href="{{route('myattendances')}}"
-                           aria-expanded="{{ Route::is('myattendances') ? 'true' : 'false' }}" class="dropdown-toggle">
+                           aria-expanded="{{ Route::is('myattendances') ? 'true' : 'false' }}"
+                           class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -756,7 +803,8 @@
                     </li>
 
                     <li class="menu">
-                        <a href="{{route('myreports')}}" aria-expanded="{{ Route::is('myreports') ? 'true' : 'false' }}"
+                        <a href="{{route('myreports')}}"
+                           aria-expanded="{{ Route::is('myreports') ? 'true' : 'false' }}"
                            class="dropdown-toggle">
                             <div class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"

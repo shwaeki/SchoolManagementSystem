@@ -44,22 +44,42 @@
     @endif
 
     @if(!(Auth::guard('teacher')->check() && auth()->user()->teacher_type == 'assistant'))
-        @include('classes.tabs.class-info')
-        @include('classes.tabs.class-years')
-        @includeWhen($current_year_class != null, 'classes.tabs.class-students')
+        @can('view-school-class')
+            @include('classes.tabs.class-info')
+        @endcan
+
+        @can('view-school-class-class-years')
+            @include('classes.tabs.class-years')
+        @endcan
+
+        @can('view-school-class-students')
+            @includeWhen($current_year_class != null, 'classes.tabs.class-students')
+        @endcan
     @endif
 
-    @includeWhen($current_year_class != null, 'classes.tabs.class-student-attendance')
-    @if(!(Auth::guard('teacher')->check() && auth()->user()->teacher_type == 'assistant'))
-        @includeWhen($current_year_class != null, 'classes.tabs.class-daily-program')
-    @endif
+    @can('view-school-class-attendances')
+        @includeWhen($current_year_class != null, 'classes.tabs.class-student-attendance')
+    @endcan
 
-    @includeWhen($current_year_class != null, 'classes.tabs.class-weekly-program')
-    @includeWhen($current_year_class != null, 'classes.tabs.class-monthly-plan')
+    @can('view-school-class-daily-reports')
+        @if(!(Auth::guard('teacher')->check() && auth()->user()->teacher_type == 'assistant'))
+            @includeWhen($current_year_class != null, 'classes.tabs.class-daily-program')
+        @endif
+    @endcan
 
-    @if(Auth::guard('web')->check() )
-        @includeWhen($current_year_class != null, 'classes.tabs.class-posts')
-    @endif
+    @can('view-school-class-weekly-reports')
+        @includeWhen($current_year_class != null, 'classes.tabs.class-weekly-program')
+    @endcan
+
+    @can('view-school-class-monthly-reports')
+        @includeWhen($current_year_class != null, 'classes.tabs.class-monthly-plan')
+    @endcan
+
+    @can('view-school-class-posts')
+        @if(Auth::guard('web')->check() )
+            @includeWhen($current_year_class != null, 'classes.tabs.class-posts')
+        @endif
+    @endcan
 
 
 
@@ -142,81 +162,83 @@
     @stack('html')
 
     @auth("web")
-        <div class="modal fade" id="classYearModal">
-            <div class="modal-dialog" role="document">
-                <form action="{{route('year-classes.store')}}" method="POST">
-                    @csrf
+        @can('update-school-class')
+            <div class="modal fade" id="classYearModal">
+                <div class="modal-dialog" role="document">
+                    <form action="{{route('year-classes.store')}}" method="POST">
+                        @csrf
 
-                    <input type="hidden" name="school_class_id" value="{{$class->id}}">
-                    <input type="hidden" name="academic_year_id" value="{{$activeAcademicYear->id}}">
+                        <input type="hidden" name="school_class_id" value="{{$class->id}}">
+                        <input type="hidden" name="academic_year_id" value="{{$activeAcademicYear->id}}">
 
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">تسجل في السنة الحالية</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                X
-                            </button>
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">تسجل في السنة الحالية</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                    X
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">الفصل الدراسي</label>
+                                    <input type="text" id="name" class="form-control"
+                                           value="{{$class->name}}" disabled>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="name" class="form-label"> السنة الدراسية</label>
+                                    <input type="text" id="name" class="form-control"
+                                           value="{{$activeAcademicYear->name}}" disabled>
+                                </div>
+
+
+                                <div class="mb-3">
+                                    <label for="supervisor" class="form-label"> المعلم المشرف </label>
+                                    <select class="form-select"
+                                            id="supervisor" name="supervisor" required>
+                                        <option selected disabled value="">اختر ...</option>
+                                        @foreach($teachers as $teacher)
+                                            <option
+                                                {{old('supervisor') == $teacher->name ? 'selected' : '' }} value="{{$teacher->id}}">
+                                                {{$teacher->name}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="certificate_id" class="form-label"> الشهادة </label>
+                                    <select class="form-select"
+                                            id="certificate_id" name="certificate_id">
+                                        <option selected disabled value="">اختر ...</option>
+                                        @foreach($certificates as $certificate)
+                                            <option
+                                                {{old('certificate_id') == $certificate->name ? 'selected' : '' }} value="{{$certificate->id}}">
+                                                {{$certificate->name}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="code" class="form-label"> الكود </label>
+                                    <input type="text" id="code" name="code" class="form-control">
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
+                                    <i class="flaticon-cancel-12"></i> اغلاق
+                                </button>
+                                <button type="submit" class="btn btn-primary">حفظ</button>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="name" class="form-label">الفصل الدراسي</label>
-                                <input type="text" id="name" class="form-control"
-                                       value="{{$class->name}}" disabled>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="name" class="form-label"> السنة الدراسية</label>
-                                <input type="text" id="name" class="form-control"
-                                       value="{{$activeAcademicYear->name}}" disabled>
-                            </div>
-
-
-                            <div class="mb-3">
-                                <label for="supervisor" class="form-label"> المعلم المشرف </label>
-                                <select class="form-select"
-                                        id="supervisor" name="supervisor" required>
-                                    <option selected disabled value="">اختر ...</option>
-                                    @foreach($teachers as $teacher)
-                                        <option
-                                            {{old('supervisor') == $teacher->name ? 'selected' : '' }} value="{{$teacher->id}}">
-                                            {{$teacher->name}}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="certificate_id" class="form-label"> الشهادة </label>
-                                <select class="form-select"
-                                        id="certificate_id" name="certificate_id">
-                                    <option selected disabled value="">اختر ...</option>
-                                    @foreach($certificates as $certificate)
-                                        <option
-                                            {{old('certificate_id') == $certificate->name ? 'selected' : '' }} value="{{$certificate->id}}">
-                                            {{$certificate->name}}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="code" class="form-label"> الكود </label>
-                                <input type="text" id="code" name="code" class="form-control">
-                            </div>
-
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
-                                <i class="flaticon-cancel-12"></i> اغلاق
-                            </button>
-                            <button type="submit" class="btn btn-primary">حفظ</button>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
+        @endcan
     @endauth
 @endsection

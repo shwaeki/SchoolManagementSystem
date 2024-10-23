@@ -37,12 +37,14 @@
                                 <button type="button" class="btn btn-warning" onclick="window.print()">
                                     طباعة
                                 </button>
-                                @if(count($monthlyPlans) == 0)
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#addMonthlyPlanModal">
-                                        اضافة
-                                    </button>
-                                @endif
+                                @can('create-school-class-monthly-report')
+                                    @if(count($monthlyPlans) == 0)
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#addMonthlyPlanModal">
+                                            اضافة
+                                        </button>
+                                    @endif
+                                @endcan
                             </div>
                         </div>
 
@@ -70,16 +72,18 @@
                                         <div class="card">
                                             <div class="card-header py-2 bg-transparent d-flex justify-content-between">
                                                 <p class="fs-5 mb-0">{{ $key }}</p>
-                                                <div class="d-print-none">
-                                                    <button type="button"
-                                                            data-id="{{ $monthlyPlans[$key][0]['id']  }}"
-                                                            data-title="{{ $key }}"
-                                                            data-objectives=" {!! $monthlyPlans[$key][0]['objectives'] !!}"
-                                                            data-methods=" {!! $monthlyPlans[$key][0]['methods'] !!}"
-                                                            class="btn btn-light-warning text-warning rounded-circle editMonthlyPlan">
-                                                        <i class="far fa-edit"></i>
-                                                    </button>
-                                                </div>
+                                                @can('update-school-class-monthly-report')
+                                                    <div class="d-print-none">
+                                                        <button type="button"
+                                                                data-id="{{ $monthlyPlans[$key][0]['id']  }}"
+                                                                data-title="{{ $key }}"
+                                                                data-objectives=" {!! $monthlyPlans[$key][0]['objectives'] !!}"
+                                                                data-methods=" {!! $monthlyPlans[$key][0]['methods'] !!}"
+                                                                class="btn btn-light-warning text-warning rounded-circle editMonthlyPlan">
+                                                            <i class="far fa-edit"></i>
+                                                        </button>
+                                                    </div>
+                                                @endcan
                                             </div>
                                             <div class="card-body">
 
@@ -145,113 +149,120 @@
 
 
 @push("html")
-    <div class="modal fade" id="addMonthlyPlanModal">
-        <div class="modal-dialog modal-lg" role="document">
-            <form action="{{ route('year-classes.monthlyPlan.store',$current_year_class) }}"
-                  method="POST" enctype="multipart/form-data">
-                @csrf
+    @can('create-school-class-monthly-report')
+        <div class="modal fade" id="addMonthlyPlanModal">
+            <div class="modal-dialog modal-lg" role="document">
+                <form action="{{ route('year-classes.monthlyPlan.store',$current_year_class) }}"
+                      method="POST" enctype="multipart/form-data">
+                    @csrf
 
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">اضافة خطة الشهرية </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <div class="mb-3">
-                            <label for="month" class="form-label">الشهر</label>
-                            <input type="month" id="month" name="month"
-                                   class="form-control"
-                                   value="{{ request('monthSelect', Carbon\Carbon::now()->format('Y-m')) }}">
-
-                            @error('month')
-                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                            @enderror
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">اضافة خطة الشهرية </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
                         </div>
+                        <div class="modal-body">
 
-                        <hr>
-                        <div class="row">
-                            @foreach($monthlySubjects as $subject)
-                                <div class="col-12">
-                                    <div class="mb-3">
-                                        <p class="fs-5">{{ $subject  }} </p>
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="mb-3">
-                                                    <label for="objectives">الأهداف </label>
-                                                    <textarea id="objectives" name="objectives[{{$subject}}]"
-                                                              class="form-control preserveLines" rows="2"></textarea>
+                            <div class="mb-3">
+                                <label for="month" class="form-label">الشهر</label>
+                                <input type="month" id="month" name="month"
+                                       class="form-control"
+                                       value="{{ request('monthSelect', Carbon\Carbon::now()->format('Y-m')) }}">
+
+                                @error('month')
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                @enderror
+                            </div>
+
+                            <hr>
+                            <div class="row">
+                                @foreach($monthlySubjects as $subject)
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <p class="fs-5">{{ $subject  }} </p>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="mb-3">
+                                                        <label for="objectives">الأهداف </label>
+                                                        <textarea id="objectives" name="objectives[{{$subject}}]"
+                                                                  class="form-control preserveLines"
+                                                                  rows="2"></textarea>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="mb-3">
-                                                    <label for="methods">الوسائل </label>
-                                                    <textarea id="methods" name="methods[{{$subject}}]"
-                                                              class="form-control preserveLines" rows="2"></textarea>
+                                                <div class="col-6">
+                                                    <div class="mb-3">
+                                                        <label for="methods">الوسائل </label>
+                                                        <textarea id="methods" name="methods[{{$subject}}]"
+                                                                  class="form-control preserveLines"
+                                                                  rows="2"></textarea>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                @if(!$loop->last)
-                                    <hr>
-                                @endif
-                            @endforeach
+                                    @if(!$loop->last)
+                                        <hr>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
+                                <i class="flaticon-cancel-12"></i> اغلاق
+                            </button>
+                            <button type="submit" class="btn btn-primary">حفظ</button>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
-                            <i class="flaticon-cancel-12"></i> اغلاق
-                        </button>
-                        <button type="submit" class="btn btn-primary">حفظ</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
+    @endcan
 
-    <div class="modal fade" id="editMonthlyPlanModal">
-        <div class="modal-dialog modal-lg" role="document">
-            <form action="" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
+    @can('update-school-class-monthly-report')
+        <div class="modal fade" id="editMonthlyPlanModal">
+            <div class="modal-dialog modal-lg" role="document">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
 
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">تعديل الخطة الشهرية </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="editMonthPlanSubject">العنوان </label>
-                            <input type="text" id="editMonthPlanSubject" class="form-control" disabled>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">تعديل الخطة الشهرية </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
                         </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="editMonthPlanSubject">العنوان </label>
+                                <input type="text" id="editMonthPlanSubject" class="form-control" disabled>
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="editMonthPlanObjectives">الأهداف </label>
-                            <textarea id="editMonthPlanObjectives" name="objectives" class="form-control preserveLines"
-                                      rows="3"></textarea>
+                            <div class="mb-3">
+                                <label for="editMonthPlanObjectives">الأهداف </label>
+                                <textarea id="editMonthPlanObjectives" name="objectives"
+                                          class="form-control preserveLines"
+                                          rows="3"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editMonthPlanMethods">الوسائل </label>
+                                <textarea id="editMonthPlanMethods" name="methods" class="form-control preserveLines"
+                                          rows="3"></textarea>
+                            </div>
+
                         </div>
-
-                        <div class="mb-3">
-                            <label for="editMonthPlanMethods">الوسائل </label>
-                            <textarea id="editMonthPlanMethods" name="methods" class="form-control preserveLines"
-                                      rows="3"></textarea>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
+                                <i class="flaticon-cancel-12"></i> اغلاق
+                            </button>
+                            <button type="submit" class="btn btn-primary">حفظ</button>
                         </div>
-
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
-                            <i class="flaticon-cancel-12"></i> اغلاق
-                        </button>
-                        <button type="submit" class="btn btn-primary">حفظ</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
+    @endcan
 @endpush
 
 

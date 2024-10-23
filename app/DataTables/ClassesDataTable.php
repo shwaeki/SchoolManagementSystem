@@ -13,31 +13,36 @@ use Yajra\DataTables\Services\DataTable;
 class ClassesDataTable extends DataTable
 {
 
-    private $activeAcademicYear;
-
-    function __construct()
-    {
-        $this->activeAcademicYear = Session::get('activeAcademicYear');
-    }
-
     public function dataTable($query)
     {
 
         return datatables()
             ->eloquent($query)
             ->addColumn('Settings', function ($query) {
-                $buttons = '<a href="' . route('school-classes.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>
-                    <a href="' . route('school-classes.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>';
-                if ($query->yearClasses->count() == 0) {
-                    $buttons .= '<button class="btn btn-light-danger text-danger ms-1" onclick="deleteItem(this)"
-                    data-item="' . route('school-classes.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
+                $buttons = '';
+
+                if (auth()->user()->can('view-school-class')) {
+                    $buttons .= '<a href="' . route('school-classes.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>';
                 }
-                $buttons .= '<button class="btn btn-light-secondary text-secondary ms-1" onclick="archiveItem(this)"
-                    data-item="' . route('school-classes.archive', $query) . '"><i class="fas fa-archive"></i></button>';
+
+                if (auth()->user()->can('update-school-class')) {
+                    $buttons .= '<a href="' . route('school-classes.edit', $query) . '" class="btn btn-light-warning text-warning  ms-1"><i class="far fa-edit"></i></a>';
+                }
+
+                if (auth()->user()->can('destroy-school-class')) {
+                    if ($query->yearClasses->count() == 0) {
+                        $buttons .= '<button class="btn btn-light-danger text-danger ms-1" onclick="deleteItem(this)"
+                                       data-item="' . route('school-classes.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
+                    }
+                }
+                if (auth()->user()->can('archive-school-class')) {
+                    $buttons .= '<button class="btn btn-light-secondary text-secondary ms-1" onclick="archiveItem(this)"
+                                data-item="' . route('school-classes.archive', $query) . '"><i class="fas fa-archive"></i></button>';
+                }
                 return $buttons;
             })
             ->addColumn('YearCode', function ($query) {
-                $current_year_class = $query?->yearClasses()?->where('academic_year_id', $this->activeAcademicYear->id)?->get()?->first();
+                $current_year_class = $query?->yearClasses()?->where('academic_year_id', getUserActiveAcademicYearID())?->get()?->first();
                 return '<span class="badge badge-light-info">' . $current_year_class?->code . '</span>';
             })
             ->setRowId('id')
@@ -51,7 +56,7 @@ class ClassesDataTable extends DataTable
      */
     public function query(SchoolClass $model): QueryBuilder
     {
-        return $model->newQuery()->where('archived',false);
+        return $model->newQuery()->where('archived', false);
     }
 
     /**

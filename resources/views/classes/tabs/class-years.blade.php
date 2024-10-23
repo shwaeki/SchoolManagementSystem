@@ -47,12 +47,12 @@
                                         <td>{{$year->addedBy->name}}</td>
                                     </tr>
                                 @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </form>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endpush

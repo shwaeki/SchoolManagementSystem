@@ -43,10 +43,13 @@
                                 <button type="button" class="btn btn-warning" onclick="window.print()">
                                     طباعة
                                 </button>
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#addWeeklyProgramModal">
-                                    اضافة
-                                </button>
+
+                                @can('create-school-class-weekly-report')
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#addWeeklyProgramModal">
+                                        اضافة
+                                    </button>
+                                @endcan
                             </div>
                         </div>
 
@@ -82,20 +85,23 @@
                                                     <div class="d-flex justify-content-between align-items-center">
                                                         {!! $contents['content'] !!}
                                                         <div class="d-print-none">
-                                                            <button type="button"
-                                                                    data-id="{{ $contents['id']  }}"
-                                                                    data-title="{{ $key }}"
-                                                                    data-content=" {!! $contents['content'] !!}"
-                                                                    class="btn btn-light-warning text-warning rounded-circle editWeek">
-                                                                <i class="far fa-edit"></i>
-                                                            </button>
-
-                                                            <button type="button"
-                                                                    class="btn btn-light-danger text-danger rounded-circle "
-                                                                    onclick="deleteItem(this)"
-                                                                    data-item="{{route('year-classes.weeklyProgram.destroy',$contents['id'])}}">
-                                                                <i class="far fa-trash-alt"></i>
-                                                            </button>
+                                                            @can('update-school-class-weekly-report')
+                                                                <button type="button"
+                                                                        data-id="{{ $contents['id']  }}"
+                                                                        data-title="{{ $key }}"
+                                                                        data-content=" {!! $contents['content'] !!}"
+                                                                        class="btn btn-light-warning text-warning rounded-circle editWeek">
+                                                                    <i class="far fa-edit"></i>
+                                                                </button>
+                                                            @endcan
+                                                            @can('destroy-school-class-weekly-report')
+                                                                <button type="button"
+                                                                        class="btn btn-light-danger text-danger rounded-circle "
+                                                                        onclick="deleteItem(this)"
+                                                                        data-item="{{route('year-classes.weeklyProgram.destroy',$contents['id'])}}">
+                                                                    <i class="far fa-trash-alt"></i>
+                                                                </button>
+                                                            @endcan
                                                         </div>
                                                     </div>
 
@@ -130,89 +136,93 @@
 
 
 @push("html")
-    <div class="modal fade" id="addWeeklyProgramModal">
-        <div class="modal-dialog modal-lg" role="document">
-            <form action="{{ route('year-classes.weeklyProgram.store',$current_year_class) }}"
-                  method="POST" enctype="multipart/form-data">
-                @csrf
+    @can('create-school-class-weekly-report')
+        <div class="modal fade" id="addWeeklyProgramModal">
+            <div class="modal-dialog modal-lg" role="document">
+                <form action="{{ route('year-classes.weeklyProgram.store',$current_year_class) }}"
+                      method="POST" enctype="multipart/form-data">
+                    @csrf
 
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">اضافة الخطة الاسبوعية </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <div class="mb-3">
-                            <label for="start_date" class="form-label">التاريخ</label>
-                            <input type="date" id="start_date" name="start_date"
-                                   class="form-control custom-date"
-                                   value="{{ request('start_date') }}">
-
-                            @error('start_date')
-                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                            @enderror
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">اضافة الخطة الاسبوعية </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
                         </div>
+                        <div class="modal-body">
+
+                            <div class="mb-3">
+                                <label for="start_date" class="form-label">التاريخ</label>
+                                <input type="date" id="start_date" name="start_date"
+                                       class="form-control custom-date"
+                                       value="{{ request('start_date') }}">
+
+                                @error('start_date')
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                @enderror
+                            </div>
 
 
-                        <div class="row">
-                            @foreach($weeklySubjects as $subject)
-                                <div class="col-12 col-md-6">
-                                    <div class="mb-3">
-                                        <label for="contentText">{{ $subject  }} </label>
-                                        <textarea id="contentText" name="content[{{$subject}}]" class="form-control"
-                                                  rows="2"></textarea>
+                            <div class="row">
+                                @foreach($weeklySubjects as $subject)
+                                    <div class="col-12 col-md-6">
+                                        <div class="mb-3">
+                                            <label for="contentText">{{ $subject  }} </label>
+                                            <textarea id="contentText" name="content[{{$subject}}]" class="form-control"
+                                                      rows="2"></textarea>
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
+                                <i class="flaticon-cancel-12"></i> اغلاق
+                            </button>
+                            <button type="submit" class="btn btn-primary">حفظ</button>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
-                            <i class="flaticon-cancel-12"></i> اغلاق
-                        </button>
-                        <button type="submit" class="btn btn-primary">حفظ</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
+    @endcan
 
-    <div class="modal fade" id="editWeeklyProgramModal">
-        <div class="modal-dialog modal-lg" role="document">
-            <form action="" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
+    @can('update-school-class-weekly-report')
+        <div class="modal fade" id="editWeeklyProgramModal">
+            <div class="modal-dialog modal-lg" role="document">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
 
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">تعديل الخطة الاسبوعية </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="editWeekSubject">العنوان </label>
-                            <input type="text" id="editWeekSubject" class="form-control" disabled>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">تعديل الخطة الاسبوعية </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
                         </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="editWeekSubject">العنوان </label>
+                                <input type="text" id="editWeekSubject" class="form-control" disabled>
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="editWeekContent">المحتوى </label>
-                            <textarea id="editWeekContent" name="content" class="form-control" rows="3"></textarea>
+                            <div class="mb-3">
+                                <label for="editWeekContent">المحتوى </label>
+                                <textarea id="editWeekContent" name="content" class="form-control" rows="3"></textarea>
+                            </div>
+
                         </div>
-
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
+                                <i class="flaticon-cancel-12"></i> اغلاق
+                            </button>
+                            <button type="submit" class="btn btn-primary">حفظ</button>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
-                            <i class="flaticon-cancel-12"></i> اغلاق
-                        </button>
-                        <button type="submit" class="btn btn-primary">حفظ</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
+    @endcan
 @endpush
 
 

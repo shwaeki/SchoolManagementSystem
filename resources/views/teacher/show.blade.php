@@ -62,732 +62,794 @@
                     </h2>
 
                     <ul class="nav nav-pills" id="animateLine" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="teacher-info-tab" data-bs-toggle="tab"
-                                    href="#teacher-info" role="tab" aria-controls="teacher-info" aria-selected="true">
-                                <i class="fas fa-info-circle"></i>
-                                البيانات الشخصية
-                            </button>
-                        </li>
-
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="teacher-files-tab" data-bs-toggle="tab" href="#teacher-files"
-                                    role="tab" aria-controls="teacher-files" aria-selected="false" tabindex="-1">
-                                <i class="fas fa-folder-open"></i>
-                                الملفات
-                            </button>
-                        </li>
-
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="teacher-salaries-tab" data-bs-toggle="tab"
-                                    href="#teacher-salaries"
-                                    role="tab" aria-controls="teacher-salaries" aria-selected="false" tabindex="-1">
-                                <i class="fas fa-file-archive"></i>
-                                قسائم الرواتب
-                            </button>
-                        </li>
-
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="teacher-reports-tab" data-bs-toggle="tab"
-                                    href="#teacher-reports"
-                                    role="tab" aria-controls="teacher-reports" aria-selected="false" tabindex="-1">
-                                <i class="fas fa-file-alt"></i>
-                                التقارير
-                            </button>
-                        </li>
-
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="teacher-messages-tab" data-bs-toggle="tab"
-                                    href="#teacher-messages"
-                                    role="tab" aria-controls="teacher-messages" aria-selected="false" tabindex="-1">
-                                <i class="fas fa-sms"></i>
-                                الرسائل
-                            </button>
-                        </li>
-
-                        @if($teacher->teacher_type == "teacher")
+                        @can('view-teacher')
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="teacher-monthly-plan-tab" data-bs-toggle="tab"
-                                        href="#monthly-plan-messages"
-                                        role="tab" aria-controls="monthly-plan-messages" aria-selected="false"
-                                        tabindex="-1">
-                                    <i class="fas fa-calendar-days"></i>
-                                    الخطة الشهرية
+                                <button class="nav-link active" id="teacher-info-tab" data-bs-toggle="tab"
+                                        href="#teacher-info" role="tab" aria-controls="teacher-info"
+                                        aria-selected="true">
+                                    <i class="fas fa-info-circle"></i>
+                                    البيانات الشخصية
                                 </button>
                             </li>
-                        @endif
+                        @endcan
+
+                        @can('view-teacher-files')
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="teacher-files-tab" data-bs-toggle="tab"
+                                        href="#teacher-files"
+                                        role="tab" aria-controls="teacher-files" aria-selected="false" tabindex="-1">
+                                    <i class="fas fa-folder-open"></i>
+                                    الملفات
+                                </button>
+                            </li>
+                        @endcan
+
+                        @can('view-teacher-salary-sheet')
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="teacher-salaries-tab" data-bs-toggle="tab"
+                                        href="#teacher-salaries"
+                                        role="tab" aria-controls="teacher-salaries" aria-selected="false" tabindex="-1">
+                                    <i class="fas fa-file-archive"></i>
+                                    قسائم الرواتب
+                                </button>
+                            </li>
+                        @endcan
+
+                        @can('view-teacher-reports')
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="teacher-reports-tab" data-bs-toggle="tab"
+                                        href="#teacher-reports"
+                                        role="tab" aria-controls="teacher-reports" aria-selected="false" tabindex="-1">
+                                    <i class="fas fa-file-alt"></i>
+                                    التقارير
+                                </button>
+                            </li>
+                        @endcan
+
+                        @can('view-teacher-sms')
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="teacher-messages-tab" data-bs-toggle="tab"
+                                        href="#teacher-messages"
+                                        role="tab" aria-controls="teacher-messages" aria-selected="false" tabindex="-1">
+                                    <i class="fas fa-sms"></i>
+                                    الرسائل
+                                </button>
+                            </li>
+                        @endcan
+
+                        @can('view-teacher-monthly-reports')
+                            @if($teacher->teacher_type == "teacher")
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="teacher-monthly-plan-tab" data-bs-toggle="tab"
+                                            href="#monthly-plan-messages"
+                                            role="tab" aria-controls="monthly-plan-messages" aria-selected="false"
+                                            tabindex="-1">
+                                        <i class="fas fa-calendar-days"></i>
+                                        الخطة الشهرية
+                                    </button>
+                                </li>
+                            @endif
+                        @endcan
 
                     </ul>
                 </div>
             </div>
 
             <div class="tab-content" id="animateLineContent-4">
-                <div class="tab-pane fade show active" id="teacher-info" role="tabpanel"
-                     aria-labelledby="teacher-info-tab">
-                    <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
-                            <form class="section general-info">
-                                <div class="info">
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <h6> البيانات الشخصية </h6>
-                                        </div>
-                                        <div class="col-3 text-end">
-                                            <a href="{{route('teachers.edit',['teacher'=>$teacher])}}"
-                                               class="btn btn-primary"> تعديل </a>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12 col-md-6">
-                                            <div class="mb-3">
-                                                <label for="name" class="form-label">الاسم</label>
-                                                <input type="text" id="name" class="form-control"
-                                                       value="{{$teacher->name}}" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-md-6">
-                                            <div class="mb-3">
-                                                <label for="identification" class="form-label">رقم الهوية</label>
-                                                <input type="text" id="identification" class="form-control"
-                                                       value="{{$teacher->identification}}" disabled>
-
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-md-6">
-                                            <div class="mb-3">
-                                                <label for="birth_date" class="form-label">تاريخ الميلاد </label>
-                                                <input type="text" id="birth_date" class="form-control"
-                                                       value="{{$teacher->birth_date}}" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-md-6">
-                                            <div class="mb-3">
-                                                <label for="address" class="form-label"> العنوان </label>
-                                                <input type="text" id="address" class="form-control"
-                                                       value="{{$teacher->address}}" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-md-4">
-                                            <div class="mb-3">
-                                                <label for="bank_name" class="form-label"> اسم البنك </label>
-                                                <input type="text" id="bank_name" class="form-control"
-                                                       value="{{$teacher->bank_name}}" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-md-4">
-                                            <div class="mb-3">
-                                                <label for="bank_branch" class="form-label"> فرع البنك </label>
-                                                <input type="text" id="bank_branch" class="form-control"
-                                                       value="{{$teacher->bank_branch}}" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-md-4">
-                                            <div class="mb-3">
-                                                <label for="bank_account" class="form-label"> رقم الحساب </label>
-                                                <input type="text" id="bank_account" class="form-control"
-                                                       value="{{$teacher->bank_account}}" disabled>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-12 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="email" class="form-label"> البريد الاكتروني </label>
-                                                <input type="text" id="email" class="form-control"
-                                                       value="{{$teacher->email}}" disabled>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-6 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="phone" class="form-label"> رقم الهاتف </label>
-                                                <input type="text" id="phone" class="form-control"
-                                                       value="{{$teacher->phone}}" disabled>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-6 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="phone_2" class="form-label"> رقم هاتف احتياطي </label>
-                                                <input type="text" id="phone_2" class="form-control"
-                                                       value="{{$teacher->phone_2}}" disabled>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-6 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="star_work_date" class="form-label">تاريخ بدأ العمل </label>
-                                                <input type="text" id="star_work_date" class="form-control"
-                                                       value="{{$teacher->star_work_date}}" disabled>
-                                            </div>
-                                        </div>
-
-                                        {{--
-
-                                                                                <div class="col-6 col-md-3">
-                                                                                    <div class="mb-3">
-                                                                                        <label for="gender" class="form-label"> فصل المدرس </label>
-                                                                                        <input type="text" id="gender" class="form-control"
-                                                                                               value="{{$teacher?->schoolClass?->name }}" disabled>
-                                                                                    </div>
-                                                                                </div>
-                                        --}}
-
-
-                                        <div class="col-6 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="gender" class="form-label"> الجنس </label>
-                                                <input type="text" id="gender" class="form-control"
-                                                       value="{{trans('options.'.$teacher->gender)  }}" disabled>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-6 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="status" class="form-label">نوع الوظيفة </label>
-                                                <input type="text" id="status" class="form-control"
-                                                       value="{{trans('options.'.$teacher->job_type)}}" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-6 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="status" class="form-label"> الحالة </label>
-                                                <input type="text" id="status" class="form-control"
-                                                       value="{{trans('options.'.$teacher->status)}}" disabled>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-6 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="status" class="form-label"> يعمل/تعمل بعد الظهيرة ؟ </label>
-                                                <input type="text" id="status" class="form-control"
-                                                       value="{{$teacher->work_afternoon ? 'نعم' : 'لا'}}" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-6 col-md-3">
-                                            <div class="mb-3">
-                                                <label for="show_salary_slip" class="form-label"> اظهار قسائم الرواتب في
-                                                    الملف الشخصي</label>
-                                                <input type="text" id="show_salary_slip" class="form-control"
-                                                       value="{{$teacher->show_salary_slip ? 'نعم' : 'لا'}}" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <div class="mb-3">
-                                                <label for="notes" class="form-label"> ملاحظات اضافية </label>
-                                                <textarea id="notes" class="form-control" rows="3"
-                                                          disabled>{{ $teacher->notes }}</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="tab-pane fade " id="teacher-files" role="tabpanel"
-                     aria-labelledby="teacher-files-tab">
-                    <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
-                            <form class="section general-info">
-                                <div class="info">
-                                    <h6> ملفات خاصبة بالموظف </h6>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <iframe src="/filemanager"></iframe>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="tab-pane fade " id="teacher-salaries" role="tabpanel"
-                     aria-labelledby="teacher-salaries-tab">
-                    <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
-                            <form class="section general-info">
-                                <div class="info">
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <h6> قسائم الرواتب </h6>
-                                        </div>
-                                        <div class="col-3 text-end">
-                                            <button type="button" data-bs-toggle="modal" data-bs-target="#addSalarySlap"
-                                                    class="btn btn-primary"> اضافة
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div class="table-responsive">
-                                        <table class="table table-hover table-striped table-bordered">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col"> #</th>
-                                                <th scope="col"> التاريخ</th>
-                                                <th scope="col"> خيارات</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($salaries as $salary)
-                                                <tr>
-                                                    <td>{{$loop->iteration}}</td>
-                                                    <td>{{$salary->date}}</td>
-                                                    <td>
-                                                        <a href="{{route('teachers.downloadSlip',$salary)}}"
-                                                           target="_blank" class="btn btn-light-primary text-primary">
-                                                            <i class="far fa-eye"></i>
-                                                        </a>
-
-                                                        <button class="btn btn-light-danger text-danger "
-                                                                onclick="deleteItem(this)"
-                                                                data-item="{{route('teachers.deleteSlip',$salary)}}">
-                                                            <i class="far fa-trash-alt"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="tab-pane fade " id="teacher-reports" role="tabpanel"
-                     aria-labelledby="teacher-reports-tab">
-                    <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
-                            <form class="section general-info">
-                                <div class="info">
-                                    <h6> التقارير </h6>
-                                    <div class="d-flex">
-                                        <div class="mb-3 me-3 flex-grow-1">
-                                            <label for="reportSelect" class="form-label">اختر التقرير:</label>
-                                            <select class="form-select" id="reportSelect">
-                                                <option selected disabled value="">اختر ...</option>
-                                                @foreach($reports as $report)
-                                                        <?php
-
-                                                        preg_match_all("/\[dynamic name='(.*?)'\]/", $report->content, $matches);
-
-                                                        if (isset($matches[1])) {
-                                                            foreach ($matches[1] as $name) {
-                                                                if (!isset($attributes[$report->id])) {
-                                                                    $attributes[$report->id] = [];
-                                                                }
-                                                                $attributes[$report->id][] = $name;
-                                                            }
-                                                        }
-                                                        ?>
-                                                    <option value="{{ $report->id }}">{{ $report->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="mb-3 align-self-end">
-                                            <button type="button" class="btn btn-primary btn-lg"
-                                                    id="reportExportButton">
-                                                تصدير
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <h6> تقارير الموظف </h6>
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">الاسم</th>
-                                                <th scope="col">اضيف بواسطة</th>
-                                                <th scope="col">تاريخ الاضافة</th>
-                                                <th scope="col">خيارات</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($teacher_reports as $report)
-                                                <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{$report->name}}</td>
-                                                    <td>{{$report->addedBy->name}}</td>
-                                                    <td>{{$report->created_at->format('Y-m-d')}}</td>
-                                                    <td>
-                                                        <a target="_blank"
-                                                           href="{{route('teacher-reports.show',['teacher_report'=>$report])}}"
-                                                           type="button" class="btn btn-delete">
-                                                            عرض
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="tab-pane fade " id="teacher-messages" role="tabpanel"
-                     aria-labelledby="teacher-messages-tab">
-                    <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
-                            <form class="section general-info">
-                                <div class="info">
-
-                                    <h6> الرسال التي تم ارسائلها الى الموظف </h6>
-
-                                    <div class="table-responsive">
-                                        <table class="table table-hover table-striped table-bordered">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col"> تم الارسال بواسطة</th>
-                                                <th scope="col"> تاريخ الارسال</th>
-                                                <th scope="col"> نص الرسالة</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($teacher_messages as $message)
-                                                <tr>
-                                                    <td>{{$message->addedBy?->name }}</td>
-                                                    <td>{{$message->created_at->format('Y-m-d')}}</td>
-                                                    <td style="-webkit-user-modify: read-write-plaintext-only">
-                                                        {{$message->message}}
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-
-                @if($teacher->teacher_type == "teacher")
-                    <div class="tab-pane fade " id="monthly-plan-messages" role="tabpanel"
-                         aria-labelledby="teacher-messages-tab">
-
-
+                @can('view-teacher')
+                    <div class="tab-pane fade show active" id="teacher-info" role="tabpanel"
+                         aria-labelledby="teacher-info-tab">
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
-                                <div class="section general-info">
+                                <form class="section general-info">
                                     <div class="info">
-
-                                        <div class="text-center d-none d-print-block">
-                                            <img src="{{ asset('assets/img/logo.png') }}" height="150px" alt="logo">
-                                            <h6 class="mb-1">الخطة الشهرية</h6>
-                                            <h6 class="mb-1">{{ $teacher->name }}</h6>
-                                        </div>
-
-                                        <div class="row  d-print-none">
+                                        <div class="row">
                                             <div class="col-9">
-                                                <h6>الخطة الشهرية</h6>
+                                                <h6> البيانات الشخصية </h6>
                                             </div>
-                                            <div class="col-3 text-end">
-                                                <button type="button" class="btn btn-warning" onclick="window.print()">
-                                                    طباعة
-                                                </button>
-                                                @if(count($monthly_plans) == 0)
-                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                            data-bs-target="#addMonthlyPlanModal">
-                                                        اضافة
-                                                    </button>
-                                                @endif
+                                            @can('update-teacher')
+                                                <div class="col-3 text-end">
+                                                    <a href="{{route('teachers.edit',['teacher'=>$teacher])}}"
+                                                       class="btn btn-primary"> تعديل </a>
+                                                </div>
+                                            @endcan
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="name" class="form-label">الاسم</label>
+                                                    <input type="text" id="name" class="form-control"
+                                                           value="{{$teacher->name}}" disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="identification" class="form-label">رقم الهوية</label>
+                                                    <input type="text" id="identification" class="form-control"
+                                                           value="{{$teacher->identification}}" disabled>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="birth_date" class="form-label">تاريخ الميلاد </label>
+                                                    <input type="text" id="birth_date" class="form-control"
+                                                           value="{{$teacher->birth_date}}" disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="address" class="form-label"> العنوان </label>
+                                                    <input type="text" id="address" class="form-control"
+                                                           value="{{$teacher->address}}" disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-4">
+                                                <div class="mb-3">
+                                                    <label for="bank_name" class="form-label"> اسم البنك </label>
+                                                    <input type="text" id="bank_name" class="form-control"
+                                                           value="{{$teacher->bank_name}}" disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-4">
+                                                <div class="mb-3">
+                                                    <label for="bank_branch" class="form-label"> فرع البنك </label>
+                                                    <input type="text" id="bank_branch" class="form-control"
+                                                           value="{{$teacher->bank_branch}}" disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-4">
+                                                <div class="mb-3">
+                                                    <label for="bank_account" class="form-label"> رقم الحساب </label>
+                                                    <input type="text" id="bank_account" class="form-control"
+                                                           value="{{$teacher->bank_account}}" disabled>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-12 col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="email" class="form-label"> البريد الاكتروني </label>
+                                                    <input type="text" id="email" class="form-control"
+                                                           value="{{$teacher->email}}" disabled>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-6 col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="phone" class="form-label"> رقم الهاتف </label>
+                                                    <input type="text" id="phone" class="form-control"
+                                                           value="{{$teacher->phone}}" disabled>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-6 col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="phone_2" class="form-label"> رقم هاتف احتياطي </label>
+                                                    <input type="text" id="phone_2" class="form-control"
+                                                           value="{{$teacher->phone_2}}" disabled>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-6 col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="star_work_date" class="form-label">تاريخ بدأ
+                                                        العمل </label>
+                                                    <input type="text" id="star_work_date" class="form-control"
+                                                           value="{{$teacher->star_work_date}}" disabled>
+                                                </div>
+                                            </div>
+
+                                            {{--
+
+                                                                                    <div class="col-6 col-md-3">
+                                                                                        <div class="mb-3">
+                                                                                            <label for="gender" class="form-label"> فصل المدرس </label>
+                                                                                            <input type="text" id="gender" class="form-control"
+                                                                                                   value="{{$teacher?->schoolClass?->name }}" disabled>
+                                                                                        </div>
+                                                                                    </div>
+                                            --}}
+
+
+                                            <div class="col-6 col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="gender" class="form-label"> الجنس </label>
+                                                    <input type="text" id="gender" class="form-control"
+                                                           value="{{trans('options.'.$teacher->gender)  }}" disabled>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-6 col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="status" class="form-label">نوع الوظيفة </label>
+                                                    <input type="text" id="status" class="form-control"
+                                                           value="{{trans('options.'.$teacher->job_type)}}" disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6 col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="status" class="form-label"> الحالة </label>
+                                                    <input type="text" id="status" class="form-control"
+                                                           value="{{trans('options.'.$teacher->status)}}" disabled>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-6 col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="status" class="form-label"> يعمل/تعمل بعد الظهيرة
+                                                        ؟ </label>
+                                                    <input type="text" id="status" class="form-control"
+                                                           value="{{$teacher->work_afternoon ? 'نعم' : 'لا'}}" disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6 col-md-3">
+                                                <div class="mb-3">
+                                                    <label for="show_salary_slip" class="form-label"> اظهار قسائم
+                                                        الرواتب في
+                                                        الملف الشخصي</label>
+                                                    <input type="text" id="show_salary_slip" class="form-control"
+                                                           value="{{$teacher->show_salary_slip ? 'نعم' : 'لا'}}"
+                                                           disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label for="notes" class="form-label"> ملاحظات اضافية </label>
+                                                    <textarea id="notes" class="form-control" rows="3"
+                                                              disabled>{{ $teacher->notes }}</textarea>
+                                                </div>
                                             </div>
                                         </div>
-
-
-                                        <form method="GET" id="monthSelectForm" class="d-print-none">
-                                            <div class="mb-3">
-                                                <label for="monthSelect" class="form-label">التاريخ</label>
-                                                <input type="month" id="monthSelect" name="monthSelect"
-                                                       class="form-control custom-date"
-                                                       value="{{ request('monthSelect', Carbon\Carbon::now()->format('Y-m')) }}">
-                                            </div>
-                                        </form>
-
-                                        <hr>
-                                        @if(count($monthly_plans) > 0)
-
-                                            <div class="row d-print-none">
-                                                @foreach ( $monthlySubjects as $key)
-
-                                                    @if ( !isset($monthly_plans[$key]))
-                                                        @continue
-                                                    @endif
-
-
-                                                    <div class="col-12 col-md-6 mb-3">
-                                                        <div class="card">
-                                                            <div
-                                                                class="card-header py-2 bg-transparent d-flex justify-content-between">
-                                                                <p class="fs-5 mb-0">{{ $key }}</p>
-                                                                <div class="d-print-none">
-                                                                    <button type="button"
-                                                                            data-id="{{ $monthly_plans[$key][0]['id']  }}"
-                                                                            data-title="{{ $key }}"
-                                                                            data-objectives=" {!! $monthly_plans[$key][0]['objectives'] !!}"
-                                                                            data-methods=" {!! $monthly_plans[$key][0]['methods'] !!}"
-                                                                            class="btn btn-light-warning text-warning rounded-circle editMonthlyPlan">
-                                                                        <i class="far fa-edit"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            <div class="card-body">
-
-                                                                <p class="mb-1 fw-bold fs-6">الأهداف:</p>
-                                                                <p class="preserveLines"> {!! $monthly_plans[$key][0]['objectives'] !!}</p>
-                                                                <hr>
-                                                                <p class="mb-1 fw-bold fs-6">الفعاليات:</p>
-                                                                <p class="preserveLines">{!! $monthly_plans[$key][0]['methods'] !!}</p>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-
-
-                                            </div>
-
-
-                                            <div class="row d-none d-print-block">
-
-                                                @foreach ( $monthlySubjects as $key)
-
-                                                    @if ( !isset($monthly_plans[$key]))
-                                                        @continue
-                                                    @endif
-
-                                                    <div class="col-12 mb-3 border rounded p-3">
-                                                        <div class="row" style="page-break-inside:avoid">
-                                                            <div class="col-12 fs-5 fw-bold">
-                                                                {{ $key }}
-                                                            </div>
-                                                            <div class="col-6" style="white-space: pre-line;">
-                                                                <small class="fw-bold mb-2">الاهداف :</small>
-                                                                {!! $monthly_plans[$key][0]['objectives'] !!}
-                                                            </div>
-                                                            <div class="col-6 border-left" style="white-space: pre-line;">
-                                                                <small class="fw-bold mb-2">الوسائل :</small>
-                                                                {!! $monthly_plans[$key][0]['methods'] !!}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                @endforeach
-
-                                            </div>
-
-                                        @else
-
-                                            <h4 class="text-center py-5">
-                                                لا يوجد خطة شهرية لهذا الشهر
-                                            </h4>
-                                        @endif
 
                                     </div>
-                                </div>
+                                </form>
                             </div>
 
                         </div>
                     </div>
-                @endif
+                @endcan
 
-            </div>
-        </div>
-    </div>
-
-
-    <div class="modal fade" id="editMonthlyPlanModal">
-        <div class="modal-dialog modal-lg" role="document">
-            <form action="" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">تعديل الخطة الشهرية </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="editMonthPlanSubject">العنوان </label>
-                            <input type="text" id="editMonthPlanSubject" class="form-control" disabled>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editMonthPlanObjectives">الأهداف </label>
-                            <textarea id="editMonthPlanObjectives" name="objectives" class="form-control preserveLines"
-                                      rows="3"></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editMonthPlanMethods">الوسائل </label>
-                            <textarea id="editMonthPlanMethods" name="methods" class="form-control preserveLines"
-                                      rows="3"></textarea>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
-                            <i class="flaticon-cancel-12"></i> اغلاق
-                        </button>
-                        <button type="submit" class="btn btn-primary">حفظ</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="modal fade" id="addSalarySlap">
-        <form action="{{ route('teachers.storeSlip') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-
-            <input type="hidden" name="teacher" value="{{$teacher->id}}">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="attributeModalLabel">اضافة قسيمة راتب جديدة</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label"> التاريخ </label>
-                            <input type="text" id="date" name="date" class="form-control" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">قسيمة الراتب</label>
-                            <input type="file" id="file" name="file" class="form-control" accept="application/pdf"
-                                   required>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn" data-bs-dismiss="modal">غلاق</button>
-                        <button type="submit" class="btn btn-primary">اضافة</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <div class="modal fade" id="attributeModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="attributeModalLabel">قيمة العناصر المتغيرة</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="inputContainer"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn" data-bs-dismiss="modal">غلاق</button>
-                    <button type="button" class="btn btn-primary" id="reportDynamicExport">تصدير</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="addMonthlyPlanModal">
-        <div class="modal-dialog modal-lg" role="document">
-            <form action="{{ route('teacher-plan.store') }}"
-                  method="POST" enctype="multipart/form-data">
-                @csrf
-
-                <input type="hidden" name="teacher" value="{{$teacher->id}}">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">اضافة خطة الشهرية </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <div class="mb-3">
-                            <label for="month" class="form-label">الشهر</label>
-                            <input type="month" id="month" name="month"
-                                   class="form-control"
-                                   value="{{ request('monthSelect', Carbon\Carbon::now()->format('Y-m')) }}">
-
-                            @error('month')
-                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                            @enderror
-                        </div>
-
-                        <hr>
+                @can('view-teacher-files')
+                    <div class="tab-pane fade " id="teacher-files" role="tabpanel"
+                         aria-labelledby="teacher-files-tab">
                         <div class="row">
-                            @foreach($monthlySubjects as $subject)
-                                <div class="col-12">
-                                    <div class="mb-3">
-                                        <p class="fs-5">{{ $subject  }} </p>
-
-
+                            <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                                <form class="section general-info">
+                                    <div class="info">
+                                        <h6> ملفات خاصبة بالموظف </h6>
                                         <div class="row">
-                                            <div class="col-6">
-                                                <div class="mb-3">
-                                                    <label for="objectives">الأهداف </label>
-                                                    <textarea id="objectives" name="objectives[{{$subject}}]"
-                                                              class="form-control preserveLines" rows="2"></textarea>
+                                            <div class="col-12">
+                                                <iframe src="/filemanager"></iframe>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                @endcan
+
+                @can('view-teacher-salary-sheet')
+                    <div class="tab-pane fade " id="teacher-salaries" role="tabpanel"
+                         aria-labelledby="teacher-salaries-tab">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                                <form class="section general-info">
+                                    <div class="info">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <h6> قسائم الرواتب </h6>
+                                            </div>
+                                            @can('create-teacher-salary-sheet')
+                                                <div class="col-3 text-end">
+                                                    <button type="button" data-bs-toggle="modal"
+                                                            data-bs-target="#addSalarySlap"
+                                                            class="btn btn-primary"> اضافة
+                                                    </button>
+                                                </div>
+                                            @endcan
+                                        </div>
+
+                                        <div class="table-responsive">
+                                            <table class="table table-hover table-striped table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col"> #</th>
+                                                    <th scope="col"> التاريخ</th>
+                                                    <th scope="col"> خيارات</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($salaries as $salary)
+                                                    <tr>
+                                                        <td>{{$loop->iteration}}</td>
+                                                        <td>{{$salary->date}}</td>
+                                                        <td>
+                                                            @can('view-teacher-salary-sheet')
+                                                                <a href="{{route('teachers.downloadSlip',$salary)}}"
+                                                                   target="_blank"
+                                                                   class="btn btn-light-primary text-primary">
+                                                                    <i class="far fa-eye"></i>
+                                                                </a>
+                                                            @endcan
+
+                                                            @can('destroy-teacher-salary-sheet')
+                                                                <button class="btn btn-light-danger text-danger "
+                                                                        onclick="deleteItem(this)"
+                                                                        data-item="{{route('teachers.deleteSlip',$salary)}}">
+                                                                    <i class="far fa-trash-alt"></i>
+                                                                </button>
+                                                            @endcan
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                @endcan
+
+                @can('view-teacher-reports')
+                    <div class="tab-pane fade " id="teacher-reports" role="tabpanel"
+                         aria-labelledby="teacher-reports-tab">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                                <form class="section general-info">
+                                    <div class="info">
+                                        <h6> التقارير </h6>
+                                        <div class="d-flex">
+                                            <div class="mb-3 me-3 flex-grow-1">
+                                                <label for="reportSelect" class="form-label">اختر التقرير:</label>
+                                                <select class="form-select" id="reportSelect">
+                                                    <option selected disabled value="">اختر ...</option>
+                                                    @foreach($reports as $report)
+                                                            <?php
+
+                                                            preg_match_all("/\[dynamic name='(.*?)'\]/", $report->content, $matches);
+
+                                                            if (isset($matches[1])) {
+                                                                foreach ($matches[1] as $name) {
+                                                                    if (!isset($attributes[$report->id])) {
+                                                                        $attributes[$report->id] = [];
+                                                                    }
+                                                                    $attributes[$report->id][] = $name;
+                                                                }
+                                                            }
+                                                            ?>
+                                                        <option value="{{ $report->id }}">{{ $report->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="mb-3 align-self-end">
+                                                @can('create-teacher-report')
+                                                    <button type="button" class="btn btn-primary btn-lg"
+                                                            id="reportExportButton">
+                                                        تصدير
+                                                    </button>
+                                                @endcan
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <h6> تقارير الموظف </h6>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">الاسم</th>
+                                                    <th scope="col">اضيف بواسطة</th>
+                                                    <th scope="col">تاريخ الاضافة</th>
+                                                    <th scope="col">خيارات</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($teacher_reports as $report)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{$report->name}}</td>
+                                                        <td>{{$report->addedBy->name}}</td>
+                                                        <td>{{$report->created_at->format('Y-m-d')}}</td>
+                                                        <td>
+                                                            @can('view-teacher-report')
+                                                                <a target="_blank"
+                                                                   href="{{route('teacher-reports.show',['teacher_report'=>$report])}}"
+                                                                   type="button" class="btn btn-delete">
+                                                                    عرض
+                                                                </a>
+                                                            @endcan
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                @endcan
+
+                @can('view-teacher-sms')
+                    <div class="tab-pane fade " id="teacher-messages" role="tabpanel"
+                         aria-labelledby="teacher-messages-tab">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                                <form class="section general-info">
+                                    <div class="info">
+
+                                        <h6> الرسال التي تم ارسائلها الى الموظف </h6>
+
+                                        <div class="table-responsive">
+                                            <table class="table table-hover table-striped table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col"> تم الارسال بواسطة</th>
+                                                    <th scope="col"> تاريخ الارسال</th>
+                                                    <th scope="col"> نص الرسالة</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($teacher_messages as $message)
+                                                    <tr>
+                                                        <td>{{$message->addedBy?->name }}</td>
+                                                        <td>{{$message->created_at->format('Y-m-d')}}</td>
+                                                        <td style="-webkit-user-modify: read-write-plaintext-only">
+                                                            {{$message->message}}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                @endcan
+
+                @can('view-teacher-monthly-reports')
+                    @if($teacher->teacher_type == "teacher")
+                        <div class="tab-pane fade " id="monthly-plan-messages" role="tabpanel"
+                             aria-labelledby="teacher-messages-tab">
+
+
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                                    <div class="section general-info">
+                                        <div class="info">
+
+                                            <div class="text-center d-none d-print-block">
+                                                <img src="{{ asset('assets/img/logo.png') }}" height="150px" alt="logo">
+                                                <h6 class="mb-1">الخطة الشهرية</h6>
+                                                <h6 class="mb-1">{{ $teacher->name }}</h6>
+                                            </div>
+
+                                            <div class="row  d-print-none">
+                                                <div class="col-9">
+                                                    <h6>الخطة الشهرية</h6>
+                                                </div>
+                                                <div class="col-3 text-end">
+                                                    <button type="button" class="btn btn-warning"
+                                                            onclick="window.print()">
+                                                        طباعة
+                                                    </button>
+                                                    @can('create-teacher-monthly-report')
+                                                        @if(count($monthly_plans) == 0)
+                                                            <button type="button" class="btn btn-primary"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#addMonthlyPlanModal">
+                                                                اضافة
+                                                            </button>
+                                                        @endif
+                                                    @endcan
                                                 </div>
                                             </div>
-                                            <div class="col-6">
+
+
+                                            <form method="GET" id="monthSelectForm" class="d-print-none">
                                                 <div class="mb-3">
-                                                    <label for="methods">الفعاليات </label>
-                                                    <textarea id="methods" name="methods[{{$subject}}]"
-                                                              class="form-control preserveLines" rows="2"></textarea>
+                                                    <label for="monthSelect" class="form-label">التاريخ</label>
+                                                    <input type="month" id="monthSelect" name="monthSelect"
+                                                           class="form-control custom-date"
+                                                           value="{{ request('monthSelect', Carbon\Carbon::now()->format('Y-m')) }}">
+                                                </div>
+                                            </form>
+
+                                            <hr>
+                                            @if(count($monthly_plans) > 0)
+
+                                                <div class="row d-print-none">
+                                                    @foreach ( $monthlySubjects as $key)
+
+                                                        @if ( !isset($monthly_plans[$key]))
+                                                            @continue
+                                                        @endif
+
+
+                                                        <div class="col-12 col-md-6 mb-3">
+                                                            <div class="card">
+                                                                <div
+                                                                    class="card-header py-2 bg-transparent d-flex justify-content-between">
+                                                                    <p class="fs-5 mb-0">{{ $key }}</p>
+
+                                                                    @can('update-teacher-monthly-report')
+                                                                        <div class="d-print-none">
+                                                                            <button type="button"
+                                                                                    data-id="{{ $monthly_plans[$key][0]['id']  }}"
+                                                                                    data-title="{{ $key }}"
+                                                                                    data-objectives=" {!! $monthly_plans[$key][0]['objectives'] !!}"
+                                                                                    data-methods=" {!! $monthly_plans[$key][0]['methods'] !!}"
+                                                                                    class="btn btn-light-warning text-warning rounded-circle editMonthlyPlan">
+                                                                                <i class="far fa-edit"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    @endcan
+                                                                </div>
+                                                                <div class="card-body">
+
+                                                                    <p class="mb-1 fw-bold fs-6">الأهداف:</p>
+                                                                    <p class="preserveLines"> {!! $monthly_plans[$key][0]['objectives'] !!}</p>
+                                                                    <hr>
+                                                                    <p class="mb-1 fw-bold fs-6">الفعاليات:</p>
+                                                                    <p class="preserveLines">{!! $monthly_plans[$key][0]['methods'] !!}</p>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+
+
+                                                </div>
+
+
+                                                <div class="row d-none d-print-block">
+
+                                                    @foreach ( $monthlySubjects as $key)
+
+                                                        @if ( !isset($monthly_plans[$key]))
+                                                            @continue
+                                                        @endif
+
+                                                        <div class="col-12 mb-3 border rounded p-3">
+                                                            <div class="row" style="page-break-inside:avoid">
+                                                                <div class="col-12 fs-5 fw-bold">
+                                                                    {{ $key }}
+                                                                </div>
+                                                                <div class="col-6" style="white-space: pre-line;">
+                                                                    <small class="fw-bold mb-2">الاهداف :</small>
+                                                                    {!! $monthly_plans[$key][0]['objectives'] !!}
+                                                                </div>
+                                                                <div class="col-6 border-left"
+                                                                     style="white-space: pre-line;">
+                                                                    <small class="fw-bold mb-2">الوسائل :</small>
+                                                                    {!! $monthly_plans[$key][0]['methods'] !!}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    @endforeach
+
+                                                </div>
+
+                                            @else
+
+                                                <h4 class="text-center py-5">
+                                                    لا يوجد خطة شهرية لهذا الشهر
+                                                </h4>
+                                            @endif
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    @endif
+                @endcan
+
+            </div>
+        </div>
+    </div>
+
+    @can('update-teacher-monthly-report')
+        <div class="modal fade" id="editMonthlyPlanModal">
+            <div class="modal-dialog modal-lg" role="document">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">تعديل الخطة الشهرية </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="editMonthPlanSubject">العنوان </label>
+                                <input type="text" id="editMonthPlanSubject" class="form-control" disabled>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editMonthPlanObjectives">الأهداف </label>
+                                <textarea id="editMonthPlanObjectives" name="objectives"
+                                          class="form-control preserveLines"
+                                          rows="3"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editMonthPlanMethods">الوسائل </label>
+                                <textarea id="editMonthPlanMethods" name="methods" class="form-control preserveLines"
+                                          rows="3"></textarea>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
+                                <i class="flaticon-cancel-12"></i> اغلاق
+                            </button>
+                            <button type="submit" class="btn btn-primary">حفظ</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endcan
+
+    @can('create-teacher-monthly-report')
+        <div class="modal fade" id="addMonthlyPlanModal">
+            <div class="modal-dialog modal-lg" role="document">
+                <form action="{{ route('teacher-plan.store') }}"
+                      method="POST" enctype="multipart/form-data">
+                    @csrf
+
+                    <input type="hidden" name="teacher" value="{{$teacher->id}}">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">اضافة خطة الشهرية </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="mb-3">
+                                <label for="month" class="form-label">الشهر</label>
+                                <input type="month" id="month" name="month"
+                                       class="form-control"
+                                       value="{{ request('monthSelect', Carbon\Carbon::now()->format('Y-m')) }}">
+
+                                @error('month')
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                @enderror
+                            </div>
+
+                            <hr>
+                            <div class="row">
+                                @foreach($monthlySubjects as $subject)
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <p class="fs-5">{{ $subject  }} </p>
+
+
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="mb-3">
+                                                        <label for="objectives">الأهداف </label>
+                                                        <textarea id="objectives" name="objectives[{{$subject}}]"
+                                                                  class="form-control preserveLines"
+                                                                  rows="2"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="mb-3">
+                                                        <label for="methods">الفعاليات </label>
+                                                        <textarea id="methods" name="methods[{{$subject}}]"
+                                                                  class="form-control preserveLines"
+                                                                  rows="2"></textarea>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                @if(!$loop->last)
-                                    <hr>
-                                @endif
-                            @endforeach
+                                    @if(!$loop->last)
+                                        <hr>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
+                                <i class="flaticon-cancel-12"></i> اغلاق
+                            </button>
+                            <button type="submit" class="btn btn-primary">حفظ</button>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
-                            <i class="flaticon-cancel-12"></i> اغلاق
-                        </button>
-                        <button type="submit" class="btn btn-primary">حفظ</button>
+                </form>
+            </div>
+        </div>
+    @endcan
+
+    @can('create-teacher-salary-sheet')
+        <div class="modal fade" id="addSalarySlap">
+            <form action="{{ route('teachers.storeSlip') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                <input type="hidden" name="teacher" value="{{$teacher->id}}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="attributeModalLabel">اضافة قسيمة راتب جديدة</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label"> التاريخ </label>
+                                <input type="text" id="date" name="date" class="form-control" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">قسيمة الراتب</label>
+                                <input type="file" id="file" name="file" class="form-control" accept="application/pdf"
+                                       required>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-bs-dismiss="modal">غلاق</button>
+                            <button type="submit" class="btn btn-primary">اضافة</button>
+                        </div>
                     </div>
                 </div>
             </form>
         </div>
-    </div>
+    @endcan
+
+    @can('create-teacher-report')
+        <div class="modal fade" id="attributeModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="attributeModalLabel">قيمة العناصر المتغيرة</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="inputContainer"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-bs-dismiss="modal">غلاق</button>
+                        <button type="button" class="btn btn-primary" id="reportDynamicExport">تصدير</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endcan
 
 @endsection
 

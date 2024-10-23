@@ -10,8 +10,13 @@
                 </div>
 
                 <div class="col-4 text-end align-self-center">
-                    <a href="{{route('school-classes.create')}}" class="btn btn-primary"> اضافة </a>
-                    <a href="{{route('school-classes.archives')}}" class="btn btn-primary"> الارشيف </a>
+                    @can('create-school-class')
+                        <a href="{{route('school-classes.create')}}" class="btn btn-primary"> اضافة </a>
+                    @endcan
+
+                    @can('view-archive-school-class-list')
+                        <a href="{{route('school-classes.archives')}}" class="btn btn-primary"> الارشيف </a>
+                    @endcan
                 </div>
             </div>
         </div>

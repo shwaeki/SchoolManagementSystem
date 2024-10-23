@@ -19,12 +19,14 @@
                             <div class="col-9">
                                 <h6> بيانات الفصل الدراسي </h6>
                             </div>
-                            @auth("web")
-                                <div class="col-3 text-end">
-                                    <a href="{{route('school-classes.edit',$class)}}"
-                                       class="btn btn-primary"> تعديل </a>
-                                </div>
-                            @endauth
+                            @can('update-school-class')
+                                @auth("web")
+                                    <div class="col-3 text-end">
+                                        <a href="{{route('school-classes.edit',$class)}}"
+                                           class="btn btn-primary"> تعديل </a>
+                                    </div>
+                                @endauth
+                            @endcan
                         </div>
 
                         <div class="row">
@@ -110,12 +112,14 @@
                                     <h6> بيانات الفصل الدراسي لسنة
                                         - {{$current_year_class->academicYear->name}} </h6>
                                 </div>
-                                @auth("web")
-                                    <div class="col-3 text-end">
-                                        <a href="#editCertificateModal" data-bs-toggle="modal"
-                                           class="btn btn-primary">تعديل </a>.
-                                    </div>
-                                @endauth
+                                @can('update-school-class')
+                                    @auth("web")
+                                        <div class="col-3 text-end">
+                                            <a href="#editCertificateModal" data-bs-toggle="modal"
+                                               class="btn btn-primary">تعديل </a>.
+                                        </div>
+                                    @endauth
+                                @endcan
                             </div>
 
                             <div class="row">
@@ -181,12 +185,14 @@
                                 <div class="col-9">
                                     <h6>قائمة المساعدات </h6>
                                 </div>
-                                @auth("web")
-                                    <div class="col-3 text-end">
-                                        <a href="#addAssistantModal" data-bs-toggle="modal"
-                                           class="btn btn-primary">اضافة </a>.
-                                    </div>
-                                @endauth
+                                @can('update-school-class')
+                                    @auth("web")
+                                        <div class="col-3 text-end">
+                                            <a href="#addAssistantModal" data-bs-toggle="modal"
+                                               class="btn btn-primary">اضافة </a>.
+                                        </div>
+                                    @endauth
+                                @endcan
                             </div>
 
                             <div class="row">
@@ -208,14 +214,16 @@
                                                 <td>{{$assistant->name}}</td>
                                                 <td>{{$assistant->phone}}</td>
                                                 @auth("web")
-                                                    <td>
-                                                        <button type="button"
-                                                                class="btn btn-light-danger text-danger"
-                                                                onclick="deleteItem(this)"
-                                                                data-item="{{route('year-classes.destroyAssistant',[$current_year_class,$assistant])}}">
-                                                            <i class="far fa-trash-alt"></i>
-                                                        </button>
-                                                    </td>
+                                                    @can('update-school-class')
+                                                        <td>
+                                                            <button type="button"
+                                                                    class="btn btn-light-danger text-danger"
+                                                                    onclick="deleteItem(this)"
+                                                                    data-item="{{route('year-classes.destroyAssistant',[$current_year_class,$assistant])}}">
+                                                                <i class="far fa-trash-alt"></i>
+                                                            </button>
+                                                        </td>
+                                                    @endcan
                                                 @endauth
                                             </tr>
                                         @endforeach
@@ -235,122 +243,124 @@
 @push("html")
     @auth("web")
         @if($current_year_class != null)
-            <div class="modal fade" id="editCertificateModal">
-                <div class="modal-dialog" role="document">
-                    <form action="{{route('year-classes.update',$current_year_class)}}" method="POST">
-                        @csrf
-                        @method('PUT')
+            @can('update-school-class')
+                <div class="modal fade" id="editCertificateModal">
+                    <div class="modal-dialog" role="document">
+                        <form action="{{route('year-classes.update',$current_year_class)}}" method="POST">
+                            @csrf
+                            @method('PUT')
 
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">تعديل بيانات الفصل الدراسي السنوية </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                    X
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">الفصل الدراسي</label>
-                                    <input type="text" id="name" class="form-control"
-                                           value="{{$class->name}}" disabled>
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">تعديل بيانات الفصل الدراسي السنوية </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                        X
+                                    </button>
                                 </div>
-
-                                <div class="mb-3">
-                                    <label for="supervisor" class="form-label"> المعلم المشرف </label>
-                                    <select class="form-select"
-                                            id="supervisor" name="supervisor" required>
-                                        <option selected disabled value="">اختر ...</option>
-                                        @foreach($teachers as $teacher)
-                                            <option
-                                                {{old('supervisor', $current_year_class->supervisor) == $teacher->id ? 'selected' : '' }}
-                                                value="{{$teacher->id}}">
-                                                {{$teacher->name}}
-                                            </option>
-                                        @endforeach
-                                    </select>
-
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="certificate_id" class="form-label"> الشهادة </label>
-                                    <select class="form-select"
-                                            id="certificate_id" name="certificate_id">
-                                        <option selected disabled value="">اختر ...</option>
-                                        @foreach($certificates as $certificate)
-                                            <option
-                                                {{old('certificate_id', $current_year_class->certificate_id) == $certificate->id ? 'selected' : '' }} value="{{$certificate->id}}">
-                                                {{$certificate->name}}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="code" class="form-label"> الكود </label>
-                                    <input type="text" id="code" name="code" class="form-control"
-                                           value="{{$current_year_class->code}}">
-                                </div>
-
-                                <div class="mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="1" id="chat_active"
-                                               name="chat_active" {{old('chat_active', $current_year_class->chat_active) == 1 ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="chat_active">
-                                        تفعيل الشات
-                                        </label>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">الفصل الدراسي</label>
+                                        <input type="text" id="name" class="form-control"
+                                               value="{{$class->name}}" disabled>
                                     </div>
+
+                                    <div class="mb-3">
+                                        <label for="supervisor" class="form-label"> المعلم المشرف </label>
+                                        <select class="form-select"
+                                                id="supervisor" name="supervisor" required>
+                                            <option selected disabled value="">اختر ...</option>
+                                            @foreach($teachers as $teacher)
+                                                <option
+                                                    {{old('supervisor', $current_year_class->supervisor) == $teacher->id ? 'selected' : '' }}
+                                                    value="{{$teacher->id}}">
+                                                    {{$teacher->name}}
+                                                </option>
+                                            @endforeach
+                                        </select>
+
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="certificate_id" class="form-label"> الشهادة </label>
+                                        <select class="form-select"
+                                                id="certificate_id" name="certificate_id">
+                                            <option selected disabled value="">اختر ...</option>
+                                            @foreach($certificates as $certificate)
+                                                <option
+                                                    {{old('certificate_id', $current_year_class->certificate_id) == $certificate->id ? 'selected' : '' }} value="{{$certificate->id}}">
+                                                    {{$certificate->name}}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="code" class="form-label"> الكود </label>
+                                        <input type="text" id="code" name="code" class="form-control"
+                                               value="{{$current_year_class->code}}">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="1" id="chat_active"
+                                                   name="chat_active" {{old('chat_active', $current_year_class->chat_active) == 1 ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="chat_active">
+                                                تفعيل الشات
+                                            </label>
+                                        </div>
+                                    </div>
+
                                 </div>
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
-                                    <i class="flaticon-cancel-12"></i> اغلاق
-                                </button>
-                                <button type="submit" class="btn btn-primary">حفظ</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <div class="modal fade" id="addAssistantModal">
-                <div class="modal-dialog" role="document">
-                    <form action="{{route('year-classes.storeAssistant',$current_year_class)}}" method="POST">
-                        @csrf
-
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">اضافة مساعدة جديدة</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                </button>
-                            </div>
-                            <div class="modal-body">
-
-                                <div class="mb-3">
-                                    <label for="assistant_id" class="form-label"> المساعدة </label>
-                                    <select class="form-select"
-                                            id="assistant_id" name="assistant_id" required>
-                                        <option selected disabled value="">اختر ...</option>
-                                        @foreach($assistants as $assistant)
-                                            <option
-                                                {{old('assistant_id') == $assistant->name ? 'selected' : '' }} value="{{$assistant->id}}">
-                                                {{$assistant->name}}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
+                                        <i class="flaticon-cancel-12"></i> اغلاق
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">حفظ</button>
                                 </div>
-
-
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
-                                    <i class="flaticon-cancel-12"></i> اغلاق
-                                </button>
-                                <button type="submit" class="btn btn-primary">حفظ</button>
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
+
+                <div class="modal fade" id="addAssistantModal">
+                    <div class="modal-dialog" role="document">
+                        <form action="{{route('year-classes.storeAssistant',$current_year_class)}}" method="POST">
+                            @csrf
+
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">اضافة مساعدة جديدة</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="mb-3">
+                                        <label for="assistant_id" class="form-label"> المساعدة </label>
+                                        <select class="form-select"
+                                                id="assistant_id" name="assistant_id" required>
+                                            <option selected disabled value="">اختر ...</option>
+                                            @foreach($assistants as $assistant)
+                                                <option
+                                                    {{old('assistant_id') == $assistant->name ? 'selected' : '' }} value="{{$assistant->id}}">
+                                                    {{$assistant->name}}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
+                                        <i class="flaticon-cancel-12"></i> اغلاق
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">حفظ</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            @endcan
         @endif
     @endauth
 @endpush

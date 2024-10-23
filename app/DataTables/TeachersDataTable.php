@@ -17,12 +17,23 @@ class TeachersDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('Settings', function ($query) {
-                return '<a href="' . route('teachers.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>
-                    <a href="' . route('teachers.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
-                    <button class="btn btn-light-secondary text-secondary" onclick="archiveItem(this)"
-                    data-item="' . route('teachers.archive', $query) . '"><i class="fas fa-archive"></i></button>
-                    <button class="btn btn-light-danger text-danger  d-none" onclick="deleteItem(this)"
+                $buttons = '';
+                if (auth()->user()->can('view-teacher')) {
+                    $buttons .= '<a href="' . route('teachers.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>';
+                }
+                if (auth()->user()->can('update-teacher')) {
+                    $buttons .= '<a href="' . route('teachers.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>';
+                }
+                if (auth()->user()->can('archive-teacher')) {
+                    $buttons .= '<button class="btn btn-light-secondary text-secondary" onclick="archiveItem(this)"
+                    data-item="' . route('teachers.archive', $query) . '"><i class="fas fa-archive"></i></button>';
+                }
+                if (auth()->user()->can('destroy-teacher')) {
+                    $buttons .= ' <button class="btn btn-light-danger text-danger  d-none" onclick="deleteItem(this)"
                     data-item="' . route('teachers.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
+                }
+                return $buttons;
+
             })->editColumn('gender', function ($query) {
                 if ($query->gender === 'female')
                     return '<span class="badge badge-light-danger">انثى</span>';

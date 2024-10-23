@@ -48,18 +48,20 @@
                                 <h6 class="mb-0"> قائمة الطلاب</h6>
                             </div>
                             <div class="col-3 text-end">
-                                @auth("web")
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#classStudentModal">
-                                        اضافة
-                                    </button>
-                                @endauth
+                                @can('create-school-class-student')
+                                    @auth("web")
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#classStudentModal">
+                                            اضافة
+                                        </button>
+                                    @endauth
+                                @endcan
                             </div>
                         </div>
 
                         <div class="table-responsive">
                             <table
-                                class="table table-hover table-striped table-bordered dataTableCustomTitleConfig">
+                                    class="table table-hover table-striped table-bordered dataTableCustomTitleConfig">
                                 <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -116,7 +118,7 @@
                                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                                             </svg>
                                             <span
-                                                class="table-inner-text">{{$data->student?->birth_date}}</span>
+                                                    class="table-inner-text">{{$data->student?->birth_date}}</span>
                                         </td>
                                         <td>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24"
@@ -132,36 +134,44 @@
                                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                                             </svg>
                                             <span
-                                                class="table-inner-text">{{$data->created_at->format('Y-m-d')}}</span>
+                                                    class="table-inner-text">{{$data->created_at->format('Y-m-d')}}</span>
                                         </td>
                                         <td>{{$data->addedBy?->name}}</td>
                                         <td>
-                                            @auth("web")
-                                                <button type="button"
-                                                        class="btn btn-light-danger text-danger"
-                                                        onclick="deleteItem(this)"
-                                                        data-item="{{route('student-classes.destroy', $data)}}">
-                                                    <i class="far fa-trash-alt"></i>
-                                                </button>
-                                            @endauth
+                                            @can('destroy-school-class-student')
+                                                @auth("web")
+                                                    <button type="button"
+                                                            class="btn btn-light-danger text-danger"
+                                                            onclick="deleteItem(this)"
+                                                            data-item="{{route('student-classes.destroy', $data)}}">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </button>
+                                                @endauth
+                                            @endcan
                                             @if($current_year_class->certificate)
-                                                <button type="button"
-                                                        data-student_class_year-id="{{$data->id}}"
-                                                        class="btn btn-light-warning text-warning  editStudentCertification">
-                                                    <i class="fas fa-certificate"></i>
-                                                </button>
-                                                <a href="{{route('students.marks',$data->id)}}"
-                                                   target="_blank"
-                                                   class="btn btn-light-primary text-primary">
-                                                    <i class="fas fa-certificate"></i>
-                                                </a>
-
+                                                @can('update-school-class-student-certificate')
+                                                    <button type="button"
+                                                            data-student_class_year-id="{{$data->id}}"
+                                                            class="btn btn-light-warning text-warning  editStudentCertification">
+                                                        <i class="fas fa-certificate"></i>
+                                                    </button>
+                                                @endcan
+                                                @can('view-school-class-student-certificate')
+                                                    <a href="{{route('students.marks',$data->id)}}"
+                                                       target="_blank"
+                                                       class="btn btn-light-primary text-primary">
+                                                        <i class="fas fa-certificate"></i>
+                                                    </a>
+                                                @endcan
                                             @endif
-                                            <a href="{{route('students.yearlyFile',$data->id)}}"
-                                               target="_blank"
-                                               class="btn btn-light-success text-success">
-                                                <i class="fas fa-file-alt"></i>
-                                            </a>
+
+                                            @can('update-school-class-student')
+                                                <a href="{{route('students.yearlyFile',$data->id)}}"
+                                                   target="_blank"
+                                                   class="btn btn-light-success text-success">
+                                                    <i class="fas fa-file-alt"></i>
+                                                </a>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach
@@ -178,86 +188,255 @@
 
 
 @push("html")
-    @auth("web")
-        <div class="modal fade" id="classStudentModal">
-            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
-                <form action="{{route('student-classes.store')}}" method="POST" id="addStudentsForm">
-                    @csrf
+    @can('create-school-class-student')
+        @auth("web")
+            <div class="modal fade" id="classStudentModal">
+                <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                    <form action="{{route('student-classes.store')}}" method="POST" id="addStudentsForm">
+                        @csrf
 
-                    <input type="hidden" name="school_class_id" value="{{$class->id}}">
-                    <input type="hidden" name="year_class_id" value="{{$current_year_class->id}}">
-                    <input type="hidden" name="academic_year_id" value="{{$activeAcademicYear->id}}">
+                        <input type="hidden" name="school_class_id" value="{{$class->id}}">
+                        <input type="hidden" name="year_class_id" value="{{$current_year_class->id}}">
+                        <input type="hidden" name="academic_year_id" value="{{$activeAcademicYear->id}}">
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">تسجل الطلاب في السنة الحالية</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>قائمة الطلاب .</p>
+
+
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered dataTableConfigNoData">
+                                        <thead>
+                                        <tr>
+                                            <th class="checkbox-area" scope="col">
+                                            </th>
+                                            <th scope="col">الاسم</th>
+                                            <th scope="col">رقم الهوية</th>
+                                            <th scope="col">عنوان السكن</th>
+                                            <th scope="col">تاريخ الميلاد</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($students as $student)
+                                            <tr>
+                                                <td>
+                                                    @if($student->approx_age >= $class->student_start_age && $student->approx_age <= $class->student_end_age)
+                                                        <div class="form-check form-check-primary">
+                                                            <input class="form-check-input checkbox_child striped_child"
+                                                                   type="checkbox" name="students[]"
+                                                                   value="{{$student->id}}">
+                                                        </div>
+                                                    @endif
+                                                </td>
+                                                <td class="d-flex align-items-center">
+                                                    <img src=" {{$student->photo}}"
+                                                         class="me-2 rounded-circle border border-primary object-fit"
+                                                         width="35px" height="35px">
+                                                    <div>
+                                                        {{$student->name}}
+
+                                                        @if($student->approx_age > $class->student_end_age || $student->approx_age < $class->student_start_age)
+                                                            <p class="text-danger mb-0 small">
+                                                                عمر الطالب ({{$student->approx_age}}) غير مناسب للفصل.
+                                                                يجب أن يكون
+                                                                بين {{ $class->student_start_age }}
+                                                                و {{ $class->student_end_age }} سنوات.
+                                                            </p>
+                                                        @endif
+                                                    </div>
+                                                </td>
+                                                <td>{{$student->identification}}</td>
+                                                <td>{{$student->address}}</td>
+                                                <td>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                         stroke-width="2"
+                                                         stroke-linecap="round" stroke-linejoin="round"
+                                                         class="feather feather-calendar">
+                                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                                    </svg>
+                                                    <span class="table-inner-text">{{$student->birth_date}}</span>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
+                                    <i class="flaticon-cancel-12"></i> اغلاق
+                                </button>
+                                <button type="submit" class="btn btn-primary">حفظ</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        @endauth
+    @endcan
+
+    @if($current_year_class->certificate)
+        @can('update-school-class-student-certificate')
+            <div class="modal fade" id="studentCertificateModal" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-xl">
+                    <form action="{{route('student-marks.store')}}" method="POST">
+                        @csrf
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">اضافة مجال جديد</h5>
+                            </div>
+                            <div class="modal-body">
+                                <div class="table-responsive">
+
+
+                                    <input type="hidden" name="student_class_year" id="student_class_year" value="">
+                                    <input type="hidden" name="year_class" value="{{$current_year_class->id}}">
+
+                                    <table class="table table-sm table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">المجال</th>
+                                            <th scope="col">علامة الفصل الاول</th>
+                                            <th scope="col">علامة الفصل الثاني</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($current_year_class->certificate?->fields as $field)
+                                            <tr class="table-primary">
+                                                <td><strong>{{ $field->field_name }}</strong></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            @if(count($field->categories) > 0)
+                                                @foreach($field->mainCategories as $category)
+                                                    <tr class="{{count($category->subcategories) > 0 ? 'table-warning' : ''}}">
+                                                        <td>{{ $category->name }}</td>
+                                                        <td>
+                                                            <select class="form-select form-select-sm"
+                                                                    name="marks[first_semester][{{ $category->id }}]">
+                                                                <option value="" selected>اختر العلامة</option>
+                                                                <option value="Always">دائماً</option>
+                                                                <option value="Sometimes">أحياناً</option>
+                                                                <option value="Rarely">نادراً</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select class="form-select form-select-sm"
+                                                                    name="marks[second_semester][{{ $category->id }}]">
+                                                                <option value="" selected>اختر العلامة</option>
+                                                                <option value="Always">دائماً</option>
+                                                                <option value="Sometimes">أحياناً</option>
+                                                                <option value="Rarely">نادراً</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    @if($category->subcategories->isNotEmpty())
+                                                        @foreach($category->subcategories as $subcategory)
+                                                            <tr>
+                                                                <td>{{ $subcategory->name }}</td>
+                                                                <td>
+                                                                    <select class="form-select form-select-sm"
+                                                                            name="marks[first_semester][{{ $subcategory->id }}]">
+                                                                        <option value="" selected>اختر العلامة</option>
+                                                                        <option value="Always">دائماً</option>
+                                                                        <option value="Sometimes">أحياناً</option>
+                                                                        <option value="Rarely">نادراً</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <select class="form-select form-select-sm"
+                                                                            name="marks[second_semester][{{ $subcategory->id }}]">
+                                                                        <option value="" selected>اختر العلامة</option>
+                                                                        <option value="Always">دائماً</option>
+                                                                        <option value="Sometimes">أحياناً</option>
+                                                                        <option value="Rarely">نادراً</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label for="first_notes" class="form-label">ملاحظات مربية الفصل الدراسي
+                                                الاول</label>
+                                            <textarea class="form-control" id="first_notes" name="first_notes"
+                                                      rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label for="second_notes" class="form-label">ملاحظات مربية الفصل الدراسي
+                                                الثاني</label>
+                                            <textarea class="form-control" id="second_notes" name="second_notes"
+                                                      rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-delete" data-bs-dismiss="modal">اغلاق</button>
+                                <button type="submit" class="btn btn-primary">حفظ</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        @endcan
+    @endif
+
+    @can('update-school-class-student')
+        <div class="modal fade" id="editStudentImage">
+            <div class="modal-dialog" role="document">
+                <form action="" id="editStudentImageForm"
+                      method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+
+                    <input type="hidden" name="edit_image_student_id" value="">
 
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">تسجل الطلاب في السنة الحالية</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title">تعديل الصورة الشخصية </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                X
+                            </button>
                         </div>
                         <div class="modal-body">
-                            <p>قائمة الطلاب .</p>
 
-
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered dataTableConfigNoData">
-                                    <thead>
-                                    <tr>
-                                        <th class="checkbox-area" scope="col">
-                                        </th>
-                                        <th scope="col">الاسم</th>
-                                        <th scope="col">رقم الهوية</th>
-                                        <th scope="col">عنوان السكن</th>
-                                        <th scope="col">تاريخ الميلاد</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($students as $student)
-                                        <tr>
-                                            <td>
-                                                @if($student->approx_age >= $class->student_start_age && $student->approx_age <= $class->student_end_age)
-                                                <div class="form-check form-check-primary">
-                                                    <input class="form-check-input checkbox_child striped_child"
-                                                           type="checkbox" name="students[]"
-                                                           value="{{$student->id}}">
-                                                </div>
-                                                @endif
-                                            </td>
-                                            <td class="d-flex align-items-center">
-                                                <img src=" {{$student->photo}}"
-                                                     class="me-2 rounded-circle border border-primary object-fit"
-                                                     width="35px" height="35px">
-                                                <div>
-                                                    {{$student->name}}
-
-                                                    @if($student->approx_age > $class->student_end_age || $student->approx_age < $class->student_start_age)
-                                                        <p class="text-danger mb-0 small">
-                                                            عمر الطالب ({{$student->approx_age}}) غير مناسب للفصل. يجب أن يكون
-                                                            بين {{ $class->student_start_age }}
-                                                            و {{ $class->student_end_age }} سنوات.
-                                                        </p>
-                                                    @endif
-                                                </div>
-                                            </td>
-                                            <td>{{$student->identification}}</td>
-                                            <td>{{$student->address}}</td>
-                                            <td>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                     stroke-width="2"
-                                                     stroke-linecap="round" stroke-linejoin="round"
-                                                     class="feather feather-calendar">
-                                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                                                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                                                    <line x1="3" y1="10" x2="21" y2="10"></line>
-                                                </svg>
-                                                <span class="table-inner-text">{{$student->birth_date}}</span>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
+                            <div class="text-center">
+                                <p>الصورة الحالية</p>
+                                <img src="" id="edit_image_student_image" width="200px" height="200px"
+                                     class="mb-3 rounded-circle border border-primary object-fit">
+                                <p class="fs-5" id="edit_image_student_name">N/A</p>
                             </div>
+                            <hr>
 
+                            <div class="mb-3">
+                                <label for="personal_photo">الصورة </label>
+                                <input type="file" id="personal_photo" name="personal_photo"
+                                       class="form-control" accept="image/*" required>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
@@ -269,167 +448,7 @@
                 </form>
             </div>
         </div>
-    @endauth
-
-    @if($current_year_class->certificate)
-        <div class="modal fade" id="studentCertificateModal" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-xl">
-                <form action="{{route('student-marks.store')}}" method="POST">
-                    @csrf
-
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">اضافة مجال جديد</h5>
-                        </div>
-                        <div class="modal-body">
-                            <div class="table-responsive">
-
-
-                                <input type="hidden" name="student_class_year" id="student_class_year" value="">
-                                <input type="hidden" name="year_class" value="{{$current_year_class->id}}">
-
-                                <table class="table table-sm table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">المجال</th>
-                                        <th scope="col">علامة الفصل الاول</th>
-                                        <th scope="col">علامة الفصل الثاني</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($current_year_class->certificate?->fields as $field)
-                                        <tr class="table-primary">
-                                            <td><strong>{{ $field->field_name }}</strong></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        @if(count($field->categories) > 0)
-                                            @foreach($field->mainCategories as $category)
-                                                <tr class="{{count($category->subcategories) > 0 ? 'table-warning' : ''}}">
-                                                    <td>{{ $category->name }}</td>
-                                                    <td>
-                                                        <select class="form-select form-select-sm"
-                                                                name="marks[first_semester][{{ $category->id }}]">
-                                                            <option value="" selected>اختر العلامة</option>
-                                                            <option value="Always">دائماً</option>
-                                                            <option value="Sometimes">أحياناً</option>
-                                                            <option value="Rarely">نادراً</option>
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <select class="form-select form-select-sm"
-                                                                name="marks[second_semester][{{ $category->id }}]">
-                                                            <option value="" selected>اختر العلامة</option>
-                                                            <option value="Always">دائماً</option>
-                                                            <option value="Sometimes">أحياناً</option>
-                                                            <option value="Rarely">نادراً</option>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                                @if($category->subcategories->isNotEmpty())
-                                                    @foreach($category->subcategories as $subcategory)
-                                                        <tr>
-                                                            <td>{{ $subcategory->name }}</td>
-                                                            <td>
-                                                                <select class="form-select form-select-sm"
-                                                                        name="marks[first_semester][{{ $subcategory->id }}]">
-                                                                    <option value="" selected>اختر العلامة</option>
-                                                                    <option value="Always">دائماً</option>
-                                                                    <option value="Sometimes">أحياناً</option>
-                                                                    <option value="Rarely">نادراً</option>
-                                                                </select>
-                                                            </td>
-                                                            <td>
-                                                                <select class="form-select form-select-sm"
-                                                                        name="marks[second_semester][{{ $subcategory->id }}]">
-                                                                    <option value="" selected>اختر العلامة</option>
-                                                                    <option value="Always">دائماً</option>
-                                                                    <option value="Sometimes">أحياناً</option>
-                                                                    <option value="Rarely">نادراً</option>
-                                                                </select>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                @endif
-                                            @endforeach
-                                        @endif
-                                    @endforeach
-                                    </tbody>
-                                </table>
-
-
-                            </div>
-
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="mb-3">
-                                        <label for="first_notes" class="form-label">ملاحظات مربية الفصل الدراسي
-                                            الاول</label>
-                                        <textarea class="form-control" id="first_notes" name="first_notes"
-                                                  rows="3"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="mb-3">
-                                        <label for="second_notes" class="form-label">ملاحظات مربية الفصل الدراسي
-                                            الثاني</label>
-                                        <textarea class="form-control" id="second_notes" name="second_notes"
-                                                  rows="3"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-delete" data-bs-dismiss="modal">اغلاق</button>
-                            <button type="submit" class="btn btn-primary">حفظ</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    @endif
-    <div class="modal fade" id="editStudentImage">
-        <div class="modal-dialog" role="document">
-            <form action="" id="editStudentImageForm"
-                  method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-
-                <input type="hidden" name="edit_image_student_id" value="">
-
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">تعديل الصورة الشخصية </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            X
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <div class="text-center">
-                            <p>الصورة الحالية</p>
-                            <img src="" id="edit_image_student_image" width="200px" height="200px"
-                                 class="mb-3 rounded-circle border border-primary object-fit">
-                            <p class="fs-5" id="edit_image_student_name">N/A</p>
-                        </div>
-                        <hr>
-
-                        <div class="mb-3">
-                            <label for="personal_photo">الصورة </label>
-                            <input type="file" id="personal_photo" name="personal_photo"
-                                   class="form-control" accept="image/*" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn btn-light-dark" data-bs-dismiss="modal">
-                            <i class="flaticon-cancel-12"></i> اغلاق
-                        </button>
-                        <button type="submit" class="btn btn-primary">حفظ</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+    @endcan
 @endpush
 
 
