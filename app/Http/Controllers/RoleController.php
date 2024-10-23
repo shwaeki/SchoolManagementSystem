@@ -3,11 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\RolesDataTable;
-use App\DataTables\UsersDataTable;
-use App\Models\User;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Permission;
@@ -16,13 +11,13 @@ use Spatie\Permission\Models\Role;
 class RoleController extends Controller
 {
 
-/*    public function __construct()
+    public function __construct()
     {
         $this->middleware('permission:view-role');
         $this->middleware('permission:create-role', ['only' => ['create','store']]);
         $this->middleware('permission:update-role', ['only' => ['edit','update']]);
         $this->middleware('permission:destroy-role', ['only' => ['destroy']]);
-    }*/
+    }
 
 
     public function index(RolesDataTable $dataTable)
@@ -34,7 +29,7 @@ class RoleController extends Controller
     public function create()
     {
         $data = [
-            'permissions' => Permission::pluck('name', 'id'),
+            'permissions' => Permission::select('id', 'name', 'display_name')->get()->toArray(),
         ];
 
         return view('roles.create', $data);
@@ -65,7 +60,7 @@ class RoleController extends Controller
     {
         $data = [
             'role' => $role,
-            'permissions' => Permission::pluck('name', 'id'),
+            'permissions' => Permission::select('id', 'name', 'display_name')->get()->toArray(),
         ];
 
         return view('roles.edit', $data);

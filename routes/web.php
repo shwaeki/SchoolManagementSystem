@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ParentController;
 use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchasesController;
@@ -34,7 +35,7 @@ use Illuminate\Support\Facades\Route;
 use UniSharp\LaravelFilemanager\Lfm;
 
 
-Auth::routes(['reset' => false]);
+Auth::routes(['reset' => false, 'verify' => false, 'register' => false]);
 
 Route::get('application/message', [ApplicationController::class, 'message'])->name('application.message');
 
@@ -106,6 +107,7 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
 
     Route::middleware(['auth:web', 'check.year'])->group(function () {
         Route::resource('roles', RoleController::class);
+        Route::resource('permissions', PermissionController::class);
 
         Route::get('students/archives', [StudentController::class, 'archives'])->name('students.archives');
         Route::put('students/archive/{student}', [StudentController::class, 'archive'])->name('students.archive');
@@ -146,7 +148,6 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
         Route::resource('certificate-fields', CertificateFieldController::class);
         Route::resource('certificate-categories', CertificateCategoryController::class);
 
-
         Route::resource('attendances', AttendanceController::class);
         Route::resource('users', UserController::class);
         Route::resource('academic-years', AcademicYearController::class);
@@ -157,7 +158,6 @@ Route::middleware(['auth:web,teacher', 'check.year'])->group(function () {
         Route::resource('purchases', PurchasesController::class);
         Route::resource('payments', PaymentsController::class);
         Route::resource('advertises', AdvertiseController::class);
-
     });
 });
 

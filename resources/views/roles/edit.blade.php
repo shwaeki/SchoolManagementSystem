@@ -14,9 +14,7 @@
                 @method('PUT')
                 @csrf
 
-
                 <div class="row">
-
                     <div class="col-12 col-md-12">
                         <div class="mb-3">
                             <label for="name" class="form-label"> الاسم </label>
@@ -29,40 +27,33 @@
                         </div>
                     </div>
 
-
                     <div class="col-12">
                         <div class="row">
+                            <hr>
                             @foreach ($permissions as $key => $permission)
                                 <div class="col-3">
-                                    <div class="mb-1 p-2 d-inline-block">
-
+                                    <div class="d-inline-block mb-1">
                                         <input type="checkbox" name="permissions[]" value="{{ $key }}"
-                                               class="form-check-input" id="{{ $permission }}"
+                                               class="form-check-input" id="{{ $permission['name'] }}"
                                                @foreach ($role->permissions as $perm)
-                                                   @if ($perm->id== $key))
-                                               checked
+                                                   @if ($perm->id == $key)
+                                                       checked
                                                @endif
                                                @endforeach
                                                @if($role->name == 'super-admin')
                                                    disabled
                                             @endif>
-                                        <label for="{{$permission}}" class="form-check-label"> {{$permission}} </label>
-
+                                        <label for="{{$permission['name']}}"
+                                               class="form-check-label"> {{$permission['display_name']}} </label>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
                     </div>
-
-
                 </div>
 
-
                 <button type="submit" class="btn btn-primary ml-3">تعديل</button>
-
             </form>
-
-
         </div>
     </div>
 @endsection

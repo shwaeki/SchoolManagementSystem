@@ -439,8 +439,11 @@
                             <li class="{{ Route::is('users.index') ? 'active' : '' }}">
                                 <a href="{{route('users.index')}}"> مستخدمي النظام </a>
                             </li>
-                            <li class="{{ Route::is('roles.create') ? 'active' : '' }}">
-                                <a href="{{route('roles.create')}}"> قائمة الادوار </a>
+                            <li class="{{ Route::is('roles.index') ? 'active' : '' }}">
+                                <a href="{{route('roles.index')}}"> قائمة الادوار </a>
+                            </li>
+                            <li class="{{ Route::is('permissions.index') ? 'active' : '' }}">
+                                <a href="{{route('permissions.index')}}"> قائمة الصلاحيات </a>
                             </li>
                             <li class="{{ Route::is('users.create') ? 'active' : '' }}">
                                 <a href="{{route('users.create')}}"> مستخدم جديد </a>
