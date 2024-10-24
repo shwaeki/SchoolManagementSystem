@@ -76,8 +76,11 @@ class StudentClassController extends Controller
 
     public function destroy(StudentClass $studentClass)
     {
+        if ($studentClass->student && $studentClass->student->tokens()->exists()) {
+            $studentClass->student->tokens()->delete();
+        }
+
         $studentClass->delete();
-        $studentClass->student->tokens()?->delete();
         Session::flash('message', 'تم حذف الطالب من الفصل الدراسي  بنجاح!');
         return redirect()->back();
     }
