@@ -10,7 +10,9 @@
                 </div>
 
                 <div class="col-4 text-end align-self-center">
-                    <a href="{{route('permissions.create')}}" class="btn btn-primary"> اضافة </a>
+                    @can('create-permission')
+                        <a href="{{route('permissions.create')}}" class="btn btn-primary"> اضافة </a>
+                    @endcan
                 </div>
             </div>
         </div>

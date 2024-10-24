@@ -4,7 +4,6 @@ namespace App\DataTables;
 
 
 use App\Models\AcademicYear;
-use App\Models\Teacher;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Services\DataTable;
@@ -18,9 +17,17 @@ class AcademicYearDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('Settings', function ($query) {
-                return '<a href="' . route('academic-years.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
-                    <button class="btn btn-light-danger text-danger d-none" onclick="deleteItem(this)"
+                $buttons = '';
+
+                if (auth()->user()->can('update-academic-year')) {
+                    $buttons .= '<a href="' . route('academic-years.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>';
+                }
+
+                if (auth()->user()->can('destroy-academic-year')) {
+                    $buttons .= '<button class="btn btn-light-danger text-danger d-none" onclick="deleteItem(this)"
                     data-item="' . route('academic-years.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
+                }
+                return $buttons;
 
             })->editColumn('status', function ($query) {
                 if ($query->status)

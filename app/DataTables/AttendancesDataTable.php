@@ -4,7 +4,6 @@ namespace App\DataTables;
 
 
 use App\Models\Attendance;
-use App\Models\Teacher;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Services\DataTable;
@@ -18,13 +17,17 @@ class AttendancesDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('Settings', function ($query) {
-                return '
-                <button type="button" class="btn btn-light-warning text-warning edit-attendance"
-                data-date="' . $query->date . '"
-                data-check_in="' . $query->check_in?->format('h:i') . '"
+                $buttons = '';
 
-                data-check_out="' . $query->check_out?->format('h:i') . '"
-                data-id="' . $query->id . '" data-bs-toggle="modal" data-bs-target="#editAttendanceModal"><i class="far fa-edit"></i></button>';
+                if (auth()->user()->can('update-teachers-attendance')) {
+                    $buttons .= '<button type="button" class="btn btn-light-warning text-warning edit-attendance"
+                            data-date="' . $query->date . '"
+                            data-check_in="' . $query->check_in?->format('h:i') . '"
+                            data-check_out="' . $query->check_out?->format('h:i') . '"
+                            data-id="' . $query->id . '" data-bs-toggle="modal" data-bs-target="#editAttendanceModal"><i class="far fa-edit"></i></button>';
+                }
+
+                return $buttons;
             })
             ->editColumn('teacher_id', function ($query) {
                 return $query->teacher->name;

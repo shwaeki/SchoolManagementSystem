@@ -51,6 +51,7 @@ class RolePermissionSeeder extends Seeder
             'create-student-purchases' => 'اضافة طلب شراء طالب',
             'destroy-student-purchases' => 'حذف  طلب شراء طالب',
             'update-student-purchases' => 'تعديل طلب شراء طالب',
+            'update-student-fees' => 'تعديل رسوم طالب',
             'create-student-payments' => 'اضافة دفعة طالب جديدة',
             'destroy-student-payments' => 'حذف دفعة طالب',
             'update-student-payments' => 'تعديل دفعة طالب',

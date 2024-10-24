@@ -18,10 +18,18 @@ class UsersDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('Settings', function ($query) {
-                return '
-                    <a href="' . route('users.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
-                    <button class="btn btn-light-danger text-danger  d-none" onclick="deleteItem(this)"
-                    data-item="' . route('users.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
+
+                $buttons = '';
+
+                if (auth()->user()->can('update-user')) {
+                    $buttons .= '<a href="' . route('users.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>';
+                }
+                if (auth()->user()->can('destroy-user')) {
+                    $buttons .= '<button class="btn btn-light-danger text-danger  d-none" onclick="deleteItem(this)"
+                                data-item="' . route('users.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
+                }
+
+                return $buttons;
             })
             ->setRowId('id')
             ->rawColumns(['Settings']);

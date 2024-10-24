@@ -3,9 +3,7 @@
 namespace App\DataTables;
 
 
-use App\Models\AcademicYear;
 use App\Models\Certificate;
-use App\Models\Teacher;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Services\DataTable;
@@ -19,8 +17,17 @@ class CertificatesDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('Settings', function ($query) {
-                return '<a href="' . route('certificates.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>
-                <a href="' . route('certificates.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>';
+                $buttons = '';
+
+                if (auth()->user()->can('view-certificates')) {
+                    $buttons .= '<a href="' . route('certificates.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>';
+                }
+
+                if (auth()->user()->can('update-certificates')) {
+                    $buttons .= '<a href="' . route('certificates.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>';
+                }
+
+                return $buttons;
             })
             ->setRowId('id')
             ->rawColumns(['Settings', 'status']);

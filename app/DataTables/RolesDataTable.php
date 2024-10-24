@@ -3,7 +3,6 @@
 namespace App\DataTables;
 
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -18,10 +17,19 @@ class RolesDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('Settings', function ($query) {
-                return '
-                    <a href="' . route('roles.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
-                    <button class="btn btn-light-danger text-danger  d-none" onclick="deleteItem(this)"
-                    data-item="' . route('roles.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
+                $buttons = '';
+
+                if (auth()->user()->can('update-role')) {
+                    $buttons .= '<a href="' . route('roles.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>';
+                }
+
+                if (auth()->user()->can('destroy-role')) {
+                    $buttons .= '<button class="btn btn-light-danger text-danger  d-none" onclick="deleteItem(this)"
+                                    data-item="' . route('roles.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
+                }
+
+                return $buttons;
+
             })/*->addColumn('permissions', function ($query) {
                 $permissions = "";
                 foreach ($query->getAllPermissions() as $permission) {

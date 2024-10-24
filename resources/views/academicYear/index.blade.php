@@ -9,9 +9,12 @@
                     <h4> قائمة السنوات الدراسية</h4>
                 </div>
 
-                <div class="col-4 text-end align-self-center">
-                    <a href="{{route('academic-years.create')}}" class="btn btn-primary"> اضافة </a>
-                </div>
+                @can('create-academic-year')
+                    <div class="col-4 text-end align-self-center">
+                        <a href="{{route('academic-years.create')}}" class="btn btn-primary"> اضافة </a>
+                    </div>
+                @endcan
+
             </div>
         </div>
         <div class="widget-content widget-content-area">

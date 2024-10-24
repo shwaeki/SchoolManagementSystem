@@ -9,9 +9,11 @@
                     <h4> قائمة انواع الشهادات</h4>
                 </div>
 
-                <div class="col-4 text-end align-self-center">
-                    <a href="{{route('certificates.create')}}" class="btn btn-primary"> اضافة </a>
-                </div>
+                @can('create-certificates')
+                    <div class="col-4 text-end align-self-center">
+                        <a href="{{route('certificates.create')}}" class="btn btn-primary"> اضافة </a>
+                    </div>
+                @endcan
             </div>
         </div>
         <div class="widget-content widget-content-area">

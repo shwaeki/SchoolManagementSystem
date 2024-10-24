@@ -4,12 +4,7 @@ namespace App\DataTables;
 
 use App\Models\Student;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
-use Yajra\DataTables\Html\Button;
-use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class StudentsDataTable extends DataTable
@@ -21,12 +16,31 @@ class StudentsDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('Settings', function ($query) {
-                return '<a href="' . route('students.show', $query) . '" class="btn btn-light-primary text-primary"><i class="far fa-eye"></i></a>
-                    <a href="' . route('students.edit', $query) . '" class="btn btn-light-warning text-warning"><i class="far fa-edit"></i></a>
-                    <button class="btn btn-light-secondary text-secondary" onclick="archiveItem(this)"
-                    data-item="' . route('students.archive', $query) . '"><i class="fas fa-archive"></i></button>
-                    <button class="btn btn-light-danger text-danger  d-none" onclick="deleteItem(this)"
-                    data-item="' . route('students.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
+
+                $buttons = '';
+
+                if (auth()->user()->can('view-student')) {
+                    $buttons .= '<a href="' . route('students.show', $query) . '" class="btn btn-light-primary text-primary me-1"><i class="far fa-eye"></i></a>';
+                }
+
+                if (auth()->user()->can('update-student')) {
+                    $buttons .= '<a href="' . route('students.edit', $query) . '" class="btn btn-light-warning text-warning me-1"><i class="far fa-edit"></i></a>';
+                }
+
+                if (auth()->user()->can('archive-student')) {
+                    $buttons .= '<button class="btn btn-light-secondary text-secondary me-1" onclick="archiveItem(this)"
+                                   data-item="' . route('students.archive', $query) . '"><i class="fas fa-archive"></i></button>';
+                }
+
+                if (auth()->user()->can('destroy-student')) {
+                    $buttons .= '<button class="btn btn-light-danger text-danger  me-1 d-none" onclick="deleteItem(this)"
+                                data-item="' . route('students.destroy', $query) . '"><i class="far fa-trash-alt"></i></button>';
+                }
+
+
+                return $buttons;
+
+
             })->editColumn('gender', function ($query) {
                 if ($query->gender === 'female')
                     return '<span class="badge badge-light-danger">انثى</span>';

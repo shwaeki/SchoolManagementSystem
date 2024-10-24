@@ -9,8 +9,13 @@
                 </div>
 
                 <div class="col-4 text-end align-self-center">
-                    <a href="{{route('students.create')}}" class="btn btn-primary"> اضافة </a>
-                    <a href="{{route('students.archives')}}" class="btn btn-primary"> الارشيف </a>
+                    @can('create-students')
+                        <a href="{{route('students.create')}}" class="btn btn-primary"> اضافة </a>
+                    @endcan
+
+                    @can('view-archive-students-list')
+                        <a href="{{route('students.archives')}}" class="btn btn-primary"> الارشيف </a>
+                    @endcan
                 </div>
             </div>
         </div>
