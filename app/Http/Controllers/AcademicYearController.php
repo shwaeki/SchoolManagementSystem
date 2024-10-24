@@ -7,6 +7,7 @@ use App\Models\academicYear;
 use App\Http\Requests\StoreAcademicYearRequest;
 use App\Http\Requests\UpdateAcademicYearRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 
@@ -66,6 +67,11 @@ class AcademicYearController extends Controller
         AcademicYear::where('status', true)->where('id', '!=', $academicYear->id)->update(['status' => false]);
 
         $academicYear->update(request()->all());
+
+
+        if (request('status') === "1") {
+            DB::table('personal_access_tokens')->where('tokenable_type', 'App\Models\Student')->delete();
+        }
         Session::flash('message', 'تم تعديل معلومات السنة الدراسية بنجاح.');
         return redirect()->route('academic-years.index');
     }
